@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>经典网络归纳： resnet | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要： 作为深度卷积神经网络的里程碑式的作品，ResNet为卷积网络往更深层次扩展指明了方向，本文结合相关论文总结一下ResNet中创造性的想法。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典网络归纳： ResNet">
+<meta property="og:url" content="http://blog.a-stack.com/2018/05/21/ResNet/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 作为深度卷积神经网络的里程碑式的作品，ResNet为卷积网络往更深层次扩展指明了方向，本文结合相关论文总结一下ResNet中创造性的想法。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/cover/04.jpg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/residual-Module.PNG">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/residual-Module-2.PNG">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/network-architect.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/new_restnet_block.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/other-resnet-shortcut.PNG">
+<meta property="og:updated_time" content="2018-05-22T01:35:37.537Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="经典网络归纳： ResNet">
+<meta name="twitter:description" content="摘要： 作为深度卷积神经网络的里程碑式的作品，ResNet为卷积网络往更深层次扩展指明了方向，本文结合相关论文总结一下ResNet中创造性的想法。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/cover/04.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ResNet" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      经典网络归纳： ResNet
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/21/ResNet/" class="article-date">
+	  <time datetime="2018-05-21T12:14:49.000Z" itemprop="datePublished">2018-05-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/机器视觉/">机器视觉</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/04.jpg" alt="Test Picture"></p>
+<p><strong>摘要：</strong> 作为深度卷积神经网络的里程碑式的作品，ResNet为卷积网络往更深层次扩展指明了方向，本文结合相关论文总结一下ResNet中创造性的想法。</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>随着网络深度增加，人们发现出现了Degradation问题，这不是过拟合导致的，因为在训练数据集上发现了同样的问题。ResNet解决了深层神经网络难训练的问题，在此之前要训练一个层次较深的网络需要在参数初始化上下功夫，当然还需要一定的运气。</p>
+<p>ResNet网络获得了2015年所有的主流比赛冠军，相关内容被发表在论文《Deep Residual Learning for Image Recognition》中。除了残差网络的引入，在ResNet我们也看到逐渐摒弃了全连接层、池化层。全部网络中只在最开始使用了一个max pooling层，在最后使用了average pooling层。</p>
+<p>2016年，在上述论文的基础上，He发表了第二篇改进的论文 <sup><a href="#fn_2" id="reffn_2">2</a></sup> </p>
+<h2 id="残差网络"><a href="#残差网络" class="headerlink" title="残差网络"></a>残差网络</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/residual-Module.PNG" alt="residual-Module"></p>
+<script type="math/tex; mode=display">
+y = F(x, {W_i}) + x</script><blockquote>
+<p>“F是求和前网络映射，H是从输入到求和后的网络映射。比如把5映射到5.1，那么引入残差前是F’(5)=5.1，引入残差后是H(5)=5.1, H(5)=F(5)+5, F(5)=0.1。这里的F’和F都表示网络参数映射，<strong>引入残差后的映射对输出的变化更敏感</strong>。比如s输出从5.1变到5.2，映射F’的输出增加了1/51=2%，而对于残差结构输出从5.1到5.2，映射F是从0.1到0.2，增加了100%。明显后者输出变化对权重的调整作用更大，所以效果更好。残差的思想都是去掉相同的主体部分，从而突出微小的变化，看到残差网络我第一反应就是差分放大器”</p>
+</blockquote>
+<p>在ResNet中，残差使得网络学习更快，可以使用更高的学习率，比如常用的起始学习率为0.1。</p>
+<p>Boottleneck残差网络中，一般最后一个1x1卷积的filter数目是另外两个的4倍；</p>
+<p>残差网络可以从另一个角度理解，如下图所示，残差网络可以看成是由多种路径组合的一个网络，即，残差网络其实是很多并行子网络的组合。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/residual-Module-2.PNG" alt="residual-Module-2"></p>
+<h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/network-architect.png" alt="network-architect"></p>
+<h2 id="Highway-Networks"><a href="#Highway-Networks" class="headerlink" title="Highway Networks"></a>Highway Networks</h2><h2 id="ResNet的改进及优化"><a href="#ResNet的改进及优化" class="headerlink" title="ResNet的改进及优化"></a>ResNet的改进及优化</h2><blockquote>
+<p>He在2016年发布论文《Identity Mappings in Deep Residual Networks》，对ResNet中的一些内容进行了进一步的优化及完善，并证明了“identity Mapping” 的最优配置：$h(x_l) = x_l$。</p>
+</blockquote>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/new_restnet_block.png" alt="new_restnet_block"></p>
+<p>论文中提出了在ResNet单元中采取“预激活”的方式，参考图（b）中方案，在权重更新之前先进行BN层和ReLU层操作。实践证明，采用这种方式更容易训练深层网络,同时具备更好的泛化性能。采用（b）的误差为6.36%小于(a)的6.61%<resnet-110></resnet-110></p>
+<p>作者使用如下图所示的多种不同的残差单元比较性能，结果表明直连的方式效果最佳。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/other-resnet-shortcut.PNG" alt="other-resnet-shortcut"></p>
+<blockquote>
+<p>网络训练时间： 在CIFAR数据集，ResNet-1001，使用2GPU训练27小时； 在ImageNet数据集，ResNet-200使用8块GPU训练3周</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>Keras中已经包含了ResNet50</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.applications.resnet50 <span class="keyword">import</span> ResNet50</span><br><span class="line">ResNet50(include_top=<span class="keyword">True</span>, weights=<span class="string">'imagenet'</span>, input_tensor=<span class="keyword">None</span>, input_shape=<span class="keyword">None</span>, pooling=<span class="keyword">None</span>, classes=<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当 <code>include_top=False</code>时，可以通过<code>input_shape</code> 调整输入图像尺寸，但图像高度不小于197；默认大小为<code>(224,24,3)</code></p>
+<p>pooling: 可选，当 <code>include_top</code> 为 ‘False’ 时，该参数指定了特征提取时的池化方式。</p>
+<ul>
+<li><code>None</code> 代表不池化，直接输出最后一层卷积层的输出，该输出是一个四维张量。</li>
+<li><code>avg</code> 代表全局平均池化（GLobalAveragePool2D），相当于在最后一层卷积层后面再加一层全局平均池化层，输出是一个二维张量。</li>
+<li><code>max</code> 代表全局最大池化</li>
+</ul>
+</blockquote>
+<p>利用ResNet50的迁移学习方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.preprocessing <span class="keyword">import</span> image</span><br><span class="line"><span class="keyword">from</span> keras.applications.resnet50 <span class="keyword">import</span> preprocess_input, decode_predictions</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> keras.applications.resnet50 <span class="keyword">import</span> ResNet50</span><br><span class="line"></span><br><span class="line">model = ResNet50(weights=<span class="string">'imagenet'</span>)</span><br><span class="line"><span class="comment">## 直接使用进行图像分类</span></span><br><span class="line">img_path = <span class="string">'elephant.jpg'</span></span><br><span class="line">img = image.load_img(img_path, target_size=(<span class="number">224</span>, <span class="number">224</span>))</span><br><span class="line">x = image.img_to_array(img)</span><br><span class="line">x = np.expand_dims(x, axis=<span class="number">0</span>)</span><br><span class="line">x = preprocess_input(x)</span><br><span class="line"></span><br><span class="line">preds = model.predict(x)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 迁移学习1</span></span><br><span class="line">image_input = Input(shape=(<span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">model = ResNet50(input_tensor=image_input, include_top=<span class="keyword">True</span>,weights=<span class="string">'imagenet'</span>)</span><br><span class="line">last_layer = model.get_layer(<span class="string">'avg_pool'</span>).output</span><br><span class="line">x= Flatten(name=<span class="string">'flatten'</span>)(last_layer)</span><br><span class="line">out = Dense(num_classes, activation=<span class="string">'softmax'</span>, name=<span class="string">'output_layer'</span>)(x)</span><br><span class="line">custom_resnet_model = Model(inputs=image_input,outputs= out)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> custom_resnet_model.layers[:<span class="number">-1</span>]:</span><br><span class="line">	layer.trainable = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">custom_resnet_model.compile(loss=<span class="string">'categorical_crossentropy'</span>,optimizer=<span class="string">'adam'</span>,metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">## Fine Tune</span></span><br><span class="line">image_input = Input(shape=(<span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>))</span><br><span class="line">model = ResNet50(weights=<span class="string">'imagenet'</span>,include_top=<span class="keyword">False</span>)</span><br><span class="line">last_layer = model.output</span><br><span class="line"><span class="comment"># add a global spatial average pooling layer</span></span><br><span class="line">x = GlobalAveragePooling2D()(last_layer)</span><br><span class="line"><span class="comment"># add fully-connected &amp; dropout layers</span></span><br><span class="line">x = Dense(<span class="number">512</span>, activation=<span class="string">'relu'</span>,name=<span class="string">'fc-1'</span>)(x)</span><br><span class="line">x = Dropout(<span class="number">0.5</span>)(x)</span><br><span class="line">x = Dense(<span class="number">256</span>, activation=<span class="string">'relu'</span>,name=<span class="string">'fc-2'</span>)(x)</span><br><span class="line">x = Dropout(<span class="number">0.5</span>)(x)</span><br><span class="line"><span class="comment"># a softmax layer for 4 classes</span></span><br><span class="line">out = Dense(num_classes, activation=<span class="string">'softmax'</span>,name=<span class="string">'output_layer'</span>)(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># this is the model we will train</span></span><br><span class="line">custom_resnet_model2 = Model(inputs=model.input, outputs=out)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> custom_resnet_model2.layers[:<span class="number">-6</span>]:</span><br><span class="line">	layer.trainable = <span class="keyword">False</span></span><br><span class="line">    </span><br><span class="line">custom_resnet_model2.compile(loss=<span class="string">'categorical_crossentropy'</span>,optimizer=<span class="string">'adam'</span>,metrics=[<span class="string">'accuracy'</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">Deep Residual Learning for Image Recognition</a></li>
+<li><a href="https://arxiv.org/abs/1603.05027" target="_blank" rel="noopener">Identity Mappings in Deep Residual Networks</a></li>
+<li><a href="https://keras.io/zh/applications/#resnet50" target="_blank" rel="noopener">Keras实现</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/21/ResNet/" target="_blank" title="经典网络归纳： ResNet">http://blog.a-stack.com/2018/05/21/ResNet/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/22/Feature-Visualization-in-NN/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Feature_Visualization_in_NN
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/19/OpenCV-and-Python/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">OpenCV and Python</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#残差网络"><span class="nav-number">2.</span> <span class="nav-text">残差网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络结构"><span class="nav-number">3.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Highway-Networks"><span class="nav-number">4.</span> <span class="nav-text">Highway Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResNet的改进及优化"><span class="nav-number">5.</span> <span class="nav-text">ResNet的改进及优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">6.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

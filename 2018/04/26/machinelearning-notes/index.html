@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>machine learning notes | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。  @[toc]  最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning Notes">
+<meta property="og:url" content="http://blog.a-stack.com/2018/04/26/machinelearning-notes/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。  @[toc]  最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Learning2.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Learning1.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/BILDt.png">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.448Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Machine Learning Notes">
+<meta name="twitter:description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。  @[toc]  最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-machinelearning-notes" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Machine Learning Notes
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/26/machinelearning-notes/" class="article-date">
+	  <time datetime="2018-04-26T05:56:13.000Z" itemprop="datePublished">2018-04-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> 最近花了两周时间刷完了吴恩达在Cousera上关于<a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">机器学习</a>的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。</p>
+<!-- excerpt -->
+<p>@[toc]</p>
+<blockquote>
+<p>最近花了两周时间刷完了吴恩达在Cousera上关于<a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">机器学习</a>的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。为了巩固对课程内容和课后实验的理解，将在未来一周实践写几篇总结性笔记，作为对课程内容的回顾和总结。</p>
+</blockquote>
+<h2 id="Lecture-1：-机器学习的定义"><a href="#Lecture-1：-机器学习的定义" class="headerlink" title="Lecture 1： 机器学习的定义"></a>Lecture 1： 机器学习的定义</h2><blockquote>
+<p>Tom Mitchell provides a modern definition: “A computer program is said to learn from experience <strong>E</strong> with respect to some class of tasks <strong>T</strong> and performance measure <strong>P</strong>, if its performance at tasks in <strong>T</strong>, as measured by <strong>P</strong>, improves with experience <strong>E</strong>.”</p>
+</blockquote>
+<ol>
+<li>监督学习的一个主要特点，是在拿到数据的那一刻，我们已经知道正确的输出目标范围；<ul>
+<li>监督学习可以分为分类问题和回归问题；</li>
+</ul>
+</li>
+<li>鸡尾酒会问题及鸡尾酒会算法：<a href="https://en.wikipedia.org/wiki/Cocktail_party_effect" target="_blank" rel="noopener">Wiki</a>, 属于非聚类的非监督问题</li>
+</ol>
+<h2 id="Lecture-2：-线性回归（多属性）"><a href="#Lecture-2：-线性回归（多属性）" class="headerlink" title="Lecture 2： 线性回归（多属性）"></a>Lecture 2： 线性回归（多属性）</h2><h3 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h3><p>$x_j^{(i)}$ : 第$i^{th}$训练样本的第$j$个特征向量；</p>
+<p>$x^{(i)}$ : 第$i^{th}$训练样本的特征向量；</p>
+<p>$m$ ： 训练样本数目；</p>
+<p>$n$ ： 特征数目</p>
+<h3 id="多元线性规划模型"><a href="#多元线性规划模型" class="headerlink" title="多元线性规划模型"></a>多元线性规划模型</h3><h4 id="假设函数"><a href="#假设函数" class="headerlink" title="假设函数"></a>假设函数</h4><script type="math/tex; mode=display">
+\begin{equation} h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \theta_3 x_3 + \cdots + \theta_n x_n = \theta ^T x  \tag{1.a} \end{equation}</script><blockquote>
+<p>以上表达式中对$\theta$ 和 $x$ 进行了维度变换，$x_0=1,for(i\in1,…,m)$</p>
+<p>$\theta .shape = (n+1, 1)$</p>
+<p>$x.shape = (m,n+1)$</p>
+</blockquote>
+<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><script type="math/tex; mode=display">
+J(\theta) = \dfrac {1}{2m} \displaystyle \sum_{i=1}^m \left (h_\theta (x^{(i)}) - y^{(i)} \right)^2 = \dfrac {1}{2m} (X\theta - \vec{y})^{T} (X\theta - \vec{y})</script><h4 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h4><script type="math/tex; mode=display">
+\theta := \theta - \frac{\alpha}{m} X^{T} (X\theta - \vec{y})</script><h3 id="特征正则化"><a href="#特征正则化" class="headerlink" title="特征正则化"></a>特征正则化</h3><blockquote>
+<ol>
+<li>Feature scaling 和 mean normalization实现;</li>
+<li>归一化的目的，是为了收敛域对其，更容易收敛，梯度下降更容易找到最佳方向；</li>
+<li>吴恩达打了个很好的比喻，两个参数范围不一致，梯度下降是一个椭圆；</li>
+</ol>
+</blockquote>
+<script type="math/tex; mode=display">
+x_i := \dfrac{x_i - \mu_i}{s_i}</script><h3 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h3><script type="math/tex; mode=display">
+\theta = (X^T X)^{-1}X^T y</script><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Gradient Descent</th>
+<th>Normal Equation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Need to choose alpha</td>
+<td>No need to choose alpha</td>
+</tr>
+<tr>
+<td>Needs many iterations</td>
+<td>No need to iterate</td>
+</tr>
+<tr>
+<td>$O(kn^2)$</td>
+<td>$O(n^3)$ ,计算复杂度来自$X^TX$ 的计算</td>
+</tr>
+<tr>
+<td>Works well when n is large</td>
+<td>Slow if n is very large</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Lecture-3：逻辑回归"><a href="#Lecture-3：逻辑回归" class="headerlink" title="Lecture 3：逻辑回归"></a>Lecture 3：逻辑回归</h2><blockquote>
+<p><strong>逻辑回归名称的由来</strong>：逻辑回归来源于Logistic 分布，虽然名字带回归，但解决的是分类问题。而其密度函数曲线正对应着Sigmoid函数的曲线形状。</p>
+</blockquote>
+<h3 id="假设函数-1"><a href="#假设函数-1" class="headerlink" title="假设函数"></a>假设函数</h3><script type="math/tex; mode=display">
+\begin{align*} h_\theta (x) =  g ( \theta^T x ) \\ z = \theta^T x \\g(z) = \dfrac{1}{1 + e^{-z}}\end{align*}</script><p>假设函数输出的分类目标的条件概率：</p>
+<script type="math/tex; mode=display">
+\begin{align*}& h_\theta(x) = P(y=1 | x ; \theta) = 1 - P(y=0 | x ; \theta) \newline& P(y = 0 | x;\theta) + P(y = 1 | x ; \theta) = 1\end{align*}</script><h3 id="代价函数-1"><a href="#代价函数-1" class="headerlink" title="代价函数"></a>代价函数</h3><script type="math/tex; mode=display">
+\begin{align*}& J(\theta) = \dfrac{1}{m} \sum_{i=1}^m \mathrm{Cost}(h_\theta(x^{(i)}),y^{(i)})=-\frac{1}{m}(y^Tlog(h)+(1-y)^T(1-h)) \newline & \mathrm{Cost}(h_\theta(x),y) = -\log(h_\theta(x)) \; & \text{if y = 1} \newline & \mathrm{Cost}(h_\theta(x),y) = -\log(1-h_\theta(x)) \; & \text{if y = 0}\end{align*}</script><h3 id="梯度-1"><a href="#梯度-1" class="headerlink" title="梯度"></a>梯度</h3><script type="math/tex; mode=display">
+\theta := \theta - \frac{\alpha}{m} X^{T} (g(X \theta ) - \vec{y})</script><script type="math/tex; mode=display">
+\sigma(x)'=\sigma(x)(1 - \sigma(x))</script><blockquote>
+<p>一些梯度下降算法之外的选择： 除了梯度下降算法以外，还有一些常被用来令代价函数最小的算法，这些算法更加复杂和优越，而且通常不需要人工选择学习率，通常比梯度下降算法要更加快速。这些算法有：共轭梯度（Conjugate Gradient），局部优化法(Broyden fletcher goldfarb shann,BFGS)和有限内存局部优化法(LBFGS)<br>fminunc是 matlab和octave 中都带的一个最小值优化函数，使用时我们需要提供代价函数和每个参数的求导</p>
+</blockquote>
+<h3 id="多分类：-One-vs-all"><a href="#多分类：-One-vs-all" class="headerlink" title="多分类： One-vs-all"></a>多分类： One-vs-all</h3><p>每个分类目标对应一个分类器，计算分类过程中，取预测值最大的分类器输出作为最终分类结果：</p>
+<script type="math/tex; mode=display">
+prediction = \max_i( h_\theta ^{(i)}(x) )</script><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><h3 id="正则化的线性回归"><a href="#正则化的线性回归" class="headerlink" title="正则化的线性回归"></a>正则化的线性回归</h3><script type="math/tex; mode=display">
+\begin{align*}
+& \text{Repeat}\ \lbrace \newline
+& \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline
+& \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline
+& \rbrace
+\end{align*}</script><h4 id="添加正则化的数值解"><a href="#添加正则化的数值解" class="headerlink" title="添加正则化的数值解"></a>添加正则化的数值解</h4><script type="math/tex; mode=display">
+\begin{align*}& \theta = \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty \newline& \text{where}\ \ L = \begin{bmatrix} 0 & & & & \newline & 1 & & & \newline & & 1 & & \newline & & & \ddots & \newline & & & & 1 \newline\end{bmatrix}\end{align*}</script><h3 id="正则化的逻辑回归"><a href="#正则化的逻辑回归" class="headerlink" title="正则化的逻辑回归"></a>正则化的逻辑回归</h3><script type="math/tex; mode=display">
+J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2</script><script type="math/tex; mode=display">
+\begin{array}& \text{Repeat}\ \lbrace \newline& \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline& \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline& \rbrace\end{array}</script><h2 id="Lecture-4-5-神经网络"><a href="#Lecture-4-5-神经网络" class="headerlink" title="Lecture 4-5: 神经网络"></a>Lecture 4-5: 神经网络</h2><ul>
+<li>大脑学习的原理举例： 人类失去眼睛，可以学习通过超声来判断物体和方位，具备看的能力；</li>
+</ul>
+<p>If networkhas $s_j$ units in layer j and $s_j +1$ units in layer j+1, then Θ(j) willbe of dimension sj+1×(sj+1).</p>
+<h3 id="多分类"><a href="#多分类" class="headerlink" title="多分类"></a>多分类</h3><script type="math/tex; mode=display">
+\begin{align*}\begin{bmatrix}x_0 \newline x_1 \newline x_2 \newline\cdots \newline x_n\end{bmatrix} \rightarrow\begin{bmatrix}a_0^{(2)} \newline a_1^{(2)} \newline a_2^{(2)} \newline\cdots\end{bmatrix} \rightarrow\begin{bmatrix}a_0^{(3)} \newline a_1^{(3)} \newline a_2^{(3)} \newline\cdots\end{bmatrix} \rightarrow \cdots \rightarrow\begin{bmatrix}h_\Theta(x)_1 \newline h_\Theta(x)_2 \newline h_\Theta(x)_3 \newline h_\Theta(x)_4 \newline\end{bmatrix} \rightarrow\end{align*}</script><h3 id="代价函数-2"><a href="#代价函数-2" class="headerlink" title="代价函数"></a>代价函数</h3><script type="math/tex; mode=display">
+\begin{gather*}\large J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}</script><h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><blockquote>
+<p>参见： <a href="Backpropagation-in-Neural-Network/">Backpropagation-in-Neural-Network</a></p>
+</blockquote>
+<h3 id="梯度校验"><a href="#梯度校验" class="headerlink" title="梯度校验"></a>梯度校验</h3><script type="math/tex; mode=display">
+\dfrac{\partial}{\partial\Theta_j}J(\Theta) \approx \dfrac{J(\Theta_1, \dots, \Theta_j + \epsilon, \dots, \Theta_n) - J(\Theta_1, \dots, \Theta_j - \epsilon, \dots, \Theta_n)}{2\epsilon}</script><h2 id="Lecture-6：采用机器学习的建议"><a href="#Lecture-6：采用机器学习的建议" class="headerlink" title="Lecture 6：采用机器学习的建议"></a>Lecture 6：采用机器学习的建议</h2><h3 id="bias-与-variance"><a href="#bias-与-variance" class="headerlink" title="bias 与 variance"></a>bias 与 variance</h3><ul>
+<li>高偏差==欠拟合</li>
+<li>高方差==过拟合</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png" alt="Features-and-polynom-degree"></p>
+<p>正则化与偏差/方差：</p>
+<ul>
+<li>大的$\lambda$ :高偏差（欠拟合）；</li>
+<li>小的$\lambda$ :高方差（过拟合）；</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png" alt="Features-and-polynom-degree-fix"></p>
+<blockquote>
+<p>选择合适的正则化参数</p>
+</blockquote>
+<h3 id="学习曲线（Learning-Curves）"><a href="#学习曲线（Learning-Curves）" class="headerlink" title="学习曲线（Learning Curves）"></a>学习曲线（Learning Curves）</h3><blockquote>
+<p>错误率随样本数目变化的曲线；</p>
+<p>如果算法过拟合，增大样本数有助于提升算法性能</p>
+</blockquote>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Learning2.png" alt="Learning2"></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/Learning1.png" alt="Learning1"></p>
+<h2 id="Lecture-7：-SVM"><a href="#Lecture-7：-SVM" class="headerlink" title="Lecture 7： SVM"></a>Lecture 7： SVM</h2><script type="math/tex; mode=display">
+z = \theta^Tx</script><script type="math/tex; mode=display">
+\text{cost}_0(z) = \max(0, k(1+z))</script><script type="math/tex; mode=display">
+\text{cost}_1(z) = \max(0, k(1-z))</script><blockquote>
+<p>更多内容查看WiKi： <a href="https://en.wikipedia.org/wiki/Hinge_loss" target="_blank" rel="noopener">Hingle loss</a></p>
+</blockquote>
+<h3 id="代价函数-3"><a href="#代价函数-3" class="headerlink" title="代价函数"></a>代价函数</h3><script type="math/tex; mode=display">
+J(\theta) = C\sum_{i=1}^m y^{(i)} \ \text{cost}_1(\theta^Tx^{(i)}) + (1 - y^{(i)}) \ \text{cost}_0(\theta^Tx^{(i)}) + \dfrac{1}{2}\sum_{j=1}^n \Theta^2_j</script><script type="math/tex; mode=display">
+C = \frac{1}{\lambda}</script><blockquote>
+<p>因为SVM的优化目标为最大化边界举例，所有SVM也叫做Large Margin Classifier</p>
+</blockquote>
+<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>实现SVM非线性分类的基础，将低维空间点投射到高维空间，定义近似函数：</p>
+<p>高斯核函数(主要参数为 $\sigma$)</p>
+<script type="math/tex; mode=display">
+f_i = similarity(x, l^{(i)}) = \exp(-\dfrac{\sum^n_{j=1}(x_j-l_j^{(i)})^2}{2\sigma^2})</script><h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><ol>
+<li><p>$C=\frac{1}{\lambda}$</p>
+<p>如果$C$ 过大，高方差、低偏差；</p>
+<p>如果$C$ 过小，高偏差、低方差；</p>
+</li>
+<li><p>$\sigma^2$</p>
+<p>如果$\sigma^2$ 过大，特征更加平缓，导致高偏差，低方差；</p>
+<p>如果$\sigma^2$ 过小，特征分布更集中，导致高方差，低偏差；</p>
+</li>
+</ol>
+<h2 id="Lecture-8-K-Means-和-PCA"><a href="#Lecture-8-K-Means-和-PCA" class="headerlink" title="Lecture 8: K-Means 和 PCA"></a>Lecture 8: K-Means 和 PCA</h2><h3 id="K-Means"><a href="#K-Means" class="headerlink" title="K-Means"></a>K-Means</h3><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-25-machine-learning-notes/BILDt.png" alt="BILDt"></p>
+<p>算法实现(<code>Cluster Assignment</code>+<code>Move Centroid</code>)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Randomly initialize K cluster centroids mu(1), mu(2), ..., mu(K)</span><br><span class="line">Repeat:</span><br><span class="line">   <span class="keyword">for</span> i = 1 to m:</span><br><span class="line">      c(i):= index (from 1 to K) of cluster centroid closest to x(i)</span><br><span class="line">   <span class="keyword">for</span> k = 1 to K:</span><br><span class="line">      mu(k):= average (mean) of points assigned to cluster k</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">
+c^{(i)} = argmin_k\ ||x^{(i)} - \mu_k||^2</script><h4 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h4><script type="math/tex; mode=display">
+J(c^{(i)},\dots,c^{(m)},\mu_1,\dots,\mu_K) = \dfrac{1}{m}\sum_{i=1}^m ||x^{(i)} - \mu_{c^{(i)}}||^2</script><h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><ol>
+<li>K个初始对象的选择应为随机选取k个训练样本；</li>
+<li>为了尽量避免陷入局部极小值，需要进行多次随机初始化求解，选择代价函数最小的解；</li>
+<li>K的选择，可以采用<code>elbow method</code>： Choose K at the point where the cost function starts to flatten out.</li>
+</ol>
+<h3 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h3><p><strong>降维的目的：</strong> 1. 数据压缩；2. 可视化；</p>
+<ul>
+<li>The <strong>goal of PCA</strong> is to <strong>reduce</strong> the average of all the distances of every feature to the projection line. </li>
+<li>PCA与线性回归不同之处在于，计算的各点到分割线的最短距离；</li>
+</ul>
+<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><ol>
+<li><p>数据预处理：归一化；</p>
+</li>
+<li><p>计算协方差矩阵</p>
+<script type="math/tex; mode=display">
+\Sigma = \dfrac{1}{m}\sum^m_{i=1}(x^{(i)})(x^{(i)})^T</script></li>
+<li><p>计算$\Sigma$ 的特征矩阵</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[U,S,V]</span> = svd(Sigma);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取$U$ 的前k列计算$z$</p>
+<script type="math/tex; mode=display">
+z^{(i)} = Ureduce^T \cdot x^{(i)}</script></li>
+</ol>
+<h4 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h4><script type="math/tex; mode=display">
+x_{approx}^{(1)} = U_{reduce} \cdot z^{(1)}</script><h4 id="k值的选择"><a href="#k值的选择" class="headerlink" title="k值的选择"></a>k值的选择</h4><script type="math/tex; mode=display">
+\dfrac{\dfrac{1}{m}\sum^m_{i=1}||x^{(i)} - x_{approx}^{(i)}||^2}{\dfrac{1}{m}\sum^m_{i=1}||x^{(i)}||^2} \leq 0.01</script><blockquote>
+<p>描述了丢失特征的比例</p>
+</blockquote>
+<p>可以通过SVD分解之后的S值来做同样的事情：</p>
+<script type="math/tex; mode=display">
+\dfrac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} \geq 0.99</script><h2 id="Lecture-9：-应用1-异常检测"><a href="#Lecture-9：-应用1-异常检测" class="headerlink" title="Lecture 9： 应用1-异常检测"></a>Lecture 9： 应用1-异常检测</h2><ul>
+<li>x(i)= features of user i’s activities</li>
+<li>Model p(x) from the data.</li>
+<li>Identify unusual users by checking which have p(x)&lt;ϵ.</li>
+</ul>
+<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p> $x \sim \mathcal{N}(\mu, \sigma^2)$</p>
+<script type="math/tex; mode=display">
+p(x;\mu,\sigma^2) = \frac{1}{\sigma\sqrt{(2\pi)}}e^{-\frac{1}{2}(\frac{x - \mu}{\sigma})^2}</script><script type="math/tex; mode=display">
+p(x) = p(x_1;\mu_1,\sigma_1^2)p(x_2;\mu_2,\sigma^2_2)\cdots p(x_n;\mu_n,\sigma^2_n)= \displaystyle \prod^n_{j=1} p(x_j;\mu_j,\sigma_j^2)</script><h4 id="算法流程-1"><a href="#算法流程-1" class="headerlink" title="算法流程"></a>算法流程</h4><ol>
+<li><p>计算均值和方差</p>
+</li>
+<li><p>计算概率分布函数</p>
+<script type="math/tex; mode=display">
+p(x) = \displaystyle \prod^n_{j=1} p(x_j;\mu_j,\sigma_j^2) = \prod\limits^n_{j=1} \dfrac{1}{\sqrt{2\pi}\sigma_j}exp(-\dfrac{(x_j - \mu_j)^2}{2\sigma^2_j})</script></li>
+<li><p>利用标记数据确定ϵ</p>
+</li>
+</ol>
+<h4 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h4><p>为了满足高斯分布，需要对原始数据进行转换：</p>
+<ul>
+<li>log(x)</li>
+<li>log(x+1)</li>
+<li>log(x+c) for some constant</li>
+<li>$\sqrt x$</li>
+<li>$x^{1/3}$</li>
+</ul>
+<h4 id="多元高斯分布"><a href="#多元高斯分布" class="headerlink" title="多元高斯分布"></a>多元高斯分布</h4><script type="math/tex; mode=display">
+p(x;\mu,\Sigma) = \dfrac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} exp(-1/2(x-\mu)^T\Sigma^{-1}(x-\mu))</script><blockquote>
+<p>传统高斯模型乘积是多元多元高斯的一种特例</p>
+</blockquote>
+<p>$\Sigma$ 为协方差矩阵，如何假设$A$ 为非奇异矩阵，进行特征变换：$y=Ax$,则$\Sigma = AA^T$</p>
+<p>多元高斯分布 vs 传统高斯模型</p>
+<ul>
+<li>多元 更能捕获特征之间的关联性；</li>
+<li>多元 计算更耗时；</li>
+<li>多元的前提，样本数 &gt; 特征数；m&gt;10n</li>
+</ul>
+<h2 id="Lecture-10-应用2-推荐系统"><a href="#Lecture-10-应用2-推荐系统" class="headerlink" title="Lecture 10: 应用2-推荐系统"></a>Lecture 10: 应用2-推荐系统</h2><h3 id="问题抽象"><a href="#问题抽象" class="headerlink" title="问题抽象"></a>问题抽象</h3><p>以电影推荐为例，定义如下变量：</p>
+<ul>
+<li>$n_\mu$ = 用户数目</li>
+<li>$n_m$ = 电影数目</li>
+<li>$r(i,j)=1$ = 1,如果用户j对电影i评分</li>
+<li>$y(i,j)=rating_score$ </li>
+</ul>
+<h3 id="基于内容的推荐"><a href="#基于内容的推荐" class="headerlink" title="基于内容的推荐"></a>基于内容的推荐</h3><script type="math/tex; mode=display">
+min_{\theta^{(1)},\dots,\theta^{(n_u)}} = \dfrac{1}{2}\displaystyle \sum_{j=1}^{n_u}  \sum_{i:r(i,j)=1} ((\theta^{(j)})^T(x^{(i)}) - y^{(i,j)})^2 + \dfrac{\lambda}{2} \sum_{j=1}^{n_u} \sum_{k=1}^n(\theta_k^{(j)})^2</script><h3 id="协同过滤"><a href="#协同过滤" class="headerlink" title="协同过滤"></a>协同过滤</h3><blockquote>
+<p>既学习参数又学习特征表示</p>
+</blockquote>
+<script type="math/tex; mode=display">
+J(x,\theta) = \dfrac{1}{2} \displaystyle \sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2}\sum_{i=1}^{n_m} \sum_{k=1}^{n} (x_k^{(i)})^2 + \dfrac{\lambda}{2}\sum_{j=1}^{n_u} \sum_{k=1}^{n} (\theta_k^{(j)})^2</script><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>SVM：<a href="http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf" target="_blank" rel="noopener">http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf</a></li>
+<li>​</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/04/26/machinelearning-notes/" target="_blank" title="Machine Learning Notes">http://blog.a-stack.com/2018/04/26/machinelearning-notes/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/26/machinelearning-labs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          《机器学习》课程实验回顾
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/21/机器学习三要素-模型-策略与算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">机器学习三要素：模型,策略与算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-1：-机器学习的定义"><span class="nav-number">1.</span> <span class="nav-text">Lecture 1： 机器学习的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-2：-线性回归（多属性）"><span class="nav-number">2.</span> <span class="nav-text">Lecture 2： 线性回归（多属性）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变量定义"><span class="nav-number">2.1.</span> <span class="nav-text">变量定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多元线性规划模型"><span class="nav-number">2.2.</span> <span class="nav-text">多元线性规划模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#假设函数"><span class="nav-number">2.2.1.</span> <span class="nav-text">假设函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代价函数"><span class="nav-number">2.2.2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度"><span class="nav-number">2.2.3.</span> <span class="nav-text">梯度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征正则化"><span class="nav-number">2.3.</span> <span class="nav-text">特征正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数分析"><span class="nav-number">2.4.</span> <span class="nav-text">参数分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-3：逻辑回归"><span class="nav-number">3.</span> <span class="nav-text">Lecture 3：逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#假设函数-1"><span class="nav-number">3.1.</span> <span class="nav-text">假设函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数-1"><span class="nav-number">3.2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度-1"><span class="nav-number">3.3.</span> <span class="nav-text">梯度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多分类：-One-vs-all"><span class="nav-number">3.4.</span> <span class="nav-text">多分类： One-vs-all</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化"><span class="nav-number">3.5.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化的线性回归"><span class="nav-number">3.6.</span> <span class="nav-text">正则化的线性回归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加正则化的数值解"><span class="nav-number">3.6.1.</span> <span class="nav-text">添加正则化的数值解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化的逻辑回归"><span class="nav-number">3.7.</span> <span class="nav-text">正则化的逻辑回归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-4-5-神经网络"><span class="nav-number">4.</span> <span class="nav-text">Lecture 4-5: 神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多分类"><span class="nav-number">4.1.</span> <span class="nav-text">多分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数-2"><span class="nav-number">4.2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播"><span class="nav-number">4.3.</span> <span class="nav-text">反向传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度校验"><span class="nav-number">4.4.</span> <span class="nav-text">梯度校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-6：采用机器学习的建议"><span class="nav-number">5.</span> <span class="nav-text">Lecture 6：采用机器学习的建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-与-variance"><span class="nav-number">5.1.</span> <span class="nav-text">bias 与 variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习曲线（Learning-Curves）"><span class="nav-number">5.2.</span> <span class="nav-text">学习曲线（Learning Curves）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-7：-SVM"><span class="nav-number">6.</span> <span class="nav-text">Lecture 7： SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数-3"><span class="nav-number">6.1.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核函数"><span class="nav-number">6.2.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-number">6.3.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-8-K-Means-和-PCA"><span class="nav-number">7.</span> <span class="nav-text">Lecture 8: K-Means 和 PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#K-Means"><span class="nav-number">7.1.</span> <span class="nav-text">K-Means</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优化目标"><span class="nav-number">7.1.1.</span> <span class="nav-text">优化目标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">7.1.2.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA"><span class="nav-number">7.2.</span> <span class="nav-text">PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程"><span class="nav-number">7.2.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#恢复"><span class="nav-number">7.2.2.</span> <span class="nav-text">恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#k值的选择"><span class="nav-number">7.2.3.</span> <span class="nav-text">k值的选择</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-9：-应用1-异常检测"><span class="nav-number">8.</span> <span class="nav-text">Lecture 9： 应用1-异常检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#高斯分布"><span class="nav-number">8.0.1.</span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程-1"><span class="nav-number">8.0.2.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据预处理"><span class="nav-number">8.0.3.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多元高斯分布"><span class="nav-number">8.0.4.</span> <span class="nav-text">多元高斯分布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-10-应用2-推荐系统"><span class="nav-number">9.</span> <span class="nav-text">Lecture 10: 应用2-推荐系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题抽象"><span class="nav-number">9.1.</span> <span class="nav-text">问题抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于内容的推荐"><span class="nav-number">9.2.</span> <span class="nav-text">基于内容的推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协同过滤"><span class="nav-number">9.3.</span> <span class="nav-text">协同过滤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">10.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

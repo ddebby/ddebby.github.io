@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cs231n课程笔记：（lecture 4）神经网络基础 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs231n课程笔记：（Lecture 4）神经网络基础">
+<meta property="og:url" content="http://blog.a-stack.com/2018/05/03/cs231n-lecture-4/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/neuron_model.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/activation_functions.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/prepro1.jpeg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/prepro2.jpeg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/cifar10pca.jpeg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/learningrates.jpeg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/accuracies.jpeg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/gridsearchbad.jpeg">
+<meta property="og:updated_time" content="2018-05-16T13:59:45.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cs231n课程笔记：（Lecture 4）神经网络基础">
+<meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/neuron_model.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-cs231n-lecture-4" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      cs231n课程笔记：（Lecture 4）神经网络基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/03/cs231n-lecture-4/" class="article-date">
+	  <time datetime="2018-05-03T08:52:26.000Z" itemprop="datePublished">2018-05-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/课程笔记/">课程笔记</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。</p>
+<!-- excerpt -->
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：</p>
+<ul>
+<li>课程主页： <a href="http://cs231n.stanford.edu/" target="_blank" rel="noopener">http://cs231n.stanford.edu/</a></li>
+<li>课程Notes：<a href="http://cs231n.github.io/" target="_blank" rel="noopener">http://cs231n.github.io/</a></li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Date</th>
+<th>Description</th>
+<th>Course Materials</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lecture 4</td>
+<td>Thursday April 12</td>
+<td><strong>Introduction to Neural Networks</strong> BackpropagationMulti-layer PerceptronsThe neural viewpoint</td>
+<td><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_lecture04.pdf" target="_blank" rel="noopener">[slides]</a> <a href="http://cs231n.github.io/optimization-2" target="_blank" rel="noopener">[backprop notes]</a><a href="http://cs231n.stanford.edu/handouts/linear-backprop.pdf" target="_blank" rel="noopener">[linear backprop example]</a><a href="http://cs231n.stanford.edu/handouts/derivatives.pdf" target="_blank" rel="noopener">[derivatives notes]</a> (optional) <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf" target="_blank" rel="noopener">[Efficient BackProp]</a> (optional)related: <a href="http://colah.github.io/posts/2015-08-Backprop/" target="_blank" rel="noopener">[1]</a>, <a href="http://neuralnetworksanddeeplearning.com/chap2.html" target="_blank" rel="noopener">[2]</a>, <a href="https://www.youtube.com/watch?v=q0pm3BrIUFo" target="_blank" rel="noopener">[3]</a> (optional)</td>
+</tr>
+<tr>
+<td>Discussion Section</td>
+<td>Friday April 13</td>
+<td><strong>Backpropagation</strong></td>
+<td><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_ds02.pdf" target="_blank" rel="noopener">[slides]</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><blockquote>
+<p>更多内容参见<sup><a href="#fn_1" id="reffn_1">1</a></sup><sup><a href="#fn_2" id="reffn_2">2</a></sup><sup><a href="#fn_3" id="reffn_3">3</a></sup></p>
+<p>这课程的大多数内容也综合了Lecture 6和Lecutre 7的内容，所以那两节课不单独写博客了。</p>
+</blockquote>
+<ul>
+<li>一个人的神经系统大概有860亿个神经元，形成$10^{14}-10^{15}$ 个神经元链接；</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/neuron_model.png" alt="neuron_model"></p>
+<blockquote>
+<p><strong>Coarse model.</strong> It’s important to stress that this model of a biological neuron is very coarse: For example, there are many different types of neurons, each with different properties. The dendrites in biological neurons perform complex nonlinear computations. The synapses are not just a single weight, they’re a complex non-linear dynamical system. The exact timing of the output spikes in many systems is known to be important, suggesting that the rate code approximation may not hold. Due to all these and many other simplifications, be prepared to hear groaning sounds from anyone with some neuroscience background if you draw analogies between Neural Networks and real brains. See this <a href="https://physics.ucsd.edu/neurophysics/courses/physics_171/annurev.neuro.28.061604.135703.pdf" target="_blank" rel="noopener">review</a> (pdf), or more recently this <a href="http://www.sciencedirect.com/science/article/pii/S0959438814000130" target="_blank" rel="noopener">review</a> if you are interested.</p>
+</blockquote>
+<ul>
+<li><p><strong>激活函数</strong></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/activation_functions.png" alt="activation_functions"></p>
+<ul>
+<li>Sigmoid： $\sigma(x) = 1 / (1 + e^{-x})$<ul>
+<li>1)梯度饱和；2)函数形式不是中心对称的（这个特性会导致后面网络层的输入也不是零中心的，进而影响梯度下降的运作）；</li>
+</ul>
+</li>
+<li>Tanh: $\tanh(x) = 2 \sigma(2x) -1$<ul>
+<li>1)梯度饱和；2）中心对称[-1,1]；</li>
+</ul>
+</li>
+<li>ReLU:  $f(x) = \max(0, x)$<ul>
+<li>1)线性非饱和的形式使得其收敛速度是Tanh的6倍； 2）计算代价低；3）难训练，容易陷入”死区”，需要严格配置合适的学习率；</li>
+</ul>
+</li>
+<li>Leaky ReLU： $f(x) = \mathbb{1}(x &lt; 0) (\alpha x) + \mathbb{1}(x&gt;=0) (x)$<ul>
+<li>另一种泛化形势为参数ReLU</li>
+<li>另一种ELU</li>
+</ul>
+</li>
+<li><strong>Maxout</strong>: $\max(w_1^Tx+b_1, w_2^Tx + b_2)$<ul>
+<li>ReLU和Leaky ReLU是其特例；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>关于网络规模大小</p>
+<ul>
+<li>一般浅层神经网络训练过程中容易陷入局部极小值，很难训练；</li>
+<li>所以及时过拟合，也尽量不采用过小的神经网络（可以采用其它手段处理过拟合问题）</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><ol>
+<li>均值处理（中心化）：<code>X -= np.mean(X, axis = 0)</code></li>
+<li>归一化：<code>X /= np.std(X, axis = 0)</code></li>
+</ol>
+<blockquote>
+<p>使用归一化需要注意： 只有在不同变量的大小对于输出同等重要的情况下采用归一化；图像中由于所有变量都已经在区间[0,255]范围之中，所以没有必要采用归一化</p>
+</blockquote>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/prepro1.jpeg" alt="prepro1"></p>
+<ol>
+<li>PCA和白化</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Assume input data matrix X of size [N x D]</span></span><br><span class="line">X -= np.mean(X, axis = <span class="number">0</span>) <span class="comment"># zero-center the data (important)</span></span><br><span class="line">cov = np.dot(X.T, X) / X.shape[<span class="number">0</span>] <span class="comment"># get the data covariance matrix</span></span><br><span class="line"></span><br><span class="line">U，S, V = np.linalg.svd(cov)</span><br><span class="line">Xrot = np.dot(X, U) <span class="comment"># decorrelate the data</span></span><br><span class="line"><span class="comment"># 1. PCA</span></span><br><span class="line">Xrot_reduced = np.dot(X, U[:,:<span class="number">100</span>]) <span class="comment"># Xrot_reduced becomes [N x 100]</span></span><br><span class="line"><span class="comment">#2 . whiten the data:</span></span><br><span class="line"><span class="comment"># divide by the eigenvalues (which are square roots of the singular values)</span></span><br><span class="line">Xwhite = Xrot / np.sqrt(S + <span class="number">1e-5</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>U为正交特征向量，我们可以只选择top N重要的特征向量来进行降维处理；</p>
+<p>PCA： 下图所示，数据中心对齐，以特征向量方向旋转对齐；</p>
+<p>白化操作：如果输入数据为多元高斯分布，白化结果为高斯零均值独立协方差矩阵</p>
+</blockquote>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/prepro2.jpeg" alt="prepro2"></p>
+<p>以CIFAR-10为例，处理之后效果见下图，第2张为取3072个特征中前144个特征：</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/cifar10pca.jpeg" alt="cifar10pca"></p>
+<blockquote>
+<p>所有预处理过程仅作用到训练数据中，并记录相关参数，验证数据和测试数据采用训练数据的结果进行预处理</p>
+</blockquote>
+<h3 id="参数初始化"><a href="#参数初始化" class="headerlink" title="参数初始化"></a>参数初始化</h3><ul>
+<li><code>W = 0.01* np.random.randn(D,H)</code></li>
+<li><code>w = np.random.randn(n) / sqrt(2.0/n)</code></li>
+</ul>
+<blockquote>
+<p><code>randn</code> 产生零均值单位方差高斯分布<br>w参数不能全部初始化为零（对称效应导致网络激活不更新），bias参数一般初始化为零<br>第二个公式为了解决输出随n的增加而比例增加的问题</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{align}
+\text{Var}(s) &= \text{Var}(\sum_i^n w_ix_i) \\
+&= \sum_i^n \text{Var}(w_ix_i) \\
+&= \sum_i^n [E(w_i)]^2\text{Var}(x_i) + E[(x_i)]^2\text{Var}(w_i) + \text{Var}(x_i)\text{Var}(w_i) \\
+&= \sum_i^n \text{Var}(x_i)\text{Var}(w_i) \\
+&= \left( n \text{Var}(w) \right) \text{Var}(x)
+\end{align}</script><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><ul>
+<li>L2正则化对于峰值权重增加比较大的惩罚，对平滑的权重矩阵更加友好；</li>
+<li>L1正则化的一个效果是使得输入参数稀疏化，从而过滤输入中的噪声数据；</li>
+<li>最大基准门限：$\Vert \vec{w} \Vert_2 &lt; c$</li>
+<li>Dropout: 在预测阶段不要使用<ul>
+<li>inverted dropout</li>
+<li>一般 $p=0.5$</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""" </span></span><br><span class="line"><span class="string">Inverted Dropout: Recommended implementation example.</span></span><br><span class="line"><span class="string">We drop and scale at train time and don't do anything at test time.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">p = <span class="number">0.5</span> <span class="comment"># probability of keeping a unit active. higher = less dropout</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_step</span><span class="params">(X)</span>:</span></span><br><span class="line">  <span class="comment"># forward pass for example 3-layer neural network</span></span><br><span class="line">  H1 = np.maximum(<span class="number">0</span>, np.dot(W1, X) + b1)</span><br><span class="line">  U1 = (np.random.rand(*H1.shape) &lt; p) / p <span class="comment"># first dropout mask. Notice /p!</span></span><br><span class="line">  H1 *= U1 <span class="comment"># drop!</span></span><br><span class="line">  H2 = np.maximum(<span class="number">0</span>, np.dot(W2, H1) + b2)</span><br><span class="line">  U2 = (np.random.rand(*H2.shape) &lt; p) / p <span class="comment"># second dropout mask. Notice /p!</span></span><br><span class="line">  H2 *= U2 <span class="comment"># drop!</span></span><br><span class="line">  out = np.dot(W3, H2) + b3</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># backward pass: compute gradients... (not shown)</span></span><br><span class="line">  <span class="comment"># perform parameter update... (not shown)</span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(X)</span>:</span></span><br><span class="line">  <span class="comment"># ensembled forward pass</span></span><br><span class="line">  H1 = np.maximum(<span class="number">0</span>, np.dot(W1, X) + b1) <span class="comment"># no scaling necessary</span></span><br><span class="line">  H2 = np.maximum(<span class="number">0</span>, np.dot(W2, H1) + b2)</span><br><span class="line">  out = np.dot(W3, H2) + b3</span><br></pre></td></tr></table></figure>
+<h3 id="代价函数（data-loss）"><a href="#代价函数（data-loss）" class="headerlink" title="代价函数（data loss）"></a>代价函数（data loss）</h3><ol>
+<li>分类问题</li>
+</ol>
+<ul>
+<li><p>SVM代价函数(合页损失函数)</p>
+<script type="math/tex; mode=display">
+L_i = \sum_{j\neq y_i} \max(0, f_j - f_{y_i} + 1)</script></li>
+<li><p>交叉熵损失函数</p>
+<script type="math/tex; mode=display">
+L_i = -\log\left(\frac{e^{f_{y_i}}}{ \sum_j e^{f_j} }\right)</script></li>
+</ul>
+<blockquote>
+<p>当分类数目特别大时，可采用层次Softmax</p>
+</blockquote>
+<ol>
+<li><p>多属性分类</p>
+<p>如果一个分类目标对应多个正确的结果，比如对一张图片分类，可能同时有多个正确标签。可以对每个属性构建一个二元分类器：</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+L_i = \sum_j \max(0, 1 - y_{ij} f_j)</script><p>​    其中，j为某个分类，$y_{ij}$ 为+1或-1，表示第i个样本是否含有第j个属性；$f_i$ 为正代表预测正确；</p>
+<p>​    第二种方法是对每个属性应用逻辑回归分类器：</p>
+<script type="math/tex; mode=display">
+L_i = \sum_j y_{ij} \log(\sigma(f_j)) + (1 - y_{ij}) \log(1 - \sigma(f_j))</script><p>​    $\partial{L<em>i} / \partial{f_j} = y</em>{ij} - \sigma(f_j)$。</p>
+<ol>
+<li>回归问题</li>
+</ol>
+<ul>
+<li><p>L2: $L_i = \Vert f - y_i \Vert_2^2$</p>
+<p>​</p>
+</li>
+<li><p>L1: $L_i = \Vert f - y_i \Vert_1 = \sum_j \mid f_j - (y_i)_j \mid$</p>
+<p>​</p>
+</li>
+</ul>
+<h3 id="训练3"><a href="#训练3" class="headerlink" title="训练3"></a>训练<sup><a href="#fn_3" id="reffn_3">3</a></sup></h3><h4 id="梯度校验"><a href="#梯度校验" class="headerlink" title="梯度校验"></a>梯度校验</h4><script type="math/tex; mode=display">
+\frac{df(x)}{dx} = \frac{f(x + h) - f(x - h)}{2h} \hspace{0.1in}</script><blockquote>
+<p>h可以设置为1e-5</p>
+</blockquote>
+<ol>
+<li>可以使用如下值来判断校验结果：</li>
+</ol>
+<script type="math/tex; mode=display">
+\frac{\mid f'_a - f'_n \mid}{\max(\mid f'_a \mid, \mid f'_n \mid)}</script><blockquote>
+<ul>
+<li>relative error &gt; 1e-2 usually means the gradient is probably wrong</li>
+<li>1e-2 &gt; relative error &gt; 1e-4 should make you feel uncomfortable</li>
+<li>1e-4 &gt; relative error is usually okay for objectives with kinks. But if there are no kinks (e.g. use of tanh nonlinearities and softmax), then 1e-4 is too high.</li>
+<li>1e-7 and less you should be happy.</li>
+<li>网络层数越多，相对误差值越大</li>
+</ul>
+</blockquote>
+<ol>
+<li>进行梯度校验，关闭dropout、数据放大(或使用random seed)</li>
+</ol>
+<h4 id="Sanity-Checks"><a href="#Sanity-Checks" class="headerlink" title="Sanity Checks"></a>Sanity Checks</h4><ul>
+<li>Loss函数的初始化输出值是否合理；<ul>
+<li>增加正则化参数，loss是否增加</li>
+</ul>
+</li>
+<li>使用小数据集测试是否能够达到数据过拟合（<strong>零Loss值</strong>）<ul>
+<li>注意关闭正则化</li>
+</ul>
+</li>
+</ul>
+<h4 id="训练过程监测"><a href="#训练过程监测" class="headerlink" title="训练过程监测"></a>训练过程监测</h4><ol>
+<li>代价函数</li>
+</ol>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/learningrates.jpeg" alt="learningrates"></p>
+<ol>
+<li>训练/验证集准确率</li>
+</ol>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/accuracies.jpeg" alt="accuracies"></p>
+<ol>
+<li>更新参数比例</li>
+</ol>
+<blockquote>
+<p>A rough heuristic is that this ratio should be somewhere around 1e-3. If it is lower than this then the learning rate might be too low. If it is higher then the learning rate is likely too high.</p>
+</blockquote>
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># assume parameter vector W and its gradient vector dW</span></span><br><span class="line">param_scale = np.linalg.norm(W.ravel())</span><br><span class="line">update = -learning_rate*dW <span class="comment"># simple SGD update</span></span><br><span class="line">update_scale = np.linalg.norm(update.ravel())</span><br><span class="line">W += update <span class="comment"># the actual update</span></span><br><span class="line"><span class="keyword">print</span> update_scale / param_scale <span class="comment"># want ~1e-3</span></span><br></pre></td></tr></table></figure>
+<h4 id="超参优化"><a href="#超参优化" class="headerlink" title="超参优化"></a>超参优化</h4><ul>
+<li><code>learning_rate = 10 ** uniform(-6, 1)</code></li>
+<li>random serach &gt; grid search<img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/gridsearchbad.jpeg" alt="gridsearchbad"></li>
+</ul>
+<h4 id="模型组合"><a href="#模型组合" class="headerlink" title="模型组合"></a>模型组合</h4><ul>
+<li><strong>Same model, different initializations</strong>. Use cross-validation to determine the best hyperparameters, then train multiple models with the best set of hyperparameters but with different random initialization. The danger with this approach is that the variety is only due to initialization.</li>
+<li><strong>Top models discovered during cross-validation</strong>. Use cross-validation to determine the best hyperparameters, then pick the top few (e.g. 10) models to form the ensemble. This improves the variety of the ensemble but has the danger of including suboptimal models. In practice, this can be easier to perform since it doesn’t require additional retraining of models after cross-validation</li>
+<li><strong>Different checkpoints of a single model</strong>. If training is very expensive, some people have had limited success in taking different checkpoints of a single network over time (for example after every epoch) and using those to form an ensemble. Clearly, this suffers from some lack of variety, but can still work reasonably well in practice. The advantage of this approach is that is very cheap.</li>
+<li><strong>Running average of parameters during training</strong>. Related to the last point, a cheap way of almost always getting an extra percent or two of performance is to maintain a second copy of the network’s weights in memory that maintains an exponentially decaying sum of previous weights during training. This way you’re averaging the state of the network over last several iterations. You will find that this “smoothed” version of the weights over last few steps almost always achieves better validation error. The rough intuition to have in mind is that the objective is bowl-shaped and your network is jumping around the mode, so the average has a higher chance of being somewhere nearer the mode.</li>
+</ul>
+<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><ol>
+<li><strong>Cache forward pass variables</strong>. To compute the backward pass it is very helpful to have some of the variables that were used in the forward pass. In practice you want to structure your code so that you cache these variables, and so that they are available during backpropagation. If this is too difficult, it is possible (but wasteful) to recompute them.</li>
+<li><strong>Gradients add up at forks</strong>. The forward expression involves the variables <strong>x,y</strong> multiple times, so when we perform backpropagation we must be careful to use <code>+=</code> instead of <code>=</code> to accumulate the gradient on these variables (otherwise we would overwrite it). This follows the <em>multivariable chain rule</em> in Calculus, which states that if a variable branches out to different parts of the circuit, then the gradients that flow back to it will add.</li>
+</ol>
+<h3 id="实现-lt-代码-gt"><a href="#实现-lt-代码-gt" class="headerlink" title="实现 &lt;代码&gt;"></a>实现 &lt;代码&gt;</h3><blockquote>
+<p>配合Assignment 1： Implement a Neural Network整理一个从头训练2层全联通网络的例子。</p>
+</blockquote>
+<ol>
+<li>网络结构（只有一个隐层的全联同神经网络）,其中输入训练样本为X (N x D), 第一个隐层由H个节点组成，输出层由C个节点组成：</li>
+</ol>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">input  - fully connected layer - ReLU - fully connected layer - softmax</span><br><span class="line">（<span class="keyword">N</span>,<span class="keyword">D</span>）           H                             <span class="keyword">C</span></span><br></pre></td></tr></table></figure>
+<p>各参数的大小如下：</p>
+<ul>
+<li>input: X (N x D)</li>
+<li>W1 (H x D) ; b1 (H,)</li>
+<li>W2 (C x H);  b2 (C,)</li>
+</ul>
+<ol>
+<li><p>参数初始化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">H = <span class="number">100</span></span><br><span class="line">C = <span class="number">10</span></span><br><span class="line">N,D = X.shape</span><br><span class="line"></span><br><span class="line">W1 = std * np.random.randn(input_size, hidden_size)</span><br><span class="line">b1 = np.zeros(hidden_size)</span><br><span class="line">W2 = std * np.random.randn(hidden_size, output_size)</span><br><span class="line">b2 = np.zeros(output_size)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>前向传播，计算得分函数和代价函数</p>
+<script type="math/tex; mode=display">
+hiddenLayer = ReLU(X*W1 + b1) \\
+ReLU(x) = \max(0, x)</script><script type="math/tex; mode=display">
+scores = hidden\_layer * W2 + b2</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hidden_layer = np.maximum(<span class="number">0</span>, np.dot(X, W1) + b1)   <span class="comment"># N x H</span></span><br><span class="line">socres = np.dot(hidden_layer, W2) + b2     <span class="comment"># N x C</span></span><br></pre></td></tr></table></figure>
+<p>代价函数使用交叉熵损失函数：</p>
+<script type="math/tex; mode=display">
+L_i = -\log\left(\frac{e^{f_{y_i}}}{ \sum_j e^{f_j} }\right) \hspace{0.5in} \text{or equivalently} \hspace{0.5in} L_i = -f_{y_i} + \log\sum_j e^{f_j}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">exp_scores = np.exp(scores)</span><br><span class="line">probs = exp_scores / np.sum(exp_scores, axis=<span class="number">1</span>, keepdims=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">correct_logprobs = -np.log(probs[range(N), y])</span><br><span class="line">loss = np.sum(correct_logprobs) / N</span><br><span class="line">loss += <span class="number">0.5</span>*reg*(np.sum(W1*W1) + np.sum(W2*W2))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>反向传播，计算梯度</p>
+<p>梯度的计算利用反向传播，从后往前逐步推导：</p>
+<p>首先计算<code>dscores</code></p>
+<script type="math/tex; mode=display">
+\begin{equation}  
+\frac{\partial L}{\partial scores} =
+\left\{  
+\begin{array}{lr}  
+-1 + \frac{e^{\hat f_{y_i}}}{\sum_j e^{f_j}}, &  j=i\\  
+\frac{e^{\hat f_{y_i}}}{\sum_j e^{f_j}}, &   j \neq i 
+\end{array}  
+\right.  
+\end{equation}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dscores = probs</span><br><span class="line">dscores[range(N), y] -=<span class="number">1</span></span><br><span class="line">dscores /= N</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+dW2 = H^T*dscores + 2\lambda*W2 \\
+db2 = dscores</script>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dW2 = np.dot(h1.T, dscores) + <span class="number">2</span>*reg * W2</span><br><span class="line">db2 = np.sum(dscores, axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>   接着计算隐层的偏导,其中激活函数由于使用ReLU，在$x&lt;0$时，导数为0</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dh1 = np.dot(dscores, W2.T)</span><br><span class="line">dh1[h1 &lt;= <span class="number">0</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">dW1 = np.dot(X.T, dh1) + <span class="number">2</span>*reg * W1</span><br><span class="line">db1 = np.sum(dh1, axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><ul>
+<li>学习率的设计一般在<code>[1e-3, 1e-5]</code>,<code>10**uniform(-3,-6)</code></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_1">
+<sup>1</sup>. <a href="http://cs231n.github.io/neural-networks-1/" target="_blank" rel="noopener">cs231n notes: Neural Network</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. <a href="http://cs231n.github.io/neural-networks-2/" target="_blank" rel="noopener">cs231n notes: Setting up the Data and Loss</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a href="http://cs231n.github.io/neural-networks-3/" target="_blank" rel="noopener">cs231n notes: Learning and Evaluation</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/03/cs231n-lecture-4/" target="_blank" title="cs231n课程笔记：（Lecture 4）神经网络基础">http://blog.a-stack.com/2018/05/03/cs231n-lecture-4/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/03/cs231n-lecture-5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cs231n课程笔记:（Lecture 5）CNN基础
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/03/cs231n-lecture-3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cs231n课程笔记:（Lecture 3）线性分类器和优化方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络"><span class="nav-number">2.</span> <span class="nav-text">神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据预处理"><span class="nav-number">2.1.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数初始化"><span class="nav-number">2.2.</span> <span class="nav-text">参数初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化"><span class="nav-number">2.3.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数（data-loss）"><span class="nav-number">2.4.</span> <span class="nav-text">代价函数（data loss）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练3"><span class="nav-number">2.5.</span> <span class="nav-text">训练3</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度校验"><span class="nav-number">2.5.1.</span> <span class="nav-text">梯度校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sanity-Checks"><span class="nav-number">2.5.2.</span> <span class="nav-text">Sanity Checks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练过程监测"><span class="nav-number">2.5.3.</span> <span class="nav-text">训练过程监测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超参优化"><span class="nav-number">2.5.4.</span> <span class="nav-text">超参优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型组合"><span class="nav-number">2.5.5.</span> <span class="nav-text">模型组合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播"><span class="nav-number">2.6.</span> <span class="nav-text">反向传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现-lt-代码-gt"><span class="nav-number">2.7.</span> <span class="nav-text">实现 &lt;代码&gt;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它"><span class="nav-number">3.</span> <span class="nav-text">其它</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

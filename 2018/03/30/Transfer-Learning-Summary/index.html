@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>transfer learning summary | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法" />
+  
+  
+  
+  
+  <meta name="description" content="本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …  @toc Feature Extraction在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。  VGG16倒数第二层(参数层)的输出维">
+<meta name="keywords" content="AI,人工智能,迁移学习,特征抽取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transfer Learning Summary">
+<meta property="og:url" content="http://blog.a-stack.com/2018/03/30/Transfer-Learning-Summary/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …  @toc Feature Extraction在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。  VGG16倒数第二层(参数层)的输出维">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.636Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Transfer Learning Summary">
+<meta name="twitter:description" content="本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …  @toc Feature Extraction在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。  VGG16倒数第二层(参数层)的输出维">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Transfer-Learning-Summary" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Transfer Learning Summary
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/30/Transfer-Learning-Summary/" class="article-date">
+	  <time datetime="2018-03-30T15:36:52.000Z" itemprop="datePublished">2018-03-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/算法/">算法</a><a class="article-category-link" href="/categories/算法/迁移学习/">迁移学习</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …</p>
+<!-- excerpt-->
+<p>@toc</p>
+<h2 id="Feature-Extraction"><a href="#Feature-Extraction" class="headerlink" title="Feature Extraction"></a>Feature Extraction</h2><p>在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。</p>
+<blockquote>
+<p>VGG16倒数第二层(参数层)的输出维度为: <strong>7x7x512 = 25,088</strong></p>
+</blockquote>
+<h3 id="HDF5"><a href="#HDF5" class="headerlink" title="HDF5"></a>HDF5</h3><p>抽取特征的高效存储可以选用<code>HDF5</code>。Hierarchical Data Format(HDF)是一种针对大量数据进行组织和存储的文件格式。经历了20多年的发展，HDF格式的最新版本是HDF5，它包含了数据模型，库，和文件格式标准。以其便捷有效，移植性强，灵活可扩展的特点受到了广泛的关注和应用。很多大型机构的数据存储格式都采用了HDF5，比如NASA的地球观测系统，MATLAB的.m文件，流体细算软件CDF，都将HDF5作为标准数据格式。HDF5本身用C实现，可以使用python的库<code>h5py</code>对HDF5文件进行操作。可以像操作Numpy数组一样对大型数据进行操作，比如切片，按行读取</p>
+<p>数据在HDF5中采取分层存储方式，很像文件系统管理方式，第一级叫做组，类似于container，每个组中可以创建新的组或数据集，每一个dataset包含两部分的数据，Metadata和Data。其中Metadata包含Data相关的信息，而Data则包含数据本身。 </p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg" alt="HDF5文件存储方式"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> h5py</span><br><span class="line">p = <span class="string">"./datasets/hdf5/features.hdf5"</span></span><br><span class="line"></span><br><span class="line">db = h5py.File(p)</span><br><span class="line">list(db.keys())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[u’features’, u’label_names’, u’labels’]</span><br><span class="line">db[<span class="string">"features"</span>].shape</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">3000</span>, <span class="number">25088</span>)</span><br><span class="line">list(db[<span class="string">"label_name"</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="string">'cat'</span>, <span class="string">'dogs'</span>, <span class="string">'panda'</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="Fine-Tune"><a href="#Fine-Tune" class="headerlink" title="Fine-Tune"></a>Fine-Tune</h2><ul>
+<li><p>一般而言，fine-tune在样本数据足够的情况下训练效果优于特征抽取；</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png" alt="fine_tune"></p>
+</li>
+</ul>
+<blockquote>
+<p>学习率要控制的尽量小</p>
+</blockquote>
+<h3 id="如何取层（Keras）"><a href="#如何取层（Keras）" class="headerlink" title="如何取层（Keras）"></a>如何取层（Keras）</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.applications <span class="keyword">import</span> VGG16</span><br><span class="line">model = VGG16(weights=<span class="string">"imagenet"</span>, include_top=<span class="keyword">False</span>)</span><br><span class="line">model.layers</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">[&lt;keras.engine.topology.InputLayer at <span class="number">0x7ff06cc3b518</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cc3b7f0</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cc3b7b8</span>&gt;,</span><br><span class="line"> &lt;keras.layers.pooling.MaxPooling2D at <span class="number">0x7ff06cc3bd30</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cdb3b00</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cdb3748</span>&gt;,</span><br><span class="line"> &lt;keras.layers.pooling.MaxPooling2D at <span class="number">0x7ff06cbbb400</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cbcc630</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cb5dd68</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cb6d208</span>&gt;,</span><br><span class="line"> &lt;keras.layers.pooling.MaxPooling2D at <span class="number">0x7ff06cb7fdd8</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cb30fd0</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cb30e80</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cb52978</span>&gt;,</span><br><span class="line"> &lt;keras.layers.pooling.MaxPooling2D at <span class="number">0x7ff06caf6470</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06cb076a0</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06ca98dd8</span>&gt;,</span><br><span class="line"> &lt;keras.layers.convolutional.Conv2D at <span class="number">0x7ff06caaa278</span>&gt;,</span><br><span class="line"> &lt;keras.layers.pooling.MaxPooling2D at <span class="number">0x7ff06cab8e48</span>&gt;]</span><br><span class="line"></span><br><span class="line">model.output</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&lt;tf.Tensor 'block5_pool/MaxPool:0' shape=(?, ?, ?, 512) dtype=float32&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="如何添加层（Keras）"><a href="#如何添加层（Keras）" class="headerlink" title="如何添加层（Keras）"></a>如何添加层（Keras）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># load the VGG16 network, ensuring the head FC layer sets are left # off</span></span><br><span class="line">baseModel = VGG16(weights=<span class="string">"imagenet"</span>, include_top=<span class="keyword">False</span>, input_tensor=Input(shape=(<span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>)))</span><br><span class="line"><span class="comment"># add new layers</span></span><br><span class="line">headModel = baseModel.output</span><br><span class="line">headModel = Flatten(name=<span class="string">"flatten"</span>)(headModel)</span><br><span class="line">headModel = Dense(D_num, activation=<span class="string">"relu"</span>)(headModel)</span><br><span class="line">headModel = Dropout(<span class="number">0.5</span>)(headModel)</span><br><span class="line">headModel = Dense(classes_num, activation=<span class="string">"softmax"</span>)(headModel)</span><br><span class="line"></span><br><span class="line">model = Model(inputs=baseModel.input, outputs=headModel)</span><br><span class="line"><span class="comment">#freeze baseModel layers</span></span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> baseModel.layers:</span><br><span class="line">    layer.trainable = <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>Typically you’ll allow your own FC head to warmup for <strong>10-30 epochs</strong>, depending on your dataset.使用RMSprop作为优化算法；​</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">opt = RMSprop(lr=<span class="number">0.001</span>)</span><br><span class="line">model.compile(loss=<span class="string">"categorical_crossentropy"</span>, optimizer=opt, metrics=[<span class="string">"accuracy"</span>])</span><br><span class="line"><span class="comment"># train the head of the network for a few epochs (all other # layers are frozen) -- this will allow the new FC layers to</span></span><br><span class="line"><span class="comment"># start to become initialized with actual "learned" values # versus pure random</span></span><br><span class="line">print(<span class="string">"[INFO] training head..."</span>)</span><br><span class="line">model.fit_generator(aug.flow(trainX, trainY, batch_size=<span class="number">32</span>), validation_data=(testX, testY), epochs=<span class="number">25</span>, steps_per_epoch=len(trainX) // <span class="number">32</span>, verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>然后可以适当往前解冻一些层，重新训练，一般会解冻最后一层CONV，使用SGD（lr=0.001）作为优化算法；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># now that the head FC layers have been trained/initialized, lets # unfreeze the final set of CONV layers and make them trainable </span></span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> baseModel.layers[<span class="number">15</span>:]: </span><br><span class="line">    layer.trainable = <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for the changes to the model to take affect we need to recompile # the model, this time using SGD with a *very* small learning rate </span></span><br><span class="line">print(<span class="string">"[INFO] re-compiling model..."</span>) </span><br><span class="line">opt = SGD(lr=<span class="number">0.001</span>)</span><br><span class="line">model.compile(loss=<span class="string">"categorical_crossentropy"</span>, optimizer=opt, metrics=[<span class="string">"accuracy"</span>])</span><br><span class="line"><span class="comment"># train the model again, this time fine-tuning *both* the final set # of CONV layers along with our set of FC layers </span></span><br><span class="line">print(<span class="string">"[INFO] fine-tuning model..."</span>)</span><br><span class="line">model.fit_generator(aug.flow(trainX, trainY, batch_size=<span class="number">32</span>), validation_data=(testX, testY), epochs=<span class="number">100</span>, steps_per_epoch=len(trainX) // <span class="number">32</span>, verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="迁移学习的选择"><a href="#迁移学习的选择" class="headerlink" title="迁移学习的选择"></a>迁移学习的选择</h2><p>主要由样本数据量以及训练目标于原目标之间的相似程度决定。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>数据规模</strong></th>
+<th><strong>相似数据分布</strong></th>
+<th><strong>不同数据分布</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>小样本数据集</td>
+<td>特征提取：FC+分类器</td>
+<td>特征提取：低层次的Conv+分类器</td>
+</tr>
+<tr>
+<td>大样本数据集</td>
+<td>Fine-Tune</td>
+<td>从头训练新的网络模型</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/30/Transfer-Learning-Summary/" target="_blank" title="Transfer Learning Summary">http://blog.a-stack.com/2018/03/30/Transfer-Learning-Summary/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/01/深度学习基础之优化算法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深度学习基础之优化算法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/09/神经网络之感知机/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">神经网络之感知机（Perceptron）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-Extraction"><span class="nav-number">1.</span> <span class="nav-text">Feature Extraction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HDF5"><span class="nav-number">1.1.</span> <span class="nav-text">HDF5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fine-Tune"><span class="nav-number">2.</span> <span class="nav-text">Fine-Tune</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何取层（Keras）"><span class="nav-number">2.1.</span> <span class="nav-text">如何取层（Keras）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何添加层（Keras）"><span class="nav-number">2.2.</span> <span class="nav-text">如何添加层（Keras）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迁移学习的选择"><span class="nav-number">3.</span> <span class="nav-text">迁移学习的选择</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

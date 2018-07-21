@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>利用迁移学习实现车辆识别 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要： 利用迁移学习技术训练识别汽车厂商和款式的模型。 @[toc] 概述数据集： Stanford Cars Dataset 数据集组成：包含196种车辆的16,185张照片；其中训练集8144，测试集8041； 关键特征包括：车辆制造商、款式、生产日期（比如：2012 Tesla Model S）； 下载地址：https://ai.stanford.edu/~jkrause/cars/car_">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用迁移学习实现车辆识别">
+<meta property="og:url" content="http://blog.a-stack.com/2018/04/11/Vechicle-identification-by-stanford-car-dataset/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 利用迁移学习技术训练识别汽车厂商和款式的模型。 @[toc] 概述数据集： Stanford Cars Dataset 数据集组成：包含196种车辆的16,185张照片；其中训练集8144，测试集8041； 关键特征包括：车辆制造商、款式、生产日期（比如：2012 Tesla Model S）； 下载地址：https://ai.stanford.edu/~jkrause/cars/car_">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-11-vechicle-identification-by-stanford-car-dataset/car.jpg">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.589Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用迁移学习实现车辆识别">
+<meta name="twitter:description" content="摘要： 利用迁移学习技术训练识别汽车厂商和款式的模型。 @[toc] 概述数据集： Stanford Cars Dataset 数据集组成：包含196种车辆的16,185张照片；其中训练集8144，测试集8041； 关键特征包括：车辆制造商、款式、生产日期（比如：2012 Tesla Model S）； 下载地址：https://ai.stanford.edu/~jkrause/cars/car_">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-11-vechicle-identification-by-stanford-car-dataset/car.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Vechicle-identification-by-stanford-car-dataset" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      利用迁移学习实现车辆识别
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/11/Vechicle-identification-by-stanford-car-dataset/" class="article-date">
+	  <time datetime="2018-04-11T06:44:58.000Z" itemprop="datePublished">2018-04-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> 利用迁移学习技术训练识别汽车厂商和款式的模型。<br><!-- excerpt --></p>
+<p>@[toc]</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据集：-Stanford-Cars-Dataset"><a href="#数据集：-Stanford-Cars-Dataset" class="headerlink" title="数据集： Stanford Cars Dataset"></a>数据集： Stanford Cars Dataset</h3><ul>
+<li>数据集组成：包含<strong>196</strong>种车辆的<strong>16,185</strong>张照片；其中训练集8144，测试集8041；</li>
+<li>关键特征包括：车辆制造商、款式、生产日期（比如：2012 Tesla Model S）；</li>
+<li>下载地址：<a href="https://ai.stanford.edu/~jkrause/cars/car_dataset.html；" target="_blank" rel="noopener">https://ai.stanford.edu/~jkrause/cars/car_dataset.html；</a></li>
+<li>相关论文：<a href="https://ai.stanford.edu/~jkrause/papers/3drr13.pdf" target="_blank" rel="noopener"><strong>3D Object Representations for Fine-Grained Categorization</strong></a>，Jonathan Krause, Michael Stark, Jia Deng, Li Fei-Fei</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-11-vechicle-identification-by-stanford-car-dataset/car.jpg" alt="car"></p>
+<blockquote>
+<p><strong>数据集特点：</strong></p>
+<ol>
+<li>存在明显的数据不平衡问题；</li>
+<li>每个分类图像数目过少，无法达到准确预测分类目标的基准；</li>
+</ol>
+</blockquote>
+<p>针对数据集的特点，利用迁移学习Fine-Tune来训练一个在ImageNet上预训练的模型是一个不错的方式，下面我们将从数据的准备开始一步步得完成模型的训练任务。</p>
+<h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><p>在这一部分中，我们将读入原始数据，进行基本的数据处理，然后对数据进行统一存储，一般面对大规模的数据集可以选用<code>HDF5</code>或MXNet的.<code>LST</code>格式进行存储。</p>
+<blockquote>
+<p>通过这种方式进行存储可以解决每张图片读取都要产生一次IO带来的访问时延，同时可以利用存储系统连续读的方式，直接对大规模数据集进行切片操作。</p>
+</blockquote>
+<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>为了配合后续处理流程方便，新建一个<code>car.config</code>的配置文件，用于对相关配置信息的存储：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="comment"># define the base path to the cars dataset</span></span><br><span class="line">BASE_PATH = <span class="string">"Path-to-car-dataset"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># based on the base path, derive the images path and meta file path</span></span><br><span class="line">IMAGES_PATH = path.sep.join([BASE_PATH, <span class="string">"car_ims"</span>])</span><br><span class="line">LABELS_PATH = path.sep.join([BASE_PATH, <span class="string">"complete_dataset.csv"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#define path for HDF5</span></span><br><span class="line">TRAIN_HDF5 = path.sep.join([MX_OUTPUT, <span class="string">"hdf5/train.hdf5"</span>])</span><br><span class="line">VAL_HDF5 = path.sep.join([MX_OUTPUT, <span class="string">"hdf5/val.hdf5"</span>])</span><br><span class="line">TEST_HDF5 = path.sep.join([MX_OUTPUT, <span class="string">"hdf5/test.hdf5"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#define path for storing Mean R G B data</span></span><br><span class="line">DATASET_MEAN = path.sep.join([BASE_PATH, <span class="string">"output/car_mean.json"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># define the path to the output directory used for storing plots,</span></span><br><span class="line"><span class="comment"># classification reports, etc.</span></span><br><span class="line">OUTPUT_PATH = <span class="string">"output"</span></span><br><span class="line">MODEL_PATH = path.sep.join([OUTPUT_PATH,<span class="string">"inceptionv3_stanfordcar.hdf5"</span>])</span><br><span class="line">FIG_PATH = path.sep.join([OUTPUT_PATH,<span class="string">"inceptionv3_stanfordcar.png"</span>])</span><br><span class="line">JSON_PATH = path.sep.join([OUTPUT_PATH,<span class="string">"inceptionv3_stanfordcar.json"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># define the path to the label encoder</span></span><br><span class="line">LABEL_ENCODER_PATH = path.sep.join([BASE_PATH, <span class="string">"output/le.cpickle"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># define the percentage of validation and testing images relative</span></span><br><span class="line"><span class="comment"># to the number of training images</span></span><br><span class="line">NUM_CLASSES = <span class="number">164</span></span><br><span class="line">NUM_VAL_IMAGES = <span class="number">0.15</span></span><br><span class="line">NUM_TEST_IMAGES = <span class="number">0.15</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define the batch size</span></span><br><span class="line">BATCH_SIZE = <span class="number">64</span></span><br></pre></td></tr></table></figure>
+<p>配置文件中包括<code>HDF5</code>文件的存放位置描述，原始数据和数据描述文件路径，RGB均值存储位置，训练过程中输出的图像和日志存储位置等信息。</p>
+<h3 id="数据概览"><a href="#数据概览" class="headerlink" title="数据概览"></a>数据概览</h3><ol>
+<li>我们先将数据描述文件<code>complete_dataset.csv</code>导入，了解下数据格式：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment"># loading image paths and labels</span></span><br><span class="line">df = pd.read_csv(config.LABELS_PATH)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">id</th>
+<th>Image FileName</th>
+<th>Make</th>
+<th>Model</th>
+<th>Vechicle Typle</th>
+<th>Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td>car_ims/000090.jpg</td>
+<td>Acura</td>
+<td>RL</td>
+<td>Sedan</td>
+<td>2012</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td>car_ims/000091.jpg</td>
+<td>Acura</td>
+<td>RL</td>
+<td>Sedan</td>
+<td>2012</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td>car_ims/000092.jpg</td>
+<td>Acura</td>
+<td>RL</td>
+<td>Sedan</td>
+<td>2012</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td>car_ims/000093.jpg</td>
+<td>Acura</td>
+<td>RL</td>
+<td>Sedan</td>
+<td>2012</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li><p>遍历文件列表，将文件地址和样本标签分别进行存储，在本实验中值使用了制造商和款式两种特征，所以构成分类总共有164个：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder</span><br><span class="line">trainPaths = []</span><br><span class="line">trainLabels = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> id,name <span class="keyword">in</span> enumerate(df[<span class="string">"Image Filename"</span>]):</span><br><span class="line">    trainPaths.append(os.sep.join([config.IMAGES_PATH,name]))</span><br><span class="line">    trainLabels.append(<span class="string">"&#123;&#125;:&#123;&#125;"</span>.format(df.iloc[id][<span class="string">"Make"</span>], df.iloc[id][<span class="string">"Model"</span>]))</span><br><span class="line"><span class="comment">#Encoding labels to num</span></span><br><span class="line">le = LabelEncoder()</span><br><span class="line">trainLabels = le.fit_transform(trainLabels)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按照70%，15%，15%切分训练集、验证集和测试集：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">numVal = int(len(trainPaths)*<span class="number">0.15</span>)</span><br><span class="line">numTest = int(len(trainPaths)*<span class="number">0.15</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># perform sampling from the training set to construct a a validation set</span></span><br><span class="line">split = train_test_split(trainPaths, trainLabels, test_size=numVal,</span><br><span class="line">    stratify=trainLabels)</span><br><span class="line">(trainPaths, valPaths, trainLabels, valLabels) = split</span><br><span class="line"></span><br><span class="line"><span class="comment"># perform stratified sampling from the training set to construct a testing set</span></span><br><span class="line">split = train_test_split(trainPaths, trainLabels, test_size=numTest,</span><br><span class="line">    stratify=trainLabels)</span><br><span class="line">(trainPaths, testPaths, trainLabels, testLabels) = split</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化相关配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># initialize the lists of RGB channel averages</span></span><br><span class="line">(R, G, B) = ([], [], [])</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct a list pairing the training, validation, and testing</span></span><br><span class="line"><span class="comment"># image paths along with their corresponding labels and output list</span></span><br><span class="line"><span class="comment"># files</span></span><br><span class="line">datasets = [</span><br><span class="line">	(<span class="string">"train"</span>, trainPaths, trainLabels, config.TRAIN_HDF5),</span><br><span class="line">	(<span class="string">"val"</span>, valPaths, valLabels, config.VAL_HDF5),</span><br><span class="line">	(<span class="string">"test"</span>, testPaths, testLabels, config.TEST_HDF5)]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遍历数据集并存储至HDF5文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> HDF5DatasetWriter</span><br><span class="line"><span class="keyword">import</span> AspectAwarePreprocessor</span><br><span class="line"><span class="keyword">import</span> progressbar</span><br><span class="line"></span><br><span class="line"><span class="comment">#resize images to (256,256,3)</span></span><br><span class="line">aap = AspectAwarePreprocessor(<span class="number">256</span>,<span class="number">256</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># loop over the dataset tuples</span></span><br><span class="line"><span class="keyword">for</span> (dType, paths, labels, outputPath) <span class="keyword">in</span> datasets:</span><br><span class="line">    <span class="comment"># create HDF5 writer</span></span><br><span class="line">    print(<span class="string">"[INFO] building &#123;&#125;..."</span>.format(outputPath))</span><br><span class="line">    writer = HDF5DatasetWriter((len(paths), <span class="number">256</span>, <span class="number">256</span>, <span class="number">3</span>), outputPath)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># initialize the progress bar</span></span><br><span class="line">    widgets = [<span class="string">"Building Dataset: "</span>, progressbar.Percentage(), <span class="string">" "</span>,</span><br><span class="line">        progressbar.Bar(), <span class="string">" "</span>, progressbar.ETA()]</span><br><span class="line">    pbar = progressbar.ProgressBar(maxval=len(paths),</span><br><span class="line">        widgets=widgets).start()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># loop over the image paths</span></span><br><span class="line">    <span class="keyword">for</span> (i, (path, label)) <span class="keyword">in</span> enumerate(zip(paths, labels)):</span><br><span class="line">        <span class="comment"># load the image from disk</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            image = cv2.imread(path)</span><br><span class="line">            image = aap.preprocess(image)</span><br><span class="line">            <span class="comment">#print(image.shape)</span></span><br><span class="line">            <span class="comment"># if we are building the training dataset, then compute the</span></span><br><span class="line">            <span class="comment"># mean of each channel in the image, then update the respective lists</span></span><br><span class="line">            <span class="keyword">if</span> dType == <span class="string">"train"</span>:</span><br><span class="line">                (b, g, r) = cv2.mean(image)[:<span class="number">3</span>]</span><br><span class="line">                R.append(r)</span><br><span class="line">                G.append(g)</span><br><span class="line">                B.append(b)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># add the image and label to the HDF5 dataset</span></span><br><span class="line">            writer.add([image], [label])</span><br><span class="line">            pbar.update(i)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(path)</span><br><span class="line">            print(label)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># close the HDF5 writer</span></span><br><span class="line">    pbar.finish()</span><br><span class="line">    writer.close()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们首先统一将文件调整到(256,256,3)大小，再进行存储，所以在读取文件之后进行了简单的预处理。</p>
+</blockquote>
+</li>
+<li><p>将RGB均值存储至单独文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="comment"># construct a dictionary of averages, then serialize the means to a JSON file</span></span><br><span class="line">print(<span class="string">"[INFO] serializing means..."</span>)</span><br><span class="line">D = &#123;<span class="string">"R"</span>: np.mean(R), <span class="string">"G"</span>: np.mean(G), <span class="string">"B"</span>: np.mean(B)&#125;</span><br><span class="line">f = open(config.DATASET_MEAN, <span class="string">"w"</span>)</span><br><span class="line">f.write(json.dumps(D))</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>至此，我们完成了将图像文件分为三个类别并分别存到了三个HDF5文件之中。</p>
+<p>关于HDF5文件存储相关内容，详见后续推出的预处理博客~~</p>
+<p>如果使用<code>MXNET</code>的list和rec来构建数据存储集合，在上述步骤3的基础上，按如下步骤：</p>
+<ol>
+<li><p>构建数据集列表文件’.list’文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># construct a list pairing the training, validation, and testing</span></span><br><span class="line"><span class="comment"># image paths along with their corresponding labels and output list</span></span><br><span class="line"><span class="comment"># files</span></span><br><span class="line">datasets = [</span><br><span class="line">	(<span class="string">"train"</span>, trainPaths, trainLabels, config.TRAIN_MX_LIST),</span><br><span class="line">	(<span class="string">"val"</span>, valPaths, valLabels, config.VAL_MX_LIST),</span><br><span class="line">	(<span class="string">"test"</span>, testPaths, testLabels, config.TEST_MX_LIST)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># loop over the dataset tuples</span></span><br><span class="line"><span class="keyword">for</span> (dType, paths, labels, outputPath) <span class="keyword">in</span> datasets:</span><br><span class="line">	<span class="comment"># open the output file for writing</span></span><br><span class="line">	print(<span class="string">"[INFO] building &#123;&#125;..."</span>.format(outputPath))</span><br><span class="line">    </span><br><span class="line">	f = open(outputPath, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># loop over each of the individual images + labels</span></span><br><span class="line">	<span class="keyword">for</span> (i, (path, label)) <span class="keyword">in</span> enumerate(zip(paths, labels)):</span><br><span class="line">		<span class="comment"># write the image index, label, and output path to file</span></span><br><span class="line">		row = <span class="string">"\t"</span>.join([str(i), str(label), path])</span><br><span class="line">		f.write(<span class="string">"&#123;&#125;\n"</span>.format(row))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># close the output file</span></span><br><span class="line">	f.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将Label名称序列化存储，便于后续调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(config.LABEL_ENCODER_PATH, <span class="string">"wb"</span>)</span><br><span class="line">f.write(pickle.dumps(le))</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>3.利用MXNet工具<code>im2rec</code>创建记录文件</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ /dsvm/tools/mxnet/bin/im2rec ./raid/datasets/cars/lists/train.lst <span class="string">""</span> ./raid/datasets/cars/rec/train.rec resize=256 encoding=<span class="string">'.jpg'</span> quality=100</span><br><span class="line"></span><br><span class="line">$ /dsvm/tools/mxnet/bin/im2rec ./raid/datasets/cars/lists/test.lst <span class="string">""</span> ./raid/datasets/cars/rec/test.rec resize=256 encoding=<span class="string">'.jpg'</span> quality=100</span><br><span class="line"></span><br><span class="line">$ /dsvm/tools/mxnet/bin/im2rec ./raid/datasets/cars/lists/val.lst <span class="string">""</span> ./raid/datasets/cars/rec/val.rec resize=256 encoding=<span class="string">'.jpg'</span> quality=100</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="训练迁移学习网络"><a href="#训练迁移学习网络" class="headerlink" title="训练迁移学习网络"></a>训练迁移学习网络</h2><p>在迁移学习的模型选择上我们选择了基于Keras提供的InceptionV3,可通过<a href="https://keras-cn.readthedocs.io/en/latest/other/application/" target="_blank" rel="noopener">Keras官方文档</a>了解更多使用说明。下表列出了在keras中各模型的表现：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>大小</th>
+<th>Top1准确率</th>
+<th>Top5准确率</th>
+<th>参数数目</th>
+<th>深度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Xception</td>
+<td>88MB</td>
+<td>0.790</td>
+<td>0.945</td>
+<td>22,910,480</td>
+<td>126</td>
+</tr>
+<tr>
+<td>VGG16</td>
+<td>528MB</td>
+<td>0.715</td>
+<td>0.901</td>
+<td>138,357,544</td>
+<td>23</td>
+</tr>
+<tr>
+<td>VGG19</td>
+<td>549MB</td>
+<td>0.727</td>
+<td>0.910</td>
+<td>143,667,240</td>
+<td>26</td>
+</tr>
+<tr>
+<td>ResNet50</td>
+<td>99MB</td>
+<td>0.759</td>
+<td>0.929</td>
+<td>25,636,712</td>
+<td>168</td>
+</tr>
+<tr>
+<td><strong>InceptionV3</strong></td>
+<td><strong>92MB</strong></td>
+<td><strong>0.788</strong></td>
+<td><strong>0.944</strong></td>
+<td><strong>23,851,784</strong></td>
+<td><strong>159</strong></td>
+</tr>
+<tr>
+<td>IncetionResNetV2</td>
+<td>215MB</td>
+<td>0.804</td>
+<td>0.953</td>
+<td>55,873,736</td>
+<td>572</td>
+</tr>
+<tr>
+<td>MobileNet</td>
+<td>17MB</td>
+<td>0.665</td>
+<td>0.871</td>
+<td>4,253,864</td>
+<td>88</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="数据读入"><a href="#数据读入" class="headerlink" title="数据读入"></a>数据读入</h3><p>输入读入过程主要包括几个关键任务：读取RGB均值文件，对原始数据进行预处理：图像扣取、数据增强、去通道均值、矩阵化等。</p>
+<p>这块内容不是本篇重点，只能挖坑留给后续更新。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># construct the training image generator for data augmentation</span></span><br><span class="line">aug = ImageDataGenerator(rotation_range=<span class="number">20</span>, zoom_range=<span class="number">0.15</span>,</span><br><span class="line">	width_shift_range=<span class="number">0.2</span>, height_shift_range=<span class="number">0.2</span>, shear_range=<span class="number">0.15</span>,</span><br><span class="line">	horizontal_flip=<span class="keyword">True</span>, fill_mode=<span class="string">"nearest"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># load the RGB means for the training set</span></span><br><span class="line">means = json.loads(open(config.DATASET_MEAN).read())</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the image preprocessors</span></span><br><span class="line">sp = SimplePreprocessor(<span class="number">224</span>, <span class="number">224</span>)</span><br><span class="line">pp = PatchPreprocessor(<span class="number">224</span>, <span class="number">224</span>)</span><br><span class="line">mp = MeanPreprocessor(means[<span class="string">"R"</span>], means[<span class="string">"G"</span>], means[<span class="string">"B"</span>])</span><br><span class="line">iap = ImageToArrayPreprocessor()</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the training and validation dataset generators</span></span><br><span class="line">trainGen = HDF5DatasetGenerator(config.TRAIN_HDF5, <span class="number">64</span>, aug=aug,</span><br><span class="line">	preprocessors=[pp, mp, iap], classes=config.NUM_CLASSES)</span><br><span class="line">valGen = HDF5DatasetGenerator(config.VAL_HDF5, <span class="number">64</span>,</span><br><span class="line">	preprocessors=[sp, mp, iap], classes=config.NUM_CLASSES)</span><br></pre></td></tr></table></figure>
+<h3 id="模型设计"><a href="#模型设计" class="headerlink" title="模型设计"></a>模型设计</h3><p>模型设计过程参考了Keras官方文档给出的演示，导入没有top的预训练InceptionV3模型，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.applications.inception_v3 <span class="keyword">import</span> InceptionV3</span><br><span class="line"><span class="keyword">from</span> keras.preprocessing <span class="keyword">import</span> image</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Model</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, GlobalAveragePooling2D</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"><span class="comment"># load the Inception network, ensuring the head FC layer sets are left off</span></span><br><span class="line">baseModel = InceptionV3(weights=<span class="string">"imagenet"</span>, include_top=<span class="keyword">False</span>,</span><br><span class="line">                        input_tensor=Input(shape=(<span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>)))</span><br><span class="line"><span class="comment"># initialize the new head of the network, a set of FC layers</span></span><br><span class="line"><span class="comment"># followed by a softmax classifier</span></span><br><span class="line">x = baseModel.output</span><br><span class="line">x = GlobalAveragePooling2D()(x)</span><br><span class="line">x = Dense(<span class="number">1024</span>, activation=<span class="string">'relu'</span>)(x)</span><br><span class="line">headModel = Dense(config.NUM_CLASSES, activation=<span class="string">'softmax'</span>)(x)</span><br><span class="line"></span><br><span class="line">model = Model(inputs=baseModel.input, outputs=headModel)</span><br><span class="line"></span><br><span class="line"><span class="comment"># loop over all layers in the base model and freeze them so they</span></span><br><span class="line"><span class="comment"># will *not* be updated during the training process</span></span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> baseModel.layers:</span><br><span class="line">  layer.trainable = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># compile our model (this needs to be done after our setting our</span></span><br><span class="line"><span class="comment"># layers to being non-trainable</span></span><br><span class="line">print(<span class="string">"[INFO] compiling model..."</span>)</span><br><span class="line">opt = SGD(lr=<span class="number">0.005</span>,momentum=<span class="number">0.9</span>)</span><br><span class="line">model.compile(loss=<span class="string">"categorical_crossentropy"</span>, optimizer=opt, metrics=[<span class="string">"accuracy"</span>])</span><br></pre></td></tr></table></figure>
+<p>特别注意在迁移学习中，由于新添加增的初始权重是随机生成的，而前面大量网络参数并frozen之后不再发生变化，所以需要一个预测的过程来学习参数到一定水平，需要控制学习率在一个比较小的范围。</p>
+<p>这个过程可能需要反复尝试试错。</p>
+<h3 id="训练过程优化"><a href="#训练过程优化" class="headerlink" title="训练过程优化"></a>训练过程优化</h3><p>训练过程参考了《Deep Learning for Computer Vison with Python》作者给出的<code>Ctrl+C</code>训练方法，可以随时保存训练现场，调整训练率继续进行训练。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="comment"># construct the argument parse and parse the arguments</span></span><br><span class="line">ap = argparse.ArgumentParser()</span><br><span class="line">ap.add_argument(<span class="string">"-c"</span>, <span class="string">"--checkpoints"</span>, required=<span class="keyword">True</span>, help=<span class="string">"path to output checkpoint directory"</span>)</span><br><span class="line">ap.add_argument(<span class="string">"-m"</span>, <span class="string">"--model"</span>, type=str, help=<span class="string">"path to *specific* model checkpoint to load"</span>)</span><br><span class="line">ap.add_argument(<span class="string">"-s"</span>, <span class="string">"--start-epoch"</span>, type=int, default=<span class="number">0</span>, help=<span class="string">"epoch to restart training at"</span>)</span><br><span class="line">args = vars(ap.parse_args())</span><br><span class="line"></span><br><span class="line"><span class="comment"># set the logging level and output file</span></span><br><span class="line">logging.basicConfig(level=logging.DEBUG,</span><br><span class="line">	filename=<span class="string">"training_&#123;&#125;.log"</span>.format(args[<span class="string">"start_epoch"</span>]), filemode=<span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> args[<span class="string">"model"</span>] <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line"><span class="comment"># load the VGG16 network, ensuring the head FC layer sets are left off</span></span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">    <span class="comment">## 实现上一步骤的预训练模型定义和模型预热</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">"[INFO] loading &#123;&#125;..."</span>.format(args[<span class="string">"model"</span>]))</span><br><span class="line">	model = load_model(args[<span class="string">"model"</span>])</span><br><span class="line">	<span class="comment"># update the learning rate</span></span><br><span class="line">	print(<span class="string">"[INFO] old learning rate: &#123;&#125;"</span>.format(K.get_value(model.optimizer.lr)))</span><br><span class="line">	K.set_value(model.optimizer.lr, <span class="number">1e-3</span>)</span><br><span class="line">	print(<span class="string">"[INFO] new learning rate: &#123;&#125;"</span>.format(K.get_value(model.optimizer.lr)))</span><br><span class="line">    </span><br><span class="line"><span class="comment"># construct the set of callbacks</span></span><br><span class="line">callbacks = [</span><br><span class="line">	EpochCheckpoint(args[<span class="string">"checkpoints"</span>], every=<span class="number">5</span>,</span><br><span class="line">		startAt=args[<span class="string">"start_epoch"</span>]),</span><br><span class="line">	TrainingMonitor(config.FIG_PATH, jsonPath=config.JSON_PATH,</span><br><span class="line">		startAt=args[<span class="string">"start_epoch"</span>])]</span><br><span class="line"></span><br><span class="line"><span class="comment"># train the network</span></span><br><span class="line">print(<span class="string">"[INFO] training network..."</span>)</span><br><span class="line">model.fit_generator(</span><br><span class="line">	trainGen.generator(),</span><br><span class="line">	steps_per_epoch=trainGen.numImages // config.BATCH_SIZE,</span><br><span class="line">	validation_data=valGen.generator(),</span><br><span class="line">	validation_steps=valGen.numImages // config.BATCH_SIZE,</span><br><span class="line">	epochs=<span class="number">100</span>,</span><br><span class="line">	max_queue_size=config.BATCH_SIZE * <span class="number">2</span>,</span><br><span class="line">	callbacks=callbacks, verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://www.pyimagesearch.com/deep-learning-computer-vision-python-book/" target="_blank" rel="noopener">deep learning for computer vision with python</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/04/11/Vechicle-identification-by-stanford-car-dataset/" target="_blank" title="利用迁移学习实现车辆识别">http://blog.a-stack.com/2018/04/11/Vechicle-identification-by-stanford-car-dataset/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/13/Object-Detection-Faster-RCNN/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          物体识别技术之Faster R-CNN
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/09/Deep-Learning-Lab-Logo-Detection/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">基于机器视觉技术的品牌LOGO检测</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集：-Stanford-Cars-Dataset"><span class="nav-number">1.1.</span> <span class="nav-text">数据集： Stanford Cars Dataset</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据准备"><span class="nav-number">2.</span> <span class="nav-text">数据准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置信息"><span class="nav-number">2.1.</span> <span class="nav-text">配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据概览"><span class="nav-number">2.2.</span> <span class="nav-text">数据概览</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练迁移学习网络"><span class="nav-number">3.</span> <span class="nav-text">训练迁移学习网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据读入"><span class="nav-number">3.1.</span> <span class="nav-text">数据读入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型设计"><span class="nav-number">3.2.</span> <span class="nav-text">模型设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练过程优化"><span class="nav-number">3.3.</span> <span class="nav-text">训练过程优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

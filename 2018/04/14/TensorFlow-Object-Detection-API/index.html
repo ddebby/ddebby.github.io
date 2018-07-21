@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用tensorflow object detection api识别仪表表盘 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="前面用到了Tensorflow的物体识别API做了一个检测仪表表盘的实践，记录实践过程中的技巧。 1. 概述本文主要介绍如何使用Tensorflow 物体识别API应用自己业务场景进行物体识别。将结合从事的一些实际经验，分享一个仪表表盘识别的案例。我们在一个利用机器视觉技术自动识别仪表表读数的项目中，需要首先识别各种不同类型表盘的显示屏位置。本案例分析将针对面板识别中采用的关键技术进行分析，详细阐">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用TensorFlow Object Detection API识别仪表表盘">
+<meta property="og:url" content="http://blog.a-stack.com/2018/04/14/TensorFlow-Object-Detection-API/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="前面用到了Tensorflow的物体识别API做了一个检测仪表表盘的实践，记录实践过程中的技巧。 1. 概述本文主要介绍如何使用Tensorflow 物体识别API应用自己业务场景进行物体识别。将结合从事的一些实际经验，分享一个仪表表盘识别的案例。我们在一个利用机器视觉技术自动识别仪表表读数的项目中，需要首先识别各种不同类型表盘的显示屏位置。本案例分析将针对面板识别中采用的关键技术进行分析，详细阐">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/ocr-demo.PNG">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/labelImage.jpg">
+<meta property="og:image" content="https://camo.githubusercontent.com/c77ea08c2a142680f237371c1a1e5743b877842c/687474703a2f2f6368726973746f70686572353130362e6769746875622e696f2f696d672f616e6e6f7461746f725f65726173652e706e67">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/tensorboard_loss.PNG">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/AP_MAP.PNG">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/detect_demo.png">
+<meta property="og:updated_time" content="2018-05-23T12:42:43.515Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用TensorFlow Object Detection API识别仪表表盘">
+<meta name="twitter:description" content="前面用到了Tensorflow的物体识别API做了一个检测仪表表盘的实践，记录实践过程中的技巧。 1. 概述本文主要介绍如何使用Tensorflow 物体识别API应用自己业务场景进行物体识别。将结合从事的一些实际经验，分享一个仪表表盘识别的案例。我们在一个利用机器视觉技术自动识别仪表表读数的项目中，需要首先识别各种不同类型表盘的显示屏位置。本案例分析将针对面板识别中采用的关键技术进行分析，详细阐">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/ocr-demo.PNG">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-TensorFlow-Object-Detection-API" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      使用TensorFlow Object Detection API识别仪表表盘
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/14/TensorFlow-Object-Detection-API/" class="article-date">
+	  <time datetime="2018-04-14T13:16:41.000Z" itemprop="datePublished">2018-04-14</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a><a class="article-category-link" href="/categories/动手实践营/机器视觉/">机器视觉</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前面用到了Tensorflow的物体识别API做了一个检测仪表表盘的实践，记录实践过程中的技巧。<br><!-- excerpt --></p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>本文主要介绍如何使用Tensorflow 物体识别API应用自己业务场景进行物体识别。将结合从事的一些实际经验，分享一个仪表表盘识别的案例。我们在一个利用机器视觉技术自动识别仪表表读数的项目中，需要首先识别各种不同类型表盘的显示屏位置。本案例分析将针对面板识别中采用的关键技术进行分析，详细阐述如何利用物体识别技术和已训练好的模型快速实现使用用户数据设计一个面向特定物体识别的深度神经网络。</p>
+<p><strong>目标：</strong> 从给定的水表图片中将关键的数字面板给扣取出来。</p>
+<p>如下图所示，如果采用通用OCR技术对水表图片面板进行检测，将同时提取很多特征项，对实际的检测值造成比较大的干扰。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/ocr-demo.PNG" alt="ocr-demo"></p>
+<h3 id="1-1-模型及算法选型"><a href="#1-1-模型及算法选型" class="headerlink" title="1.1 模型及算法选型"></a>1.1 模型及算法选型</h3><p>在方案设计初期我们分别使用公有云服务、现有的成熟OCR软件、开源的OCR方案对目标对象进行了初步识别及分析。通过实测，现有方案无法满足我们的任务需求。为此希望能够利用深度学习在物体识别领域的成熟方案，构建一个面向水表图片面板识别的神经网络模型。</p>
+<ul>
+<li><p><strong>计算框架：</strong> Tensorflow (v1.4)</p>
+</li>
+<li><p><strong>使用接口：</strong> <a href="https://github.com/tensorflow/models/tree/master/research/object_detection" target="_blank" rel="noopener">Tensorflow Object Detection API</a><sup><a href="#fn_1" id="reffn_1">1</a></sup></p>
+</li>
+<li><p><strong>算法模型：</strong> 根据预训练采用的数据集不同，可用的模型列表如下：</p>
+<ul>
+<li><a href="http://mscoco.org/" target="_blank" rel="noopener">COCO dataset</a></li>
+</ul>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Model name</th>
+<th>Speed (ms)</th>
+<th>COCO mAP<sup><a href="#fn_2" id="reffn_2">2</a></sup></th>
+<th>Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2017_11_17.tar.gz" target="_blank" rel="noopener">ssd_mobilenet_v1_coco</a></td>
+<td>30</td>
+<td>21</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/ssd_inception_v2_coco_2017_11_17.tar.gz" target="_blank" rel="noopener">ssd_inception_v2_coco</a></td>
+<td>42</td>
+<td>24</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_v2_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_inception_v2_coco</a></td>
+<td>58</td>
+<td>28</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet50_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_resnet50_coco</a></td>
+<td>89</td>
+<td>30</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet50_lowproposals_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_resnet50_lowproposals_coco</a></td>
+<td>64</td>
+<td></td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/rfcn_resnet101_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">rfcn_resnet101_coco</a></td>
+<td>92</td>
+<td>30</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet101_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_resnet101_coco</a></td>
+<td>106</td>
+<td>32</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet101_lowproposals_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_resnet101_lowproposals_coco</a></td>
+<td>82</td>
+<td></td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_resnet_v2_atrous_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_inception_resnet_v2_atrous_coco</a></td>
+<td>620</td>
+<td>37</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_resnet_v2_atrous_lowproposals_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_inception_resnet_v2_atrous_lowproposals_coco</a></td>
+<td>241</td>
+<td></td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_nas_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_nas</a></td>
+<td>1833</td>
+<td>43</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_nas_lowproposals_coco_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_nas_lowproposals_coco</a></td>
+<td>540</td>
+<td></td>
+<td>Boxes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><a href="http://www.cvlibs.net/datasets/kitti/" target="_blank" rel="noopener">Kitti dataset</a></li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Model name</th>
+<th>Speed (ms)</th>
+<th>Pascal mAP@0.5 (ms)</th>
+<th>Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet101_kitti_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_resnet101_kitti</a></td>
+<td>79</td>
+<td>87</td>
+<td>Boxes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><a href="https://github.com/openimages/dataset" target="_blank" rel="noopener">Open Images dataset</a></li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Model name</th>
+<th>Speed (ms)</th>
+<th>Open Images mAP@0.5<sup><a href="#fn_2" id="reffn_2">2</a></sup></th>
+<th>Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_resnet_v2_atrous_oid_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_inception_resnet_v2_atrous_oid</a></td>
+<td>727</td>
+<td>37</td>
+<td>Boxes</td>
+</tr>
+<tr>
+<td><a href="http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_resnet_v2_atrous_lowproposals_oid_2017_11_08.tar.gz" target="_blank" rel="noopener">faster_rcnn_inception_resnet_v2_atrous_lowproposals_oid</a></td>
+<td>347</td>
+<td></td>
+<td>Boxes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  几种模型主要在精度和速度方面进行了取舍，如果需要一个高精度的模型可以选择faster R-CNN，如果希望速度快比如实时检测，则可以选择SSD模型。鉴于本方案中设计检测目标特征将为简单，可采用最轻量级的MobileSSD进行优化。</p>
+<h2 id="2-实现流程"><a href="#2-实现流程" class="headerlink" title="2. 实现流程"></a>2. 实现流程</h2><h3 id="2-1-数据准备"><a href="#2-1-数据准备" class="headerlink" title="2.1 数据准备"></a>2.1 数据准备</h3><p>数据准备的环节是除了训练过程之外最为耗时的环节，准备数据的质量和数量将直接决定了训练模型的好坏。图片数据最好在光线、角度、清晰度等方面能最大化的泛化实际的业务场景。由于在这个案例中我们只需要输出一个分类对象，而且输入对象被限定在水表图片上，所以整体涉及需要提取的特征参数空间不是很大，少量经过处理好的明显可供辨识的水表图片即可。目前可用水表图片攻击229张，我们采用80%用于训练，20%用于测试的方式进行划分。</p>
+<blockquote>
+<p>如果分类较多，数据有限，可以选择从互联网上下载或者在开源数据集中获得所需的数据。</p>
+<p>另外需要注意图片的大小，图片太大一方面影响训练过程的处理时间，另外大量图片载入内存将很容导致内存溢出，所以如果图像特征粒度不是特别精细可以采用低分辨率图片进行分析。</p>
+</blockquote>
+<h4 id="数据标记"><a href="#数据标记" class="headerlink" title="数据标记"></a>数据标记</h4><p>对于物体识别而言，数据标记过程是一个相对复杂的过程，目前除了人工标记没有太好的自动或半监督手段，幸好针对图片的标记已经有了几款很好用的工具：</p>
+<ul>
+<li><p><a href="https://github.com/tzutalin/labelImg" target="_blank" rel="noopener">LabelImg</a></p>
+<ul>
+<li>这是一个可以直接在图片上做注释框自动生成标记信息的软件，注释信息将被保存为PASCAL VOC 格式的XML文件（<a href="http://www.image-net.org/" target="_blank" rel="noopener">ImageNet</a>的文件格式）</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/labelImage.jpg" alt="labelImage"></p>
+</li>
+<li><p><a href="https://github.com/christopher5106/FastAnnotationTool" target="_blank" rel="noopener">FIAT (Fast Image Data Annotation Tool)</a> </p>
+<ul>
+<li><p>该工具生成csv格式的注释文件</p>
+<p><a href="https://camo.githubusercontent.com/c77ea08c2a142680f237371c1a1e5743b877842c/687474703a2f2f6368726973746f70686572353130362e6769746875622e696f2f696d672f616e6e6f7461746f725f65726173652e706e67" target="_blank" rel="noopener"><img src="https://camo.githubusercontent.com/c77ea08c2a142680f237371c1a1e5743b877842c/687474703a2f2f6368726973746f70686572353130362e6769746875622e696f2f696d672f616e6e6f7461746f725f65726173652e706e67" alt="data annotation"></a></p>
+</li>
+</ul>
+</li>
+<li><p><a href="http://imagemagick.org/#" target="_blank" rel="noopener">ImageMagick</a></p>
+<ul>
+<li>图片预处理工具</li>
+<li>Use ImageMagick<a href="http://tarr.uspto.gov/servlet/tarr?regser=serial&amp;entry=78333969" target="_blank" rel="noopener">®</a> to create, edit, compose, or convert bitmap images.  It can read and write images in a variety of <a href="http://imagemagick.org/script/formats.php" target="_blank" rel="noopener">formats</a> (over 200) including PNG, JPEG, GIF, HEIC, TIFF, <a href="http://imagemagick.org/script/motion-picture.php" target="_blank" rel="noopener">DPX</a>, <a href="http://imagemagick.org/script/high-dynamic-range.php" target="_blank" rel="noopener">EXR</a>, WebP, Postscript, PDF, and SVG.  Use ImageMagick to resize, flip, mirror, rotate, distort, shear and transform images, adjust image colors, apply various special effects, or draw text, lines, polygons, ellipses and Bézier curves.</li>
+</ul>
+</li>
+</ul>
+<p>在本方案中我们使用工具LabelImage将229张水表图片进行了标注，同时生成了PASCAL格式的XML文件，名字为<code>000001.jpg</code>的图片注释格式如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">annotation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">folder</span>&gt;</span>imgs<span class="tag">&lt;/<span class="name">folder</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filename</span>&gt;</span>000001.jpg<span class="tag">&lt;/<span class="name">filename</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">database</span>&gt;</span>VOC<span class="tag">&lt;/<span class="name">database</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">annotation</span>&gt;</span>PASCAL VOC<span class="tag">&lt;/<span class="name">annotation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">size</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">width</span>&gt;</span>2448<span class="tag">&lt;/<span class="name">width</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">height</span>&gt;</span>3264<span class="tag">&lt;/<span class="name">height</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">depth</span>&gt;</span>3<span class="tag">&lt;/<span class="name">depth</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">size</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">segmented</span>&gt;</span>0<span class="tag">&lt;/<span class="name">segmented</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">object</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>panel<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pose</span>&gt;</span>Frontal<span class="tag">&lt;/<span class="name">pose</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">truncated</span>&gt;</span>0<span class="tag">&lt;/<span class="name">truncated</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">difficult</span>&gt;</span>0<span class="tag">&lt;/<span class="name">difficult</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bndbox</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">xmin</span>&gt;</span>739<span class="tag">&lt;/<span class="name">xmin</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">ymin</span>&gt;</span>430<span class="tag">&lt;/<span class="name">ymin</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">xmax</span>&gt;</span>1475<span class="tag">&lt;/<span class="name">xmax</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">ymax</span>&gt;</span>796<span class="tag">&lt;/<span class="name">ymax</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bndbox</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">object</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">annotation</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们在根目录新建一个<code>annotations</code>的文件夹存储229张图片的XML描述文件，同时根目录<code>images</code>文件夹用于存储所有的训练数据和测试数据。</p>
+<h4 id="数据描述格式"><a href="#数据描述格式" class="headerlink" title="数据描述格式"></a>数据描述格式</h4><ul>
+<li>在TensorFlow 物体检测API中使用 <a href="https://www.tensorflow.org/api_guides/python/python_io#tfrecords_format_details" target="_blank" rel="noopener">TFRecord file format</a>格式对图像标记信息进行描述，所以我们无论采取下面的那种标记方式，最终需要生成TFRcord格式的文件格式。</li>
+<li><strong>TFRecord</strong>格式要去如下：</li>
+</ul>
+<blockquote>
+<p>For every example in your dataset, you should have the following information:</p>
+<ol>
+<li>An RGB image for the dataset encoded as jpeg or png.</li>
+<li>A list of bounding boxes for the image. Each bounding box should contain:<ol>
+<li>A bounding box coordinates (with origin in top left corner) defined by 4floating point numbers [ymin, xmin, ymax, xmax]. Note that we store the<em>normalized</em> coordinates (x / width, y / height) in the TFRecord dataset.</li>
+<li>The class of the object in the bounding box.</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>TensorFlow针对主流的物体识别类数据集格式提供了<a href="https://github.com/tensorflow/models/tree/master/research/object_detection/dataset_tools" target="_blank" rel="noopener">转换工具</a>，包括 <a href="http://host.robots.ox.ac.uk/pascal/VOC/" target="_blank" rel="noopener">PASCAL VOC dataset</a> ， <a href="http://www.robots.ox.ac.uk/~vgg/data/pets/" target="_blank" rel="noopener">Oxford Pet dataset</a>等；</p>
+<ul>
+<li>PASCAL VOC </li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From tensorflow/models/research/</span></span><br><span class="line">wget http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar</span><br><span class="line">tar -xvf VOCtrainval_11-May-2012.tar</span><br><span class="line">python object_detection/dataset_tools/create_pascal_tf_record.py \</span><br><span class="line">    --label_map_path=object_detection/data/pascal_label_map.pbtxt \</span><br><span class="line">    --data_dir=VOCdevkit --year=VOC2012 --<span class="built_in">set</span>=train \</span><br><span class="line">    --output_path=pascal_train.record</span><br><span class="line">python object_detection/dataset_tools/create_pascal_tf_record.py \</span><br><span class="line">    --label_map_path=object_detection/data/pascal_label_map.pbtxt \</span><br><span class="line">    --data_dir=VOCdevkit --year=VOC2012 --<span class="built_in">set</span>=val \</span><br><span class="line">    --output_path=pascal_val.record</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Oxford-IIIT Pet</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From tensorflow/models/research/</span></span><br><span class="line">wget http://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz</span><br><span class="line">wget http://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz</span><br><span class="line">tar -xvf annotations.tar.gz</span><br><span class="line">tar -xvf images.tar.gz</span><br><span class="line">python object_detection/dataset_tools/create_pet_tf_record.py \</span><br><span class="line">    --label_map_path=object_detection/data/pet_label_map.pbtxt \</span><br><span class="line">    --data_dir=`<span class="built_in">pwd</span>` \</span><br><span class="line">    --output_dir=`<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果你使用了自己的格式，可以参考<a href="https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/using_your_own_dataset.md" target="_blank" rel="noopener">TensorFlow官方文档</a>完成格式转换；</p>
+</li>
+</ul>
+<p>在本方案中我们采用自己处理的方式来进行格式转换，使用文件<a href="https://github.com/datitran/raccoon_dataset/blob/master/xml_to_csv.py" target="_blank" rel="noopener"><code>xml_to_csv.py</code></a>将所有图片的PASCAL格式文件转化为一个csv文件，然后进一步的利用TensorFLow工具<code>generate_tfrecord.py</code>生成TFRecord格式文件：</p>
+<ol>
+<li><p>执行<code>python xml_to_csv.py</code>,该文件将在根目录的<code>annotations</code>的文件夹下所有的<code>*xml</code>文件，并生成<code>screen_labels.csv</code>文件；</p>
+</li>
+<li><p>使用如下代码随机生成训练数据和测试数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">np.random.seed(<span class="number">1</span>)</span><br><span class="line">full_labels = pd.read_csv(<span class="string">'screen_labels.csv'</span>)</span><br><span class="line">gb = full_labels.groupby(<span class="string">'filename'</span>)</span><br><span class="line">grouped_list = [gb.get_group(x) <span class="keyword">for</span> x <span class="keyword">in</span> gb.groups]</span><br><span class="line">train_index = np.random.choice(len(grouped_list), size=<span class="number">180</span>, replace=<span class="keyword">False</span>)</span><br><span class="line">test_index = np.setdiff1d(list(range(<span class="number">229</span>)), train_index)</span><br><span class="line">train = pd.concat([grouped_list[i] <span class="keyword">for</span> i <span class="keyword">in</span> train_index])</span><br><span class="line">test = pd.concat([grouped_list[i] <span class="keyword">for</span> i <span class="keyword">in</span> test_index])</span><br><span class="line">train.to_csv(<span class="string">'train_labels.csv'</span>, index=<span class="keyword">None</span>)</span><br><span class="line">test.to_csv(<span class="string">'test_labels.csv'</span>, index=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分别执行脚本将训练数据和测试数据转换为TFRecord：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From tensorflow/models/research/</span></span><br><span class="line">protoc object_detection/protos/*.proto --python_out=.</span><br><span class="line"><span class="comment"># Create train data:</span></span><br><span class="line">  python generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=train.record</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Create test data:</span></span><br><span class="line">  python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=test.record</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将train.record和test.record的文件存储至根目录的data文件夹下</p>
+</li>
+<li><p>至此数据准备基本结束，我们创建了如下目录结构</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── annotations</span><br><span class="line">│   ├── 000001.xml</span><br><span class="line">          ...</span><br><span class="line">│   └── 000229.xml</span><br><span class="line">├── data</span><br><span class="line">│   ├── screen_labels.csv</span><br><span class="line">│   ├── test_labels.csv</span><br><span class="line">│   ├── test.record</span><br><span class="line">│   ├── train_labels.csv</span><br><span class="line">│   └── train.record</span><br><span class="line">├── generate_tfrecord.py</span><br><span class="line">├── images</span><br><span class="line">│   ├── 000001.jpg</span><br><span class="line">         ...</span><br><span class="line">│   └── 000229.jpg</span><br><span class="line">├── __init__.py</span><br><span class="line">├── README.md</span><br><span class="line">├── split labels.ipynb</span><br><span class="line">├── test_generate_tfrecord.py</span><br><span class="line">├── test_xml_to_csv.py</span><br><span class="line">└── xml_to_csv.py</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="2-2-模型配置-迁移学习"><a href="#2-2-模型配置-迁移学习" class="headerlink" title="2.2 模型配置/迁移学习"></a>2.2 模型配置/迁移学习</h3><blockquote>
+<p>完全从头训练一个用于物体检测的模型即使采用大量GPU资源至少也需要数周时间，为了加速模型初期迭代过程，我们选择了一个已经在COCO数据集针对其他多种物体识别场景预训练好的模型，通过重复使用该模型的多数参数来快速生成我们的模型。更多技术内容可以参照迁移学习的技术实现。</p>
+</blockquote>
+<p>由于没有足够的资源从头训练一个模型，我们将采用迁移学习技术，利用一个已经训练好的模型进行迁移学习及训练。</p>
+<p>从测试角度考虑，本测试方案选择了体积最小，速度最快的用于嵌入式设备的SSD模型：<a href="http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2017_11_17.tar.gz" target="_blank" rel="noopener">ssd_mobilenet_v1_coco</a></p>
+<p>下载模型包，可以得到如下文件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── object-detection.pbtxt	</span><br><span class="line">├── ssd_mobilenet_v1_pets.config</span><br><span class="line">├── checkpoint</span><br><span class="line">├── frozen_inference_graph.pb</span><br><span class="line">├── model.ckpt.data-00000-of-00001</span><br><span class="line">├── model.ckpt.index</span><br><span class="line">├── model.ckpt.meta</span><br><span class="line">└── saved_model</span><br><span class="line">    ├── saved_model.pb</span><br><span class="line">    └── variables</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>a graph proto (<code>graph.pbtxt</code>)</li>
+<li>a checkpoint (<code>model.ckpt.data-00000-of-00001</code>, <code>model.ckpt.index</code>, <code>model.ckpt.meta</code>)</li>
+<li>a frozen graph proto with weights baked into the graph as constants (<code>frozen_inference_graph.pb</code>) to be used for out of the box inference</li>
+<li>a config file (<code>pipeline.config</code>) which was used to generate the graph. These directly correspond to a config file in the <a href="https://github.com/tensorflow/models/tree/master/research/object_detection/samples/configs" target="_blank" rel="noopener">samples/configs</a>) directory but often with a modified score threshold. </li>
+</ul>
+</blockquote>
+<p>我们下载并在根目录解压模型包ssd_mobilenet_v1_coco，同时创建一个training文件，存储如下文件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">training/</span><br><span class="line">├── object-detection.pbtxt</span><br><span class="line">└── ssd_mobilenet_v1_pets.config</span><br></pre></td></tr></table></figure>
+<p>其中 <code>object-detection.pbtxt</code>是我们模型所有分类的标签，如下所示，如果有多个分类id从1开始递增，同时给每个标签一个唯一的名称</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">item &#123;</span><br><span class="line">  id: 1</span><br><span class="line">  name: <span class="string">'panel'</span></span><br><span class="line">&#125;</span><br><span class="line">item&#123;</span><br><span class="line">  id: 2</span><br><span class="line">  name: <span class="string">'其他分类'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="配置物体识别训练流程文件"><a href="#配置物体识别训练流程文件" class="headerlink" title="配置物体识别训练流程文件"></a>配置物体识别训练流程文件</h4><blockquote>
+<p>更多内容参考：<a href="https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md" target="_blank" rel="noopener">https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md</a></p>
+</blockquote>
+<p>Tensorflow Object Detection API 使用 protobuf 文件来配置训练和检测的流程。通过配置Training Pipleline的参数配置可以决定训练参数的选择，我们将尽量多的利用已经训练好的参数进行训练。</p>
+<p>一个配置文件由5部分组成：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">model &#123;</span><br><span class="line">(... Add model config here...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">train_config : &#123;</span><br><span class="line">(... Add train_config here...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">train_input_reader: &#123;</span><br><span class="line">(... Add train_input configuration here...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">eval_config: &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">eval_input_reader: &#123;</span><br><span class="line">(... Add eval_input configuration here...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>The <code>model</code> configuration. This defines what type of model will be trained (ie. meta-architecture, feature extractor).</li>
+<li>The <code>train_config</code>, which decides what parameters should be used to train model parameters (ie. SGD parameters, input preprocessing and feature extractor initialization values).</li>
+<li>The <code>eval_config</code>, which determines what set of metrics will be reported for evaluation (currently we only support the PASCAL VOC metrics).</li>
+<li>The <code>train_input_config</code>, which defines what dataset the model should be trained on.</li>
+<li>The <code>eval_input_config</code>, which defines what dataset the model will be evaluated on. Typically this should be different than the training input dataset.</li>
+</ol>
+</blockquote>
+<p><code>ssd_mobilenet_v1_pets.config</code>为模型配置文件，我们在样例(详见：object_detection/samples/configs 文件夹)上进行如下修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">  ssd &#123;</span><br><span class="line">    num_classes: 1                 <span class="comment">#修改类别为实际类别值</span></span><br><span class="line">    box_coder &#123;</span><br><span class="line">      faster_rcnn_box_coder &#123;</span><br><span class="line">        y_scale: 10.0</span><br><span class="line">        x_scale: 10.0</span><br><span class="line">        height_scale: 5.0</span><br><span class="line">        width_scale: 5.0</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">fine_tune_checkpoint: <span class="string">"ssd_mobilenet_v1_coco_2017_11_17/model.ckpt"</span> <span class="comment">#指向模型文件中的checkpoint文件</span></span><br><span class="line">train_input_reader: &#123;                                               </span><br><span class="line">  tf_record_input_reader &#123;</span><br><span class="line">    input_path: <span class="string">"data/train.record"</span>              <span class="comment">#修改为上一个步骤生成的训练record路径</span></span><br><span class="line">  &#125;</span><br><span class="line">  label_map_path: <span class="string">"data/object-detection.pbtxt"</span>  <span class="comment">#修改为pbtxt文件路径，描述类别标签</span></span><br><span class="line">&#125;</span><br><span class="line">eval_input_reader: &#123;</span><br><span class="line">  tf_record_input_reader &#123;</span><br><span class="line">    input_path: <span class="string">"data/test.record"</span>           <span class="comment">#修改为上一个步骤生成的测试数据record路径</span></span><br><span class="line">  &#125;</span><br><span class="line">  label_map_path: <span class="string">"data/object-detection.pbtxt"</span> <span class="comment">#修改为pbtxt文件路径，描述类别标签</span></span><br><span class="line">  shuffle: <span class="literal">false</span></span><br><span class="line">  num_readers: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>train_config</code> provides two fields to specify pre-existing checkpoints: <code>fine_tune_checkpoint</code> and <code>from_detection_checkpoint</code>. <code>fine_tune_checkpoint</code> should provide a path to the pre-existing checkpoint (ie:”/usr/home/username/checkpoint/model.ckpt-#####”). <code>from_detection_checkpoint</code> is a boolean value. If false, it assumes the checkpoint was from an object classification checkpoint. Note that starting from a detection checkpoint will usually result in a faster training job than a classification checkpoint.</p>
+<p>The list of provided checkpoints can be found <a href="https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md" target="_blank" rel="noopener">here</a>.</p>
+</blockquote>
+<h3 id="2-3-训练"><a href="#2-3-训练" class="headerlink" title="2.3 训练"></a>2.3 训练</h3><h4 id="Tensorflow-Object-Detection-API-安装"><a href="#Tensorflow-Object-Detection-API-安装" class="headerlink" title="Tensorflow Object Detection API 安装"></a>Tensorflow Object Detection API 安装</h4><ol>
+<li><p>从GitHub下载Tensorflow Object Detection API</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/models.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置基本环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Tensorflow Object Detection API depends on the following libraries:</span><br><span class="line">- Protobuf 2.6</span><br><span class="line">- Pillow 1.0</span><br><span class="line">- lxml</span><br><span class="line">- tf Slim (<span class="built_in">which</span> is included <span class="keyword">in</span> the <span class="string">"tensorflow/models/research/"</span> checkout)</span><br><span class="line">- Tensorflow</span><br><span class="line">sudo apt-get install protobuf-compiler python-pil python-lxml</span><br><span class="line">或者</span><br><span class="line">sudo pip install pillow</span><br><span class="line">sudo pip install lxml</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>3.Protobuf 编译</p>
+<p>Tensorflow通过Google的Protobufs来配置和训练模型，所以在开始使用之前需要对protobuf相关库进行编译。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From tensorflow/models/research/</span></span><br><span class="line">protoc object_detection/protos/*.proto --python_out=.</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Add Libraries to PYTHONPATH[<strong>重要</strong>]</li>
+</ol>
+<p>在路径 <code>tensorflow/models/research/</code> 下添加PYTHONPATH路径，实现全局引用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From tensorflow/models/research/</span></span><br><span class="line"><span class="built_in">export</span> PYTHONPATH=<span class="variable">$PYTHONPATH</span>:`<span class="built_in">pwd</span>`:`<span class="built_in">pwd</span>`/slim</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Note:</strong> This command needs to run from every new terminal you start. If you wish to avoid running this manually, you can add it as a new line to the end of your ~/.bashrc file.</p>
+</blockquote>
+<h4 id="启动训练过程"><a href="#启动训练过程" class="headerlink" title="启动训练过程"></a>启动训练过程</h4><ol>
+<li><p>将在数据准备和模型配置阶段的文件复制到tensorflow object_detect文件夹下<code>/models/research/object_detection</code>,包括data/文件夹，image/文件夹，training/文件夹，ssd_mobilenet_v1_coco_2017_11_17/原始模型文件夹</p>
+</li>
+<li><p>执行如下代码启动训练过程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From the tensorflow/models/research/ directory</span></span><br><span class="line">python object_detection/train.py \</span><br><span class="line">    --logtostderr \</span><br><span class="line">    --pipeline_config_path=<span class="variable">$&#123;PATH_TO_YOUR_PIPELINE_CONFIG&#125;</span> \</span><br><span class="line">    --train_dir=<span class="variable">$&#123;PATH_TO_TRAIN_DIR&#125;</span></span><br><span class="line">--------------------------------------------------------------------------------------------   </span><br><span class="line">python train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="使用TensorBoard-跟踪训练过程"><a href="#使用TensorBoard-跟踪训练过程" class="headerlink" title="使用TensorBoard 跟踪训练过程"></a>使用TensorBoard 跟踪训练过程</h4><p>训练过程会持续几个小时到十几个小时，可以通过tensorboard查看训练的情况</p>
+<p>使用一台Azure的CPU虚拟机进行训练~4s进行一次迭代，正常模型有比较不错结果迭代次数大概在10K以上。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=/training</span><br></pre></td></tr></table></figure>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/tensorboard_loss.PNG" alt="tensorboard_loss"></p>
+<h3 id="2-4-导出模型"><a href="#2-4-导出模型" class="headerlink" title="2.4 导出模型"></a>2.4 导出模型</h3><p>模型训练过程中，会每隔一段时间生成一个checkpoint，一个checkpoint至少包括三个文件：</p>
+<ul>
+<li>model.ckpt-${CHECKPOINT_NUMBER}.data-00000-of-00001</li>
+<li>model.ckpt-${CHECKPOINT_NUMBER}.index</li>
+<li>model.ckpt-${CHECKPOINT_NUMBER}.meta</li>
+</ul>
+<p>可以通过如下命令从checkpoints中提取模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Example Usage:</span><br><span class="line">--------------</span><br><span class="line">python export_inference_graph \</span><br><span class="line">    --input_type image_tensor \</span><br><span class="line">    --pipeline_config_path path/to/ssd_inception_v2.config \</span><br><span class="line">    --trained_checkpoint_prefix path/to/model.ckpt \</span><br><span class="line">    --output_directory path/to/exported_model_directory</span><br><span class="line">    </span><br><span class="line">    -----</span><br><span class="line">The expected output would be <span class="keyword">in</span> the directory</span><br><span class="line">path/to/exported_model_directory (<span class="built_in">which</span> is created <span class="keyword">if</span> it does not exist)</span><br><span class="line">with contents:</span><br><span class="line"> - graph.pbtxt</span><br><span class="line"> - model.ckpt.data-00000-of-00001</span><br><span class="line"> - model.ckpt.info</span><br><span class="line"> - model.ckpt.meta</span><br><span class="line"> - frozen_inference_graph.pb</span><br><span class="line"> + saved_model (a directory)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From tensorflow/models/research/</span></span><br><span class="line"><span class="built_in">export</span> PYTHONPATH=<span class="variable">$PYTHONPATH</span>:`<span class="built_in">pwd</span>`:`<span class="built_in">pwd</span>`/slim</span><br><span class="line">python export_inference_graph.py \</span><br><span class="line">    --input_type image_tensor \</span><br><span class="line">    --pipeline_config_path training/ssd_mobilenet_v1_pets.config \</span><br><span class="line">    --trained_checkpoint_prefix training/model.ckpt-10116 \</span><br><span class="line">    --output_directory water_meter_panel</span><br><span class="line">-----</span><br><span class="line">-----</span><br><span class="line">WARNING:tensorflow:From /home/gaoc/data/<span class="built_in">test</span>/object_detect/models/research/object_detection/exporter.py:357: get_or_create_global_step (from tensorflow.contrib.framework.python.ops.variables) is deprecated and will be removed <span class="keyword">in</span> a future version.</span><br><span class="line">Instructions <span class="keyword">for</span> updating:</span><br><span class="line">Please switch to tf.train.get_or_create_global_step</span><br><span class="line">2018-01-20 06:34:08.551446: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA</span><br><span class="line">2018-01-20 06:34:14.056881: I tensorflow/core/grappler/devices.cc:51] Number of eligible GPUs (core count &gt;= 8): 0</span><br><span class="line">Converted 199 variables to const ops.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果<code>Exportor.py</code>文件报bug，请参考<a href="https://github.com/tensorflow/models/issues/2861" target="_blank" rel="noopener">https://github.com/tensorflow/models/issues/2861</a> 修复</p>
+</blockquote>
+<p>运行以上代码，将在<code>water_meter_panel</code>文件夹下生成模型所需的相关文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">gaoc@DataScience:~/data/<span class="built_in">test</span>/object_detect/models/research/object_detection$ ls -l water_meter_panel/</span><br><span class="line">total 44820</span><br><span class="line">-rw-r--r-- 1 gaoc root       77 Jan 20 06:34 checkpoint</span><br><span class="line">-rw-r--r-- 1 gaoc root 22636802 Jan 20 06:34 frozen_inference_graph.pb</span><br><span class="line">-rw-r--r-- 1 gaoc root 22174240 Jan 20 06:34 model.ckpt.data-00000-of-00001</span><br><span class="line">-rw-r--r-- 1 gaoc root     8873 Jan 20 06:34 model.ckpt.index</span><br><span class="line">-rw-r--r-- 1 gaoc root  1058139 Jan 20 06:34 model.ckpt.meta</span><br><span class="line">drwxr-xr-x 3 gaoc root     4096 Jan 20 06:34 saved_model</span><br><span class="line">water_meter_panel/</span><br><span class="line">├── checkpoint</span><br><span class="line">├── frozen_inference_graph.pb</span><br><span class="line">├── model.ckpt.data-00000-of-00001</span><br><span class="line">├── model.ckpt.index</span><br><span class="line">├── model.ckpt.meta</span><br><span class="line">└── saved_model</span><br><span class="line">    ├── saved_model.pb</span><br><span class="line">    └── variables</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-测试"><a href="#2-5-测试" class="headerlink" title="2.5 测试"></a>2.5 测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From the tensorflow/models/research/ directory</span></span><br><span class="line">python object_detection/eval.py \</span><br><span class="line">    --logtostderr \</span><br><span class="line">    --pipeline_config_path=<span class="variable">$&#123;PATH_TO_YOUR_PIPELINE_CONFIG&#125;</span> \</span><br><span class="line">    --checkpoint_dir=<span class="variable">$&#123;PATH_TO_TRAIN_DIR&#125;</span> \</span><br><span class="line">    --eval_dir=<span class="variable">$&#123;PATH_TO_EVAL_DIR&#125;</span></span><br></pre></td></tr></table></figure>
+<p>物体识别领域的算法性能评价指标多数选择AP和mAP（mean average precision），多个类别物体检测中，每一个类别都可以根据recall和precision绘制一条曲线，AP就是该曲线下的面积，mAP是多个类别AP的平均值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Average Precision (AP):</span><br><span class="line">AP% AP at IoU=.50:.05:.95 (primary challenge metric) APIoU=.50% AP at IoU=.50 (PASCAL VOC metric) APIoU=.75% AP at IoU=.75 (strict metric) </span><br><span class="line">AP Across Scales:</span><br><span class="line">APsmall% AP <span class="keyword">for</span> small objects: area &lt; 322 APmedium% AP <span class="keyword">for</span> medium objects: 322 &lt; area &lt; 962 APlarge% AP <span class="keyword">for</span> large objects: area &gt; 962 </span><br><span class="line">Average Recall (AR):</span><br><span class="line">ARmax=1% AR given 1 detection per image ARmax=10% AR given 10 detections per image ARmax=100% AR given 100 detections per image </span><br><span class="line">AR Across Scales:</span><br><span class="line">ARsmall% AR <span class="keyword">for</span> small objects: area &lt; 322 ARmedium% AR <span class="keyword">for</span> medium objects: 322 &lt; area &lt; 962 ARlarge% AR <span class="keyword">for</span> large objects: area &gt; 962</span><br></pre></td></tr></table></figure>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/AP_MAP.PNG" alt="AP_MAP"></p>
+<p>从性能测试结果来看该模型已经具备96%的检测精度了，具备投入生产环境所需的性能。</p>
+<p>预测结果见下图，准确率达到了99%以上。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-14-TensorFlow-Object-Detection-API/detect_demo.png" alt="detect_demo"></p>
+<h2 id="3-结论"><a href="#3-结论" class="headerlink" title="3. 结论"></a>3. 结论</h2><ul>
+<li>对于简单业务场景的物体识别类案例，可以通过迁移学习利用已有的成熟模型快速迭代生成新的特定模型；</li>
+<li>这种迁移的另一个优势是对小数据样本具备很好的适应能力，可以解决前期数据不足和数据质量差的问题；</li>
+<li>当然采用这种方式也同时存在一定的弊端，比如由于模型预训练参数较多，模型体积较大，模型的选取需要反复测试和优化。</li>
+</ul>
+<h3 id="3-1-经验总结"><a href="#3-1-经验总结" class="headerlink" title="3.1 经验总结"></a>3.1 经验总结</h3><ol>
+<li><p>虽然Tensorflow Object Detection API提供了丰富的文档介绍相关工作流程，但由于技术、平台和软件版本本身更新较快，实践中还是或多或少会遇到不少问题，静下心来多翻翻Github的issues里一般都有别人的提问及解答；建议还是先根据文档跑通demo，熟悉相关工具和流程再将框架迁移到自己的数据集之上；</p>
+</li>
+<li><p>建议自己识别的项目文件单独建立一个数据准备文件夹进行数据准备和相关配置脚本的准备，不要跟Github克隆的Object Detection项目混在一起，不容易管理，也不利于重复利用；</p>
+</li>
+<li><p>TFOD API提供的Tensorflow可视化相当完备，启动训练任务之后，一定要同步启动验证脚本，可以实时跟踪训练进程；</p>
+</li>
+<li><p>很容易疏忽的一个步骤是关于PYTHON PATH的处理，在执行相关API之前一定要记得EXPORT相关path，可以些一个bash文件，在执行命令的Terminal中source一下；常见错误如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImportError: No module named ’object_detection’</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>充分利用GPU和CPU进行训练：</p>
+<ol>
+<li><p>如果使用CPU训练，控制配置参数中<code>num_examples</code>为一个很小的值（5-10），这样将使用验证数据中的一部分进行验证而不是全部；</p>
+</li>
+<li><p>配置<code>CUDA_VISIBLE_DEVICES</code>环境变量，选择使用哪个GPU或CPU来分配内存资源：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ export CUDA_VISIBLE_DEVICES="0"</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ export CUDA_VISIBLE_DEVICES="1"</span><br><span class="line">... another scripts</span><br></pre></td></tr></table></figure>
+<p>配置为空使用CPU</p>
+</li>
+</ol>
+</li>
+<li><p>尽量使用最新版的Tensorflow，在撰写本文时已经是1.7了，当时做实验用的是1.4，复现的时候发现1.4版本已经抛错了…</p>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_1">
+<sup>1</sup>. The TensorFlow Object Detection API is an open source framework built on top of TensorFlow that makes it easy to construct, train and deploy object detection models.<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. See <a href="http://cocodataset.org/#detections-eval" target="_blank" rel="noopener">MSCOCO evaluation protocol</a>.<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<ol>
+<li><a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11" target="_blank" rel="noopener">Image classification with a pre-trained deep neural network</a></li>
+<li><a href="https://towardsdatascience.com/how-to-train-your-own-object-detector-with-tensorflows-object-detector-api-bec72ecfe1d9" target="_blank" rel="noopener">How to train your own Object Detector with TensorFlow’s Object Detector API</a></li>
+<li><a href="https://github.com/datitran/raccoon_dataset" target="_blank" rel="noopener">https://github.com/datitran/raccoon_dataset</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/04/14/TensorFlow-Object-Detection-API/" target="_blank" title="使用TensorFlow Object Detection API识别仪表表盘">http://blog.a-stack.com/2018/04/14/TensorFlow-Object-Detection-API/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/20/Backpropagation-in-Neural-Network/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Backpropagation in Neural Network
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/13/Object-Detection-Faster-RCNN/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">物体识别技术之Faster R-CNN</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-概述"><span class="nav-number">1.</span> <span class="nav-text">1. 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-模型及算法选型"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 模型及算法选型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-实现流程"><span class="nav-number">2.</span> <span class="nav-text">2. 实现流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-数据准备"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 数据准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据标记"><span class="nav-number">2.1.1.</span> <span class="nav-text">数据标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据描述格式"><span class="nav-number">2.1.2.</span> <span class="nav-text">数据描述格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-模型配置-迁移学习"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 模型配置/迁移学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置物体识别训练流程文件"><span class="nav-number">2.2.1.</span> <span class="nav-text">配置物体识别训练流程文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-训练"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tensorflow-Object-Detection-API-安装"><span class="nav-number">2.3.1.</span> <span class="nav-text">Tensorflow Object Detection API 安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动训练过程"><span class="nav-number">2.3.2.</span> <span class="nav-text">启动训练过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用TensorBoard-跟踪训练过程"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用TensorBoard 跟踪训练过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-导出模型"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 导出模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-测试"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-结论"><span class="nav-number">3.</span> <span class="nav-text">3. 结论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-经验总结"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 经验总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

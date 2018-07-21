@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度学习基础之正则化 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法" />
+  
+  
+  
+  
+  <meta name="description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
+<meta name="keywords" content="AI,人工智能,正则化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习基础之正则化">
+<meta property="og:url" content="http://blog.a-stack.com/2018/03/04/深度学习基础之正则化/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-04-深度学习基础之正则化/数据分布及增强之后数据分布.png">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.716Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习基础之正则化">
+<meta name="twitter:description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-04-深度学习基础之正则化/数据分布及增强之后数据分布.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-深度学习基础之正则化" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习基础之正则化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/04/深度学习基础之正则化/" class="article-date">
+	  <time datetime="2018-03-04T07:35:01.000Z" itemprop="datePublished">2018-03-04</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。</p>
+<a id="more"></a>
+<p>@toc</p>
+<p>过拟合一直是深度学习算法训练过程中必须要面对的一个难题，而正则化是降低模型过拟合的有效手段，这篇笔记用于归纳正则化的关键技术。</p>
+<blockquote>
+<p>深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳汇总：</p>
+<ol>
+<li>问题定义</li>
+<li>目标及评估</li>
+<li>数据准备与预处理</li>
+<li>激活函数的归纳及总结</li>
+<li>优化算法的归纳及总结</li>
+<li><strong>正则化与泛化性能</strong></li>
+<li>模型压缩</li>
+<li>数据扩充</li>
+</ol>
+</blockquote>
+<h2 id="从欠拟合和过拟合聊起"><a href="#从欠拟合和过拟合聊起" class="headerlink" title="从欠拟合和过拟合聊起"></a>从欠拟合和过拟合聊起</h2><blockquote>
+<p><to-do> 重读 Andrew Wu的课程</to-do></p>
+</blockquote>
+<p><strong>“泛化</strong>指的是一个假设模型能够应用到新样本的能力。</p>
+<h3 id="解决过拟合"><a href="#解决过拟合" class="headerlink" title="解决过拟合"></a>解决过拟合</h3><p><strong>方法一：尽量减少选取变量的数量</strong></p>
+<p>具体而言，我们可以人工检查每一项变量，并以此来确定哪些变量更为重要，然后，保留那些更为重要的特征变量。至于，哪些变量应该舍弃，我们以后在讨论，这会涉及到模型选择算法，这种算法是可以自动选择采用哪些特征变量，自动舍弃不需要的变量。这类做法非常有效，但是其缺点是当你舍弃一部分特征变量时，你也舍弃了问题中的一些信息。例如，也许所有的特征变量对于预测房价都是有用的，我们实际上并不想舍弃一些信息或者说舍弃这些特征变量。</p>
+<p><strong>方法二：正则化</strong></p>
+<p>正则化中我们将保留所有的特征变量，但是会减小特征变量的数量级（参数数值的大小θ(j)）。</p>
+<p>这个方法非常有效，当我们有很多特征变量时，其中每一个变量都能对预测产生一点影响。正如我们在房价预测的例子中看到的那样，我们可以有很多特征变量，其中每一个变量都是有用的，因此我们不希望把它们删掉，这就导致了正则化概念的发生。</p>
+<h3 id="批量正则化（Batch-Normalization）"><a href="#批量正则化（Batch-Normalization）" class="headerlink" title="批量正则化（Batch Normalization）"></a>批量正则化（Batch Normalization）</h3><script type="math/tex; mode=display">
+\hat x_i = \frac{x_i -\mu_\beta}{\sqrt{\sigma_\beta^2 + \epsilon}}</script><p>其中，</p>
+<script type="math/tex; mode=display">
+\mu_\beta = \frac{1}{M}\sum_{i=1}^m{x_i}  \quad \sigma_\beta^2=\frac{1}{m}\sum_{i=1}^m{(x_i-\mu_\beta)^2}</script><h2 id="数据增强-Data-Augmentation"><a href="#数据增强-Data-Augmentation" class="headerlink" title="数据增强(Data Augmentation)"></a>数据增强(Data Augmentation)</h2><p><strong>目的</strong>：通过轻微的改变样本数据，增强模型输入数据的泛化特性，希望让模型学到更加鲁棒的特征表达方式。</p>
+<blockquote>
+<p>通过一定程度的降低训练精度，提升泛化性能。</p>
+</blockquote>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-04-深度学习基础之正则化/数据分布及增强之后数据分布.png" alt="数据分布及增强之后数据分布"></p>
+<p>Figure 2.1: Left: A sample of 250 data points that follow a normal distribution exactly. Right: Adding a small amount of random “jitter” to the distribution. This type of data augmentation can increase the generalizability of our networks.</p>
+<p>如图所示，现实生活中的数据分布很难像标准正态分布一样完美，左图通过在每个维度上增加一定的抖动来提升系统的泛化能力，当前系统仍然近似符合正态分布。</p>
+<p>常用的数据放大手段有：</p>
+<ol>
+<li>仿射变换；</li>
+<li>旋转；</li>
+<li>缩放；</li>
+<li>裁剪（Shearing）,如random crop：采用随机图像差值方式，对图像进行裁剪、缩放；包括Scale Jittering方法（VGG及ResNet模型使用）或者尺度和长宽比增强变换；</li>
+<li>水平/垂直翻转；</li>
+<li>平移；</li>
+<li>色彩空间变换(Color Jittering): 图像亮度、饱和度、对比度变化；</li>
+<li>PCA Jittering: 首先按照RGB三个颜色通道计算均值和标准差，再在整个训练集上计算协方差矩阵，进行特征分解，得到特征向量和特征值，用来做PCA Jittering；</li>
+<li>噪声处理，高斯噪声，模糊处理</li>
+</ol>
+<h3 id="Keras中的数据增强"><a href="#Keras中的数据增强" class="headerlink" title="Keras中的数据增强"></a>Keras中的数据增强</h3><p>Keras中提供了<code>keras.preprocessing.image.ImageDataGenerator</code>用于对图片进行预处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import the necessary packages</span></span><br><span class="line"><span class="keyword">from</span> keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator </span><br><span class="line"><span class="keyword">from</span> keras.preprocessing.image <span class="keyword">import</span> img_to_array </span><br><span class="line"><span class="keyword">from</span> keras.preprocessing.image <span class="keyword">import</span> load_img </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"><span class="comment"># load the input image, convert it to a NumPy array, and then </span></span><br><span class="line"><span class="comment"># reshape it to have an extra dimension </span></span><br><span class="line">print(<span class="string">"[INFO] loading example image..."</span>)</span><br><span class="line">image = load_img(args[<span class="string">"image"</span>]) </span><br><span class="line">image = img_to_array(image)</span><br><span class="line">image = np.expand_dims(image, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the image generator for data augmentation then</span></span><br><span class="line"><span class="comment"># initialize the total number of images generated thus far </span></span><br><span class="line">aug = ImageDataGenerator(rotation_range=<span class="number">30</span>, width_shift_range=<span class="number">0.1</span>, height_shift_range=<span class="number">0.1</span>, shear_range=<span class="number">0.2</span>, zoom_range=<span class="number">0.2</span>, horizontal_flip=<span class="keyword">True</span>, fill_mode=<span class="string">"nearest"</span>)</span><br><span class="line">total = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the actual Python generator </span></span><br><span class="line">print(<span class="string">"[INFO] generating images..."</span>)</span><br><span class="line">imageGen = aug.flow(image, batch_size=<span class="number">1</span>, save_to_dir=args[<span class="string">"output"</span>], save_prefix=args[<span class="string">"prefix"</span>], save_format=<span class="string">"jpg"</span>)</span><br><span class="line"><span class="comment"># loop over examples from our image data augmentation generator </span></span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> imageGen:</span><br><span class="line"><span class="comment"># increment our counter </span></span><br><span class="line">	total += <span class="number">1</span></span><br><span class="line">	<span class="comment"># if we have reached 10 examples, break from the loop </span></span><br><span class="line">    <span class="keyword">if</span> total == <span class="number">10</span>:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">       </span><br><span class="line"> <span class="comment">#Training Time</span></span><br><span class="line">H = model.fit_generator(aug.flow(trainX, trainY, batch_size=<span class="number">32</span>), validation_data=(testX, testY), steps_per_epoch=len(trainX) // <span class="number">32</span>, epochs=<span class="number">100</span>, verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ImageDataGenerator</code>的常用参数：</p>
+<ol>
+<li><code>rotation_range</code> : 随机旋转角度，比如30°；</li>
+<li><code>width_shift_range</code>和<code>height_shift_range</code>，控制宽度和高度的偏移比例，例子中0.1=10%的变动幅度；</li>
+<li><code>shear_range</code>: </li>
+<li><code>zoom_range</code>：[1-<code>zoom_range</code>, 1+<code>zoom_range</code>]范围‘</li>
+<li><code>horizontal_flip</code>:</li>
+</ol>
+<p><code>flow</code>方法：<code>flow(self, X, y, batch_size=32, shuffle=True, seed=None, save_to_dir=None, save_prefix=&#39;&#39;, save_format=&#39;png&#39;)</code>, 接收numpy数组和标签为参数，生成经过数据增强的batch数据，并在一个无限循环中不断的返回batch_size的数据</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras文档</a></li>
+<li><a href="https://www.kickstarter.com/projects/adrianrosebrock/deep-learning-for-computer-vision-with-python-eboo" target="_blank" rel="noopener">deep learning for computer vision with python</a></li>
+<li><a href="https://www.coursera.org/learn/machine-learning/lecture/ACpTQ/the-problem-of-overfitting" target="_blank" rel="noopener">Machine Learning Lessons by Andrew</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/04/深度学习基础之正则化/" target="_blank" title="深度学习基础之正则化">http://blog.a-stack.com/2018/03/04/深度学习基础之正则化/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          读书笔记：《Practical Python and OpenCV》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/03/Deep-Learning-for-Computer-Vision/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Deep Learning for Computer Vision</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从欠拟合和过拟合聊起"><span class="nav-number">1.</span> <span class="nav-text">从欠拟合和过拟合聊起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决过拟合"><span class="nav-number">1.1.</span> <span class="nav-text">解决过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量正则化（Batch-Normalization）"><span class="nav-number">1.2.</span> <span class="nav-text">批量正则化（Batch Normalization）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据增强-Data-Augmentation"><span class="nav-number">2.</span> <span class="nav-text">数据增强(Data Augmentation)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras中的数据增强"><span class="nav-number">2.1.</span> <span class="nav-text">Keras中的数据增强</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>git使用总结 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法" />
+  
+  
+  
+  
+  <meta name="description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
+<meta name="keywords" content="技术,读书笔记,Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git使用总结">
+<meta property="og:url" content="http://blog.a-stack.com/2017/02/02/读书笔记-Pro-Git/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/blog/lifecycleForGit.jpg">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git使用总结">
+<meta name="twitter:description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/blog/lifecycleForGit.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-读书笔记-Pro-Git" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Git使用总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/02/02/读书笔记-Pro-Git/" class="article-date">
+	  <time datetime="2017-02-02T04:45:13.000Z" itemprop="datePublished">2017-02-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/工具/">工具</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。<br><a id="more"></a></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>​    《Pro Git》由GitHub员工Scott Chacon和另一位爱好者Ben Straub共同编写，主要介绍了Git使用基础和原理，适合Git爱好者和初学者参考。</p>
+<blockquote>
+<p>The entire Pro Git book, written by Scott Chacon and Ben Straub and published by Apress, is available here. All content is licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">Creative Commons Attribution Non Commercial Share Alike 3.0 license</a>. Print versions of the book are available on <a href="http://www.amazon.com/Pro-Git-Scott-Chacon/dp/1484200772?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1430218339&amp;linkCode=as2&amp;tag=git-sfconservancy-20" target="_blank" rel="noopener">Amazon.com</a>.</p>
+</blockquote>
+<p>可通过如下地址获取（另外本文末尾提供了不同格式下载的地址）：</p>
+<ul>
+<li>官网：<a href="http://git-scm.com/book/en/v2" target="_blank" rel="noopener">http://git-scm.com/book/en/v2</a>（第二版）</li>
+<li>中文翻译：<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2</a>（第二版）<br>​</li>
+</ul>
+<h2 id="Take-a-Note-for-Reading"><a href="#Take-a-Note-for-Reading" class="headerlink" title="Take a Note for Reading"></a>Take a Note for Reading</h2><blockquote>
+<p>这次笔记整理我将以2014年的第二版英文版为基础，记录这个过程中所获得的新的技能点。</p>
+</blockquote>
+<h3 id="同类工具"><a href="#同类工具" class="headerlink" title="同类工具"></a>同类工具</h3><ul>
+<li>Subversion </li>
+<li>Perforce</li>
+<li>Bazaar</li>
+<li>Git特点<ul>
+<li>数据存储方式—-》<code>a stream of snapshots</code></li>
+<li>离线处理和编辑</li>
+<li>Checksum 算法：SHA-1 hash</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-环境配置"><a href="#0-环境配置" class="headerlink" title="0. 环境配置"></a>0. 环境配置</h3><blockquote>
+<p>Git全局配置文件的改写通过添加<code>--global</code>实现<br>Git的配置文件（此处仅针对某个repo）位置为<code>.git/config</code></p>
+</blockquote>
+<ol>
+<li><p><strong>基本信息配置</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"John Doe"</span></span><br><span class="line">$ git config --global user.email johndoe@example.com</span><br><span class="line">$ git config --global pull.rebase <span class="literal">true</span></span><br><span class="line">$ git config --global core.editor emacs</span><br><span class="line">$ git config --global color.ui <span class="literal">true</span></span><br><span class="line"><span class="comment"># Windows环境下，编辑器的配置如下</span></span><br><span class="line">$ git config --global core.editor <span class="string">"'C:/Program Files (x86)/Notepad++/notepad++.exe' -multiInst</span></span><br></pre></td></tr></table></figure>
+<p>配置完成之后，可以通过如下命令检查配置情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>别名设置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.unstage 'reset HEAD --'</span><br><span class="line">$ git config --global alias.last 'log -1 HEAD'</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="1-Git基础"><a href="#1-Git基础" class="headerlink" title="1. Git基础"></a>1. Git基础</h3><p>​    下图描述了git处理文件的生命周期<br><img src="http://p4ygzcmtw.bkt.clouddn.com/images/blog/lifecycleForGit.jpg" alt="lifecycleForGit"></p>
+<h4 id="关于-gitignore文件"><a href="#关于-gitignore文件" class="headerlink" title="关于.gitignore文件"></a>关于<code>.gitignore</code>文件</h4><p>​    文件 <code>.gitignore</code> 的格式规范如下：</p>
+<ul>
+<li>所有空行或者以 <code>＃</code> 开头的行都会被 Git 忽略。</li>
+<li>可以使用标准的 glob 模式匹配。</li>
+<li>匹配模式可以以<code>/</code>开头防止递归。</li>
+<li>匹配模式可以以<code>/</code>结尾指定目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号<code>!</code>取反。<blockquote>
+<p>所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号<code>*</code>匹配零个或多个任意字符；<code>[abc]</code> 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号<code>?</code>只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如<code>[0-9]</code>表示匹配所有 0 到 9 的数字）。 使用两个星号<code>**</code> 表示匹配任意中间目录，比如<code>a/**/z</code> 可以匹配 <code>a/z</code>, <code>a/b/z</code> 或 <code>a/b/c/z</code>等。更多内容请参考：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
+</blockquote>
+</li>
+</ul>
+<p>​    举个🌰[栗子]：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># no .a files</span></span><br><span class="line">*.a</span><br><span class="line"></span><br><span class="line"><span class="comment"># but do track lib.a, even though you're ignoring .a files above</span></span><br><span class="line">!lib.a</span><br><span class="line"></span><br><span class="line"><span class="comment"># only ignore the TODO file in the current directory, not subdir/TODO</span></span><br><span class="line">/TODO</span><br><span class="line"></span><br><span class="line"><span class="comment"># ignore all files in the build/ directory</span></span><br><span class="line">build/</span><br><span class="line"></span><br><span class="line"><span class="comment"># ignore doc/notes.txt, but not doc/server/arch.txt</span></span><br><span class="line">doc/*.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># ignore all .pdf files in the doc/ directory</span></span><br><span class="line">doc/**/*.pdf</span><br></pre></td></tr></table></figure></p>
+<h4 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h4><p>​    我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。 换句话说，你想让文件保留在磁盘，但是并不想让 Git 继续跟踪。 当你忘记添加 <code>.gitignore</code> 文件，不小心把一个很大的日志文件或一堆 <code>.a</code>这样的编译生成文件添加到暂存区时，这一做法尤其有用。 为达到这一目的，使用<code>—cached</code> 选项：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached README</span><br></pre></td></tr></table></figure></p>
+<p>​    <code>git rm</code>命令后面可以列出文件或者目录的名字，也可以使用 glob 模式。 比方说：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm log/*.log</span><br></pre></td></tr></table></figure></p>
+<p>​    注意到星号 <code>*</code> 之前的反斜杠<code>\</code>， 因为 Git 有它自己的文件模式扩展匹配方式，所以我们不用 shell 来帮忙展开。 此命令删除 <code>log/</code> 目录下扩展名为 <code>.log</code> 的所有文件。 类似的比如：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm *~</span><br></pre></td></tr></table></figure></p>
+<p>​    该命令为删除以 ~ 结尾的所有文件。</p>
+<h4 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h4><p>​    git log 有许多选项可以帮助你搜寻你所要找的提交。</p>
+<ol>
+<li><p>一个常用的选项是<code>-p</code>，用来显示每次提交的内容差异。 你也可以加上<code>-2</code> 来仅显示最近两次提交：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git log -p -2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果你想看到每次提交的简略的统计信息，你可以使用 <code>—stat</code> 选项：</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">EbbyMandeMBP:blog 520XM$ git <span class="built_in">log</span> --<span class="built_in">stat</span></span><br><span class="line">commit 1a158fd41bece4caed80210526e8700dae73a527</span><br><span class="line">Author: ddebby &lt;ebby.dd@gmail.com&gt;</span><br><span class="line">Date:   Thu Feb 2 19:02:31 2017 +0800</span><br><span class="line"></span><br><span class="line">    新增两篇读书笔记</span><br><span class="line">    </span><br><span class="line">    Signed-off-by: ddebby &lt;ebby.dd@gmail.com&gt;</span><br><span class="line"></span><br><span class="line"> ...344\271\246\347\254\224\350\256\260-Pro-Git.md<span class="string">" |  79 +++++++++++++++++++++</span></span><br><span class="line"><span class="string"> ...56\260-\350\205\276\350\256\257\344\274\240.md"</span> |  65 +++++++++++++++++</span><br><span class="line"> <span class="built_in">source</span>/images/blog/Pro Git Version 2.jpg           | Bin 0 -&gt; 134581 bytes</span><br><span class="line"> <span class="built_in">source</span>/images/blog/pro-git-cover.jpeg              | Bin 0 -&gt; 21289 bytes</span><br><span class="line"> ...56\257\344\274\240\345\260\201\351\235\242.jpg<span class="string">" | Bin 0 -&gt; 12898 bytes</span></span><br><span class="line"><span class="string"> ...0\206-\350\205\276\350\256\257\344\274\240.PNG"</span> | Bin 0 -&gt; 24520 bytes</span><br><span class="line"> themes/next/<span class="built_in">source</span>/css/_custom/custom.styl         |   3 +-</span><br><span class="line"> themes/next/<span class="built_in">source</span>/css/_variables/custom.styl      |  12 ++--</span><br><span class="line"> 8 files changed, 152 insertions(+), 7 deletions(-)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>还可以给出若干搜索条件，列出符合的提交。 用 <code>--author</code> 选项显示指定作者的提交，用 <code>--grep</code> 选项搜索提交说明中的关键字。 （请注意，如果要得到同时满足这两个选项搜索条件的提交，就必须用 <code>--all-match</code>选项。否则，满足任意一个条件的提交都会被匹配出来）</li>
+<li>另一个非常有用的筛选选项是 <code>-S</code>，可以列出那些添加或移除了某些字符串的提交。 比如说，你想找出添加或移除了某一个特定函数的引用的提交，你可以这样使用：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> -S function_name</span><br></pre></td></tr></table></figure>
+<ol>
+<li>最后一个很实用的 git log 选项是路径（path）， 如果只关心某些文件或者目录的历史提交，可以在 git log 选项的最后指定它们的路径。 因为是放在最后位置上的选项，所以用两个短划线（—）隔开之前的选项和后面限定的路径名。</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>选项</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-(n)</td>
+<td>仅显示最近的 n 条提交</td>
+</tr>
+<tr>
+<td>—since, —after</td>
+<td>仅显示指定时间之后的提交。</td>
+</tr>
+<tr>
+<td>—until, —before</td>
+<td>仅显示指定时间之前的提交。</td>
+</tr>
+<tr>
+<td>—author</td>
+<td>仅显示指定作者相关的提交。</td>
+</tr>
+<tr>
+<td>—committer</td>
+<td>仅显示指定提交者相关的提交。</td>
+</tr>
+<tr>
+<td>—grep</td>
+<td>仅显示含指定关键字的提交</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>仅显示添加或移除了某个关键字的提交</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="git-diff"><a href="#git-diff" class="headerlink" title="git diff"></a>git diff</h4><p> Git 提供了一种比较便捷的方式：三点语法。 对于 <code>diff</code> 命令来说，你可以通过把 <code>...</code> 置于另一个分支名后来对该分支的最新提交与两个分支的共同祖先进行比较：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git diff master...contrib</span></span><br></pre></td></tr></table></figure>
+<p>该命令仅会显示自当前特性分支与 master 分支的共同祖先起，该分支中的工作。 这个语法很有用，应该牢记。</p>
+<h4 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h4><p><strong>添加远程仓库</strong><br>​    我在之前的章节中已经提到并展示了如何添加远程仓库的示例，不过这里将告诉你如何明确地做到这一点。 运行 <code>git remote add &lt;shortname&gt; &lt;url&gt;</code> 添加一个新的远程 Git 仓库。<br><strong>从远程仓库中抓取与拉取</strong><br>​    如果你想拉取远程仓库中有但你没有的信息，可以运行：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch [remote-name]</span><br></pre></td></tr></table></figure></p>
+<p>​    必须注意 git fetch 命令会将数据拉取到你的本地仓库 - 它并不会自动合并或修改你当前的工作。 当准备好时你必须手动将其合并入你的工作。</p>
+<h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p><strong>附注标签</strong><br>在 Git 中创建一个附注标签是很简单的。 最简单的方式是当你在运行 tag 命令时指定<code>-a</code> 选项：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -a v1.4 -m 'my version 1.4'</span><br><span class="line"></span><br><span class="line">$ git tag</span><br><span class="line">v0.1</span><br><span class="line">v1.3</span><br><span class="line">v1.4</span><br></pre></td></tr></table></figure></p>
+<p>​    <code>-m</code>选项指定了一条将会存储在标签中的信息。 如果没有为附注标签指定一条信息，Git 会运行编辑器要求你输入信息。</p>
+<p><strong>后期打标签</strong><br>    要在那个提交上打标签，你需要在命令的末尾指定提交的校验和（或部分校验和）:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -a v1.2 9fceb02</span><br></pre></td></tr></table></figure></p>
+<p><strong>共享标签</strong><br>​    默认情况下，git push 命令并不会传送标签到远程仓库服务器上。 在创建完标签后你必须显式地推送标签到共享服务器上。 这个过程就像共享远程分支一样 - 你可以运行<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin [tagname] </span><br><span class="line"># or</span><br><span class="line">$ git push origin --tags</span><br></pre></td></tr></table></figure></p>
+<p><strong>检出标签</strong><br>​    在 Git 中你并不能真的检出一个标签，因为它们并不能像分支一样来回移动。 如果你想要工作目录与仓库中特定的标签版本完全一样，可以使用 <code>git checkout -b [branchname][tagname]</code>在特定的标签上创建一个新分支：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b version2 v2.0.0</span><br><span class="line">Switched to a new branch 'version2'</span><br></pre></td></tr></table></figure></p>
+<h4 id="分支管理-git-branch"><a href="#分支管理-git-branch" class="headerlink" title="分支管理 git branch"></a>分支管理 <code>git branch</code></h4><p>​    如果需要查看每一个分支的最后一次提交，可以运行 <code>git branch -v</code>命令：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">* dev    1a158fd 新增两篇读书笔记</span><br><span class="line">  master f8f05fb Accept Merge Request #1 Merge Resource branch to Master branch : (resource -&gt; master)</span><br></pre></td></tr></table></figure></p>
+<p>​    <code>—merged</code> 与 <code>--no-merged</code> 这两个有用的选项可以过滤这个列表中已经合并或尚未合并到当前分支的分支。 如果要查看哪些分支已经合并到当前分支，可以运行：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --merged</span><br><span class="line">  iss53</span><br><span class="line">* master</span><br></pre></td></tr></table></figure></p>
+<p>​    因为之前已经合并了 iss53 分支，所以现在看到它在列表中。 在这个列表中分支名字前没有 * 号的分支通常可以使用 git branch -d 删除掉；你已经将它们的工作整合到了另一个分支，所以并不会失去任何东西。<br>​    查看所有包含未合并工作的分支，可以运行：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --no-merged</span><br><span class="line">  testing</span><br></pre></td></tr></table></figure></p>
+<p>​    这里显示了其他分支。</p>
+<blockquote>
+<p>未被合并的分支默认是无法被删除，不过可以通过<code>git branch -D &lt;branch_name&gt;</code>来强制删除。</p>
+</blockquote>
+<ul>
+<li><p>拉取远程分支：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b [branch] [remotename]/[branch]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果想要查看设置的所有跟踪分支，可以使用 <code>git branch</code> 的 <code>-vv</code> 选项。 这会将所有的本地分支列出来并且包含更多的信息，如每一个分支正在跟踪哪个远程分支与本地分支是否是领先、落后或是都有。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -vv</span><br><span class="line">  iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets</span><br><span class="line">  master    1ae2a45 [origin/master] deploying index fix</span><br><span class="line">* serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it</span><br><span class="line">  testing   5ea463a trying something new</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除远程服务器的分支</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin --delete serverfix</span><br><span class="line">To https://github.com/schacon/simplegit</span><br><span class="line"> - [deleted]         serverfix</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>git merge</code>与<code>git rebase</code></p>
+<blockquote>
+<p>总的原则是，只对尚未推送或分享给别人的本地修改执行变基操作清理历史，从不对已推送至别处的提交执行变基操作，这样，你才能享受到两种方式带来的便利。详情参考：<a href="https://git-scm.com/book/zh/v2/Git-分支-变基" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2/Git-分支-变基</a></p>
+</blockquote>
+</li>
+<li><p>将当前分支推送为远程新分支</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin local_branch:remote_branch</span><br></pre></td></tr></table></figure>
+<h4 id="git-stash"><a href="#git-stash" class="headerlink" title="git stash"></a>git stash</h4><p><strong>储藏与清理</strong></p>
+<p>在一个分支上做了一些修改，在不想commit的情况下，切换分支，需要将修改的内容存储起来，使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git stash | git stash save</span><br><span class="line">git stash list</span><br><span class="line">git stash apply</span><br><span class="line"><span class="comment"># 移除某个stach内容</span></span><br><span class="line">git stach drop stach@&#123;0&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-Git-服务器"><a href="#2-Git-服务器" class="headerlink" title="2. Git 服务器"></a>2. Git 服务器</h3><ul>
+<li><strong>生成裸仓库</strong><br>​在开始架设 Git 服务器前，需要把现有仓库导出为裸仓库——即一个不包含当前工作目录的仓库。 这通常是很简单的。 为了通过克隆你的仓库来创建一个新的裸仓库，你需要在克隆命令后加上 <code>--bare</code>选项 按照惯例，裸仓库目录名以 <code>.git</code> 结尾，就像这样：<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git clone --bare my_project my_project.git</span><br><span class="line">Cloning into bare repository 'my_project.git'...</span><br><span class="line">done.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>现在，你的 my_project.git 目录中应该有 Git 目录的副本了。</p>
+<ul>
+<li><strong>把裸仓库放到服务器上</strong><br>只需要将上述<code>my_project.git</code>复制到某个目录下即可通过如下命令访问：<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone user@git.example.com:/opt/git/my_project.git</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>​    如果到该项目目录中运行 <code>git init</code> 命令，并加上 <code>--shared</code>选项，那么 Git 会自动修改该仓库目录的组权限为可写。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@git.example.com</span><br><span class="line">$ cd /opt/git/my_project.git</span><br><span class="line">$ git init --bare --shared</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>基于以上简单配置的简单权限管理策略：</p>
+<ol>
+<li>主机上建立一个 <em>git</em> 账户，让每个需要写权限的人发送一个 SSH 公钥，然后将其加入 git 账户的 ~/.ssh/authorized_keys 文件。 这样一来，所有人都将通过 <em>git</em> 账户访问主机。 这一点也不会影响提交的数据——访问主机用的身份不会影响提交对象的提交者信息。</li>
+<li>另一个办法是让 SSH 服务器通过某个 LDAP 服务，或者其他已经设定好的集中授权机制，来进行授权。 只要每个用户可以获得主机的 shell 访问权限，任何 SSH 授权机制你都可视为是有效的。</li>
+</ol>
+</blockquote>
+<h4 id="维护项目"><a href="#维护项目" class="headerlink" title="维护项目"></a>维护项目</h4><p><strong>使用<code>format-patch</code>生成补丁</strong></p>
+<ul>
+<li>适用于邮件通知项目管理者合并补丁内容</li>
+</ul>
+<p><strong>使用 <code>apply</code> 命令应用补丁</strong></p>
+<p>​    如果你收到了一个使用 <code>git diff</code> 或 Unix <code>diff</code> 命令（不推荐使用这种方式，具体见下一节）创建的补丁，可以使用 <code>git apply</code> 命令来应用。 假设你将补丁保存在了 <code>/tmp/patch-ruby-client.patch</code> 中，可以这样应用补丁：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git apply /tmp/<span class="keyword">patch</span>-ruby-client.<span class="keyword">patch</span></span><br></pre></td></tr></table></figure>
+<p>这会修改工作目录中的文件。 它与运行 <code>patch -p1</code> 命令来应用补丁几乎是等效的，但是这种方式更加严格，相对于 patch 来说，它能够接受的模糊匹配更少。</p>
+<p>在实际应用补丁前，你还可以使用 <code>git apply</code> 来检查补丁是否可以顺利应用——即对补丁运行 <code>git apply --check</code> 命令：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git apply --check 0001-seeing-if-this-helps-the-gem.patch</span><br><span class="line"><span class="keyword">error: </span>patch failed: ticgit.gemspec:1</span><br><span class="line"><span class="keyword">error: </span>ticgit.gemspec: patch does not apply</span><br></pre></td></tr></table></figure>
+<p>如果没有产生输出，则该补丁可以顺利应用。 如果检查失败了，该命令还会以一个非零的状态退出，所以需要时你也可以在脚本中使用它。</p>
+<h5 id="准备一次发布"><a href="#准备一次发布" class="headerlink" title="准备一次发布"></a>准备一次发布</h5><p>现在你可以发布一个构建了。 其中一件事情就是为那些不使用 Git 的可怜包们创建一个最新的快照归档。 使用 <code>git archive</code> 命令完成此工作：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git archive master --prefix=<span class="string">'project/'</span> | gzip &gt; `git describe master`.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ls *.tar.gz</span></span><br><span class="line">v1.6.2-rc1-20-g8c5b85c.tar.gz</span><br></pre></td></tr></table></figure>
+<p>如果有人将这个压缩包解压，他就可以得到你的项目文件夹的最新快照。 你也可以以类似的方式创建一个 zip 压缩包，但此时你应该向 <code>git archive</code> 命令传递 <code>--format=zip</code> 选项：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git archive <span class="keyword">master</span> <span class="title">--prefix</span>='project/' --<span class="attr">format=</span>zip &gt; `git describe <span class="literal">master</span>`.zip</span><br></pre></td></tr></table></figure>
+<p>现在你有了本次发布的一个 tar 包和一个 zip 包，可以将其上传到网站或以电子邮件的形式发送给人们。</p>
+<h5 id="制作提交简报"><a href="#制作提交简报" class="headerlink" title="制作提交简报"></a>制作提交简报</h5><p>现在是时候通知邮件列表里那些好奇你的项目发生了什么的人了。 使用 <code>git shortlog</code> 命令可以快速生成一份包含从上次发布之后项目新增内容的修改日志（changelog）类文档。 它会对你给定范围内的所有提交进行总结；比如，你的上一次发布名称是 v1.0.1，那么下面的命令可以给出上次发布以来所有提交的总结：</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ git shortlog --no-merges master --<span class="keyword">not</span> v1.<span class="number">0.1</span></span><br><span class="line">Chris Wanstrath (<span class="number">8</span>):</span><br><span class="line">      <span class="keyword">Add</span> support <span class="keyword">for</span> annotated tags <span class="keyword">to</span> Grit::Tag</span><br><span class="line">      <span class="keyword">Add</span> <span class="keyword">packed</span>-refs annotated tag support.</span><br><span class="line">      <span class="keyword">Add</span> Grit::Commit#to_patch</span><br><span class="line">      Update version <span class="keyword">and</span> History.txt</span><br><span class="line">      <span class="keyword">Remove</span> stray `puts`</span><br><span class="line">      Make ls_tree ignore nils</span><br><span class="line"></span><br><span class="line">Tom Preston-Werner (<span class="number">4</span>):</span><br><span class="line">      fix dates <span class="keyword">in</span> history</span><br><span class="line">      <span class="keyword">dynamic</span> version <span class="function"><span class="keyword">method</span></span></span><br><span class="line"><span class="function">      <span class="title">Version</span> <span class="title">bump</span> <span class="title">to</span> 1.0.2</span></span><br><span class="line"><span class="function">      <span class="title">Regenerated</span> <span class="title">gemspec</span> <span class="title">for</span> <span class="title">version</span> 1.0.2</span></span><br></pre></td></tr></table></figure>
+<p>这份整洁的总结包括了自 v1.0.1 以来的所有提交，并且已经按照作者分好组，你可以通过电子邮件将其直接发送到列表中。</p>
+<h2 id="Git工具"><a href="#Git工具" class="headerlink" title="Git工具"></a>Git工具</h2><h3 id="双点"><a href="#双点" class="headerlink" title="双点"></a>双点</h3><p>最常用的指明提交区间语法是双点。 这种语法可以让 Git 选出在一个分支中而不在另一个分支中的提交。你想要查看 experiment 分支中还有哪些提交尚未被合并入 master 分支。 你可以使用 <code>master..experiment</code> 来让 Git 显示这些提交。也就是 “在 experiment 分支中而不在 master 分支中的提交”：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> master..experiment</span></span><br></pre></td></tr></table></figure>
+<p>反过来，如果你想查看在 <code>master</code> 分支中而不在 <code>experiment</code> 分支中的提交，你只要交换分支名即可。<code>experiment..master</code> 会显示在 <code>master</code> 分支中而不在 <code>experiment</code> 分支中的提交：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> experiment..master</span></span><br></pre></td></tr></table></figure>
+<p>这可以让你保持 <code>experiment</code> 分支跟随最新的进度以及查看你即将合并的内容。 另一个常用的场景是查看你即将推送到远端的内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> origin/master..HEAD</span></span><br></pre></td></tr></table></figure>
+<p>这个命令会输出在你当前分支中而不在远程 <code>origin</code> 中的提交。 如果你执行了 <code>git push</code> 并且你的当前分支正在跟踪 <code>origin/master</code>，<code>git log origin/master..HEAD</code> 所输出的提交将会被传输到远端服务器。 如果你留空了其中的一边， Git 会默认为 HEAD。 例如， <code>git log origin/master..</code> 将会输出与之前例子相同的结果 —— Git 使用 HEAD 来代替留空的一边。</p>
+<h3 id="多点"><a href="#多点" class="headerlink" title="多点"></a>多点</h3><p>双点语法很好用，但有时候你可能需要两个以上的分支才能确定你所需要的修订，比如查看哪些提交是被包含在某些分支中的一个，但是不在你当前的分支上。 Git 允许你在任意引用前加上 <code>^</code> 字符或者 <code>--not</code>来指明你不希望提交被包含其中的分支。 因此下列3个命令是等价的：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> refA..refB</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> ^refA refB</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> refB --not refA</span></span><br></pre></td></tr></table></figure>
+<p>这个语法很好用，因为你可以在查询中指定超过两个的引用，这是双点语法无法实现的。 比如，你想查看所有被 <code>refA</code> 或 <code>refB</code> 包含的但是不被 <code>refC</code> 包含的提交，你可以输入下面中的任意一个命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> refA refB ^refC</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">log</span> refA refB --not refC</span></span><br></pre></td></tr></table></figure>
+<p>这就构成了一个十分强大的修订查询系统，你可以通过它来查看你的分支里包含了哪些东西。</p>
+<h3 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h3><p>例如，如果我们想找到 <code>ZLIB_BUF_MAX</code> 常量是什么时候引入的，我们可以使用 <code>-S</code> 选项来显示新增和删除该字符串的提交。</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> -SZLIB_BUF_MAX <span class="comment">--oneline</span></span><br><span class="line">e01503b zlib: allow feeding more than <span class="number">4</span>GB <span class="keyword">in</span> <span class="literal">one</span> go</span><br><span class="line">ef49a7a zlib: zlib can only <span class="built_in">process</span> <span class="number">4</span>GB <span class="keyword">at</span> <span class="keyword">a</span> <span class="built_in">time</span></span><br></pre></td></tr></table></figure>
+<p>如果我们查看这些提交的 diff，我们可以看到在 <code>ef49a7a</code> 这个提交引入了常量，并且在 <code>e01503b</code> 这个提交中被修改了。</p>
+<h3 id="行日志搜索"><a href="#行日志搜索" class="headerlink" title="行日志搜索"></a>行日志搜索</h3><p>行日志搜索是另一个相当高级并且有用的日志搜索功能。 这是一个最近新增的不太知名的功能，但却是十分有用。 在 <code>git log</code> 后加上 <code>-L</code> 选项即可调用，它可以展示代码中一行或者一个函数的历史。</p>
+<p>例如，假设我们想查看 <code>zlib.c</code> 文件中<code>git_deflate_bound</code> 函数的每一次变更，我们可以执行 <code>git log -L :git_deflate_bound:zlib.c</code>。 Git 会尝试找出这个函数的范围，然后查找历史记录，并且显示从函数创建之后一系列变更对应的补丁。</p>
+<h3 id="压缩提交"><a href="#压缩提交" class="headerlink" title="压缩提交"></a>压缩提交</h3><p>以下命令将HEAD调回到两次提交之前，做一次压缩提交。更多内容详见：<a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%87%8D%E7%BD%AE%E6%8F%AD%E5%AF%86" target="_blank" rel="noopener">Pro Git中的说明</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft HEAD~2</span><br></pre></td></tr></table></figure>
+<h3 id="还原提交"><a href="#还原提交" class="headerlink" title="还原提交"></a>还原提交</h3><p>如果移动分支指针并不适合你，Git 给你一个生成一个新提交的选项，提交将会撤消一个已存在提交的所有修改。 Git 称这个操作为 “还原”，在这个特定的场景下，你可以像这样调用它：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="keyword">revert </span>-m <span class="number">1</span> HEAD</span><br><span class="line">[master <span class="keyword">b1d8379] </span><span class="keyword">Revert </span><span class="string">"Merge branch 'topic'"</span></span><br></pre></td></tr></table></figure>
+<p><code>-m 1</code> 标记指出 “mainline” 需要被保留下来的父结点。 当你引入一个合并到 <code>HEAD</code>（<code>git merge topic</code>），新提交有两个父结点：第一个是 <code>HEAD</code>（<code>C6</code>），第二个是将要合并入分支的最新提交（<code>C4</code>）。 在本例中，我们想要撤消所有由父结点 #2（<code>C4</code>）合并引入的修改，同时保留从父结点 #1（<code>C4</code>）开始的所有内容。</p>
+<h3 id="撤销提交"><a href="#撤销提交" class="headerlink" title="撤销提交"></a>撤销提交</h3><p>如果这个不想要的合并提交只存在于你的本地仓库中，最简单且最好的解决方案是移动分支到你想要它指向的地方。 大多数情况下，如果你在错误的 <code>git merge</code> 后运行 <code>git reset --hard HEAD~</code>，这会重置分支指向。</p>
+<p>这个方法的缺点是它会重写历史，在一个共享的仓库中这会造成问题的。 查阅 <a href="https://git-scm.com/book/zh/v2/ch00/_rebase_peril" target="_blank" rel="noopener">变基的风险</a> 来了解更多可能发生的事情；用简单的话说就是如果其他人已经有你将要重写的提交，你应当避免使用 <code>reset</code>。 如果有任何其他提交在合并之后创建了，那么这个方法也会无效；移动引用实际上会丢失那些改动。</p>
+<h2 id="GitHub的配置及基本测试"><a href="#GitHub的配置及基本测试" class="headerlink" title="GitHub的配置及基本测试"></a>GitHub的配置及基本测试</h2><ol>
+<li>ssh key的创建</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"your_email@youremail.com"</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>上传<code>id_rsa.pub</code> 到github配置</li>
+<li>测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>正确的返回结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gaoc@DataScience:/data2/ml-cousera$ ssh -T git@github.com</span><br><span class="line">The authenticity of host <span class="string">'github.com (52.74.223.119)'</span> can<span class="string">'t be established.</span></span><br><span class="line"><span class="string">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added '</span>github.com,52.74.223.119<span class="string">' (RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Hi ddebby! You'</span>ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+<ol>
+<li>添加origin源</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourName/yourRepo.git</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>不要直接使用https的链接地址，还需要不停的输入用户名/密码验证</p>
+</blockquote>
+<h2 id="TO-DO"><a href="#TO-DO" class="headerlink" title="TO-DO"></a>TO-DO</h2><p>关于书中<a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BA%95%E5%B1%82%E5%91%BD%E4%BB%A4%E5%92%8C%E9%AB%98%E5%B1%82%E5%91%BD%E4%BB%A4" target="_blank" rel="noopener">第十章<strong>Git内部原理</strong>部分</a>，目前还没有时间研读，留作后面作业。限于本文篇幅，这部分内容将新建一篇博文，此处插入链接即可。</p>
+<h2 id="获取不同版本的电子书"><a href="#获取不同版本的电子书" class="headerlink" title="获取不同版本的电子书"></a>获取不同版本的电子书</h2><ul>
+<li><a href="https://progit2.s3.amazonaws.com/en/2014-10-28-26e19/progit-en.54.pdf" target="_blank" rel="noopener">PDF格式</a></li>
+<li><a href="https://progit2.s3.amazonaws.com/en/2014-10-28-26e19/progit-en.54.epub" target="_blank" rel="noopener">Epub格式</a></li>
+<li><a href="https://progit2.s3.amazonaws.com/en/2014-10-28-26e19/progit-en.54.mobi" target="_blank" rel="noopener">Mobi格式</a></li>
+<li><a href="https://progit2.s3.amazonaws.com/en/2014-10-28-26e19/progit-en.54.zip" target="_blank" rel="noopener">HTML在线阅读</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2017/02/02/读书笔记-Pro-Git/" target="_blank" title="Git使用总结">http://blog.a-stack.com/2017/02/02/读书笔记-Pro-Git/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/02/读书笔记-腾讯传/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          读书笔记-&lt;腾讯传：中国互联网公司进化论&gt;
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Take-a-Note-for-Reading"><span class="nav-number">2.</span> <span class="nav-text">Take a Note for Reading</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同类工具"><span class="nav-number">2.1.</span> <span class="nav-text">同类工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-环境配置"><span class="nav-number">2.2.</span> <span class="nav-text">0. 环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Git基础"><span class="nav-number">2.3.</span> <span class="nav-text">1. Git基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-gitignore文件"><span class="nav-number">2.3.1.</span> <span class="nav-text">关于.gitignore文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-rm"><span class="nav-number">2.3.2.</span> <span class="nav-text">git rm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-log"><span class="nav-number">2.3.3.</span> <span class="nav-text">git log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-diff"><span class="nav-number">2.3.4.</span> <span class="nav-text">git diff</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#远程仓库"><span class="nav-number">2.3.5.</span> <span class="nav-text">远程仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标签"><span class="nav-number">2.3.6.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分支管理-git-branch"><span class="nav-number">2.3.7.</span> <span class="nav-text">分支管理 git branch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-stash"><span class="nav-number">2.3.8.</span> <span class="nav-text">git stash</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Git-服务器"><span class="nav-number">2.4.</span> <span class="nav-text">2. Git 服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#维护项目"><span class="nav-number">2.4.1.</span> <span class="nav-text">维护项目</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备一次发布"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">准备一次发布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#制作提交简报"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">制作提交简报</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git工具"><span class="nav-number">3.</span> <span class="nav-text">Git工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双点"><span class="nav-number">3.1.</span> <span class="nav-text">双点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多点"><span class="nav-number">3.2.</span> <span class="nav-text">多点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索"><span class="nav-number">3.3.</span> <span class="nav-text">搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行日志搜索"><span class="nav-number">3.4.</span> <span class="nav-text">行日志搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩提交"><span class="nav-number">3.5.</span> <span class="nav-text">压缩提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#还原提交"><span class="nav-number">3.6.</span> <span class="nav-text">还原提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销提交"><span class="nav-number">3.7.</span> <span class="nav-text">撤销提交</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub的配置及基本测试"><span class="nav-number">4.</span> <span class="nav-text">GitHub的配置及基本测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TO-DO"><span class="nav-number">5.</span> <span class="nav-text">TO-DO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取不同版本的电子书"><span class="nav-number">6.</span> <span class="nav-text">获取不同版本的电子书</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>神经网络之感知机（perceptron） | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法" />
+  
+  
+  
+  
+  <meta name="description" content="感知机于1957年由Rosenblatt等人提出，是神经网络和支持向量机的基础。">
+<meta name="keywords" content="AI,人工智能,感知机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络之感知机（Perceptron）">
+<meta property="og:url" content="http://blog.a-stack.com/2018/03/09/神经网络之感知机/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="感知机于1957年由Rosenblatt等人提出，是神经网络和支持向量机的基础。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-09-神经网络之感知机/perceptron.jpg">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.671Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="神经网络之感知机（Perceptron）">
+<meta name="twitter:description" content="感知机于1957年由Rosenblatt等人提出，是神经网络和支持向量机的基础。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-09-神经网络之感知机/perceptron.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-神经网络之感知机" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      神经网络之感知机（Perceptron）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/09/神经网络之感知机/" class="article-date">
+	  <time datetime="2018-03-09T08:37:04.000Z" itemprop="datePublished">2018-03-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>感知机于1957年由Rosenblatt等人提出，是神经网络和支持向量机的基础。</p>
+<a id="more"></a>
+<p>@[toc]</p>
+<h2 id="1-人工神经网络"><a href="#1-人工神经网络" class="headerlink" title="1. 人工神经网络"></a>1. 人工神经网络</h2><p>现代神经网络概念由人工神经网络延伸而来，出发点在于模拟人类神经元的信息处理方式，而事实上现在采用的神经网络和人类的思维活动方式存在很大的差异。</p>
+<p>人类大脑由大于100亿个神经元组成，每个神经元与周围1万一个其它神经元保持关联。</p>
+<h2 id="2-感知机（Perceptron）"><a href="#2-感知机（Perceptron）" class="headerlink" title="2.感知机（Perceptron）"></a>2.感知机（Perceptron）</h2><p>感知机可以被认为是人工神经网络的初级原型，是只有一个神经元一层的神经网络，但事实上感知机与支持向量机的关系比神经网络还要密切。感知机是个二分类的线性分类模型，输出实例为+1和-1的二值结果。感知机学习的过程旨在在假设空间中寻找一个<strong>分离超平面</strong>，将线性可分的目标数据分为两类。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-09-神经网络之感知机/perceptron.jpg" alt="perceptron"></p>
+<h3 id="2-1-感知机模型"><a href="#2-1-感知机模型" class="headerlink" title="2.1 感知机模型"></a>2.1 感知机模型</h3><p>对于输入向量$x\in X$ 和输出实例$y\in {+1,-1}$ ,由输入空间到输出空间的如下函数称为感知机：</p>
+<script type="math/tex; mode=display">
+f(x) = sign(w \cdot x + b)</script><p>其中，$w$ 和 $b$ 分别为权值向量和偏置，$sign$ 是符号函数，定义如下：</p>
+<script type="math/tex; mode=display">
+sign(x)=
+\left\{  
+             \begin{array}{lr}  
+            +1, &  x \ge 0\\  
+             -1, &   x \lt 0 
+             \end{array}  
+\right.</script><p>其中线性方程$w \cdot x + b =0$ 对应于特征空间中的一个超平面$S$, $w$ 为超平面的法向量，$b$ 为超平面的截距。这个超平面将特征空间划分为两部分，划分为正、负两个分类。所以，超平面S被称为分离超平面。</p>
+<h3 id="2-2-感知机模型的训练过程"><a href="#2-2-感知机模型的训练过程" class="headerlink" title="2.2 感知机模型的训练过程"></a>2.2 感知机模型的训练过程</h3><p>首先需要指出的是感知机解决的是线性分类问题，面向的数据集为线性可分数据集。给定一个数据集${ (x_1,y_1), (x_2,y_2), …, (x_N, y_N)}$ 。即对所有的正实例$y_i=+1$, 有  $w \cdot x_i + b \gt 0$ ; 同样对所有的负实例 $y_i = -1$,   $w \cdot x_i + b \lt 0$ 。</p>
+<h4 id="目标损失函数的定义"><a href="#目标损失函数的定义" class="headerlink" title="目标损失函数的定义"></a>目标损失函数的定义</h4><p> 对于线性可分数据集，感知机的训练目标为找到一个能够将训练数据正负实例完全分开的分离超平面。为满足这个目标，损失函数选择为误分类点到超平面S的距离总和。</p>
+<p>对于任一误分类数据$(x_i, y_i)$， 利用超平面的性质，我们很容易得到：</p>
+<script type="math/tex; mode=display">
+- y_i (w \cdot x_i +b) > 0</script><p>误分类点到超平面的距离如下：</p>
+<script type="math/tex; mode=display">
+\frac{1}{||w||} |w \cdot x_i +b| =- \frac{1}{||w||} y_i(w \cdot x_i +b)</script><p>如果不考虑$\frac{1}{||w||}$ （因为它对目标损失函数的影响与参数$w$ 等效）我们可以定义感知机的目标损失函数为：</p>
+<script type="math/tex; mode=display">
+L(w,b) = -\sum_{x_i \in M} y_i(w \cdot x_i + b)</script><p>其中$M$ 为误分类点的集合。对于任何训练数据，如果该数据属于误分类点则损失函数为参数$w,b$ 的线性函数，如果数据为正确分类数据为0,损失函数$L(w,b)$ 是$w,b$的连续可导函数。</p>
+<h4 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h4><p>感知机的训练过程可以通过随机梯度下降法实现：</p>
+<ol>
+<li>首先任意选取一个超平面$w_0, b_0$ 作为训练起点，</li>
+<li>采用梯度下降法每次选取一个训练数据样本点更新参数$w,b$ 值，逐步逼近目标损失函数的最小值：</li>
+</ol>
+<script type="math/tex; mode=display">
+dw = \frac{\partial L(w,b)}{\partial w} = - \sum_{x_i \in M}y_ix_i</script><script type="math/tex; mode=display">
+db = \frac{\partial L(w,b)}{\partial b} =  -\sum_{x_i \in M}y_i</script><script type="math/tex; mode=display">
+w := w + \alpha \sum_{x_i \in N} (\hat y_i - y_i)x_i</script><script type="math/tex; mode=display">
+b := b - \alpha \sum_{x_i \in N}(\hat y_i -y_i)</script><blockquote>
+<p>在权重更新中，引入了一个小技巧，将对误分类数据M的更新扩展到所有的训练数据N。其中$\hat y<em>{i}$ 表示该点的估计值，如果为正确分类数据，由于$\hat y</em>{i}=y_i$， 所以两个权重都不会需要进行更新。</p>
+</blockquote>
+<h3 id="2-3-感知机的对偶形式"><a href="#2-3-感知机的对偶形式" class="headerlink" title="2.3 感知机的对偶形式"></a>2.3 感知机的对偶形式</h3><script type="math/tex; mode=display">
+f(x) = sign(\sum_{j-1}^N \sigma_j y_jx_j \cdot x + b)</script><blockquote>
+<p>暂时不对这部分过多讨论，以后结合SVM的对偶形式一并分析…</p>
+</blockquote>
+<h2 id="3-感知机使用过程中注意点"><a href="#3-感知机使用过程中注意点" class="headerlink" title="3. 感知机使用过程中注意点"></a>3. 感知机使用过程中注意点</h2><ol>
+<li><p>感知机只能解决线性可分问题，比如对于XOR求解就无能为力；</p>
+</li>
+<li><p>感知机算法存在许多解，这些解既依赖初值的选择，也依赖迭代过程中误分类点的选择顺序；</p>
+</li>
+<li><p>为了得到唯一的分类超平面，需要对分离超平面增加约束条件，这正是线性支持向量机的实现原理；</p>
+</li>
+</ol>
+<h2 id="4-动手实现一个感知机模型"><a href="#4-动手实现一个感知机模型" class="headerlink" title="4. 动手实现一个感知机模型"></a>4. 动手实现一个感知机模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Perceptron</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, N, alpha=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">        self.W = np.random.randn(N + <span class="number">1</span>)/np.sqrt(N) <span class="comment"># converge bias into W</span></span><br><span class="line">        self.alpha = alpha</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, f_x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> f_x&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y, epochs=<span class="number">10</span>)</span>:</span></span><br><span class="line">        <span class="comment"># insert a column into X</span></span><br><span class="line">        X = np.c_[X, np.ones((X.shape[<span class="number">0</span>]))]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> np.arange(<span class="number">0</span>, epochs):</span><br><span class="line">            <span class="keyword">for</span> (x, target) <span class="keyword">in</span> zip(X,y):</span><br><span class="line">                result = self.step(np.dot(x, self.W))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> result != target:</span><br><span class="line">                    error = result - target</span><br><span class="line">                    self.W += -self.alpha * error * x</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X, addBias=True)</span>:</span></span><br><span class="line">        X = np.atleast_2d(X)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> addBias:</span><br><span class="line">            X = np.c_[X, np.ones((X.shape[<span class="number">0</span>]))]</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> self.step(np.dot(X, self.W))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为了计算方便，我们将bias参数整合进了w参数之中。</p>
+</blockquote>
+<p>使用和测试感知机分类器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Test it on OR data</span></span><br><span class="line">X = np.array([[<span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">y = np.array([[<span class="number">-1</span>], [<span class="number">1</span>], [<span class="number">1</span>], [<span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">p = Perceptron(X.shape[<span class="number">1</span>], alpha=<span class="number">0.1</span>)</span><br><span class="line">p.fit(X,y,epochs=<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (x,target) <span class="keyword">in</span> zip(X,y):</span><br><span class="line">    pred = p.predict(x)</span><br><span class="line">    print(<span class="string">"[INFO] data=&#123;&#125;, ground-truth=&#123;&#125;, pred=&#123;&#125;"</span>.format(x, target[<span class="number">0</span>], pred))</span><br></pre></td></tr></table></figure>
+<p>​</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>《统计学习方法》——李航</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/09/神经网络之感知机/" target="_blank" title="神经网络之感知机（Perceptron）">http://blog.a-stack.com/2018/03/09/神经网络之感知机/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/30/Transfer-Learning-Summary/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Transfer Learning Summary
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">读书笔记：《Practical Python and OpenCV》</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-人工神经网络"><span class="nav-number">1.</span> <span class="nav-text">1. 人工神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-感知机（Perceptron）"><span class="nav-number">2.</span> <span class="nav-text">2.感知机（Perceptron）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-感知机模型"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 感知机模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-感知机模型的训练过程"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 感知机模型的训练过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#目标损失函数的定义"><span class="nav-number">2.2.1.</span> <span class="nav-text">目标损失函数的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练过程"><span class="nav-number">2.2.2.</span> <span class="nav-text">训练过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-感知机的对偶形式"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 感知机的对偶形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-感知机使用过程中注意点"><span class="nav-number">3.</span> <span class="nav-text">3. 感知机使用过程中注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-动手实现一个感知机模型"><span class="nav-number">4.</span> <span class="nav-text">4. 动手实现一个感知机模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

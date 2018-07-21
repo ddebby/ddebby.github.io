@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>经典网络复现之alexnet | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典网络复现之AlexNet">
+<meta property="og:url" content="http://blog.a-stack.com/2018/07/08/经典网络复现之AlexNet/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg">
+<meta property="og:updated_time" content="2018-07-20T15:52:42.648Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="经典网络复现之AlexNet">
+<meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-经典网络复现之AlexNet" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg" rel="gallery_cjjuu6wnv002wpsv2wf1laloz">
+        <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      经典网络复现之AlexNet
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/08/经典网络复现之AlexNet/" class="article-date">
+	  <time datetime="2018-07-08T05:58:12.000Z" itemprop="datePublished">2018-07-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/12.jpg" alt="Test Picture"></p>
+<p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
+<a id="more"></a>
+<p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
+<ul>
+<li>ImageNet数据集及数据准备</li>
+<li>AlexNet网络</li>
+<li>VGG网络</li>
+<li>GoogLeNet网络</li>
+<li>ResNet网络</li>
+<li>SqueezeNet网络</li>
+</ul>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>2012年的AlexNet是通用CNN的开山之作（早在1986年，Yann LeCun就利用卷积神经网络构建了LeNet并第一次将其运用到了生产环节——邮政编码识别，详见<a href="http://yann.lecun.com/exdb/lenet/a35.html" target="_blank" rel="noopener">http://yann.lecun.com/exdb/lenet/a35.html</a> ，但相关网络结构未能得到充分复制和发展），从此以后，CNN被广泛应用于各种机器视觉比赛、应用之中，得到了空前的发展。本文，主要根据AlexNet论文回顾其网络结构、设计技巧，并利用ImageNet的图像分类数据集复现在2012年ImageNet挑战赛中的结果。</p>
+<ul>
+<li>论文： Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton. “ImageNet Classification with Deep Convolutional Neural Networks”. In: Advances in Neural Information Processing Systems 25. Edited by F. Pereira et al. Curran Associates, Inc., 2012, pages 1097–1105. URL: <a href="http://papers.nips.cc/paper/4824-imagenet-classification-with-deepconvolutional-neural-networks.pdf" target="_blank" rel="noopener">http://papers.nips.cc/paper/4824-imagenet-classification-with-deepconvolutional-neural-networks.pdf</a></li>
+<li>数据集： ImageNet 2012 ILSRVC数据集（数据集的获取及准备详见<a href="/2018/07/06/ImageNet-DataSet/">ImageNet-DataSet</a>）</li>
+<li>计算框架： MxNet</li>
+<li>算力资源：AWS云主机p2.8xlarge：8个Tesla K80 GPU ($7.20/hour)</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/GPUs.png" alt="GPUs"></p>
+<h2 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h2><p>AlexNet在2012年ImageNet ILSVRC比赛中top-5的错误率未15.3%，领先第二名10.9%个百分点，整个网络架构总共有8层参数网络层，其中5层卷积网络+3层全连接网络。本节将按照AlexNet论文描述的内容，整理AlexNet的特点，和极具借鉴性的创新成果。</p>
+<h3 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h3><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/AlexNet.png" alt="AlexNet"></p>
+<p>AlexNet的网络架构如图所示，输入图像尺寸为（224，224，3），经过5个CNN层，3个FC层输出1000个分类结果，为了便于使网络训练采用GPU，所以整个网络分为上下两部分，分别在两个GPU上进行训练，其中第一层CNN和3个FC层在两个GPU上进行了参数共享。</p>
+<p>AlexNet网络中拥有600万个参数，650 000个神经元。</p>
+<h3 id="GPU的第一次使用"><a href="#GPU的第一次使用" class="headerlink" title="GPU的第一次使用"></a>GPU的第一次使用</h3><p>AlexNet是第一个使用GPU进行训练的深度神经网络，受当时硬件条件限制，使用了2块3GB内存的GTX 580 GPU，同时由于全部的网络参数超过了3GB的显存空间，所以将网络分成了两部分。训练时间上实际比单块GPU没有提升太多，但将错误率降低了1.2个百分点。</p>
+<h3 id="激活函数的选择——从此ReLU函数得到重用"><a href="#激活函数的选择——从此ReLU函数得到重用" class="headerlink" title="激活函数的选择——从此ReLU函数得到重用"></a>激活函数的选择——从此ReLU函数得到重用</h3><p>AlexNet中经过实践测试发现，采用ReLU作为激活函数比tanh要快很多（在CIFAR-10上测试前者速度是后者的6倍多），这也奠定了ReLU称为后来CNN网络的首选。</p>
+<h3 id="解决过拟合"><a href="#解决过拟合" class="headerlink" title="解决过拟合"></a>解决过拟合</h3><p>整个AlexNet都是围绕着计算效率提升和解决过拟合进行优化和尝试。AlexNet中的600万参数增强网络学习能力的同时也带来了潜在的过拟合问题，其中对解决过拟合的诸多尝试在未来的网络发展中被反复验证和使用。</p>
+<h4 id="1-数据增强"><a href="#1-数据增强" class="headerlink" title="1. 数据增强"></a>1. 数据增强</h4><p>AlexNet中数据增强主要采用了两种方式，一种是随机扣取和水平翻转，另一种是白化。</p>
+<ul>
+<li>随机扣取和水平翻转：AlexNet将原始图像处理成256x256大小的统一图像，在训练阶段，随机从原始图像中扣取227x227的像素，并通过水平翻转来提升训练集的差异性，增强网络泛化性能；在测试阶段，对于输入测试图像分别从四个顶角和中心位置获得5张图像，并通过水平翻转形成10张图像，通过评价10张图像的预测结果作为最终输出结果，将网络性能提升了将近1个百分点；</li>
+<li>白化： 利用PCA进行主成分抽取</li>
+</ul>
+<h4 id="2-Dropout"><a href="#2-Dropout" class="headerlink" title="2. Dropout"></a>2. Dropout</h4><p>这是Dropout的第一次正式使用，Dropout本身起到了模型组合的作用，同时起到正则化效果，可以避免过拟合，提升效果。当然代价是网络收敛时间被延长。</p>
+<ul>
+<li>在前两个FC层之后使用了Dropout</li>
+</ul>
+<h3 id="训练参数"><a href="#训练参数" class="headerlink" title="训练参数"></a>训练参数</h3><ul>
+<li>优化算法选择SGD， 动量为0.9；</li>
+<li>batch_size = 128</li>
+<li>权重衰减为0.0005，这个很小的权重衰减对于模型学习起到了不可忽视的作用；</li>
+<li>权重参数初始化为零均值，0.01标准差的高斯分布；</li>
+<li>为了使得初始参数落在ReLU的正值区域，将偏差参数初始化为1；</li>
+<li>初始学习率为0.01，当验证集错误率饱和时以对数形式降低学习率，一共降低3次，即1e-3,1e-4,1e-5；</li>
+<li>训练了90个epoch，总共用时5-6天</li>
+</ul>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><ul>
+<li>使用5个CNN的组合，top-5错误率为16.4%​</li>
+</ul>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>AlexNet还使用了局部响应归一化（Local Response Normalization）、重叠池化等优化策略，不过在未来的网络结构中没有得到良好的效果和应用普及。</p>
+<h2 id="重头训练一个AlexNet"><a href="#重头训练一个AlexNet" class="headerlink" title="重头训练一个AlexNet"></a>重头训练一个AlexNet</h2><ol>
+<li><p>ImageNet数据准备参见前序博文</p>
+</li>
+<li><p>由于现在GPU硬件和深度学习计算框架的发展，我们不需要将网络拆成两个部分，单独训练了，所以网络架构进行了微调，详见下图；</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/AlexNet-Details.png" alt="AlexNet-Details"></p>
+<ol>
+<li>使用MxNet训练网络比Keras + TensroFlow要快；</li>
+</ol>
+</li>
+</ol>
+<h3 id="使用MxNet构建AlexNet代码"><a href="#使用MxNet构建AlexNet代码" class="headerlink" title="使用MxNet构建AlexNet代码"></a>使用MxNet构建AlexNet代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MxAlexNet</span>:</span></span><br><span class="line"><span class="meta">	@staticmethod</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(classes)</span>:</span></span><br><span class="line">		<span class="comment"># data input</span></span><br><span class="line">		data = mx.sym.Variable(<span class="string">"data"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Block #1: first CONV =&gt; RELU =&gt; POOL layer set</span></span><br><span class="line">		conv1_1 = mx.sym.Convolution(data=data, kernel=(<span class="number">11</span>, <span class="number">11</span>),</span><br><span class="line">			stride=(<span class="number">4</span>, <span class="number">4</span>), num_filter=<span class="number">96</span>)</span><br><span class="line">		act1_1 = mx.sym.LeakyReLU(data=conv1_1, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn1_1 = mx.sym.BatchNorm(data=act1_1)</span><br><span class="line">		pool1 = mx.sym.Pooling(data=bn1_1, pool_type=<span class="string">"max"</span>,</span><br><span class="line">			kernel=(<span class="number">3</span>, <span class="number">3</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">		do1 = mx.sym.Dropout(data=pool1, p=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Block #2: second CONV =&gt; RELU =&gt; POOL layer set</span></span><br><span class="line">		conv2_1 = mx.sym.Convolution(data=do1, kernel=(<span class="number">5</span>, <span class="number">5</span>),</span><br><span class="line">			pad=(<span class="number">2</span>, <span class="number">2</span>), num_filter=<span class="number">256</span>)</span><br><span class="line">		act2_1 = mx.sym.LeakyReLU(data=conv2_1, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn2_1 = mx.sym.BatchNorm(data=act2_1)</span><br><span class="line">		pool2 = mx.sym.Pooling(data=bn2_1, pool_type=<span class="string">"max"</span>,</span><br><span class="line">			kernel=(<span class="number">3</span>, <span class="number">3</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">		do2 = mx.sym.Dropout(data=pool2, p=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Block #3: (CONV =&gt; RELU) * 3 =&gt; POOL</span></span><br><span class="line">		conv3_1 = mx.sym.Convolution(data=do2, kernel=(<span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">			pad=(<span class="number">1</span>, <span class="number">1</span>), num_filter=<span class="number">384</span>)</span><br><span class="line">		act3_1 = mx.sym.LeakyReLU(data=conv3_1, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn3_1 = mx.sym.BatchNorm(data=act3_1)</span><br><span class="line">		conv3_2 = mx.sym.Convolution(data=bn3_1, kernel=(<span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">			pad=(<span class="number">1</span>, <span class="number">1</span>), num_filter=<span class="number">384</span>)</span><br><span class="line">		act3_2 = mx.sym.LeakyReLU(data=conv3_2, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn3_2 = mx.sym.BatchNorm(data=act3_2)</span><br><span class="line">		conv3_3 = mx.sym.Convolution(data=bn3_2, kernel=(<span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">			pad=(<span class="number">1</span>, <span class="number">1</span>), num_filter=<span class="number">256</span>)</span><br><span class="line">		act3_3 = mx.sym.LeakyReLU(data=conv3_3, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn3_3 = mx.sym.BatchNorm(data=act3_3)</span><br><span class="line">		pool3 = mx.sym.Pooling(data=bn3_3, pool_type=<span class="string">"max"</span>,</span><br><span class="line">			kernel=(<span class="number">3</span>, <span class="number">3</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">		do3 = mx.sym.Dropout(data=pool3, p=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Block #4: first set of FC =&gt; RELU layers</span></span><br><span class="line">		flatten = mx.sym.Flatten(data=do3)</span><br><span class="line">		fc1 = mx.sym.FullyConnected(data=flatten, num_hidden=<span class="number">4096</span>)</span><br><span class="line">		act4_1 = mx.sym.LeakyReLU(data=fc1, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn4_1 = mx.sym.BatchNorm(data=act4_1)</span><br><span class="line">		do4 = mx.sym.Dropout(data=bn4_1, p=<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Block #5: second set of FC =&gt; RELU layers</span></span><br><span class="line">		fc2 = mx.sym.FullyConnected(data=do4, num_hidden=<span class="number">4096</span>)</span><br><span class="line">		act5_1 = mx.sym.LeakyReLU(data=fc2, act_type=<span class="string">"elu"</span>)</span><br><span class="line">		bn5_1 = mx.sym.BatchNorm(data=act5_1)</span><br><span class="line">		do5 = mx.sym.Dropout(data=bn5_1, p=<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># softmax classifier</span></span><br><span class="line">		fc3 = mx.sym.FullyConnected(data=do5, num_hidden=classes)</span><br><span class="line">		model = mx.sym.SoftmaxOutput(data=fc3, name=<span class="string">"softmax"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># return the network architecture</span></span><br><span class="line">		<span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>几点注意点：</strong></p>
+<ol>
+<li>主要采用了Caffe中实现的AlexNet版本；</li>
+<li>使用ELU替代了ReLU激活函数；</li>
+<li>每个block都使用了dropout，而不是原文只在两个FC层使用；其中CNN层参数为0.25，FC层为0.5；</li>
+<li>使用了BN层加速网络训练，而且BN在激活函数之后使用；</li>
+</ol>
+</blockquote>
+<h3 id="训练AlexNet"><a href="#训练AlexNet" class="headerlink" title="训练AlexNet"></a>训练AlexNet</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># USAGE</span></span><br><span class="line"><span class="comment"># python train_alexnet.py --checkpoints checkpoints --prefix alexnet</span></span><br><span class="line"><span class="comment"># python train_alexnet.py --checkpoints checkpoints --prefix alexnet --start-epoch 25</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># import the necessary packages</span></span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> imagenet_alexnet_config <span class="keyword">as</span> config</span><br><span class="line"><span class="keyword">from</span> pyimagesearch.nn.mxconv <span class="keyword">import</span> MxAlexNet</span><br><span class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the argument parse and parse the arguments</span></span><br><span class="line">ap = argparse.ArgumentParser()</span><br><span class="line">ap.add_argument(<span class="string">"-c"</span>, <span class="string">"--checkpoints"</span>, required=<span class="keyword">True</span>,</span><br><span class="line">	help=<span class="string">"path to output checkpoint directory"</span>)</span><br><span class="line">ap.add_argument(<span class="string">"-p"</span>, <span class="string">"--prefix"</span>, required=<span class="keyword">True</span>,</span><br><span class="line">	help=<span class="string">"name of model prefix"</span>)</span><br><span class="line">ap.add_argument(<span class="string">"-s"</span>, <span class="string">"--start-epoch"</span>, type=int, default=<span class="number">0</span>,</span><br><span class="line">	help=<span class="string">"epoch to restart training at"</span>)</span><br><span class="line">args = vars(ap.parse_args())</span><br><span class="line"></span><br><span class="line"><span class="comment"># set the logging level and output file</span></span><br><span class="line">logging.basicConfig(level=logging.DEBUG,</span><br><span class="line">	filename=<span class="string">"training_&#123;&#125;.log"</span>.format(args[<span class="string">"start_epoch"</span>]),</span><br><span class="line">	filemode=<span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># load the RGB means for the training set, then determine the batch</span></span><br><span class="line"><span class="comment"># size</span></span><br><span class="line">means = json.loads(open(config.DATASET_MEAN).read())</span><br><span class="line">batchSize = config.BATCH_SIZE * config.NUM_DEVICES</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the training image iterator</span></span><br><span class="line">trainIter = mx.io.ImageRecordIter(</span><br><span class="line">	path_imgrec=config.TRAIN_MX_REC,</span><br><span class="line">	data_shape=(<span class="number">3</span>, <span class="number">227</span>, <span class="number">227</span>),</span><br><span class="line">	batch_size=batchSize,</span><br><span class="line">	rand_crop=<span class="keyword">True</span>,</span><br><span class="line">	rand_mirror=<span class="keyword">True</span>,</span><br><span class="line">	rotate=<span class="number">15</span>,</span><br><span class="line">	max_shear_ratio=<span class="number">0.1</span>,</span><br><span class="line">	mean_r=means[<span class="string">"R"</span>],</span><br><span class="line">	mean_g=means[<span class="string">"G"</span>],</span><br><span class="line">	mean_b=means[<span class="string">"B"</span>],</span><br><span class="line">	preprocess_threads=config.NUM_DEVICES * <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the validation image iterator</span></span><br><span class="line">valIter = mx.io.ImageRecordIter(</span><br><span class="line">	path_imgrec=config.VAL_MX_REC,</span><br><span class="line">	data_shape=(<span class="number">3</span>, <span class="number">227</span>, <span class="number">227</span>),</span><br><span class="line">	batch_size=batchSize,</span><br><span class="line">	mean_r=means[<span class="string">"R"</span>],</span><br><span class="line">	mean_g=means[<span class="string">"G"</span>],</span><br><span class="line">	mean_b=means[<span class="string">"B"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the optimizer</span></span><br><span class="line">opt = mx.optimizer.SGD(learning_rate=<span class="number">1e-2</span>, momentum=<span class="number">0.9</span>, wd=<span class="number">0.0005</span>,</span><br><span class="line">	rescale_grad=<span class="number">1.0</span> / batchSize)</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the checkpoints path, initialize the model argument and</span></span><br><span class="line"><span class="comment"># auxiliary parameters</span></span><br><span class="line">checkpointsPath = os.path.sep.join([args[<span class="string">"checkpoints"</span>],</span><br><span class="line">	args[<span class="string">"prefix"</span>]])</span><br><span class="line">argParams = <span class="keyword">None</span></span><br><span class="line">auxParams = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># if there is no specific model starting epoch supplied, then</span></span><br><span class="line"><span class="comment"># initialize the network</span></span><br><span class="line"><span class="keyword">if</span> args[<span class="string">"start_epoch"</span>] &lt;= <span class="number">0</span>:</span><br><span class="line">	<span class="comment"># build the LeNet architecture</span></span><br><span class="line">	print(<span class="string">"[INFO] building network..."</span>)</span><br><span class="line">	model = MxAlexNet.build(config.NUM_CLASSES)</span><br><span class="line"></span><br><span class="line"><span class="comment"># otherwise, a specific checkpoint was supplied</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="comment"># load the checkpoint from disk</span></span><br><span class="line">	print(<span class="string">"[INFO] loading epoch &#123;&#125;..."</span>.format(args[<span class="string">"start_epoch"</span>]))</span><br><span class="line">	model = mx.model.FeedForward.load(checkpointsPath,</span><br><span class="line">		args[<span class="string">"start_epoch"</span>])</span><br><span class="line"></span><br><span class="line">	<span class="comment"># update the model and parameters</span></span><br><span class="line">	argParams = model.arg_params</span><br><span class="line">	auxParams = model.aux_params</span><br><span class="line">	model = model.symbol</span><br><span class="line"></span><br><span class="line"><span class="comment"># compile the model</span></span><br><span class="line">model = mx.model.FeedForward(</span><br><span class="line">	ctx=[mx.gpu(<span class="number">0</span>), mx.gpu(<span class="number">1</span>), mx.gpu(<span class="number">2</span>), mx.gpu(<span class="number">3</span>), mx.gpu(<span class="number">4</span>), mx.gpu(<span class="number">5</span>), mx.gpu(<span class="number">6</span>), mx.gpu(<span class="number">7</span>)],</span><br><span class="line">	symbol=model,</span><br><span class="line">	initializer=mx.initializer.Xavier(),</span><br><span class="line">	arg_params=argParams,</span><br><span class="line">	aux_params=auxParams,</span><br><span class="line">	optimizer=opt,</span><br><span class="line">	num_epoch=<span class="number">90</span>,</span><br><span class="line">	begin_epoch=args[<span class="string">"start_epoch"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the callbacks and evaluation metrics</span></span><br><span class="line">batchEndCBs = [mx.callback.Speedometer(batchSize, <span class="number">500</span>)]</span><br><span class="line">epochEndCBs = [mx.callback.do_checkpoint(checkpointsPath)]</span><br><span class="line">metrics = [mx.metric.Accuracy(), mx.metric.TopKAccuracy(top_k=<span class="number">5</span>),</span><br><span class="line">	mx.metric.CrossEntropy()]</span><br><span class="line"></span><br><span class="line"><span class="comment"># train the network</span></span><br><span class="line">print(<span class="string">"[INFO] training network..."</span>)</span><br><span class="line">model.fit(</span><br><span class="line">	X=trainIter,</span><br><span class="line">	eval_data=valIter,</span><br><span class="line">	eval_metric=metrics,</span><br><span class="line">	batch_end_callback=batchEndCBs,</span><br><span class="line">	epoch_end_callback=epochEndCBs)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>几个注意点：</strong></p>
+<ol>
+<li><code>batchSize = config.BATCH_SIZE * config.NUM_DEVICES</code>;</li>
+<li>优化算法使用SGD，初始学习率为1e-2，动量0.9，L2权重正则化参数0.0005；rescale参数尤为关键，根据批的大小放大梯度；</li>
+<li>model中的<code>ctx</code>参数用于指定用于训练的GPU；</li>
+<li>使用了Xavier进行参数初始化，与原模型略有不同，Xavier是目前CNN网络常采用的参数初始化方式；</li>
+</ol>
+</blockquote>
+<h4 id="学习率的控制"><a href="#学习率的控制" class="headerlink" title="学习率的控制"></a>学习率的控制</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Epoch</th>
+<th>学习率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1-80</td>
+<td>1e-2</td>
+</tr>
+<tr>
+<td>81-100</td>
+<td>1e-3</td>
+</tr>
+<tr>
+<td>86-100</td>
+<td>1e-4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<ol>
+<li>控制每轮学习率修改的观察窗口要在10-15个epoch之后再下结论，确定该阶段验证集准确率饱和了再行降低学习率；</li>
+<li>调整学习率 <code>python train_alexnet.py --checkpoints checkpoints --prefix alexnet \ --start-epoch 50</code></li>
+<li>在8个GPU上，每轮用时600多秒（当然我batch size设的比较小，这个速度可以提升一个数量级）；</li>
+</ol>
+</blockquote>
+<ol>
+<li><p>第一遍训练采用1e-2的学习率训练90轮，发现80轮以后，验证集准确率已经不再增加；为此在80轮之后调整学习率；80轮的性能参数如下：</p>
+<ul>
+<li><p>INFO:root:Epoch[78] Validation-accuracy=0.517843</p>
+<p>INFO:root:Epoch[78] Validation-top_k_accuracy_5=0.759725</p>
+<p>INFO:root:Epoch[78] Validation-cross-entropy=2.123822</p>
+<p>INFO:root:Saved checkpoint to “checkpoints/1//alexnet01-0080.params”</p>
+</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/1st_try_accuracy.png" alt="1st_try_accuracy"></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/1st_try_loss.png" alt="1st_try_loss"></p>
+</li>
+<li><p>将学习率调整到1e-3之后，验证集准确率有大幅提升，代表调整有效，100轮之后再度饱和，降低学习率到1e-4;105轮验证集结果如下：</p>
+<ul>
+<li><p>INFO:root:Epoch[105] Validation-accuracy=0.564901</p>
+<p>INFO:root:Epoch[105] Validation-top_k_accuracy_5=<strong>0.796509</strong></p>
+<p>INFO:root:Epoch[105] Validation-cross-entropy=1.880376</p>
+</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/105epoch-accuracy.png" alt="105epoch-accuracy"></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/105epoch.png" alt="105epoch"></p>
+</li>
+<li><p>保持1e-4学习率，训练到125轮，进一步降低学习率到1e-5，发现整个网络没有性能提升，结束该批次参数训练过程。</p>
+</li>
+</ol>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/130epoch-accuracy.png" alt="130epoch-accuracy"></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-08-经典网络复现之AlexNet/130epoch-loss.png" alt="130epoch-loss"></p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
+<li><p>BN放在激活之前还是之后？</p>
+<p>调整BN位置，准确率从77.9%—&gt; 79.6%</p>
+</li>
+<li><p>ReLU vs ELU ？</p>
+<p>用ELU替代ReLU，提升1-2%的性能；</p>
+</li>
+<li><p>选取125轮的训练结果，在测试集数据上进行验证，结果如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-1</span>: 60<span class="selector-class">.20</span>%</span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-5</span>: 81<span class="selector-class">.99</span>%</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li>训练一个大型数据集的深度神经网络是个费时费力的活，为了获得最优的参数，一般需要进行10-100次参数实验，需要极大的耐心和计算资源；</li>
+<li>训练深度神经网络的目的不是找寻全局最优解，因为一般很难找到这个解，我们只是在探寻一个比上次效果更好的模型；</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf" target="_blank" rel="noopener">ImageNet Classification with Deep Convolutional Neural Networks</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/07/08/经典网络复现之AlexNet/" target="_blank" title="经典网络复现之AlexNet">http://blog.a-stack.com/2018/07/08/经典网络复现之AlexNet/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/12/2018-07-9-经典网络复现之VGG/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          经典网络复现之VGGNet
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/06/ImageNet-DataSet/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">ImageNet-DataSet</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AlexNet"><span class="nav-number">2.</span> <span class="nav-text">AlexNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络架构"><span class="nav-number">2.1.</span> <span class="nav-text">网络架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU的第一次使用"><span class="nav-number">2.2.</span> <span class="nav-text">GPU的第一次使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#激活函数的选择——从此ReLU函数得到重用"><span class="nav-number">2.3.</span> <span class="nav-text">激活函数的选择——从此ReLU函数得到重用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决过拟合"><span class="nav-number">2.4.</span> <span class="nav-text">解决过拟合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-数据增强"><span class="nav-number">2.4.1.</span> <span class="nav-text">1. 数据增强</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Dropout"><span class="nav-number">2.4.2.</span> <span class="nav-text">2. Dropout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练参数"><span class="nav-number">2.5.</span> <span class="nav-text">训练参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果"><span class="nav-number">2.6.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它"><span class="nav-number">2.7.</span> <span class="nav-text">其它</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重头训练一个AlexNet"><span class="nav-number">3.</span> <span class="nav-text">重头训练一个AlexNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MxNet构建AlexNet代码"><span class="nav-number">3.1.</span> <span class="nav-text">使用MxNet构建AlexNet代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练AlexNet"><span class="nav-number">3.2.</span> <span class="nav-text">训练AlexNet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#学习率的控制"><span class="nav-number">3.2.1.</span> <span class="nav-text">学习率的控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验"><span class="nav-number">3.3.</span> <span class="nav-text">实验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

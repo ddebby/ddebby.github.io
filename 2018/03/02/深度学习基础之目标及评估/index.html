@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度学习基础之目标及评估 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法" />
+  
+  
+  
+  
+  <meta name="description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
+<meta name="keywords" content="AI,人工智能,预处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习基础之目标及评估">
+<meta property="og:url" content="http://blog.a-stack.com/2018/03/02/深度学习基础之目标及评估/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/loss_functions.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/混淆矩阵.jpg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/ROC曲线.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/AUC曲线.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mse.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mae.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mae_vs_mse.jpg">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mae_vs_mse_2.jpg.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/Huber_loss.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/Huber_Loss_graph.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/log-cosh.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_1.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_2.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_function.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_diff.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_calc.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/continuous_loss_functions.png">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/all_loss_functions.png">
+<meta property="og:updated_time" content="2018-06-26T05:47:28.380Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习基础之目标及评估">
+<meta name="twitter:description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/loss_functions.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-深度学习基础之目标及评估" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习基础之目标及评估
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/02/深度学习基础之目标及评估/" class="article-date">
+	  <time datetime="2018-03-02T07:35:01.000Z" itemprop="datePublished">2018-03-02</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。</p>
+<a id="more"></a>
+<p>@toc</p>
+<blockquote>
+<p>深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳汇总：</p>
+<ol>
+<li>问题定义</li>
+<li><strong>目标及评估</strong></li>
+<li>数据准备与预处理</li>
+<li>激活函数的归纳及总结</li>
+<li>优化算法的归纳及总结</li>
+<li>正则化与泛化性能</li>
+<li>模型压缩</li>
+<li>数据扩充</li>
+</ol>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>机器学习中的所有算法都依赖于最小化或最大化某一个函数，我们称之为“目标函数”。最小化的这组函数被称为“损失函数”。损失函数是衡量预测模型预测期望结果表现的指标。寻找函数最小值的最常用方法是“梯度下降”。本文主要对相关的目标函数/损失函数的知识点进行归纳和总结。</p>
+<p>没有一个损失函数可以适用于所有类型的数据。损失函数的选择取决于许多因素，包括是否有离群点，机器学习算法的选择，运行梯度下降的时间效率，是否易于找到函数的导数，以及预测结果的置信度。这个博客的目的是帮助你了解不同的损失函数。</p>
+<p>损失函数可以大致分为两类：分类损失（ClassificationLoss）和回归损失（Regression Loss）。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/loss_functions.png" alt="loss_functions"></p>
+<h2 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p><strong>分类阈值</strong>的概念：将预测结果划分到每个类别的判定阈值，比如二分类问题中取为0.5。</p>
+<h4 id="阳性与阴性"><a href="#阳性与阴性" class="headerlink" title="阳性与阴性"></a><strong>阳性与阴性</strong></h4><p>如下图所示的混淆矩阵</p>
+<blockquote>
+<p>混淆矩阵 (confusion matrix)<br>一种 NxN 表格，用于总结<a href="https://developers.google.cn/machine-learning/crash-course/glossary#classification_model" target="_blank" rel="noopener"><strong>分类模型</strong></a>的预测成效；即标签和模型预测的分类之间的关联。在混淆矩阵中，一个轴表示模型预测的标签，另一个轴表示实际标签。N 表示类别个数。在<a href="https://developers.google.cn/machine-learning/crash-course/glossary#binary_classification" target="_blank" rel="noopener"><strong>二元分类</strong></a>问题中，N=2。</p>
+</blockquote>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/混淆矩阵.jpg" alt="混淆矩阵"></p>
+<blockquote>
+<p>TP: 真正例，是指模型将正类别样本正确地预测为正类别。</p>
+<p>FP：假正例，是指模型将负类别样本错误地预测为正类别，</p>
+<p>FN：假负例，是指模型将正类别样本错误地预测为负类别。</p>
+<p>TN：真负例，是指模型将负类别样本正确地预测为负类别。</p>
+</blockquote>
+<h3 id="准确率"><a href="#准确率" class="headerlink" title="准确率"></a>准确率</h3><p>准确率是一个用于评估分类模型的指标。通俗来说，<strong>准确率</strong>是指我们的模型预测正确的结果所占的比例。准确率的定义如下：</p>
+<script type="math/tex; mode=display">
+Accuracy= \frac{TP+TN}{TP+FP+TN+FN}</script><blockquote>
+<p>从识别结果看，其中识别正确的占比为多少</p>
+<p>当使用<strong>分类不平衡的数据集</strong>（比如正类别标签和负类别标签的数量之间存在明显差异）时，单单准确率一项并不能反映全面情况。</p>
+</blockquote>
+<h3 id="精确率"><a href="#精确率" class="headerlink" title="精确率"></a>精确率</h3><script type="math/tex; mode=display">
+Precision = \frac{TP}{TP+FP}</script><blockquote>
+<p>在被识别为正类别的样本中，确实为正类别的比例是多少？</p>
+</blockquote>
+<h3 id="召回率"><a href="#召回率" class="headerlink" title="召回率"></a>召回率</h3><script type="math/tex; mode=display">
+Recall = \frac{TP}{TP+FN}</script><blockquote>
+<p>从所有正确目标值看，有多少目标被正确的识别出来了</p>
+</blockquote>
+<p>精确率和召回率是两个trade-off的指标。</p>
+<h3 id="F1指标"><a href="#F1指标" class="headerlink" title="F1指标"></a>F1指标</h3><script type="math/tex; mode=display">
+F1 = 2 \frac{Recall*Precision}{Recall + Precision} =\frac{TP}{TP+(FN+FP)/2}</script><h3 id="ROC"><a href="#ROC" class="headerlink" title="ROC"></a>ROC</h3><p><strong>ROC 曲线</strong>（<strong>接收者操作特征曲线</strong>）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：</p>
+<ul>
+<li>真正例率</li>
+<li>假正例率</li>
+</ul>
+<p><strong>真正例率</strong> (<strong>TPR</strong>) 是召回率的同义词，因此定义如下：</p>
+<p>$TPR = \frac{TP} {TP + FN}$</p>
+<p><strong>假正例率</strong> (<strong>FPR</strong>) 的定义如下：</p>
+<p>$FPR = \frac{FP} {FP + TN}$</p>
+<p>ROC 曲线用于绘制采用不同分类阈值时的 TPR 与 FPR。降低分类阈值会导致将更多样本归为正类别，从而增加假正例和真正例的个数。下图显示了一个典型的 ROC 曲线。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/ROC曲线.png" alt="ROC曲线"></p>
+<blockquote>
+<p>曲线越靠近左上方，效果约好，代表正确分类比例越高；</p>
+<p>四个关键坐标点：</p>
+<ul>
+<li>(0,0)： TP=FP=0，全部预测结果为反例；</li>
+<li>(1,1)： TN=FN=0, 全部预测结果为正例；</li>
+<li>(0,1):  FP=FN=0, 全部正确分类样本；</li>
+<li>(1,0): TP=TN=0, 全部错误分类样本；</li>
+</ul>
+</blockquote>
+<h3 id="曲线下面积：ROC-曲线下面积"><a href="#曲线下面积：ROC-曲线下面积" class="headerlink" title="曲线下面积：ROC 曲线下面积"></a>曲线下面积：ROC 曲线下面积</h3><p><strong>曲线下面积</strong>表示“ROC 曲线下面积”。也就是说，曲线下面积测量的是从 (0,0) 到 (1,1) 之间整个 ROC 曲线以下的整个二维面积（参考积分学）。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/AUC曲线.png" alt="AUC曲线"></p>
+<p>曲线下面积对所有可能的分类阈值的效果进行综合衡量。曲线下面积的一种解读方式是看作模型将某个随机正类别样本排列在某个随机负类别样本之上的概率。以下面的样本为例，逻辑回归预测从左到右以升序排列。</p>
+<p>曲线下面积表示随机正类别（绿色）样本位于随机负类别（红色）样本右侧的概率。</p>
+<p>曲线下面积的取值范围为 0-1。预测结果 100% 错误的模型的曲线下面积为 0.0；而预测结果 100% 正确的模型的曲线下面积为 1.0。</p>
+<p>曲线下面积因以下两个原因而比较实用：</p>
+<ul>
+<li>曲线下面积的<strong>尺度不变</strong>。它测量预测的排名情况，而不是测量其绝对值。</li>
+<li>曲线下面积的<strong>分类阈值不变</strong>。它测量模型预测的质量，而不考虑所选的分类阈值。</li>
+</ul>
+<p>不过，这两个原因都有各自的局限性，这可能会导致曲线下面积在某些用例中不太实用：</p>
+<ul>
+<li><strong>并非总是希望尺度不变。</strong> 例如，有时我们非常需要被良好校准的概率输出，而曲线下面积无法告诉我们这一结果。</li>
+<li><strong>并非总是希望分类阈值不变。</strong> 在假负例与假正例的代价存在较大差异的情况下，尽量减少一种类型的分类错误可能至关重要。例如，在进行垃圾邮件检测时，您可能希望优先考虑尽量减少假正例（即使这会导致假负例大幅增加）。对于此类优化，曲线下面积并非一个实用的指标。</li>
+</ul>
+<h3 id="预测偏差"><a href="#预测偏差" class="headerlink" title="预测偏差"></a>预测偏差</h3><p><strong>预测偏差</strong>指的是这两个平均值之间的差值。即：预测偏差预测平均值数据集中相应标签的平均值</p>
+<p>造成预测偏差的可能原因包括：</p>
+<ul>
+<li>特征集不完整</li>
+<li>数据集混乱</li>
+<li>模型实现流水线中有错误？</li>
+<li>训练样本有偏差</li>
+<li>正则化过强</li>
+</ul>
+<h2 id="回归损失函数"><a href="#回归损失函数" class="headerlink" title="回归损失函数"></a>回归损失函数</h2><h3 id="均方误差（Mean-Square-Error，MSE）"><a href="#均方误差（Mean-Square-Error，MSE）" class="headerlink" title="均方误差（Mean Square Error，MSE）"></a>均方误差（Mean Square Error，MSE）</h3><p>均方误差（MSE）是最常用的回归损失函数，也叫L2 Loss。MSE是目标变量与预测值之间距离平方之和。</p>
+<script type="math/tex; mode=display">
+MSE = \frac{\sum_{i=1}^n (\hat y - y_{true})^2}{n}</script><p>下面是一个MSE函数的图，其中真实目标值为100，预测值在-10,000至10,000之间。预测值（X轴）=<br>100时，MSE损失（Y轴）达到其最小值。损失范围为0至∞。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mse.png" alt="mse"></p>
+<h3 id="平均绝对误差（Mean-Absolute-Error，-L1-Loss）"><a href="#平均绝对误差（Mean-Absolute-Error，-L1-Loss）" class="headerlink" title="平均绝对误差（Mean Absolute Error， L1 Loss）"></a>平均绝对误差（Mean Absolute Error， L1 Loss）</h3><p>平均绝对误差（MAE）是另一种用于回归模型的损失函数，也叫做L1 Loss。MAE是目标变量和预测变量之间差异绝对值之和。因此，它在一组预测中衡量误差的平均大小，而不考虑误差的方向。（如果我们也考虑方向，那将被称为平均偏差（Mean Bias Error, MBE），它是残差或误差之和）。损失范围也是0到∞。</p>
+<script type="math/tex; mode=display">
+MAE = \frac{\sum_{i=1}^n |\hat y - y_{true}|}{n}</script><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mae.png" alt="mae"></p>
+<h3 id="MSE-vs-MAE"><a href="#MSE-vs-MAE" class="headerlink" title="MSE vs MAE"></a>MSE vs MAE</h3><blockquote>
+<p>简而言之， 使用平方误差更容易求解，但使用绝对误差对离群点更加鲁棒。</p>
+</blockquote>
+<p>每当我们训练机器学习模型时，我们的目标就是找到最小化损失函数的点。当然，当预测值正好等于真实值时，这两个损失函数都达到最小值。下面让我们快速过一遍两个损失函数的Python代码。我们可以编写自己的函数或使用sklearn的内置度量函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># true：真正的目标变量数组</span></span><br><span class="line"><span class="comment"># pred：预测数组</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mse</span><span class="params">(true, pred)</span>:</span> </span><br><span class="line">   <span class="keyword">return</span> np.sum(((true – pred)**<span class="number">2</span>))</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mae</span><span class="params">(true, pred)</span>:</span></span><br><span class="line">   <span class="keyword">return</span> np.sum(np.abs(true – pred))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以在sklearn中使用</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_absolute_error</span><br></pre></td></tr></table></figure>
+<p>让我们来看看两个例子的MAE值和RMSE值（RMSE，Root Mean Square Error，均方根误差，它只是MSE的平方根，使其与MAE的数值范围相同）。在第一个例子中，预测值接近真实值，观测值之间误差的方差较小。第二个例子中，有一个异常观测值，误差很高。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mae_vs_mse.jpg" alt="左：误差彼此接近 右：有一个误差和其他误差相差很远"></p>
+<h4 id="我们从中观察到什么？我们该如何选择使用哪种损失函数？"><a href="#我们从中观察到什么？我们该如何选择使用哪种损失函数？" class="headerlink" title="我们从中观察到什么？我们该如何选择使用哪种损失函数？"></a>我们从中观察到什么？我们该如何选择使用哪种损失函数？</h4><p>由于MSE对误差（e）进行平方操作（y - y_predicted = e），如果e&gt;1，误差的值会增加很多。如果我们的数据中有一个离群点，e的值将会很高，将会远远大于|e|。这将使得和以MAE为损失的模型相比，以MSE为损失的模型会赋予更高的权重给离群点。在上面的第二个例子中，以RMSE为损失的模型将被调整以最小化这个离群数据点，但是却是以牺牲其他正常数据点的预测效果为代价，这最终会降低模型的整体性能。</p>
+<p>MAE损失适用于训练数据被离群点损坏的时候（即，在训练数据而非测试数据中，我们错误地获得了不切实际的过大正值或负值）。</p>
+<p>直观来说，我们可以像这样考虑：对所有的观测数据，如果我们只给一个预测结果来最小化MSE，那么该预测值应该是所有目标值的均值。但是如果我们试图最小化MAE，那么这个预测就是所有目标值的中位数。我们知道中位数对于离群点比平均值更鲁棒，这使得MAE比MSE更加鲁棒。</p>
+<p>使用MAE损失（特别是对于神经网络）的一个大问题是它的梯度始终是相同的，这意味着即使对于小的损失值，其梯度也是大的。这对模型的学习可不好。为了解决这个问题，我们可以使用随着接近最小值而减小的动态学习率。MSE在这种情况下的表现很好，即使采用固定的学习率也会收敛。MSE损失的梯度在损失值较高时会比较大，随着损失接近0时而下降，从而使其在训练结束时更加精确（参见下图）。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/mae_vs_mse_2.jpg.png" alt="mae_vs_mse_2.jpg"></p>
+<h4 id="如何选择？"><a href="#如何选择？" class="headerlink" title="如何选择？"></a>如何选择？</h4><p>如果离群点是会影响业务、而且是应该被检测到的异常值，那么我们应该使用MSE。另一方面，如果我们认为离群点仅仅代表数据损坏，那么我们应该选择MAE作为损失。</p>
+<p>L1损失对异常值更加稳健，但其导数并不连续，因此求解效率很低。L2损失对异常值敏感，但给出了更稳定的闭式解（closedform solution）（通过将其导数设置为0）。</p>
+<p>两种损失函数的问题：可能会出现这样的情况，即任何一种损失函数都不能给出理想的预测。例如，如果我们数据中90％的观测数据的真实目标值是150，其余10％的真实目标值在0-30之间。那么，一个以MAE为损失的模型可能对所有观测数据都预测为150，而忽略10％的离群情况，因为它会尝试去接近中值。同样地，以MSE为损失的模型会给出许多范围在0到30的预测，因为它被离群点弄糊涂了。这两种结果在许多业务中都是不可取的。</p>
+<h3 id="平滑的平均绝对误差函数（Huber-Loss）"><a href="#平滑的平均绝对误差函数（Huber-Loss）" class="headerlink" title="平滑的平均绝对误差函数（Huber Loss）"></a>平滑的平均绝对误差函数（Huber Loss）</h3><p>Huber Loss对数据离群点的敏感度低于平方误差损失。它在0处也可导。基本上它是绝对误差，当误差很小时，误差是二次形式的。误差何时需要变成二次形式取决于一个超参数，(delta)，该超参数可以进行微调。当<br> 𝛿 ~ 0时，Huber Loss接近MAE，当  𝛿 ~ ∞（很大的数）时，Huber Loss接近MSE。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/Huber_loss.png" alt="Huber_loss"></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/Huber_Loss_graph.png" alt="Huber_Loss_graph"></p>
+<p><code>delta</code>的选择非常重要，因为它决定了你认为什么数据是离群点。大于<code>delta</code>的残差用L1最小化（对较大的离群点较不敏感），而小于<code>delta</code>的残差则可以“很合适地”用L2最小化。</p>
+<h4 id="为什么使用Huber-Loss？"><a href="#为什么使用Huber-Loss？" class="headerlink" title="为什么使用Huber Loss？"></a>为什么使用Huber Loss？</h4><p>使用MAE训练神经网络的一个大问题是经常会遇到很大的梯度，使用梯度下降时可能导致训练结束时错过最小值。对于MSE，梯度会随着损失接近最小值而降低，从而使其更加精确。</p>
+<p>在这种情况下，HuberLoss可能会非常有用，因为它会使最小值附近弯曲，从而降低梯度。另外它比MSE对异常值更鲁棒。因此，它结合了MSE和MAE的优良特性。但是，HuberLoss的问题是我们可能需要迭代地训练超参数<code>delta</code>。</p>
+<h3 id="Log-Cosh-Loss"><a href="#Log-Cosh-Loss" class="headerlink" title="Log-Cosh Loss"></a>Log-Cosh Loss</h3><p>Log-cosh是用于回归任务的另一种损失函数，它比L2更加平滑。Log-cosh是预测误差的双曲余弦的对数。</p>
+<script type="math/tex; mode=display">
+L(\hat y,y_{true}) = \sum^n_{i=1} log(cosh(y_{true}-\hat y))</script><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/log-cosh.png" alt="log-cosh"></p>
+<p><strong>优点：</strong> log(cosh(x))对于小的x来说，其大约等于 (x ** 2) / 2，而对于大的x来说，其大约等于 abs(x) -<br>log(2)。这意味着<code>logcosh</code>的作用大部分与均方误差一样，但不会受到偶尔出现的极端不正确预测的强烈影响。它具有Huber Loss的所有优点，和Huber Loss不同之处在于，其处处二次可导。</p>
+<p>为什么我们需要二阶导数？许多机器学习模型的实现（如XGBoost）使用牛顿方法来寻找最优解，这就是为什么需要二阶导数（Hessian）的原因。对于像XGBoost这样的机器学习框架，二阶可导函数更有利。</p>
+<p>但Log-chshLoss并不完美。它仍然存在梯度和Hessian问题，对于误差很大的预测，其梯度和hessian是恒定的。因此会导致XGBoost中没有分裂。</p>
+<p>Huber和Log-cosh损失函数的Python代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sm_mae</span><span class="params">(true, pred, delta)</span>:</span></span><br><span class="line">   <span class="string">"""</span></span><br><span class="line"><span class="string">   true: array of true values    </span></span><br><span class="line"><span class="string">   pred: array of predicted values</span></span><br><span class="line"><span class="string">   </span></span><br><span class="line"><span class="string">   returns: smoothed mean absolute error loss</span></span><br><span class="line"><span class="string">   """</span></span><br><span class="line">   loss = np.where(np.abs(true-pred) &lt; delta , <span class="number">0.5</span>*((true-pred)**<span class="number">2</span>), delta*np.abs(true - pred) - <span class="number">0.5</span>*(delta**<span class="number">2</span>))</span><br><span class="line">   <span class="keyword">return</span> np.sum(loss)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logcosh</span><span class="params">(true, pred)</span>:</span></span><br><span class="line">   loss = np.log(np.cosh(pred - true))</span><br><span class="line">   <span class="keyword">return</span> np.sum(loss)</span><br></pre></td></tr></table></figure>
+<h3 id="Quantile-Loss-分位数损失"><a href="#Quantile-Loss-分位数损失" class="headerlink" title="Quantile Loss(分位数损失)"></a>Quantile Loss(分位数损失)</h3><p>在大多数真实预测问题中，我们通常想了解我们预测的不确定性。了解预测值的范围而不仅仅是单一的预测点可以显着改善许多业务问题的决策过程。</p>
+<p>当我们有兴趣预测一个区间而不仅仅是预测一个点时，Quantile Loss函数就很有用。最小二乘回归的预测区间是基于这样一个假设：残差（y -y_hat）在独立变量的值之间具有不变的方差。我们不能相信线性回归模型，因为它违反了这一假设。当然，我们也不能仅仅认为这种情况一般使用非线性函数或基于树的模型就可以更好地建模，而简单地抛弃拟合线性回归模型作为基线的想法。这时，Quantile Loss就派上用场了。因为基于Quantile Loss的回归模型可以提供合理的预测区间，即使是对于具有非常数方差或非正态分布的残差亦是如此。</p>
+<p>让我们看一个有效的例子，以更好地理解为什么基于QuantileLoss的回归模型对异方差数据表现良好。</p>
+<h4 id="Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归"><a href="#Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归" class="headerlink" title="Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归"></a>Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归</h4><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss.png" alt="左：线性关系b/w X1和Y，残差的方差恒定。右：线性关系b/w X2和Y，但Y的方差随着X2增加而变大（异方差"></p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_1.png" alt="quantile_loss_1"></p>
+<p>橙线表示两种情况下的OLS估计</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_2.png" alt="Quantile回归：虚线表示基于0.05和0.95分位数损失函数的回归估计"></p>
+<p>基于Quantile回归的目的是，在给定预测变量的某些值时，估计因变量的条件“分位数”。QuantileLoss实际上只是MAE的扩展形式（当分位数是第50个百分位时，Quantile Loss退化为MAE）。</p>
+<p>QuantileLoss的思想是根据我们是打算给正误差还是负误差更多的值来选择分位数数值。损失函数根据所选quantile(γ)的值对高估和低估的预测值给予不同的惩罚值。举个例子，γ= 0.25的Quantile Loss函数给高估的预测值更多的惩罚，并试图使预测值略低于中位数。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_function.png" alt="quantile_loss_function"></p>
+<p>γ 是给定的分位数，其值介于0和1之间。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_diff.png" alt="Quantile Loss（Y轴）与预测值（X轴）关系图。真值为Y= 0"></p>
+<p>我们也可以使用这个损失函数来计算神经网络或基于树的模型的预测区间。下图是sklearn实现的梯度提升树回归。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_calc.png" alt="使用Quantile Loss的预测区间（梯度提升回归）"></p>
+<p>上图显示的是sklearn库的GradientBoostingRegression中的quantile loss函数计算的90％预测区间。上限的计算使用了γ = 0.95，下限则是使用了γ = 0.05。</p>
+<h3 id="几种算法的比较"><a href="#几种算法的比较" class="headerlink" title="几种算法的比较"></a>几种算法的比较</h3><p>“Gradient boosting machines, a tutorial”中提供了一个很好的比较研究。为了演示上述所有的损失函数的性质，研究人员创造了一个人工数据集，数据集从sinc(x)函数中采样，其中加入了两种人造模拟噪声：高斯噪声分量和脉冲噪声分量。脉冲噪声项是用来展示结果的鲁棒效果的。以下是使用不同损失函数来拟合 BM（Gradient Boosting Machine, 梯度提升回归）的结果。</p>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/continuous_loss_functions.png" alt="Continuous loss functions: (A) MSE loss function; (B) MAE loss function; (C) Huber loss function; (D) Quantile loss function. Demonstration of fitting a smooth GBM to a noisy sinc(x) data: (E) original sinc(x) function; (F) smooth GBM fitted with MSE and MAE loss; (G) smooth GBM fitted with Huber loss with δ = {4, 2, 1}; (H) smooth GBM fitted with Quantile loss with α = {0.5, 0.1, 0.9}."></p>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><ul>
+<li>以MAE为损失的模型预测较少受到脉冲噪声的影响，而以MSE为损失的模型的预测由于脉冲噪声造成的数据偏离而略有偏差。</li>
+<li>以Huber Loss为损失函数的模型，其预测对所选的超参数不太敏感。 </li>
+<li>Quantile Loss对相应的置信水平给出了很好的估计。</li>
+</ul>
+<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-03-02-深度学习基础之目标及评估/all_loss_functions.png" alt="all_loss_functions"></p>
+<h2 id="Rank-1-和-Rank-5"><a href="#Rank-1-和-Rank-5" class="headerlink" title="Rank-1 和 Rank-5"></a>Rank-1 和 Rank-5</h2><p>最初源自Imagenet中设计的一个分类准确率的评价准则。</p>
+<p>Rank-1比较容易理解，就是精确匹配；Rank-5中，将所有的预测概率排序，只有目标的真实分类在Top 5预测之中就算该次分类正确预测了分类目标，主要针对现实中提供的分类照片不够理想：1）比如照片中同时存在多个目标对象；2）分类目标特别庞大，每个对象都存在多种分类目标(比如一只阿里斯加犬的照片，既可以被分类为狗，也可以被分类为阿拉斯加)，3）分类目标中没有任何明确与对象相关的内容（比如图像为一张小汽车照片，提供的分类为卡车、飞机、摩托车、货车、…）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rank5_accuracy</span><span class="params">(preds, labels)</span>:</span></span><br><span class="line">	<span class="comment"># initialize the rank-1 and rank-5 accuracies</span></span><br><span class="line">	rank1 = <span class="number">0</span></span><br><span class="line">	rank5 = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># loop over the predictions and ground-truth labels</span></span><br><span class="line">	<span class="keyword">for</span> (p, gt) <span class="keyword">in</span> zip(preds, labels):</span><br><span class="line">		<span class="comment"># sort the probabilities by their index in descending</span></span><br><span class="line">		<span class="comment"># order so that the more confident guesses are at the</span></span><br><span class="line">		<span class="comment"># front of the list</span></span><br><span class="line">		p = np.argsort(p)[::<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">		<span class="comment"># check if the ground-truth label is in the top-5</span></span><br><span class="line">		<span class="comment"># predictions</span></span><br><span class="line">		<span class="keyword">if</span> gt <span class="keyword">in</span> p[:<span class="number">5</span>]:</span><br><span class="line">			rank5 += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">		<span class="comment"># check to see if the ground-truth is the #1 prediction</span></span><br><span class="line">		<span class="keyword">if</span> gt == p[<span class="number">0</span>]:</span><br><span class="line">			rank1 += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># compute the final rank-1 and rank-5 accuracies</span></span><br><span class="line">	rank1 /= float(len(preds))</span><br><span class="line">	rank5 /= float(len(preds))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># return a tuple of the rank-1 and rank-5 accuracies</span></span><br><span class="line">	<span class="keyword">return</span> (rank1, rank5)</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras文档</a></li>
+<li><a href="https://developers.google.cn/machine-learning/crash-course/" target="_blank" rel="noopener">Google 机器学习速成课程</a></li>
+<li><a href="https://heartbeat.fritz.ai/5-regression-loss-functions-all-machine-learners-should-know-4fb140e9d4b0" target="_blank" rel="noopener">5 Regression Loss Functions All Machine Learners Should Know</a></li>
+<li>​</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/02/深度学习基础之目标及评估/" target="_blank" title="深度学习基础之目标及评估">http://blog.a-stack.com/2018/03/02/深度学习基础之目标及评估/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/03/Deep-Learning-for-Computer-Vision/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Deep Learning for Computer Vision
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/01/深度学习基础之模型压缩/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度学习基础之模型压缩</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类问题"><span class="nav-number">2.</span> <span class="nav-text">分类问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础知识"><span class="nav-number">2.1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阳性与阴性"><span class="nav-number">2.1.1.</span> <span class="nav-text">阳性与阴性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准确率"><span class="nav-number">2.2.</span> <span class="nav-text">准确率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#精确率"><span class="nav-number">2.3.</span> <span class="nav-text">精确率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#召回率"><span class="nav-number">2.4.</span> <span class="nav-text">召回率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F1指标"><span class="nav-number">2.5.</span> <span class="nav-text">F1指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROC"><span class="nav-number">2.6.</span> <span class="nav-text">ROC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#曲线下面积：ROC-曲线下面积"><span class="nav-number">2.7.</span> <span class="nav-text">曲线下面积：ROC 曲线下面积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测偏差"><span class="nav-number">2.8.</span> <span class="nav-text">预测偏差</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回归损失函数"><span class="nav-number">3.</span> <span class="nav-text">回归损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#均方误差（Mean-Square-Error，MSE）"><span class="nav-number">3.1.</span> <span class="nav-text">均方误差（Mean Square Error，MSE）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平均绝对误差（Mean-Absolute-Error，-L1-Loss）"><span class="nav-number">3.2.</span> <span class="nav-text">平均绝对误差（Mean Absolute Error， L1 Loss）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSE-vs-MAE"><span class="nav-number">3.3.</span> <span class="nav-text">MSE vs MAE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#我们从中观察到什么？我们该如何选择使用哪种损失函数？"><span class="nav-number">3.3.1.</span> <span class="nav-text">我们从中观察到什么？我们该如何选择使用哪种损失函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何选择？"><span class="nav-number">3.3.2.</span> <span class="nav-text">如何选择？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平滑的平均绝对误差函数（Huber-Loss）"><span class="nav-number">3.4.</span> <span class="nav-text">平滑的平均绝对误差函数（Huber Loss）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么使用Huber-Loss？"><span class="nav-number">3.4.1.</span> <span class="nav-text">为什么使用Huber Loss？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-Cosh-Loss"><span class="nav-number">3.5.</span> <span class="nav-text">Log-Cosh Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quantile-Loss-分位数损失"><span class="nav-number">3.6.</span> <span class="nav-text">Quantile Loss(分位数损失)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归"><span class="nav-number">3.6.1.</span> <span class="nav-text">Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几种算法的比较"><span class="nav-number">3.7.</span> <span class="nav-text">几种算法的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结论"><span class="nav-number">3.7.1.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rank-1-和-Rank-5"><span class="nav-number">4.</span> <span class="nav-text">Rank-1 和 Rank-5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
