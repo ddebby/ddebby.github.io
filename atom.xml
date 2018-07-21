@@ -46,6 +46,35 @@
   </entry>
   
   <entry>
+    <title>经典网络复现之VGGNet</title>
+    <link href="http://blog.a-stack.com/2018/07/12/2018-07-9-%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C%E5%A4%8D%E7%8E%B0%E4%B9%8BVGG/"/>
+    <id>http://blog.a-stack.com/2018/07/12/2018-07-9-经典网络复现之VGG/</id>
+    <published>2018-07-12T05:58:12.000Z</published>
+    <updated>2018-07-20T14:53:24.141Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/VGGNet.jpg" alt="VGGNet"></p><p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络VGGNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p><a id="more"></a><p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p><ul><li>ImageNet数据集及数据准备</li><li>AlexNet网络</li><li><strong>VGG网络</strong></li><li>GoogLeNet网络</li><li>ResNet网络</li><li>SqueezeNet网络</li></ul><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>VGGNet是英国牛津大学2014年ImageNet ILSVRC第二名的网络，由于其良好的泛化性能，在被迁移到其它深度学习任务中体现出来良好的效果，是目前迁移学习中用的最多的网络。但由于网络规模和参数量实在庞大，从头训练一个网络充满难度。</p><ul><li>论文：<ul><li><a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">Very Deep Convolutional Networks for Large-Scale Image Recognition</a></li></ul></li><li>数据集： ImageNet 2012 ILSRVC数据集（数据集的获取及准备详见<a href="/2018/07/06/ImageNet-DataSet/">ImageNet-DataSet</a>）</li><li>计算框架： MxNet</li><li>算力资源：AWS云主机p2.8xlarge：8个Tesla K80 GPU ($7.20/hour)<ul><li>总计训练时间&gt;10天左右</li></ul></li></ul><h2 id="重头训练一个VGGNet"><a href="#重头训练一个VGGNet" class="headerlink" title="重头训练一个VGGNet"></a>重头训练一个VGGNet</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/parameter_vgg.png" alt="parameter_vgg"></p><ol><li>由于网络深度太深、参数太多，所以从头按部就班的训练VGGNet是很漫长的过程，为此VGG的作者使用了一种<code>pre-training</code>的方式。通过不断训练小一号的网络架构，将训练后的参数作为后续较大网络的初始参数来逐步逼近完整的网络。比如为了训练VGG16，作者先训练了A网络VGG11，然后利用A网络的参数逐步训练B VGG13，最后才是D网络 VGG16。这种方式使用了<code>warmed pre-trained up</code>层参数来推进后续的网络训练。</li><li>虽然上述方法是个很好的技巧，但训练N个网络才能达到目的实在是一个痛苦的过程，随着深度学习技术的发展，尤其是参数初始化技术的发展，为训练VGG提供了更加高效的策略——使用高级的初始化策略，如Xavier或MSRA，同时配合使用参数化ReLU可以抛弃1中的预训练方式。</li></ol><h3 id="训练VGGNet"><a href="#训练VGGNet" class="headerlink" title="训练VGGNet"></a>训练VGGNet</h3><p>训练用的脚本和前面几个网络一致。</p><blockquote><p><strong>几个注意点：</strong></p><ol><li><code>batchSize = config.BATCH_SIZE * config.NUM_DEVICES</code>; 使用k80 12GB先存，选择batchSzie=<strong>32</strong>；</li><li>初始学习率为1e-2，动量0.9，L2权重正则化参数0.0005；rescale参数尤为关键，根据批的大小放大梯度：rescale_grad=1.0 / batchSize；</li><li>使用了MSRA进行参数初始化，initializer=mx.initializer.MSRAPrelu()；</li><li>同时使用参数PReLU代替ReLU作为激活函数；</li></ol></blockquote><h4 id="学习率的控制"><a href="#学习率的控制" class="headerlink" title="学习率的控制"></a>学习率的控制</h4><div class="table-container"><table><thead><tr><th>Epoch</th><th>学习率</th></tr></thead><tbody><tr><td>1-50</td><td>1e-2</td></tr><tr><td>51-70</td><td>1e-3</td></tr><tr><td>71-80</td><td>1e-4</td></tr></tbody></table></div><blockquote><ol><li>控制每轮学习率修改的观察窗口要在10-15个epoch之后再下结论，确定该阶段验证集准确率饱和了再行降低学习率；</li><li>调整学习率 <code>python train_alexnet.py --checkpoints checkpoints --prefix alexnet \ --start-epoch 50</code></li></ol></blockquote><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/training.png" alt="training"></p><h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>1.选取40轮的训练结果，在测试集数据上进行验证，结果如下：</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-1</span>: 71<span class="selector-class">.42</span>% </span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-5</span>: 90<span class="selector-class">.03</span>%</span><br></pre></td></tr></table></figure><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol><li>为了训练VGGNet，一定要使用高级初始化参数方法，并配合参数化ReLU使用；</li><li>训练一个大型数据集的深度神经网络是个费时费力的活，为了获得最优的参数，一般需要进行10-100次参数实验，需要极大的耐心和计算资源；</li><li>训练深度神经网络的目的不是找寻全局最优解，因为一般很难找到这个解，我们只是在探寻一个比上次效果更好的模型；</li><li>先使用ReLU作为激活函数获得baseline，再选择提花为ELU来获得提升；</li><li>训练深层网络时，考虑使用MSRA/HE的初始化参数，并配合PReLU一起使用，效果更好；</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/VGGNet.jpg&quot; alt=&quot;VGGNet&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;摘要：&lt;/strong&gt; 本文记录利用ImageNet数据集复现经典网络VGGNet的过程，并记录在大型数据集训练过程中需要考虑的问题。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="动手实践营" scheme="http://blog.a-stack.com/categories/%E5%8A%A8%E6%89%8B%E5%AE%9E%E8%B7%B5%E8%90%A5/"/>
+    
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
+    
+      <category term="网络复现" scheme="http://blog.a-stack.com/tags/%E7%BD%91%E7%BB%9C%E5%A4%8D%E7%8E%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>经典网络复现之GoogleNet</title>
     <link href="http://blog.a-stack.com/2018/07/12/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C%E5%A4%8D%E7%8E%B0%E4%B9%8BGoogleNet/"/>
     <id>http://blog.a-stack.com/2018/07/12/经典网络复现之GoogleNet/</id>
@@ -87,35 +116,6 @@
     
       &lt;p&gt;&lt;img src=&quot;http://p4ygzcmtw.bkt.clouddn.com/images/2018-05-21-ResNet/residual-Module-2.PNG&quot; alt=&quot;Residual Module&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;摘要：&lt;/strong&gt; 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="动手实践营" scheme="http://blog.a-stack.com/categories/%E5%8A%A8%E6%89%8B%E5%AE%9E%E8%B7%B5%E8%90%A5/"/>
-    
-    
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
-      <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
-    
-      <category term="网络复现" scheme="http://blog.a-stack.com/tags/%E7%BD%91%E7%BB%9C%E5%A4%8D%E7%8E%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>经典网络复现之VGGNet</title>
-    <link href="http://blog.a-stack.com/2018/07/12/2018-07-9-%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C%E5%A4%8D%E7%8E%B0%E4%B9%8BVGG/"/>
-    <id>http://blog.a-stack.com/2018/07/12/2018-07-9-经典网络复现之VGG/</id>
-    <published>2018-07-12T05:58:12.000Z</published>
-    <updated>2018-07-20T14:53:24.141Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/VGGNet.jpg" alt="VGGNet"></p><p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络VGGNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p><a id="more"></a><p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p><ul><li>ImageNet数据集及数据准备</li><li>AlexNet网络</li><li><strong>VGG网络</strong></li><li>GoogLeNet网络</li><li>ResNet网络</li><li>SqueezeNet网络</li></ul><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>VGGNet是英国牛津大学2014年ImageNet ILSVRC第二名的网络，由于其良好的泛化性能，在被迁移到其它深度学习任务中体现出来良好的效果，是目前迁移学习中用的最多的网络。但由于网络规模和参数量实在庞大，从头训练一个网络充满难度。</p><ul><li>论文：<ul><li><a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">Very Deep Convolutional Networks for Large-Scale Image Recognition</a></li></ul></li><li>数据集： ImageNet 2012 ILSRVC数据集（数据集的获取及准备详见<a href="/2018/07/06/ImageNet-DataSet/">ImageNet-DataSet</a>）</li><li>计算框架： MxNet</li><li>算力资源：AWS云主机p2.8xlarge：8个Tesla K80 GPU ($7.20/hour)<ul><li>总计训练时间&gt;10天左右</li></ul></li></ul><h2 id="重头训练一个VGGNet"><a href="#重头训练一个VGGNet" class="headerlink" title="重头训练一个VGGNet"></a>重头训练一个VGGNet</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/parameter_vgg.png" alt="parameter_vgg"></p><ol><li>由于网络深度太深、参数太多，所以从头按部就班的训练VGGNet是很漫长的过程，为此VGG的作者使用了一种<code>pre-training</code>的方式。通过不断训练小一号的网络架构，将训练后的参数作为后续较大网络的初始参数来逐步逼近完整的网络。比如为了训练VGG16，作者先训练了A网络VGG11，然后利用A网络的参数逐步训练B VGG13，最后才是D网络 VGG16。这种方式使用了<code>warmed pre-trained up</code>层参数来推进后续的网络训练。</li><li>虽然上述方法是个很好的技巧，但训练N个网络才能达到目的实在是一个痛苦的过程，随着深度学习技术的发展，尤其是参数初始化技术的发展，为训练VGG提供了更加高效的策略——使用高级的初始化策略，如Xavier或MSRA，同时配合使用参数化ReLU可以抛弃1中的预训练方式。</li></ol><h3 id="训练VGGNet"><a href="#训练VGGNet" class="headerlink" title="训练VGGNet"></a>训练VGGNet</h3><p>训练用的脚本和前面几个网络一致。</p><blockquote><p><strong>几个注意点：</strong></p><ol><li><code>batchSize = config.BATCH_SIZE * config.NUM_DEVICES</code>; 使用k80 12GB先存，选择batchSzie=<strong>32</strong>；</li><li>初始学习率为1e-2，动量0.9，L2权重正则化参数0.0005；rescale参数尤为关键，根据批的大小放大梯度：rescale_grad=1.0 / batchSize；</li><li>使用了MSRA进行参数初始化，initializer=mx.initializer.MSRAPrelu()；</li><li>同时使用参数PReLU代替ReLU作为激活函数；</li></ol></blockquote><h4 id="学习率的控制"><a href="#学习率的控制" class="headerlink" title="学习率的控制"></a>学习率的控制</h4><div class="table-container"><table><thead><tr><th>Epoch</th><th>学习率</th></tr></thead><tbody><tr><td>1-50</td><td>1e-2</td></tr><tr><td>51-70</td><td>1e-3</td></tr><tr><td>71-80</td><td>1e-4</td></tr></tbody></table></div><blockquote><ol><li>控制每轮学习率修改的观察窗口要在10-15个epoch之后再下结论，确定该阶段验证集准确率饱和了再行降低学习率；</li><li>调整学习率 <code>python train_alexnet.py --checkpoints checkpoints --prefix alexnet \ --start-epoch 50</code></li></ol></blockquote><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/training.png" alt="training"></p><h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>1.选取40轮的训练结果，在测试集数据上进行验证，结果如下：</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-1</span>: 71<span class="selector-class">.42</span>% </span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-5</span>: 90<span class="selector-class">.03</span>%</span><br></pre></td></tr></table></figure><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol><li>为了训练VGGNet，一定要使用高级初始化参数方法，并配合参数化ReLU使用；</li><li>训练一个大型数据集的深度神经网络是个费时费力的活，为了获得最优的参数，一般需要进行10-100次参数实验，需要极大的耐心和计算资源；</li><li>训练深度神经网络的目的不是找寻全局最优解，因为一般很难找到这个解，我们只是在探寻一个比上次效果更好的模型；</li><li>先使用ReLU作为激活函数获得baseline，再选择提花为ELU来获得提升；</li><li>训练深层网络时，考虑使用MSRA/HE的初始化参数，并配合PReLU一起使用，效果更好；</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/VGGNet.jpg&quot; alt=&quot;VGGNet&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;摘要：&lt;/strong&gt; 本文记录利用ImageNet数据集复现经典网络VGGNet的过程，并记录在大型数据集训练过程中需要考虑的问题。&lt;/p&gt;
     
     </summary>
     
@@ -301,9 +301,9 @@
     
       <category term="机器视觉" scheme="http://blog.a-stack.com/tags/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
     
-      <category term="图像分类" scheme="http://blog.a-stack.com/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
+    
+      <category term="图像分类" scheme="http://blog.a-stack.com/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/"/>
     
   </entry>
   
@@ -514,9 +514,9 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="技巧" scheme="http://blog.a-stack.com/tags/%E6%8A%80%E5%B7%A7/"/>
-    
       <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="技巧" scheme="http://blog.a-stack.com/tags/%E6%8A%80%E5%B7%A7/"/>
     
       <category term="机器学习" scheme="http://blog.a-stack.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
