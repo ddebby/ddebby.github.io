@@ -301,9 +301,9 @@
     
       <category term="机器视觉" scheme="http://blog.a-stack.com/tags/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
     
-      <category term="图像分类" scheme="http://blog.a-stack.com/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
+    
+      <category term="图像分类" scheme="http://blog.a-stack.com/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/"/>
     
   </entry>
   
@@ -514,9 +514,9 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="技巧" scheme="http://blog.a-stack.com/tags/%E6%8A%80%E5%B7%A7/"/>
-    
       <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="技巧" scheme="http://blog.a-stack.com/tags/%E6%8A%80%E5%B7%A7/"/>
     
       <category term="机器学习" scheme="http://blog.a-stack.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
