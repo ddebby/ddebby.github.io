@@ -226,7 +226,7 @@
               
                 <div class="item" style="max-height:600px; overflow: hidden;">
               
-                <img id="carousel-img2" src="https://source.unsplash.com/collection/954550/1920x1080">
+                <img id="carousel-img2" src="http://p4ygzcmtw.bkt.clouddn.com/banner/02.jpg">
               </div>
 
               <!-- 自适应大图 -->
@@ -242,6 +242,56 @@
 	                    } else {
 	                      imageTag2.style.height = h + "px";
 	                      imageTag2.style.marginLeft = -(h * img2.width / img2.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+              
+                <div class="item" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img3" src="http://p4ygzcmtw.bkt.clouddn.com/banner/01.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img3 = new Image();
+	                  var imageTag3 = document.getElementById("carousel-img3");
+	                  img3.src = imageTag3.src;
+	                  img3.onload=function(){
+	                    if (img3.width / img3.height <= document.body.clientWidth / h) {
+	                      imageTag3.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag3.style.height = h + "px";
+	                      imageTag3.style.marginLeft = -(h * img3.width / img3.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+              
+                <div class="item" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img4" src="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img4 = new Image();
+	                  var imageTag4 = document.getElementById("carousel-img4");
+	                  img4.src = imageTag4.src;
+	                  img4.onload=function(){
+	                    if (img4.width / img4.height <= document.body.clientWidth / h) {
+	                      imageTag4.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag4.style.height = h + "px";
+	                      imageTag4.style.marginLeft = -(h * img4.width / img4.height - document.body.clientWidth) / 2 + "px";
 	                    }
 	                  };
               	  };
