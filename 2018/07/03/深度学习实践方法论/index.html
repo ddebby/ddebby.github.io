@@ -169,7 +169,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg" rel="gallery_cjjxxuswb002lh0v2p8y8me6z">
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg" rel="gallery_cjkajo7ca002i0cv2hbwgzx59">
         <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg" itemprop="image">
       </a>
     
@@ -217,11 +217,11 @@
 <li>搭建系统，并确定性能瓶颈。检查哪个部分的性能差于预期，以及是否是因 为过拟合、欠拟合，或者数据或软件缺陷造成的。</li>
 <li>根据具体观察反复地进行增量式的改动，如收集新数据、调整超参数或改进算 法。</li>
 </ul>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/deeplearning_workflow.png" alt="我们项目实践中使用的流程图"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/deeplearning_workflow.png" alt="我们项目实践中使用的流程图"></p>
 <h2 id="问题的定义和描述"><a href="#问题的定义和描述" class="headerlink" title="问题的定义和描述"></a>问题的定义和描述</h2><ul>
 <li>选定误差度量标准；</li>
 </ul>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/bayes_error.PNG" alt="bayes_error"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/bayes_error.PNG" alt="bayes_error"></p>
 <ul>
 <li>科研中，目标通常是在某个确定基准下探讨哪个算法更好，一般会固定训练集，不允许收集更多的数据。</li>
 <li>性能期望的设计</li>
@@ -244,13 +244,13 @@
 <li>收集更多数据对于深度学习来说是最直接改观性能的方式，但何时收集，是否应该收集需要评估投入-产出比；</li>
 <li>也许正则化可以弥补模型的误差期望差距，没有必要投入代价更好的数据收集工作；</li>
 </ul>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/data_split.PNG" alt="data_split"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/data_split2.PNG" alt="data_split2"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/data_split.PNG" alt="data_split"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/data_split2.PNG" alt="data_split2"></p>
 <ul>
 <li><p>如果收集数据，应该收集多少数据？</p>
 <ul>
 <li><p>如图所示，绘制曲线显示训练集规模和泛化误差之间的关系是很有帮助的。根据走势延伸曲线，可以预测还需要多少训练数据来达到一定的性能。</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/number_of_training_examples.PNG" alt="训练集大小对训练误差的影响"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/number_of_training_examples.PNG" alt="训练集大小对训练误差的影响"></p>
 </li>
 </ul>
 </li>
@@ -263,16 +263,16 @@
 <li>代价函数和训练过程正则化模型的程度</li>
 </ul>
 <p>学习率可能是最重要的超参数，如果你只有时间调整一个超参，那就调整学习率。相比其他超参数，它以一种更复杂的方式控制模型的有效容量——当学习率适合优化问题时，模型的有效容量最高，此时学习率是正确的，既不是特别大也不是特别小。学习率关于训练误差具有 U 形曲线，如图所示。当学习率过大时，梯度下降可能会不经意地增加而非减少训练误差。在理想化的二次情况下，如果学习率是最佳值的两倍大时，会发生这种情况 (LeCun et al., 1998b)。当学习率太小，训练不仅慢，还有可能永久停留在一个很高的训练误差。</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/learning_rate.PNG" alt="learning_rate"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/learning_rate.PNG" alt="learning_rate"></p>
 <blockquote>
 <p>实践中能够确保学习有效的暴力方法就是不断提高模型容量和训练 集的大小，直到解决问题。</p>
 </blockquote>
 <h3 id="自动超参优化"><a href="#自动超参优化" class="headerlink" title="自动超参优化"></a>自动超参优化</h3><p>如果我们仔细想想使用者搜索学习算法合适超参数的方式，我们会意识到这其实是一种优化：我们在试图寻找超参数来优化目标函数，例如验证误差，有时还会有一些约束（如训练时间，内存或识别时间的预算）。</p>
 <p><strong>网格搜索（grid search）</strong>是超参选择的常用方法，利用几个小的有限集训练参数模型，从中挑选验证集误差最小的超参。超参范围的设定一般采用对数尺度小挑选合适的值。</p>
 <p>随机搜索： 为每个超参数定义一个边缘分布，或者对数尺度上的均匀分布。与网格搜索不懂，不需要离散化超参数的值。实践证明，随机搜索效率比网格搜索更高。</p>
-<h2 id="调整策略"><a href="#调整策略" class="headerlink" title="调整策略"></a>调整策略</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/adjust_error.PNG" alt="adjust_error"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/adjust_error_2.PNG" alt="adjust_error_2"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-03-深度学习实践方法论/adjust_error_3.PNG" alt="adjust_error_3"></p>
+<h2 id="调整策略"><a href="#调整策略" class="headerlink" title="调整策略"></a>调整策略</h2><p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/adjust_error.PNG" alt="adjust_error"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/adjust_error_2.PNG" alt="adjust_error_2"></p>
+<p><img src="/qnsource/images/2018-07-03-深度学习实践方法论/adjust_error_3.PNG" alt="adjust_error_3"></p>
 <h2 id="调试策略"><a href="#调试策略" class="headerlink" title="调试策略"></a>调试策略</h2><ol>
 <li>可视化计算中模型的行为：当训练模型检测图像中的对象时，查看一些模型检测到部分重叠的图像。在训练语音生成模型时，试听一些生成的语音样本。这似乎是显而易见的，但在实际中很容易只注意量化性能度量，如准确率或对数似然。直接观察机器学习模型运行其任务，有助于确定其达到的量化性能数据是否看上去合 理。错误评估模型性能可能是最具破坏性的错误之一，因为它们会使你在系统出问题时误以为系统运行良好。 </li>
 <li>可视化最严重的错误：大多数模型能够输出运行任务时的某种置信度量。例如，基于softmax 函数输出层的分类器给每个类分配一个概率。因此，分配给最有可能的类的概率给出了模型在其分类决定上的置信估计值。通常，相比于正确预测的概率最大似然训练会略有高估。但是由于实际上模型的较小概率不太可能对应着正确 的标签，因此它们在一定意义上还是有些用的。通过查看训练集中很难正确建模的样本，通常可以发现该数据预处理或者标记方式的问题。</li>
@@ -399,7 +399,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

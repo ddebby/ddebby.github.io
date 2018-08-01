@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/linear_classification.png">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/linear_classification_3view_points.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/linear_classification.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/linear_classification_3view_points.png">
 <meta property="og:updated_time" content="2018-05-16T13:59:35.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n课程笔记:（Lecture 3）线性分类器和优化方法">
 <meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/linear_classification.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/linear_classification.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -224,10 +224,10 @@
 </tbody>
 </table>
 </div>
-<h2 id="线性分类器-2"><a href="#线性分类器-2" class="headerlink" title="线性分类器 2"></a>线性分类器 <sup><a href="#fn_2" id="reffn_2">2</a></sup></h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/linear_classification.png" alt="linear_classification"></p>
+<h2 id="线性分类器-2"><a href="#线性分类器-2" class="headerlink" title="线性分类器 2"></a>线性分类器 <sup><a href="#fn_2" id="reffn_2">2</a></sup></h2><p><img src="/qnsource/images/2018-04-28-cs231n-notes/linear_classification.png" alt="linear_classification"></p>
 <p><strong>Interpretation of linear classifiers as template matching.</strong> Another interpretation for the weights WW is that each row of WW corresponds to a <em>template</em> (or sometimes also called a <em>prototype</em>) for one of the classes. The score of each class for an image is then obtained by comparing each template with the image using an <em>inner product</em> (or <em>dot product</em>) one by one to find the one that “fits” best. With this terminology, the linear classifier is doing template matching, where the templates are learned. Another way to think of it is that we are still effectively doing Nearest Neighbor, but instead of having thousands of training images we are only using a single image per class (although we will learn it, and it does not necessarily have to be one of the images in the training set), and we use the (negative) inner product as the distance instead of the L1 or L2 distance.</p>
 <p>线性分类器本质上可以理解为一种模板匹配算法，匹配与分类模板最相近的模板，但由于线性分类器的简单性质，导致每个类最终只能学习到一个模板，如果目标类别有较大的差异，就需要把这些差异平均化。（这也是神经网络层次特性的优越性）</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/linear_classification_3view_points.png" alt="linear_classification_3view_points"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/linear_classification_3view_points.png" alt="linear_classification_3view_points"></p>
 <h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><h4 id="多分类SVM代价函数5"><a href="#多分类SVM代价函数5" class="headerlink" title="多分类SVM代价函数5"></a>多分类SVM代价函数<sup><a href="#fn_5" id="reffn_5">5</a></sup></h4><p>SVM的目标函数定义：</p>
 <script type="math/tex; mode=display">
 \begin{equation}
@@ -386,7 +386,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

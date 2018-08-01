@@ -19,12 +19,12 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 李航在《统计学习方法》中将统计学习方法的三要素——模型、策略、算法总结为机器学习方法的提纲挈领。这篇博文主要总结归纳《统计学习方法》中对于这三要素的阐述。 @[toc] 最近在读李航的《统计学习方法》，作者从统计学习的方法来分析机器学习技术，分析很细致深刻，值得反思，未来将逐步总结相关内容，期待更多共鸣与思考。 什么是统计机器学习统计学习又叫统计机器学习，是关于计算机基于数据构建概率统计模">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-21-机器学习三要素-模型-策略与算法/model.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-21-机器学习三要素-模型-策略与算法/model.png">
 <meta property="og:updated_time" content="2018-05-15T09:14:33.495Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习三要素：模型,策略与算法">
 <meta name="twitter:description" content="摘要： 李航在《统计学习方法》中将统计学习方法的三要素——模型、策略、算法总结为机器学习方法的提纲挈领。这篇博文主要总结归纳《统计学习方法》中对于这三要素的阐述。 @[toc] 最近在读李航的《统计学习方法》，作者从统计学习的方法来分析机器学习技术，分析很细致深刻，值得反思，未来将逐步总结相关内容，期待更多共鸣与思考。 什么是统计机器学习统计学习又叫统计机器学习，是关于计算机基于数据构建概率统计模">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-21-机器学习三要素-模型-策略与算法/model.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-21-机器学习三要素-模型-策略与算法/model.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -219,7 +219,7 @@
 <p> 监督学习假设输入与输出的随机变量$X$ 和 $Y$ 遵循联合概率分布 $P(X,Y)$ , 机器学习的前提是假设该概率分布存在，但具体定义是未知的（如果知道的话也没必要通过机器学习来获取的了，直接可以通过条件函数来预测未知结果）。训练数据和测试数据被看作是依据联合概率分布$P(X,Y)$ 独立同分布产生的。这是机器学习数据具备一定统计规律的基本假设。</p>
 </blockquote>
 <h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>如下图所示，在机器学习中，模型描述的是一组从输入到输出的映射关系的函数表示。</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-21-机器学习三要素-模型-策略与算法/model.png" alt="model"></p>
+<p><img src="/qnsource/images/2018-04-21-机器学习三要素-模型-策略与算法/model.png" alt="model"></p>
 <p>在监督学习中，模型就是从假设空间中所要学习条件概率分布$\hat P(X|Y)$ 或决策函数 $Y = \hat f(X)$ 。</p>
 <h2 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h2><p>策略描述了学习的目标函数，通过什么样的准则使学习的方向最终逼近最终的优化目标从而能够从假设空间中选取最优的模型。一般采用损失函数或代价函数来对模型的好坏进行度量。损失函数是$f(X)$ 和 $Y$ 的非负实值函数，记作 $L(Y, f(X))$ 。</p>
 <p>损失函数数值越小，模型越好，损失函数的期望为：</p>
@@ -326,7 +326,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

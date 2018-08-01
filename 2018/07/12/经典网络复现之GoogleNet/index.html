@@ -169,7 +169,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg" rel="gallery_cjjxxuswg002th0v2docmckct">
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg" rel="gallery_cjkajo7cj002u0cv2b3m0824j">
         <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg" itemprop="image">
       </a>
     
@@ -206,7 +206,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/inception.jpg" alt="inception"></p>
+        <p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/inception.jpg" alt="inception"></p>
 <p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络GoogLeNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
 <a id="more"></a>
 <p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
@@ -237,7 +237,7 @@
 <p>二、InceptionV1降低了参数量，目的有两个：1 参数越多模型越大，需要提供模型学习的数据量就越大，数据量不大的情况下容易过拟合；2 参数越多，耗费的计算资源也会更大。</p>
 <p>三、去除了最后的全连接层，用全局平均池化层来取代它。全连接层几乎占据了AlexNet或VGGNet中90%的参数量，而且会引起过拟合，去除全连接层后模型训练更快并且减轻了过拟合。用全局平均池化层取代全连接层的做法借鉴了NetworkIn Network（以下简称NIN）论文。</p>
 <p>四、InceptionV1中精心设计的InceptionModule提高了参数的利用效率。这一部分也借鉴了NIN的思想，形象的解释就是InceptionModule本身如同大网络中的一个小网络，其结构可以反复堆叠在一起形成大网络。InceptionV1比NIN更进一步的是增加了分支网络，NIN则主要是级联的卷积层和MLPConv层。一般来说卷积层要提升表达能力，主要依靠增加输出通道数，但副作用是计算量增大和过拟合。每一个输出通道对应一个滤波器，同一个滤波器共享参数，只能提取一类特征，因此一个输出通道只能做一种特征处理。而NIN中的MLPConv则拥有更强大的能力，允许在输出通道之间组合信息，因此效果明显。可以说，MLPConv基本等效于普通卷积层后再连接1*1的卷积和ReLU激活函数。</p>
-<h2 id="重头训练一个GoogLeNet"><a href="#重头训练一个GoogLeNet" class="headerlink" title="重头训练一个GoogLeNet"></a>重头训练一个GoogLeNet</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/parameters.png" alt="parameters"></p>
+<h2 id="重头训练一个GoogLeNet"><a href="#重头训练一个GoogLeNet" class="headerlink" title="重头训练一个GoogLeNet"></a>重头训练一个GoogLeNet</h2><p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/parameters.png" alt="parameters"></p>
 <ol>
 <li>使用MxNet构建GoogleNet代码</li>
 </ol>
@@ -296,18 +296,18 @@
 <ol>
 <li><p>第一遍训练采用1e-3的学习率配合Adam算法训练31轮，发现饱和现象，降低学习率到1e-4，继续训练到42轮；</p>
 <p>​</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/42epoch-accuracy.png" alt="42epoch-accuracy"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/42epoch-loss.png" alt="42epoch-loss"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-accuracy.png" alt="42epoch-accuracy"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-loss.png" alt="42epoch-loss"></p>
 </li>
 <li><p>发现40轮之后就已经出现了验证准确率的饱和现象，在40轮之后调整学习率为1e-5继续训练几轮完成：</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/47epoch-accuracy.png" alt="47epoch-accuracy"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/47epoch-loss.png" alt="47epoch-loss"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/47epoch-accuracy.png" alt="47epoch-accuracy"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/47epoch-loss.png" alt="47epoch-loss"></p>
 </li>
 </ol>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
 <li><p>Adam or SGD</p>
 <p>如果使用SGD + 1e-2的经典开始配合，在GoogleNet上效果并不好，抖动剧烈，虽然这是作者推荐的参数，如下：</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之GoogleNet/1e-2lr.png" alt="1e-2lr"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/1e-2lr.png" alt="1e-2lr"></p>
 <p>首先修改初始学习率为1e-3，尽管抖动降低了，但学习太慢，效果也不佳，为此进一步的调整了优化算法为Adam算法。</p>
 </li>
 <li><p>使用BN在激活函数之后</p>
@@ -408,19 +408,19 @@ var a = new Donate({
     
 <nav id="article-nav">
   
-    <a href="/2018/07/12/2018-07-9-经典网络复现之VGG/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/07/12/经典网络复现之ResNet/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          经典网络复现之VGGNet
+          经典网络复现之ResNet
         
       </div>
     </a>
   
   
-    <a href="/2018/07/12/经典网络复现之ResNet/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/12/经典网络复现之SqueezeNet/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">经典网络复现之ResNet</div>
+      <div class="article-nav-title">经典网络复现之SqueezeNet</div>
     </a>
   
 </nav>
@@ -442,7 +442,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

@@ -169,7 +169,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/22.jpg" rel="gallery_cjjxxuswp0033h0v20wsxk1f3">
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/22.jpg" rel="gallery_cjkajo7cl002y0cv21mym95ig">
         <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/22.jpg" itemprop="image">
       </a>
     
@@ -237,7 +237,7 @@
 <h2 id="重头训练一个ResNet"><a href="#重头训练一个ResNet" class="headerlink" title="重头训练一个ResNet"></a>重头训练一个ResNet</h2><p>我们训练的标的是ResNet50，即50层的残差网络，50代表了整个网络中所有含参数层的数目：</p>
 <p>1 + （3x3） + (4x3) + (6x3) + (3x3) + 1 = 50</p>
 <p>第一个卷积层使用7x7的卷积核，用于快速降低网络尺寸，配合紧接着的池化层，将输入224x224的尺寸降低到56x56。</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png" alt="ResNet—Architecture"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png" alt="ResNet—Architecture"></p>
 <ol>
 <li>使用MxNet构建ResNet代码</li>
 </ol>
@@ -301,11 +301,11 @@
 </blockquote>
 <ol>
 <li><p>第一遍训练采用1e-1的学习率训练16轮，发现饱和现象，而且训练误差和测试误差约拉越大；</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之ResNet/1-16.png" alt="1-16"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png" alt="1-16-loss"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png" alt="1-16"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png" alt="1-16-loss"></p>
 </li>
 <li><p>在第10个迭代调整学习率到1e-2，验证集准确率有大幅提升，代表调整有效，之后在16轮迭代之后再次降低学习率到1e-3,25轮调整学习率到1e-4，最终top-5的准确率为0.884073，top-1准确率为0.68338：</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png" alt="1-31-accuracy"><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png" alt="1-31-loss"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png" alt="1-31-accuracy"><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png" alt="1-31-loss"></p>
 </li>
 </ol>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
@@ -412,19 +412,19 @@ var a = new Donate({
     
 <nav id="article-nav">
   
-    <a href="/2018/07/12/经典网络复现之GoogleNet/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/07/12/2018-07-9-经典网络复现之VGG/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          经典网络复现之GoogleNet
+          经典网络复现之VGGNet
         
       </div>
     </a>
   
   
-    <a href="/2018/07/08/经典网络复现之AlexNet/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/12/经典网络复现之GoogleNet/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">经典网络复现之AlexNet</div>
+      <div class="article-nav-title">经典网络复现之GoogleNet</div>
     </a>
   
 </nav>
@@ -446,7 +446,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

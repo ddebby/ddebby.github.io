@@ -169,7 +169,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/cover/12.jpg" rel="gallery_cjjxxuswi002wh0v2o1b1r1p2">
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/cover/12.jpg" rel="gallery_cjkajo7cq00330cv21dlzcj36">
         <img src="http://p4ygzcmtw.bkt.clouddn.com/cover/12.jpg" itemprop="image">
       </a>
     
@@ -206,7 +206,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/VGGNet.jpg" alt="VGGNet"></p>
+        <p><img src="/qnsource/images/2018-07-09-经典网络复现之VGG/VGGNet.jpg" alt="VGGNet"></p>
 <p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络VGGNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
 <a id="more"></a>
 <p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
@@ -231,7 +231,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="重头训练一个VGGNet"><a href="#重头训练一个VGGNet" class="headerlink" title="重头训练一个VGGNet"></a>重头训练一个VGGNet</h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/parameter_vgg.png" alt="parameter_vgg"></p>
+<h2 id="重头训练一个VGGNet"><a href="#重头训练一个VGGNet" class="headerlink" title="重头训练一个VGGNet"></a>重头训练一个VGGNet</h2><p><img src="/qnsource/images/2018-07-09-经典网络复现之VGG/parameter_vgg.png" alt="parameter_vgg"></p>
 <ol>
 <li>由于网络深度太深、参数太多，所以从头按部就班的训练VGGNet是很漫长的过程，为此VGG的作者使用了一种<code>pre-training</code>的方式。通过不断训练小一号的网络架构，将训练后的参数作为后续较大网络的初始参数来逐步逼近完整的网络。比如为了训练VGG16，作者先训练了A网络VGG11，然后利用A网络的参数逐步训练B VGG13，最后才是D网络 VGG16。这种方式使用了<code>warmed pre-trained up</code>层参数来推进后续的网络训练。</li>
 <li>虽然上述方法是个很好的技巧，但训练N个网络才能达到目的实在是一个痛苦的过程，随着深度学习技术的发展，尤其是参数初始化技术的发展，为训练VGG提供了更加高效的策略——使用高级的初始化策略，如Xavier或MSRA，同时配合使用参数化ReLU可以抛弃1中的预训练方式。</li>
@@ -276,7 +276,7 @@
 <li>调整学习率 <code>python train_alexnet.py --checkpoints checkpoints --prefix alexnet \ --start-epoch 50</code></li>
 </ol>
 </blockquote>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-09-经典网络复现之VGG/training.png" alt="training"></p>
+<p><img src="/qnsource/images/2018-07-09-经典网络复现之VGG/training.png" alt="training"></p>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>1.选取40轮的训练结果，在测试集数据上进行验证，结果如下：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-1</span>: 71<span class="selector-class">.42</span>% </span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-5</span>: 90<span class="selector-class">.03</span>%</span><br></pre></td></tr></table></figure>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
@@ -366,19 +366,10 @@ var a = new Donate({
     
 <nav id="article-nav">
   
-    <a href="/2018/07/12/经典网络复现之SqueezeNet/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          经典网络复现之SqueezeNet
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/07/12/经典网络复现之GoogleNet/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/12/经典网络复现之ResNet/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">经典网络复现之GoogleNet</div>
+      <div class="article-nav-title">经典网络复现之ResNet</div>
     </a>
   
 </nav>
@@ -400,7 +391,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

@@ -169,7 +169,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg" rel="gallery_cjjxxusws0037h0v2fbq69vtk">
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg" rel="gallery_cjkajo7co00310cv2gbqf5k4u">
         <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg" itemprop="image">
       </a>
     
@@ -206,7 +206,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG" alt="Fire-Module"></p>
+        <p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG" alt="Fire-Module"></p>
 <p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络SqueezeNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
 <a id="more"></a>
 <p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
@@ -249,7 +249,7 @@
 <li>降低输入到3x3卷积对象的channel数目，在SqueezeNet中是使用squeeze模块来实现的；</li>
 <li>尽量在网络后面层次中进行降采样，这样可以是卷积层获得更大的激活地图，从而获得更高的精度；</li>
 </ul>
-<h3 id="Fire-Module"><a href="#Fire-Module" class="headerlink" title="Fire Module"></a>Fire Module</h3><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG" alt="Fire-Module"></p>
+<h3 id="Fire-Module"><a href="#Fire-Module" class="headerlink" title="Fire Module"></a>Fire Module</h3><p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG" alt="Fire-Module"></p>
 <p>Fire Module是本文的核心构件，思想非常简单，就是将原来简单的一层conv层变成两层：squeeze层+expand层，各自带上Relu激活层。Fire Moduel主要包括squeeze模块和expand模块，其中squeeze模块全部由1x1卷积组成，而expand模块由1x1卷积和3x3卷积组成：</p>
 <ul>
 <li>squeeze模块中卷积核个数一定要小于expand模块中卷积核的个数，只有这样才能达到降参和压缩的目的；</li>
@@ -257,8 +257,8 @@
 <li>为了实现expand模块中1x1卷积和3x3卷积之后的数据能够concatenate在一起，对于输入3x3的对象需要增加1的zero-padding操作；</li>
 <li>在squeeze模块和expand模块之后通过ReLU进行激活；</li>
 </ul>
-<h3 id="模型架构及参数"><a href="#模型架构及参数" class="headerlink" title="模型架构及参数"></a>模型架构及参数</h3><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/architechtureofSqueezeNet.png" alt="architechtureofSqueezeNet"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/parameters-in-SqueezeNet.PNG" alt="parameters-in-SqueezeNet"></p>
+<h3 id="模型架构及参数"><a href="#模型架构及参数" class="headerlink" title="模型架构及参数"></a>模型架构及参数</h3><p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/architechtureofSqueezeNet.png" alt="architechtureofSqueezeNet"></p>
+<p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/parameters-in-SqueezeNet.PNG" alt="parameters-in-SqueezeNet"></p>
 <p>如图所示，</p>
 <ul>
 <li>SqueezeNet中彻底放弃了全连接网络；</li>
@@ -267,7 +267,7 @@
 <li>参数方面：使用了8个Fire Module，每个Fire Module中，squeeze的卷积核数目是expand的1/8；</li>
 <li>fire9之后采用了dropout，其中keep_prob=0.5;</li>
 </ul>
-<h3 id="分析结果"><a href="#分析结果" class="headerlink" title="分析结果"></a>分析结果</h3><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/lab_results.png" alt="lab_results"></p>
+<h3 id="分析结果"><a href="#分析结果" class="headerlink" title="分析结果"></a>分析结果</h3><p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/lab_results.png" alt="lab_results"></p>
 <p>如图所示，SqueezeNet模型本身是AlexNet的1/50，却可以获得相近的准确率，通过利用Deep Compression技术可以进一步压缩模型，实现1/510模型大小情况下的相同性能（当然实际中，由于Deep Compression采取了编码策略，需要编码本，会带来一定的额外开销）。</p>
 <h3 id="扩展阅读-Deep-Compression"><a href="#扩展阅读-Deep-Compression" class="headerlink" title="[扩展阅读]Deep Compression"></a>[扩展阅读]Deep Compression</h3><ul>
 <li>Deep compression: Compressing DNNs with pruning, trained quantization and huffman coding， 2015</li>
@@ -341,12 +341,12 @@
 </blockquote>
 <ol>
 <li><p>第一遍训练采用1e-2的学习率训练75轮，发现65轮以后，验证集准确率已经不再增加；为此在65轮之后调整学习率为1e-3；</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/0-86-accuracy.png" alt="0-86-accuracy"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/0-86-loss.png" alt="0-86-loss"></p>
+<p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-86-accuracy.png" alt="0-86-accuracy"></p>
+<p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-86-loss.png" alt="0-86-loss"></p>
 </li>
 <li><p>将学习率调整到1e-3之后，验证集准确率有大幅提升，代表调整有效，80轮之后再度饱和，降低学习率到1e-4;到89轮验证集结果如下：</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/0-89-accuracy.png" alt="0-89-accuracy"></p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/0-89-loss.png" alt="0-89-loss"></p>
+<p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-89-accuracy.png" alt="0-89-accuracy"></p>
+<p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-89-loss.png" alt="0-89-loss"></p>
 <p>​</p>
 </li>
 <li><p>进一步降低学习率到1e-5，发现整个网络没有性能提升，结束该批次参数训练过程。</p>
@@ -355,7 +355,7 @@
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
 <li>初始学习率的选择</li>
 </ol>
-<p>   <img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/lr=0.04.PNG" alt="lr=0.04"></p>
+<p>   <img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/lr=0.04.PNG" alt="lr=0.04"></p>
 <ol>
 <li><p>BN的效果</p>
 <p>在SqueezeNet中没有效果</p>
@@ -368,7 +368,7 @@
 </li>
 </ol>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>今天终于完成了所有预定神经网络的训练过程，虽然有些网络由于本身对网络结构的认知或者是实际训练过程中没有很好的把握节奏，导致训练效果不是十分理想，但从这次的训练过程中还是学到了很多东西。整个过程大概持续了半个月左右的时间，得益于AWS上8 GPU的资源，使得很多网络的训练比原想进度要快很多，但费用也是惊人，看了下账单，发生在虚拟机上的费用大概有1万3千多，主要由于8 GPU服务器要85元人民币每个小时的费用不是所有人都可以承受的起的。所以我一直认为短期内，深度学习还是很难真正产业化的一个泡沫，很难有应用业务可以抵消这个昂贵的训练成本。我这只是复现网络，真实训练一个产品级的网络、所需要测试的参数十倍百倍于此。</p>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-07-12-经典网络复现之SqueezeNet/cost_AWS.png" alt="cost_AWS"></p>
+<p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/cost_AWS.png" alt="cost_AWS"></p>
 <p>付了昂贵的学费，学习的动力也更加充足，将几种网络的训练过程进行一下简单的横向比较，同时总结一下大型网络训练过程中注意的主要内容。</p>
 <h3 id="几种网络在训练过程的简单比较"><a href="#几种网络在训练过程的简单比较" class="headerlink" title="几种网络在训练过程的简单比较"></a>几种网络在训练过程的简单比较</h3><div class="table-container">
 <table>
@@ -563,10 +563,19 @@ var a = new Donate({
     
 <nav id="article-nav">
   
+    <a href="/2018/07/12/经典网络复现之GoogleNet/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          经典网络复现之GoogleNet
+        
+      </div>
+    </a>
   
-    <a href="/2018/07/12/2018-07-9-经典网络复现之VGG/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2018/07/08/经典网络复现之AlexNet/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">经典网络复现之VGGNet</div>
+      <div class="article-nav-title">经典网络复现之AlexNet</div>
     </a>
   
 </nav>
@@ -588,7 +597,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 

@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/classify.png">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/challenges.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/classify.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/challenges.jpeg">
 <meta property="og:updated_time" content="2018-05-16T13:59:22.970Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n课程笔记:（Lecture 2）图像分类">
 <meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/classify.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/classify.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -249,7 +249,7 @@
 </blockquote>
 <h3 id="Image-Operations"><a href="#Image-Operations" class="headerlink" title="Image Operations"></a>Image Operations</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Image Operations</span></span><br><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread, imsave, imresize</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read an JPEG image into a numpy array</span></span><br><span class="line">img = imread(<span class="string">'assets/cat.jpg'</span>)</span><br><span class="line">print(img.dtype, img.shape)  <span class="comment"># Prints "uint8 (400, 248, 3)"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># We can tint the image by scaling each of the color channels</span></span><br><span class="line"><span class="comment"># by a different scalar constant. The image has shape (400, 248, 3);</span></span><br><span class="line"><span class="comment"># we multiply it by the array [1, 0.95, 0.9] of shape (3,);</span></span><br><span class="line"><span class="comment"># numpy broadcasting means that this leaves the red channel unchanged,</span></span><br><span class="line"><span class="comment"># and multiplies the green and blue channels by 0.95 and 0.9</span></span><br><span class="line"><span class="comment"># respectively.</span></span><br><span class="line">img_tinted = img * [<span class="number">1</span>, <span class="number">0.95</span>, <span class="number">0.9</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Resize the tinted image to be 300 by 300 pixels.</span></span><br><span class="line">img_tinted = imresize(img_tinted, (<span class="number">300</span>, <span class="number">300</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Write the tinted image back to disk</span></span><br><span class="line">imsave(<span class="string">'assets/cat_tinted.jpg'</span>, img_tinted)</span><br></pre></td></tr></table></figure>
 <h3 id="Distance-between-points"><a href="#Distance-between-points" class="headerlink" title="Distance between points"></a>Distance between points</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.spatial.distance <span class="keyword">import</span> pdist, squareform</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the following array where each row is a point in 2D space:</span></span><br><span class="line"><span class="comment"># [[0 1]</span></span><br><span class="line"><span class="comment">#  [1 0]</span></span><br><span class="line"><span class="comment">#  [2 0]]</span></span><br><span class="line">x = np.array([[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">2</span>, <span class="number">0</span>]])</span><br><span class="line">print(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compute the Euclidean distance between all rows of x.</span></span><br><span class="line"><span class="comment"># d[i, j] is the Euclidean distance between x[i, :] and x[j, :],</span></span><br><span class="line"><span class="comment"># and d is the following array:</span></span><br><span class="line"><span class="comment"># [[ 0.          1.41421356  2.23606798]</span></span><br><span class="line"><span class="comment">#  [ 1.41421356  0.          1.        ]</span></span><br><span class="line"><span class="comment">#  [ 2.23606798  1.          0.        ]]</span></span><br><span class="line">d = squareform(pdist(x, <span class="string">'euclidean'</span>))</span><br><span class="line">print(d)</span><br></pre></td></tr></table></figure>
-<h2 id="图像分类-Notes1"><a href="#图像分类-Notes1" class="headerlink" title="图像分类 Notes1"></a>图像分类 Notes<sup><a href="#fn_1" id="reffn_1">1</a></sup></h2><p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/classify.png" alt="classify"></p>
+<h2 id="图像分类-Notes1"><a href="#图像分类-Notes1" class="headerlink" title="图像分类 Notes1"></a>图像分类 Notes<sup><a href="#fn_1" id="reffn_1">1</a></sup></h2><p><img src="/qnsource/images/2018-04-28-cs231n-notes/classify.png" alt="classify"></p>
 <blockquote>
 <p>The task in Image Classification is to predict a single label (or a distribution over labels as shown here to indicate our confidence) for a given image. Images are 3-dimensional arrays of integers from 0 to 255, of size Width x Height x 3. The 3 represents the three color channels Red, Green, Blue.</p>
 </blockquote>
@@ -263,7 +263,7 @@
 <li><strong>背景干扰</strong>. The objects of interest may <em>blend</em> into their environment, making them hard to identify.</li>
 <li><strong>类内差异</strong>. The classes of interest can often be relatively broad, such as <em>chair</em>. There are many different types of these objects, each with their own appearance.</li>
 </ul>
-<p><img src="http://p4ygzcmtw.bkt.clouddn.com/images/2018-04-28-cs231n-notes/challenges.jpeg" alt="challenges"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/challenges.jpeg" alt="challenges"></p>
 <blockquote>
 <p><strong>Semantic Gap</strong>: 语义鸿沟，对于人类而言，图像分类十分简答，但对于计算机系统从像素中提取特征特别难。</p>
 </blockquote>
@@ -409,7 +409,7 @@ var a = new Donate({
 </section>      
         
       </div>
-      
+      <!--  -->
       <footer id="footer">
   
 
