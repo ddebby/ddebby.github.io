@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ceph-install-by-ceph-ansible | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要：">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceph-install-by-ceph-ansible">
+<meta property="og:url" content="http://blog.a-stack.com/2018/08/04/Ceph-install-by-ceph-ansible/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
+<meta property="og:updated_time" content="2018-08-14T14:59:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ceph-install-by-ceph-ansible">
+<meta name="twitter:description" content="摘要：">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Ceph-install-by-ceph-ansible" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Ceph-install-by-ceph-ansible
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/04/Ceph-install-by-ceph-ansible/" class="article-date">
+	  <time datetime="2018-08-04T11:12:55.000Z" itemprop="datePublished">2018-08-04</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/云存储/">云存储</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/qnsource/banner/08.jpg" alt="Test Picture"></p>
+<p><strong>摘要：</strong></p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>操作系统：Centos 7.2</li>
+<li>Vagrant：2.1.2</li>
+<li>VirtualBox-5.1 </li>
+<li>Ansible：2.6.2</li>
+<li>pip</li>
+<li>git</li>
+</ul>
+<h2 id="安装Vagrant"><a href="#安装Vagrant" class="headerlink" title="安装Vagrant"></a>安装Vagrant</h2><p>第1步：在CentOS 7上安装VirtualBox 5.1</p>
+<p>尽管在www.howtoing.com上有几个关于安装virtualBox的教程（例如， <a href="https://www.howtoing.com/install-virtualbox-on-redhat-centos-fedora/" target="_blank" rel="noopener">在CentOS 7上安装VirtualBox</a> ），但是，我将很快通过virtualbox 5.1安装。</p>
+<p>首先安装VirtualBox依赖项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum -y install gcc dkms make qt libgomp patch </span></span><br><span class="line"><span class="comment"># yum -y install kernel-headers kernel-devel binutils glibc-headers glibc-devel font-forge</span></span><br></pre></td></tr></table></figure>
+<p>接下来添加VirtualBox库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /etc/yum.repos.d/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo</span></span><br></pre></td></tr></table></figure>
+<p>现在安装和构建内核模块。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum install -y VirtualBox-5.1</span></span><br><span class="line"><span class="comment"># /sbin/rcvboxdrv setup</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Bug fix： yum install kernel-devel-3.10.0-862.3.3.el7.x86_64</p>
+</blockquote>
+<p>第2步：在CentOS 7上安装Vagrant</p>
+<p>在这里，我们将使用<a href="https://www.howtoing.com/20-linux-yum-yellowdog-updater-modified-commands-for-package-mangement/" target="_blank" rel="noopener">yum命令</a>下载并安装Vagrant的最新版本（即在编写时为1.9.6）。</p>
+<p>—————- For 64-bit machine —————-</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum -y install https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.rpm</span></span><br></pre></td></tr></table></figure>
+<h2 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h2><blockquote>
+<p>需要先安装扩展源EPEL。EPEL(<a href="http://fedoraproject.org/wiki/EPEL" target="_blank" rel="noopener">http://fedoraproject.org/wiki/EPEL</a>) 是由 Fedora 社区打造，为 RHEL 及衍生发行版如 CentOS、Scientific Linux 等提供高质量软件包的项目。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudo yum -y install epel-release</span></span><br><span class="line"><span class="comment"># sudo yum -y install python-pip</span></span><br></pre></td></tr></table></figure>
+<h2 id="Ceph-Ansible"><a href="#Ceph-Ansible" class="headerlink" title="Ceph-Ansible"></a>Ceph-Ansible</h2><p>You can install directly from the source on GitHub by following these steps:</p>
+<ul>
+<li><p>Clone the repository:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">https</span>://github.com/ceph/ceph-ansible.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Next, you must decide which branch of <code>ceph-ansible</code> you wish to use. There are stable branches to choose from or you could use the master branch:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> checkout <span class="variable">$branch</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Next, use pip and the provided requirements.txt to install ansible and other needed python libraries:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> -r requirements.txt</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Ansible-on-RHEL-and-CentOS"><a href="#Ansible-on-RHEL-and-CentOS" class="headerlink" title="Ansible on RHEL and CentOS"></a>Ansible on RHEL and CentOS</h2><p>You can acquire Ansible on RHEL and CentOS by installing from <a href="https://access.redhat.com/articles/3174981" target="_blank" rel="noopener">Ansible channel</a>.</p>
+<p>On RHEL:</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subscription-manager repos --enable=rhel<span class="number">-7</span>-server-ansible<span class="number">-2</span>-rpms</span><br></pre></td></tr></table></figure>
+<p>(CentOS does not use subscription-manager and already has “Extras” enabled by default.)</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum <span class="keyword">install</span> ansible</span><br></pre></td></tr></table></figure>
+<h2 id="Ansible-on-Ubuntu"><a href="#Ansible-on-Ubuntu" class="headerlink" title="Ansible on Ubuntu"></a>Ansible on Ubuntu</h2><p>You can acquire Ansible on Ubuntu by using the <a href="https://launchpad.net/~ansible/+archive/ubuntu/ansible" target="_blank" rel="noopener">Ansible PPA</a>.</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo<span class="built_in"> add-apt-repository </span>ppa:ansible/ansible</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install ansible</span><br></pre></td></tr></table></figure>
+<h1 id="Releases"><a href="#Releases" class="headerlink" title="Releases"></a>Releases</h1><p>The following branches should be used depending on your requirements. The <code>stable-*</code>branches have been QE tested and sometimes recieve backport fixes throughout their lifecycle. The <code>master</code> branch should be considered experimental and used with caution.</p>
+<ul>
+<li><code>stable-3.0</code> Support for ceph versions <code>jewel</code> and <code>luminous</code>. This branch supports ansible versions <code>2.4</code> and <code>2.5</code>.</li>
+<li><code>stable-3.1</code> Support for ceph version <code>luminous</code> and <code>mimic</code>. This branch supports ansible versions <code>2.4</code> and <code>2.5</code></li>
+<li><code>master</code> Support for ceph versions <code>luminous</code>, and <code>mimic</code>. This branch supports ansible version 2.5``.</li>
+</ul>
+<p>We will customize the following sample files for sandbox deployment: vagrant_variables.yml.sample<br>options that ought to be supplied to Vagrantfile the instructions from Vagrantfile<br>need to be built and the actions to provision them. site.yml.sample<br>: This file presents a sample of configuration to describe the types of virtual machine that<br>. The vagrant command uses : This represents a set of sample Ansible tasks as a part of<br>main Ansible playbook. The vagrant provisioner that runs after you start all the virtual machines is tasked with the responsibility of running this playbook. This playbook is responsible for completing the final step of bringing the Ceph cluster up. group_vars/all.yml.sample<br>: The all .yml.sample present within group_vars/<br>directory contains an Ansible-specific configuration that applies to all virtual machine hostgroups. These variables will be consumed by the Ansible playbook when the vagrant provisioner runs it.</p>
+<blockquote>
+<p>在VM中需要配置V-TX；</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://docs.ceph.com/ceph-ansible/master/index.html" target="_blank" rel="noopener">http://docs.ceph.com/ceph-ansible/master/index.html</a></li>
+<li>​</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/04/Ceph-install-by-ceph-ansible/" target="_blank" title="Ceph-install-by-ceph-ansible">http://blog.a-stack.com/2018/08/04/Ceph-install-by-ceph-ansible/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ceph/">Ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/云存储/">云存储</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/部署/">部署</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/19/CRUSH-in-Ceph/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          CRUSH in Ceph
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/12/经典网络复现之SqueezeNet/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">经典网络复现之SqueezeNet</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Vagrant"><span class="nav-number">2.</span> <span class="nav-text">安装Vagrant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装pip"><span class="nav-number">3.</span> <span class="nav-text">安装pip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ceph-Ansible"><span class="nav-number">4.</span> <span class="nav-text">Ceph-Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible-on-RHEL-and-CentOS"><span class="nav-number">5.</span> <span class="nav-text">Ansible on RHEL and CentOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible-on-Ubuntu"><span class="nav-number">6.</span> <span class="nav-text">Ansible on Ubuntu</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Releases"><span class="nav-number"></span> <span class="nav-text">Releases</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>读书笔记:数学之美 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="作者： 吴军  2014年11月第二版  北京：人民邮电出版社">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读书笔记:数学之美">
+<meta property="og:url" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="作者： 吴军  2014年11月第二版  北京：人民邮电出版社">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/数学之美.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/罗塞塔石碑.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/信息传输.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/4组织语言.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/句法分析树.png">
+<meta property="og:updated_time" content="2018-08-27T13:50:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读书笔记:数学之美">
+<meta name="twitter:description" content="作者： 吴军  2014年11月第二版  北京：人民邮电出版社">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/数学之美.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-读书笔记-数学之美" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      读书笔记:数学之美
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/26/读书笔记-数学之美/" class="article-date">
+	  <time datetime="2018-08-26T11:25:58.000Z" itemprop="datePublished">2018-08-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		阅读量<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/08/26/读书笔记-数学之美/数学之美.jpg" alt="数学之美"></p>
+<ul>
+<li><p>作者： 吴军</p>
+</li>
+<li><p>2014年11月第二版</p>
+</li>
+<li><p>北京：人民邮电出版社</p>
+<hr>
+<a id="more"></a>
+</li>
+</ul>
+<p>时隔多年，在人工智能概念进入鼎盛时期的今天，花一个周末，细细品读了吴军先生的《数学之美》，又有了不少新的感悟，新的收货，稍作整理，便于复查。</p>
+<p>此次重读恰逢归纳自然语言处理相关技术和脉络，而吴军本身就是这个学科的专家，所以其著作中对相关内容的描述条例清晰，结构完备，值得思考。</p>
+<h2 id="经典语句摘录"><a href="#经典语句摘录" class="headerlink" title="经典语句摘录"></a>经典语句摘录</h2><blockquote>
+<p><strong>WWW发明人蒂姆.伯纳斯。李：</strong></p>
+<p>简单性和模块化是软件工程的基石；分布式和容错性是互联网的生命。</p>
+</blockquote>
+<h2 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h2><h3 id="从历史看：语言、数字、文字都是信息的载体，或是对信息的编码"><a href="#从历史看：语言、数字、文字都是信息的载体，或是对信息的编码" class="headerlink" title="从历史看：语言、数字、文字都是信息的载体，或是对信息的编码"></a>从历史看：语言、数字、文字都是信息的载体，或是对信息的编码</h3><p>从人来进化角度来看，先有的语言（声音元素最先），再有的数字，然后是文字。目的都在于方便人与人之间通信（传递信息）。</p>
+<p>早期人来了解和需要传递的信息十分有限，因此不需要高级的语言或者数字、文字来进行表达。但随着人类的进化和文明的发展，需要表达的信息越来越多，不再是几种不同的声音就能够完全覆盖，语言就此产生。知识也通过口述的方式，逐代传递。</p>
+<p>我们祖先迅速学习新鲜事物，语言越来越丰富，内容越来越抽象，语言描述的共同要素，比如某些物体、数量、行为动作便被抽象出来形成了<strong>词汇</strong>。当语言和词汇多到一定程度，人类靠大脑已经记不住所有词汇，于是高效记录信息的需求就产生了，这便是文字的起源。</p>
+<blockquote>
+<p>由此可见，产品果真是由需求决定的！</p>
+</blockquote>
+<p>最初文字的词汇依靠模拟/模仿物体或行为形成的象形文字来展现，但随着文明进步，信息量逐步增加，象形文字数目不再随着文明发展而增加了，因为没人能够记住这么多的文字。于是，概念的第一次概括和归类开始了。比如“日”除了表示太阳，还可以表示一天。</p>
+<blockquote>
+<p>在那个时间，人类就已经领会了聚类算法的精髓 …只不过由于“算力不足”，这个聚类的过程一般持续几千年才能收敛到合适的位置。</p>
+</blockquote>
+<p>聚类虽然减少了表达信息的文字数量，却带来了一个严重的问题——歧义性。多义字在一段文字中的表达需要依靠上下文推理来完成去除歧义。</p>
+<blockquote>
+<p>虽然经过训练的人类可以很好的依靠理解消除歧义，但苦了计算机模型，需要打破状态无记忆的机理，沿着上下文的思路去解决问题。可见这是语言产生伊始就埋的一个坑。</p>
+</blockquote>
+<h4 id="不同文明在信息的维度上是等价的"><a href="#不同文明在信息的维度上是等价的" class="headerlink" title="不同文明在信息的维度上是等价的"></a>不同文明在信息的维度上是等价的</h4><p>虽然受地域和文明发展进度差异影响，不同文明发明了不同的语言和文字，但本质上都是一种对信息的编码方式，所以可以通过一定的手段进行翻译的。</p>
+<blockquote>
+<p>文字是信息的载体，而非信息本身。</p>
+</blockquote>
+<h4 id="罗塞塔"><a href="#罗塞塔" class="headerlink" title="罗塞塔"></a>罗塞塔</h4><p>古埃及罗塞塔的石碑记录了最早的象形文字多语平行语料库，上面有三种语言：埃及象形文字、埃及拼音文字和古希腊文。因此Google的机器翻译项目也被命名为罗塞塔。</p>
+<p><img src="/2018/08/26/读书笔记-数学之美/罗塞塔石碑.jpg" alt="罗塞塔石碑"></p>
+<blockquote>
+<p><strong>百度百科解读：</strong></p>
+<p>罗塞塔<a href="https://baike.baidu.com/item/%E7%9F%B3%E7%A2%91/36268" target="_blank" rel="noopener">石碑</a>（Rosetta Stone，也译作罗塞达碑），高1.14米，宽0.73米，制作于公元前196年，刻有<a href="https://baike.baidu.com/item/%E5%8F%A4%E5%9F%83%E5%8F%8A/226771" target="_blank" rel="noopener">古埃及</a>国王<a href="https://baike.baidu.com/item/%E6%89%98%E5%8B%92%E5%AF%86%E4%BA%94%E4%B8%96/3481978" target="_blank" rel="noopener">托勒密五世</a>登基的诏书。石碑上用<a href="https://baike.baidu.com/item/%E5%B8%8C%E8%85%8A%E6%96%87%E5%AD%97/12722009" target="_blank" rel="noopener">希腊文字</a>、<a href="https://baike.baidu.com/item/%E5%8F%A4%E5%9F%83%E5%8F%8A%E6%96%87%E5%AD%97/2494489" target="_blank" rel="noopener">古埃及文字</a>和当时的通俗体文字刻了同样的内容，这使得近代的<a href="https://baike.baidu.com/item/%E8%80%83%E5%8F%A4%E5%AD%A6%E5%AE%B6/1217571" target="_blank" rel="noopener">考古学家</a>得以有机会对照各语言<a href="https://baike.baidu.com/item/%E7%89%88%E6%9C%AC/505574" target="_blank" rel="noopener">版本</a>的内容后，解读出已经失传千余年的埃及象形文之意义与结构，而成为今日研究古埃及历史的重要里程碑。 </p>
+</blockquote>
+<h4 id="数字产生及编码"><a href="#数字产生及编码" class="headerlink" title="数字产生及编码"></a>数字产生及编码</h4><p>数字产生与文字类似，当人类发展到一定程度，需要计数系统来进行计算的时候便产生了信息的载体数字。当然，早期数字没有书写的形式，而是掰指头，这就是今天我们使用十进制的原因。</p>
+<blockquote>
+<p>玛雅文明使用的是二十进制（手脚都算上…）</p>
+</blockquote>
+<p>罗马人用字符I代表1，V代表5，X代表10，L代表50，C代表100，D代表500，M代表1000，解码规则是加减法（中国解码规则是乘法），小数字出现在大数字左边为减，右边为加。比如IIXX（10+10-1-1=18），如果要用罗马数字表示100万 …</p>
+<p>阿拉伯数字最初由古印度人发明，由阿拉伯人传入欧洲，被中间商冠名了。</p>
+<h4 id="从象形文字到楔形文字"><a href="#从象形文字到楔形文字" class="headerlink" title="从象形文字到楔形文字"></a>从象形文字到楔形文字</h4><p>楔形文字又称拼音文字，是一个很大的进化，人类在描述物体的方式上，从外表化到了抽象概念的层级，是一种高效的信息编码方式。比如，常用字短，生僻字长就是符合最短编码原理的一种实现。</p>
+<h4 id="语言与语法"><a href="#语言与语法" class="headerlink" title="语言与语法"></a>语言与语法</h4><p>词可以被认为是有限而且封闭的集合，而语言则是无限开放的集合；从数学上讲，前者可以由完备的编码规则，后者则不具备。</p>
+<p>任何一种语言都是一种信息的编码方式；</p>
+<p>语法可以认为是解码的规则，但很多时候文章的撰写不完全符合语法，比如鲁迅先生的文字。</p>
+<p>语言vs语法： 语言简直从真实的语句文本（称为语料）出发，而后者坚持从规则出发；经过三四十年的争论，最后实践证明，自然语言的成就最终宣布了前者的胜利。</p>
+<h3 id="自然语言发展的两个阶段：从规则到统计"><a href="#自然语言发展的两个阶段：从规则到统计" class="headerlink" title="自然语言发展的两个阶段：从规则到统计"></a>自然语言发展的两个阶段：从规则到统计</h3><p><img src="/2018/08/26/读书笔记-数学之美/信息传输.jpeg" alt="信息传输"></p>
+<p><img src="/2018/08/26/读书笔记-数学之美/4组织语言.png" alt="4组织语言"></p>
+<blockquote>
+<p>我们要把一个意思表达出来，通过某种语言的一句话表述出来就是用这种语言的编码方式对头脑中的信息做了一次编码，编码结果就是一串文字；而如果对方懂得这么语言，他就可以利用这么语言的语法解码处说话人想表达的意思。</p>
+</blockquote>
+<h4 id="NLP的历史"><a href="#NLP的历史" class="headerlink" title="NLP的历史"></a>NLP的历史</h4><ul>
+<li><p>1950年，图灵提出的图灵测试可以作为NLP的开始；</p>
+</li>
+<li><p>20世纪50年代到70年代，计算机处理NLP问题的认识都局限在人类学习语言的方式上，也就是用电脑模拟人脑，这20多年的成果近乎为零，其中由大量的语言学家参与其中；</p>
+<ul>
+<li>让计算机理解自然语言，必须让计算机拥有类似人类的智能；</li>
+<li>更多的采用仿生学的方法解决问题；</li>
+<li>为什么会有这种错误的认识？ 因为人类就是这么做的，这就是直觉的作用；</li>
+<li>这样的方法被称为“鸟飞派”（怀特兄弟发明飞机靠的是空气动力学而不是仿生学）；</li>
+<li>手段是：句法分析和语义分析<ul>
+<li>分析句法结构，建立文法规则</li>
+<li>20世纪80年代以前，NLP的文法规则都是由人工总结完成的</li>
+<li>有两大困难：<ul>
+<li>为了覆盖哪怕20%的真实语句，文法规则需要至少几万条；语言学家来不及写；更可怕的是，写到后面出现了各种矛盾，为了解决矛盾需要为规则建立限定规则；如果要覆盖50%的语句，文法规则会多到每增加一个语句，需要添加一条规则；（正如英语语法学的再好，不练习，不看文献，照样看不懂英文电影）</li>
+<li>计算机解析规则困难重重，计算机解码方式是上下文无关的，而NLP都是复杂的上下文有关的文法；前者算法复杂度为语句长度的二次方，后者是语句长度的六次方；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2018/08/26/读书笔记-数学之美/句法分析树.png" alt="句法分析树"></p>
+</li>
+<li><p>20世纪70年代，开始使用统计方法和数学模型解决NLP问题</p>
+<ul>
+<li>语义方面的多义性也遇到了困难；</li>
+<li>贾里尼克和他领导的IBM华生实验室（T.J. Watson）采用基于统计的方法解决语音识别取得了突破；感染了许多研究人员转投统计领域；比如李开复和洪小文；</li>
+<li>但基于规则和基于统计的争执还是持续了15年左右，直到20世纪90年代才分出胜负<ul>
+<li>基于统计方法的核心模型是通信系统+隐马尔科夫模型，最早成功的领域是语音识别、词性分析（一维符号序列），机器翻译和句法分析输入是一维，输出是多维或乱序信息，简单应用不管用；同时数据量不足，发展不是很快；</li>
+<li>传统方法认为基于统计的方法只能处理浅层的自然语言问题，无法进入深层次研究；</li>
+<li>随着计算力的提高和数据量的增加，一切变的不一样了，2005年随着Google机器翻译战胜SysTran,最后一个领域也被统计方法攻占；</li>
+<li>另一个重要原因，用基于统计的方法替代传统方法，需要等原有的一批语言学家退休；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>类比到我们学习英语的过程,当时教授课程过程还是以英语语法、词性和构词法为主，主谓宾、定状补；而我基本上都这些语法缺乏概念，更多的是靠语感在做题目，这是建立在读了大量英语文献基础上，也是一种基于统计的预测算法。</p>
+</blockquote>
+<h4 id="统计语言模型"><a href="#统计语言模型" class="headerlink" title="统计语言模型"></a>统计语言模型</h4><p>统计语言模型的目的在于为计算机建立一种具备上下文相关的数学模型。</p>
+<p>自然语言处理过程可以简单的认为是判断一句话是不是自然语句，以前是通过语法规则来判断的，统计语言模型是通过概率来衡量的。</p>
+<h4 id="马尔可夫"><a href="#马尔可夫" class="headerlink" title="马尔可夫"></a>马尔可夫</h4><p>马尔可夫假设认为一个词出现的概率只与它前面一个词有关，形成二元模型；如果跟前面两个词有关就是三元模型(二阶马尔可夫模型)。</p>
+<p>这样一个句子出现的概率可以表示为：</p>
+<script type="math/tex; mode=display">
+P(S) = P(w_1)*P(w_2|w_1)*P(w_3|w_2)*...*P(w_n|w_{n-1})</script><blockquote>
+<p>关于N元模型：</p>
+<p>N越大效果越好，但需要的计算量越大，N元模型的空间复杂度几乎是N的指数函数$O(|V|^N)$,其中$|V|$是语言词典的词汇量，一般几万到几十万个。</p>
+<p>当N从3到4时，其实模型效果的提升已经不是十分明显了。</p>
+<p>Google的罗塞塔翻译使用了四元模型，存储与至少500台Google服务器中，当然2017年也被神经翻译机替代了。</p>
+</blockquote>
+<p>马尔可夫的局限性： 由于文本的上下文信息可能跳跃性存在，所以当N不是十分大的情况下，无法覆盖所有的语言现象。需要具备一定记忆性的单元来完成长期记忆的存储。</p>
+<blockquote>
+<p>关于语料库的覆盖问题：</p>
+<p>汉语词汇量大概20万，训练一个三元模型产生$200000^3=8X10^{15}$个参数；</p>
+<p>加深互联网中抛去垃圾数据，有100亿个有意义的中文网页，每个网页平均1000个词，即使爬取所有的词只有$10^{13}$个语料词汇。大部分条件概率为零。</p>
+<ul>
+<li>卡茨退避法，拿出一部分概率给语料库为出现的词，同时调低低频词的概率；</li>
+<li>线性插值法</li>
+</ul>
+</blockquote>
+<h3 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h3><p>词是表达语义的最小单位；对于拼音语言来说，由于词之间有明确的分界符，统计和使用语言模型非常直接。</p>
+<ul>
+<li>最简单的分词方法是查词典，遇到复合词进行最长词匹配；<ul>
+<li>对于二义性的分割没法解决；</li>
+<li>“发展中国家”==发展 中国 家</li>
+<li>“上海大学城” == 上海大学 城 书店</li>
+<li>“北京大学生” == 北京大学 生</li>
+</ul>
+</li>
+<li>统计方法：保证分完词之后这个句子出现的概率最大<ul>
+<li>求解过程可以建模成动态规划问题</li>
+</ul>
+</li>
+<li>但是，并不是所有的语句都有分词结果的，比如：<ul>
+<li>此地安能居住，其人好不悲伤</li>
+<li>下雨天留客天天留我不留</li>
+</ul>
+</li>
+<li>中文分词技术后来还用于了英文手写字的分词；</li>
+<li>分词问题已经属于解决了的问题，目前没有太多值得深入研究的技术领域了，除了偶尔增加一些新词</li>
+</ul>
+<h3 id="隐马尔科夫模型（HMM）"><a href="#隐马尔科夫模型（HMM）" class="headerlink" title="隐马尔科夫模型（HMM）"></a>隐马尔科夫模型（HMM）</h3><p>隐马尔科夫模型（Hidden Markov Model，以下简称HMM）是比较经典的机器学习模型了，它在语言识别，自然语言处理，模式识别等领域得到广泛的应用。当然，随着目前深度学习的崛起，尤其是<a href="http://www.cnblogs.com/pinard/p/6509630.html" target="_blank" rel="noopener">RNN</a>，<a href="http://www.cnblogs.com/pinard/p/6519110.html" target="_blank" rel="noopener">LSTM</a>等神经网络序列模型的火热，HMM的地位有所下降。</p>
+<p>使用HMM模型时我们的问题一般有这两个特征：１）我们的问题是基于序列的，比如时间序列，或者状态序列。２）我们的问题中有两类数据，一类序列数据是可以观测到的，即观测序列；而另一类数据是不能观察到的，即隐藏状态序列，简称状态序列。</p>
+<p>马尔可夫的求解过程就是从观测序列推断出隐藏序列的过程。</p>
+<h3 id="最大熵模型"><a href="#最大熵模型" class="headerlink" title="最大熵模型"></a>最大熵模型</h3><h3 id="Viterbi算法"><a href="#Viterbi算法" class="headerlink" title="Viterbi算法"></a>Viterbi算法</h3><h2 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h2><h2 id="搜索引擎"><a href="#搜索引擎" class="headerlink" title="搜索引擎"></a>搜索引擎</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://www.cnblogs.com/pinard/p/6945257.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6945257.html</a></li>
+<li></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
+  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/26/读书笔记-数学之美/" target="_blank" title="读书笔记:数学之美">http://blog.a-stack.com/2018/08/26/读书笔记-数学之美/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/书籍/">书籍</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/28/HMM与Veterbi算法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          HMM与Veterbi算法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/21/FastText-A-better-choice-for-word-embedding/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">FastText-A better choice for word embedding?</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#经典语句摘录"><span class="nav-number">1.</span> <span class="nav-text">经典语句摘录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自然语言处理"><span class="nav-number">2.</span> <span class="nav-text">自然语言处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从历史看：语言、数字、文字都是信息的载体，或是对信息的编码"><span class="nav-number">2.1.</span> <span class="nav-text">从历史看：语言、数字、文字都是信息的载体，或是对信息的编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不同文明在信息的维度上是等价的"><span class="nav-number">2.1.1.</span> <span class="nav-text">不同文明在信息的维度上是等价的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#罗塞塔"><span class="nav-number">2.1.2.</span> <span class="nav-text">罗塞塔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字产生及编码"><span class="nav-number">2.1.3.</span> <span class="nav-text">数字产生及编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从象形文字到楔形文字"><span class="nav-number">2.1.4.</span> <span class="nav-text">从象形文字到楔形文字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语言与语法"><span class="nav-number">2.1.5.</span> <span class="nav-text">语言与语法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自然语言发展的两个阶段：从规则到统计"><span class="nav-number">2.2.</span> <span class="nav-text">自然语言发展的两个阶段：从规则到统计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NLP的历史"><span class="nav-number">2.2.1.</span> <span class="nav-text">NLP的历史</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#统计语言模型"><span class="nav-number">2.2.2.</span> <span class="nav-text">统计语言模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#马尔可夫"><span class="nav-number">2.2.3.</span> <span class="nav-text">马尔可夫</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词"><span class="nav-number">2.3.</span> <span class="nav-text">分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐马尔科夫模型（HMM）"><span class="nav-number">2.4.</span> <span class="nav-text">隐马尔科夫模型（HMM）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大熵模型"><span class="nav-number">2.5.</span> <span class="nav-text">最大熵模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Viterbi算法"><span class="nav-number">2.6.</span> <span class="nav-text">Viterbi算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息论"><span class="nav-number">3.</span> <span class="nav-text">信息论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索引擎"><span class="nav-number">4.</span> <span class="nav-text">搜索引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				访客数 : <span id="busuanzi_value_site_uv"></span> |  
+				访问量 : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

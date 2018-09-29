@@ -291,6 +291,8 @@
         
           <a id="beautifont" class="main-nav-link" href="/resources">资源</a>
         
+          <a id="beautifont" class="main-nav-link" href="/notebooks">📝</a>
+        
       </p>
   </div>
 
@@ -304,7 +306,7 @@
         
           <section id="main">
   
-    <article id="post-Tips-for-Keras"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-Transfer-Learning-Summary"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -312,7 +314,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/02/22/Tips-for-Keras/">Tips for Keras</a>
+      <a class="article-title" href="/2018/03/30/Transfer-Learning-Summary/">Transfer Learning Summary</a>
     </h1>
   
 
@@ -320,38 +322,41 @@
     
     <div class="article-meta">
       
-	<a href="/2018/02/22/Tips-for-Keras/" class="article-date">
-	  <time datetime="2018-02-22T05:20:28.000Z" itemprop="datePublished">2018-02-22</time>
+	<a href="/2018/03/30/Transfer-Learning-Summary/" class="article-date">
+	  <time datetime="2018-03-30T15:36:52.000Z" itemprop="datePublished">2018-03-30</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a><a class="article-category-link" href="/categories/工具/Keras/">Keras</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a><a class="article-category-link" href="/categories/算法/迁移学习/">迁移学习</a>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p class="article-excerpt-content">
-          撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。
+          本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …
 
-模型可视化1keras.utils.vis_utils模块提供了画出Keras模型的函数（利用graphviz）
-该函数将画出模型结构图，并保存成图片：
-12from keras.utils import plot_modelplot_model(model, to_file='model.png')
-plot_model接收两个可选参数：
+@toc
+Feature Extraction在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。
 
-show_shapes：指定是否显示输出数据的形状，默认为False
-sho...
+VGG16倒数第二层(参数层)的输出维度为: 7x7x512 = 25,088
+
+HDF5抽取特征的高效存储可以选用HDF5。Hie...
         </p>
         <p class="article-more-link">
-          <a href="/2018/02/22/Tips-for-Keras/#more">阅读全文</a>
+          <a href="/2018/03/30/Transfer-Learning-Summary/#more">阅读全文</a>
         </p>
       
     </div>
     <footer class="article-footer">
+
       
       
+
       
+      <!--  -->
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/特征抽取/">特征抽取</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/迁移学习/">迁移学习</a></li></ul>
 
     </footer>
   </div>
@@ -362,7 +367,7 @@ sho...
 
 
   
-    <article id="post-hexo_config"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-神经网络之感知机"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -370,7 +375,7 @@ sho...
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/02/20/hexo_config/">博客相关配置</a>
+      <a class="article-title" href="/2018/03/09/神经网络之感知机/">神经网络之感知机（Perceptron）</a>
     </h1>
   
 
@@ -378,40 +383,39 @@ sho...
     
     <div class="article-meta">
       
-	<a href="/2018/02/20/hexo_config/" class="article-date">
-	  <time datetime="2018-02-19T16:00:00.000Z" itemprop="datePublished">2018-02-20</time>
+	<a href="/2018/03/09/神经网络之感知机/" class="article-date">
+	  <time datetime="2018-03-09T08:37:04.000Z" itemprop="datePublished">2018-03-09</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a>
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p class="article-excerpt-content">
-          2018年2月20日，重新启用个人blog系统，用于整理技术文档并进行技术分享，主要围绕人工智能相关技术最新技术进展和动态。
+          感知机于1957年由Rosenblatt等人提出，是神经网络和支持向量机的基础。
 
-概述2018年2月20日，重新启用个人blog系统，用于整理技术文档并进行技术分享，主要围绕人工智能相关技术最新技术进展和动态。
-
-使用框架： hexo(v1.0.4)
-主题： hexo-theme-melody
-相关依赖: 
-hexo-renderer-jade 
-hexo-renderer-stylus
-hexo-algoliasearch
-hexo-word...
+@[toc]
+1. 人工神经网络现代神经网络概念由人工神经网络延伸而来，出发点在于模拟人类神经元的信息处理方式，而事实上现在采用的神经网络和人类的思维活动方式存在很大的差异。
+人类大脑由大于100亿个神经元组成，每个神经元与周围1万一个其它神经元保持关联。
+2.感知机（Perceptron）感知机可以被认为是人工神经网络的初级原型，是只有一个神经元一层的神经网络，但事实上感知机与支持向量机的关系比神经网络还...
         </p>
         <p class="article-more-link">
-          <a href="/2018/02/20/hexo_config/#more">阅读全文</a>
+          <a href="/2018/03/09/神经网络之感知机/#more">阅读全文</a>
         </p>
       
     </div>
     <footer class="article-footer">
+
       
       
+
       
+      <!--  -->
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/感知机/">感知机</a></li></ul>
 
     </footer>
   </div>
@@ -422,7 +426,7 @@ hexo-word...
 
 
   
-    <article id="post-Markdown_Reference"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-读书笔记：《Practical-Python-and-OpenCV》"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -430,7 +434,7 @@ hexo-word...
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/01/Markdown_Reference/">Markdown Formats</a>
+      <a class="article-title" href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/">读书笔记：《Practical Python and OpenCV》</a>
     </h1>
   
 
@@ -438,33 +442,36 @@ hexo-word...
     
     <div class="article-meta">
       
-	<a href="/2018/01/01/Markdown_Reference/" class="article-date">
-	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">2018-01-01</time>
+	<a href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/" class="article-date">
+	  <time datetime="2018-03-05T08:52:33.000Z" itemprop="datePublished">2018-03-05</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a><a class="article-category-link" href="/categories/工具/MarkDown/">MarkDown</a>
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/机器视觉/">机器视觉</a>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p class="article-excerpt-content">
-          Markdown相关语法总结
+          《Practical Python and OpenCV》读书札记。
 
-Markdown 主要格式及效果OverviewMarkdown is created by Daring Fireball, the original guideline is here. Its syntax, however, varies between different parsers or editors. Typora is using GitHub Flavored Markdown. 
-Please note that HTML frag...
+1. Load，Display and Save an Image123456789import cv2# Load the image and show some basic information on itimage = cv2.imread("Path/to/Image")# Show the image and wait for a keypresscv2.imshow("Image", image)cv2....
         </p>
         <p class="article-more-link">
-          <a href="/2018/01/01/Markdown_Reference/#more">阅读全文</a>
+          <a href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/#more">阅读全文</a>
         </p>
       
     </div>
     <footer class="article-footer">
+
       
       
+
       
+      <!--  -->
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
     </footer>
   </div>
@@ -475,7 +482,7 @@ Please note that HTML frag...
 
 
   
-    <article id="post-读书笔记-腾讯传"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-深度学习基础之正则化"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -483,7 +490,7 @@ Please note that HTML frag...
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/02/02/读书笔记-腾讯传/">读书笔记-&lt;腾讯传：中国互联网公司进化论&gt;</a>
+      <a class="article-title" href="/2018/03/04/深度学习基础之正则化/">深度学习基础之正则化</a>
     </h1>
   
 
@@ -491,42 +498,39 @@ Please note that HTML frag...
     
     <div class="article-meta">
       
-	<a href="/2017/02/02/读书笔记-腾讯传/" class="article-date">
-	  <time datetime="2017-02-02T07:33:43.000Z" itemprop="datePublished">2017-02-02</time>
+	<a href="/2018/03/04/深度学习基础之正则化/" class="article-date">
+	  <time datetime="2018-03-04T07:35:01.000Z" itemprop="datePublished">2018-03-04</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p class="article-excerpt-content">
-          2017年1月份，整理了一堆计划在2017年阅读的书籍清单，其中包括一些读过多遍的老书，也有一些刚刚问世的新书。希望通过一轮全新的阅读能能够获得更多的感悟。其中《腾讯传：中国互联网公司进化论》在2016年12月刚刚出版，又是关于BAT巨头的全新著作，不免先睹为快。
+          明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。
 
-写在前面
-​    关于这本书，官方（出版社及网络宣传方）给出的宣传语为：
+@toc
+过拟合一直是深度学习算法训练过程中必须要面对的一个难题，而正则化是降低模型过拟合的有效手段，这篇笔记用于归纳正则化的关键技术。
 
-
-腾讯官方唯一授权的权威传记
-
-著名财经作家吴晓波倾力之作
-
-当市值最高的中国互联网公司，遇上中国财经界最冷静的一双眼睛
-
-读懂腾讯，读懂中国互联网...
+深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段...
         </p>
         <p class="article-more-link">
-          <a href="/2017/02/02/读书笔记-腾讯传/#more">阅读全文</a>
+          <a href="/2018/03/04/深度学习基础之正则化/#more">阅读全文</a>
         </p>
       
     </div>
     <footer class="article-footer">
+
       
       
+
       
+      <!--  -->
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/正则化/">正则化</a></li></ul>
 
     </footer>
   </div>
@@ -537,7 +541,7 @@ Please note that HTML frag...
 
 
   
-    <article id="post-读书笔记-Pro-Git"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-Deep-Learning-for-Computer-Vision"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -545,7 +549,7 @@ Please note that HTML frag...
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/02/02/读书笔记-Pro-Git/">Git使用总结</a>
+      <a class="article-title" href="/2018/03/03/Deep-Learning-for-Computer-Vision/">Deep Learning for Computer Vision</a>
     </h1>
   
 
@@ -553,33 +557,40 @@ Please note that HTML frag...
     
     <div class="article-meta">
       
-	<a href="/2017/02/02/读书笔记-Pro-Git/" class="article-date">
-	  <time datetime="2017-02-02T04:45:13.000Z" itemprop="datePublished">2017-02-02</time>
+	<a href="/2018/03/03/Deep-Learning-for-Computer-Vision/" class="article-date">
+	  <time datetime="2018-03-03T14:12:49.000Z" itemprop="datePublished">2018-03-03</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a>
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/机器视觉/">机器视觉</a>
 
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p class="article-excerpt-content">
-          一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。
-写在前面​    《Pro Git》由GitHub员工Scott Chacon和另一位爱好者Ben Straub共同编写，主要介绍了Git使用基础和原理，适合Git爱好者和初学者参考。
+          
+本文记录深度学习书籍《Deep Learning for Computer Vision with Python》的读书笔记。
 
-The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
+
+@toc
+背景
+深度学习拥有60多年历史，虽然曾经采用过不同的名称和不同的主导技术：“deep learning” has existed since the 1940s undergoing various name changes, including cybernetics, connectionism, and the most familiar, ...
         </p>
         <p class="article-more-link">
-          <a href="/2017/02/02/读书笔记-Pro-Git/#more">阅读全文</a>
+          <a href="/2018/03/03/Deep-Learning-for-Computer-Vision/#more">阅读全文</a>
         </p>
       
     </div>
     <footer class="article-footer">
+
       
       
+
       
+      <!--  -->
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
     </footer>
   </div>
@@ -594,7 +605,7 @@ The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/7/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+    <a class="extend prev" rel="prev" href="/page/7/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -945,7 +956,7 @@ The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -955,7 +966,7 @@ The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 18px;">AI</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 11px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 17px;">文献</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+      <a href="/tags/AI/" style="font-size: 18px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 10px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 17px;">文献</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 10px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
   </div>
 
@@ -965,7 +976,7 @@ The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -978,23 +989,23 @@ The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
       <ul>
         
           <li>
-            <a href="/2018/07/12/2018-07-9-经典网络复现之VGG/">经典网络复现之VGGNet</a>
+            <a href="/2018/09/29/读书笔记：Machine-Learning-Yearning/">读书笔记：Machine Learning Yearning</a>
           </li>
         
           <li>
-            <a href="/2018/07/12/经典网络复现之ResNet/">经典网络复现之ResNet</a>
+            <a href="/2018/08/28/HMM与Veterbi算法/">HMM与Veterbi算法</a>
           </li>
         
           <li>
-            <a href="/2018/07/12/经典网络复现之GoogleNet/">经典网络复现之GoogleNet</a>
+            <a href="/2018/08/26/读书笔记-数学之美/">读书笔记:数学之美</a>
           </li>
         
           <li>
-            <a href="/2018/07/12/经典网络复现之SqueezeNet/">经典网络复现之SqueezeNet</a>
+            <a href="/2018/08/21/FastText-A-better-choice-for-word-embedding/">FastText-A better choice for word embedding?</a>
           </li>
         
           <li>
-            <a href="/2018/07/08/经典网络复现之AlexNet/">经典网络复现之AlexNet</a>
+            <a href="/2018/08/21/弄懂word2vec之原理解析/">弄懂word2vec之原理解析</a>
           </li>
         
       </ul>
@@ -1059,6 +1070,8 @@ The entire Pro Git book, written by Scott Chacon and Ben Straub and publishe...
     <a href="/reading" class="mobile-nav-link">Reading</a>
   
     <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
   
 </nav> -->
     
