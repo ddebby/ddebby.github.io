@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>机器在学习——eda | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,pandas,seaborn,可视化,EDA" />
+  
+  
+  
+  
+  <meta name="keywords" content="人工智能,pandas,seaborn,可视化,EDA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器在学习——EDA">
+<meta property="og:url" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/pairplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/kernel-density-plots.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/sns.distplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/barplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/lmplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/scatter.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/pairplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/count-plot-hue.png">
+<meta property="og:updated_time" content="2018-12-12T12:38:55.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器在学习——EDA">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/pairplot.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-机器在学习——EDA" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      机器在学习——EDA
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/11/机器在学习——EDA/" class="article-date">
+	  <time datetime="2018-12-11T06:46:47.000Z" itemprop="datePublished">2018-12-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/12/11/机器在学习——EDA/pairplot.png" alt="EDA"></p>
+<a id="more"></a>
+<hr>
+<h1 id="Topic-1：-EDA-with-pandas"><a href="#Topic-1：-EDA-with-pandas" class="headerlink" title="Topic 1： EDA with pandas"></a>Topic 1： EDA with pandas</h1><ol>
+<li><p>调整column类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'Churn'</span>] = df[<span class="string">'Churn'</span>].astype(<span class="string">'int64'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>df.describe()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.describe(include=[<span class="string">'object'</span>, <span class="string">'bool'</span>])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>df.value_counts(normalize=True)</code></p>
+<blockquote>
+<p>对于离散量数据（<code>object</code>或<code>bool</code>）统计不同类型的数目</p>
+</blockquote>
+<p>另外可以通过如下命令来统计一个离散属性的所有类别数目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flights_df[<span class="string">'UniqueCarrier'</span>].nunique()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flights_df.groupby(<span class="string">'UniqueCarrier'</span>).size().plot(kind=<span class="string">'bar'</span>);</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">flights_df[<span class="string">'UniqueCarrier'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>排序方法：<code>sort_values(by=&#39;...&#39;,ascending=False)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df.sort_values(by=<span class="string">'Total day charge'</span>, ascending=<span class="keyword">False</span>).head()</span><br><span class="line"></span><br><span class="line">df.sort_values(by=[<span class="string">'Churn'</span>, <span class="string">'Total day charge'</span>],</span><br><span class="line">        			ascending=[<span class="keyword">True</span>, <span class="keyword">False</span>])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Boolean indexing：<code>df[P(df[&#39;Name&#39;])]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[(df[<span class="string">'Churn'</span>] == <span class="number">0</span>) &amp; (df[<span class="string">'International plan'</span>] == <span class="string">'No'</span>)][<span class="string">'Total intl minutes'</span>].max()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>.loc</code>与<code>.iloc</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.loc[<span class="number">0</span>:<span class="number">5</span>, <span class="string">'State'</span>:<span class="string">'Area code'</span>]</span><br><span class="line">df.iloc[<span class="number">0</span>:<span class="number">5</span>, <span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">df[:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>apply</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将apply应用到每一行，注意添加 axis=1</span></span><br><span class="line">df[<span class="string">'State'</span>].apply(<span class="keyword">lambda</span> state: state[<span class="number">0</span>] == <span class="string">'W'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>map</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;<span class="string">'No'</span> : <span class="keyword">False</span>, <span class="string">'Yes'</span> : <span class="keyword">True</span>&#125;</span><br><span class="line">df[<span class="string">'International plan'</span>] = df[<span class="string">'International plan'</span>].map(d)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>Grouping</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">df.groupby(by=grouping_columns)[columns_to_show].function()</span><br><span class="line"></span><br><span class="line">columns_to_show = [<span class="string">'Total day minutes'</span>, <span class="string">'Total eve minutes'</span>, </span><br><span class="line">                   <span class="string">'Total night minutes'</span>]</span><br><span class="line"></span><br><span class="line">df.groupby([<span class="string">'Churn'</span>])[columns_to_show].agg([np.mean, np.std, np.min, </span><br><span class="line">                                            np.max])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Summary Tables</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.crosstab(df[<span class="string">'Churn'</span>], df[<span class="string">'International plan'</span>])</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="Topic-2：-EDA-with-plot"><a href="#Topic-2：-EDA-with-plot" class="headerlink" title="Topic 2： EDA with plot"></a>Topic 2： EDA with plot</h1><blockquote>
+<p>收集 ML toolbox： <code>pandas</code>,<code>matplotlib</code>,<code>seaborn</code></p>
+</blockquote>
+<h2 id="1-看数据分布"><a href="#1-看数据分布" class="headerlink" title="1. 看数据分布"></a>1. 看数据分布</h2><h3 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h3><blockquote>
+<p>使用<code>pandas</code> DataFrame的<code>hist()</code>方法直接绘制：将数据划分至等长区间(bins)。</p>
+<p>用于统计数据分布，在不同区间的计数值；</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[features].hist(figsize=(<span class="number">10</span>, <span class="number">4</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="Box图"><a href="#Box图" class="headerlink" title="Box图"></a>Box图</h3><p>箱形图（Box-plot）又称为盒须图、盒式图或箱线图，是一种用作显示一组数据分散情况资料的统计图。它能显示出一组数据的<strong>最大值</strong>、<strong>最小值</strong>、<strong>中位数</strong>及<strong>上下四分位数</strong>。因形状如箱子而得名。在各种领域也经常被使用，常见于品质管理。</p>
+<p>接下来我们介绍Seaborn中的箱型图的具体实现方法，这是boxplot的API：</p>
+<blockquote>
+<p>seaborn.boxplot(x=None, y=None, hue=None, data=None, order=None, hue_order=None, orient=None, color=None, palette=None, saturation=0.75, width=0.8, dodge=True, fliersize=5, linewidth=None, whis=1.5, notch=False, ax=None, **kwargs)</p>
+</blockquote>
+<h3 id="Kernel-Density-Plots"><a href="#Kernel-Density-Plots" class="headerlink" title="Kernel Density Plots"></a>Kernel Density Plots</h3><blockquote>
+<p>看作为直方图的平滑版本</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[features].plot(kind=<span class="string">'density'</span>, subplots=<span class="keyword">True</span>, layout=(<span class="number">1</span>, <span class="number">2</span>), </span><br><span class="line">                  sharex=<span class="keyword">False</span>, figsize=(<span class="number">10</span>, <span class="number">4</span>));</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/11/机器在学习——EDA/kernel-density-plots.png" alt="kernel-density-plots"></p>
+<h3 id="Seaborn的displot方法"><a href="#Seaborn的displot方法" class="headerlink" title="Seaborn的displot方法"></a>Seaborn的<code>displot</code>方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.distplot(df[<span class="string">'Total intl calls'</span>]);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/11/机器在学习——EDA/sns.distplot.png" alt="sns.distplot"></p>
+<h3 id="pandas的describe-方法"><a href="#pandas的describe-方法" class="headerlink" title="pandas的describe()方法"></a><code>pandas</code>的<code>describe()</code>方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[features].describe()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也可以通过seaborn的box方法</p>
+</blockquote>
+<h2 id="2-离散变量"><a href="#2-离散变量" class="headerlink" title="2. 离散变量"></a>2. 离散变量</h2><h3 id="pandas的value-counts"><a href="#pandas的value-counts" class="headerlink" title="pandas的value_counts"></a><code>pandas</code>的<code>value_counts</code></h3><blockquote>
+<p> <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.value_counts.html" target="_blank" rel="noopener"><code>value_counts()</code></a> </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'feature_name'</span>].value_counts(normalize=Fase)</span><br></pre></td></tr></table></figure>
+<h3 id="seaborn的countplot"><a href="#seaborn的countplot" class="headerlink" title="seaborn的countplot"></a><code>seaborn</code>的<code>countplot</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_, axes = plt.subplots(nrows=<span class="number">1</span>, ncols=<span class="number">2</span>, figsize=(<span class="number">12</span>, <span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">sns.countplot(x=<span class="string">'Churn'</span>, data=df, ax=axes[<span class="number">0</span>]);</span><br><span class="line">sns.countplot(x=<span class="string">'Customer service calls'</span>, data=df, ax=axes[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/11/机器在学习——EDA/barplot.png" alt="barplot"></p>
+<h3 id="lmplot"><a href="#lmplot" class="headerlink" title="lmplot"></a><code>lmplot</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.lmplot(<span class="string">'Total day minutes'</span>, <span class="string">'Total night minutes'</span>, data=df, hue=<span class="string">'Churn'</span>, fit_reg=<span class="keyword">False</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/11/机器在学习——EDA/lmplot.png" alt="lmplot"></p>
+<h2 id="3-关联分析"><a href="#3-关联分析" class="headerlink" title="3. 关联分析"></a>3. 关联分析</h2><h3 id="相关性分析"><a href="#相关性分析" class="headerlink" title="相关性分析"></a>相关性分析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Drop non-numerical variables</span></span><br><span class="line">numerical = list(set(df.columns) - </span><br><span class="line">                 set([<span class="string">'State'</span>, <span class="string">'International plan'</span>, <span class="string">'Voice mail plan'</span>, </span><br><span class="line">                      <span class="string">'Area code'</span>, <span class="string">'Churn'</span>, <span class="string">'Customer service calls'</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate and plot</span></span><br><span class="line">corr_matrix = df[numerical].corr()</span><br><span class="line">sns.heatmap(corr_matrix);</span><br></pre></td></tr></table></figure>
+<h3 id="散点图"><a href="#散点图" class="headerlink" title="散点图"></a>散点图</h3><blockquote>
+<p><a href="https://seaborn.pydata.org/generated/seaborn.jointplot.html" target="_blank" rel="noopener"><code>jointplot()</code></a> </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sns.jointplot(x=<span class="string">'Total day minutes'</span>, y=<span class="string">'Total night minutes'</span>, </span><br><span class="line">              data=df, kind=<span class="string">'scatter'</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/11/机器在学习——EDA/scatter.png" alt="scatter"></p>
+<h4 id="散点图的相关性矩阵：-pairplot"><a href="#散点图的相关性矩阵：-pairplot" class="headerlink" title="散点图的相关性矩阵： pairplot"></a>散点图的相关性矩阵： <code>pairplot</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># `pairplot()` may become very slow with the SVG format</span></span><br><span class="line">%config InlineBackend.figure_format = <span class="string">'png'</span></span><br><span class="line">sns.pairplot(df[numerical]);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/11/机器在学习——EDA/pairplot.png" alt="pairplot"></p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><h2 id="技巧总结"><a href="#技巧总结" class="headerlink" title="技巧总结"></a>技巧总结</h2><ol>
+<li><p><code>seaborn</code>的<code>hue</code>属性是一个可视化很直接，比较有用的配置属性；</p>
+<p>比如通过下图来看某个特征对于结果的不同分布：</p>
+<p><img src="/2018/12/11/机器在学习——EDA/count-plot-hue.png" alt="count-plot-hue"></p>
+</li>
+<li><p>在量化离散变量之前，将数值变量和类别变量分别进行分析</p>
+</li>
+<li><p>环境准备</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Matplotlib forms basis for visualization in Python</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># We will use the Seaborn library</span></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line">sns.set()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Graphics in SVG format are more sharp and legible</span></span><br><span class="line">%config InlineBackend.figure_format = <span class="string">'svg'</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># Increase the default plot size and set the color scheme</span></span><br><span class="line">plt.rcParams[<span class="string">'figure.figsize'</span>] = <span class="number">8</span>, <span class="number">5</span></span><br><span class="line">plt.rcParams[<span class="string">'image.cmap'</span>] = <span class="string">'viridis'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>熟练使用特征选择命令，限定画图范围</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top_features = df[<span class="string">'features'</span>].value_counts().sort_values(ascending=<span class="keyword">False</span>).head(<span class="number">5</span>).index.values</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>善用<code>pandas.crosstab</code>进行分析</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/11/机器在学习——EDA/" target="_blank" title="机器在学习——EDA">http://blog.a-stack.com/2018/12/11/机器在学习——EDA/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/26/深度学习资源调度平台OpenPAI部署/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深度学习资源调度平台OpenPAI部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/04/机器在学习-时序数据分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">机器在学习-时序数据分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Topic-1：-EDA-with-pandas"><span class="nav-number">1.</span> <span class="nav-text">Topic 1： EDA with pandas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Topic-2：-EDA-with-plot"><span class="nav-number">2.</span> <span class="nav-text">Topic 2： EDA with plot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-看数据分布"><span class="nav-number">2.1.</span> <span class="nav-text">1. 看数据分布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直方图"><span class="nav-number">2.1.1.</span> <span class="nav-text">直方图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Box图"><span class="nav-number">2.1.2.</span> <span class="nav-text">Box图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kernel-Density-Plots"><span class="nav-number">2.1.3.</span> <span class="nav-text">Kernel Density Plots</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Seaborn的displot方法"><span class="nav-number">2.1.4.</span> <span class="nav-text">Seaborn的displot方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pandas的describe-方法"><span class="nav-number">2.1.5.</span> <span class="nav-text">pandas的describe()方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-离散变量"><span class="nav-number">2.2.</span> <span class="nav-text">2. 离散变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pandas的value-counts"><span class="nav-number">2.2.1.</span> <span class="nav-text">pandas的value_counts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#seaborn的countplot"><span class="nav-number">2.2.2.</span> <span class="nav-text">seaborn的countplot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lmplot"><span class="nav-number">2.2.3.</span> <span class="nav-text">lmplot</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-关联分析"><span class="nav-number">2.3.</span> <span class="nav-text">3. 关联分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关性分析"><span class="nav-number">2.3.1.</span> <span class="nav-text">相关性分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#散点图"><span class="nav-number">2.3.2.</span> <span class="nav-text">散点图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#散点图的相关性矩阵：-pairplot"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">散点图的相关性矩阵： pairplot</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它"><span class="nav-number">2.3.3.</span> <span class="nav-text">其它</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧总结"><span class="nav-number">2.4.</span> <span class="nav-text">技巧总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度学习资源调度平台openpai部署 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习资源调度平台OpenPAI部署">
+<meta property="og:url" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/k8s-management.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/watchdog-error.png">
+<meta property="og:updated_time" content="2018-12-26T13:16:58.578Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习资源调度平台OpenPAI部署">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-深度学习资源调度平台OpenPAI部署" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习资源调度平台OpenPAI部署
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/26/深度学习资源调度平台OpenPAI部署/" class="article-date">
+	  <time datetime="2018-12-26T10:42:53.000Z" itemprop="datePublished">2018-12-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png" alt="OpenPAI"></p>
+<a id="more"></a>
+<blockquote>
+<p>date: 2018-12-26</p>
+<p>Version: 0.8.3</p>
+<p>操作系统：Ubuntu 16.04</p>
+<p>GitHub: <a href="https://github.com/Microsoft/pai" target="_blank" rel="noopener">https://github.com/Microsoft/pai</a></p>
+<p>All-in-One部署</p>
+</blockquote>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="1-环境要求"><a href="#1-环境要求" class="headerlink" title="1. 环境要求"></a>1. 环境要求</h3><ul>
+<li>一组集群主机，PC或服务器均可；</li>
+<li>所有节点全新安装<strong>Ubuntu Server 16.04</strong>，不需安装GPU驱动及CUDA；</li>
+<li>各节点具有统一的登录账户及密码，此账户不需要root账户角色，但<strong>必须具有sudo权限</strong>；</li>
+<li>各节点具有静态IP地址；</li>
+<li>各节点均可访问互联网；</li>
+<li>各节点间可互访；</li>
+<li>各节点时间一致，即<strong>ntp</strong>功能可用；</li>
+</ul>
+<h3 id="2-依赖包安装"><a href="#2-依赖包安装" class="headerlink" title="2. 依赖包安装"></a>2. 依赖包安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 0.1</span></span><br><span class="line">gaoc@openpaiTest03:~$ sudo apt-get -y update</span><br><span class="line"><span class="comment"># 0.2</span></span><br><span class="line">gaoc@openpaiTest03:~$ sudo apt-get -y install \</span><br><span class="line">      nano \</span><br><span class="line">      vim \</span><br><span class="line">      joe \</span><br><span class="line">      wget \</span><br><span class="line">      curl \</span><br><span class="line">      jq \</span><br><span class="line">      gawk \</span><br><span class="line">      psmisc \</span><br><span class="line">      python \</span><br><span class="line">      python-yaml \</span><br><span class="line">      python-jinja2 \</span><br><span class="line">      python-paramiko \</span><br><span class="line">      python-urllib3 \</span><br><span class="line">      python-tz \</span><br><span class="line">      python-nose \</span><br><span class="line">      python-prettytable \</span><br><span class="line">      python-netifaces \</span><br><span class="line">      python-dev \</span><br><span class="line">      python-pip \</span><br><span class="line">      python-mysqldb \</span><br><span class="line">      openjdk-8-jre \</span><br><span class="line">      openjdk-8-jdk \</span><br><span class="line">      openssh-server \</span><br><span class="line">      openssh-client \</span><br><span class="line">      git \</span><br><span class="line">      bash-completion \</span><br><span class="line">      inotify-tools \</span><br><span class="line">      rsync \</span><br><span class="line">      realpath \</span><br><span class="line">      net-tools</span><br><span class="line">      </span><br><span class="line"><span class="comment"># 0.3</span></span><br><span class="line">gaoc@openpaiTest03:~$ pip install python-etcd docker kubernetes GitPython</span><br><span class="line"></span><br><span class="line"><span class="comment"># 0.4 </span></span><br><span class="line">gaoc@openpaiTest03:~$ git <span class="built_in">clone</span> https://github.com/Microsoft/pai.git</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li><p>0.3 pip包安装失败报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;   ...</span><br><span class="line">&gt;     File <span class="string">"/usr/lib/python2.7/dist-packages/OpenSSL/SSL.py"</span>, line 118, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">&gt;       SSL_ST_INIT = _lib.SSL_ST_INIT</span><br><span class="line">&gt;   AttributeError: <span class="string">'module'</span> object has no attribute <span class="string">'SSL_ST_INIT'</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>  修复如下：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;   <span class="comment">#1.1</span></span><br><span class="line">&gt;   sudo python -m easy_install --upgrade pyOpenSSL</span><br><span class="line">&gt;   <span class="comment">#1.2 更新pip版本</span></span><br><span class="line">&gt;   gaoc@openpaiTest03:~$ pip install --upgrade pip</span><br><span class="line">&gt;   <span class="comment">#1.3 修复pip新版本bug </span></span><br><span class="line">&gt;   sudo vim /usr/bin/pip</span><br><span class="line">&gt;   </span><br><span class="line">&gt;   from pip import __main__</span><br><span class="line">&gt;   <span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">&gt;       sys.exit(__main__._main())</span><br><span class="line">&gt;   <span class="comment">#1.4 重新安装包</span></span><br><span class="line">&gt;   gaoc@openpaiTest03:~$ pip install python-etcd docker kubernetes GitPython</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="配置文件准备"><a href="#配置文件准备" class="headerlink" title="配置文件准备"></a>配置文件准备</h2><ol>
+<li>使用快速部署文件<code>quick-start.yaml</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gaoc@openpaiTest03:~$ <span class="built_in">cd</span> pai/deployment/quick-start/</span><br><span class="line">gaoc@openpaiTest03:~/pai/deployment/quick-start$ mv quick-start-example.yaml quick-start.yaml</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>修改<code>quick-start.yaml</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.</span></span><br><span class="line">machines:</span><br><span class="line">  - &lt;ip-of-master&gt;</span><br><span class="line">  - &lt;ip-of-worker1&gt;</span><br><span class="line">  - &lt;ip-of-worder2&gt;</span><br><span class="line"><span class="comment">#--------------------</span></span><br><span class="line"><span class="comment">#修改为本机内网IP地址，因为All-in-One,所以配置一个master IP即可：</span></span><br><span class="line">machines:</span><br><span class="line">  - 10.0.7.4</span><br><span class="line"><span class="comment">#2.</span></span><br><span class="line">ssh-username: &lt;username&gt;</span><br><span class="line">ssh-password: &lt;password&gt;</span><br><span class="line"><span class="comment">#--------------------</span></span><br><span class="line"><span class="comment">#修改为openPAI用户的用户名/密码</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /pai</span><br><span class="line"></span><br><span class="line"><span class="comment"># cmd should be executed under pai directory</span></span><br><span class="line"></span><br><span class="line">python paictl.py config generate -i ~/pai/deployment/quick-start/quick-start.yaml -o ~/pai-config -f</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改生成的配置文件</p>
+<blockquote>
+<p>目录 <code>~/pai-config</code></p>
+</blockquote>
+<p><code>cluster-configuration.yaml  k8s-role-definition.yaml  kubernetes-configuration.yaml  services-configuration.yaml</code></p>
+</li>
+</ol>
+<ul>
+<li><p><code>`cluster-configuration.yaml</code></p>
+<p>修改<code>machine-sku</code>,如果有需要进一步修改<code>machine-list</code></p>
+<p>因此部署电脑没有GPU，将GPU的<code>count</code>调整为0，同时按照服务器内存和cpu虚拟核心数目调整参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">machine-sku:</span><br><span class="line">  GENERIC:</span><br><span class="line">    mem: 56</span><br><span class="line">    gpu:</span><br><span class="line">      <span class="built_in">type</span>: generic</span><br><span class="line">      count: 0</span><br><span class="line">    cpu:</span><br><span class="line">      vcore: 16</span><br><span class="line">    os: ubuntu16.04</span><br><span class="line"></span><br><span class="line">machine-list:</span><br><span class="line">  - hostname: openpaiTest03</span><br><span class="line">    hostip: 10.0.7.4</span><br><span class="line">    machine-type: GENERIC</span><br><span class="line">    k8s-role: master</span><br><span class="line">    etcdid: etcdid1</span><br><span class="line">    zkid: <span class="string">"1"</span></span><br><span class="line">    dashboard: <span class="string">"true"</span></span><br><span class="line">    pai-master: <span class="string">"true"</span></span><br><span class="line">    pai-worker: <span class="string">"true"</span></span><br><span class="line">    docker-data: /var/lib/docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>kubernetes-configuration.yaml</code></p>
+<p>修改docker registry为国内源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-registry: docker.io/openpai</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>services-configuration.yaml</code></p>
+<p>修改<code>docker-registry</code>的<code>tag</code>值为openPAI版本号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tag: 0.8.3</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更多配置修改详见： <a href="https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/how-to-generate-cluster-config.md" target="_blank" rel="noopener">https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/how-to-generate-cluster-config.md</a></p>
+<h2 id="部署Kubernetes-集群"><a href="#部署Kubernetes-集群" class="headerlink" title="部署Kubernetes 集群"></a>部署Kubernetes 集群</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/pai</span><br><span class="line"></span><br><span class="line">sudo python paictl.py cluster k8s-bootup -p ~/pai-config</span><br></pre></td></tr></table></figure>
+<p>集群部署完成可通过如下地址访问集群管理系统：</p>
+<p><code>http://&lt;master&gt;:9090</code></p>
+<p>部署过程中遇到问题重新部署前先执行如下命令删掉<code>kubelet</code>的容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker ps</span><br><span class="line">sudo docker stop kubelet</span><br><span class="line">sudo docker rm kubelet</span><br></pre></td></tr></table></figure>
+<h2 id="更新集群配置"><a href="#更新集群配置" class="headerlink" title="更新集群配置"></a>更新集群配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/pai</span><br><span class="line">python paictl.py config push -p ~/pai-config</span><br></pre></td></tr></table></figure>
+<p>执行完成之后会提示输入一个cluster id：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Please input the cluster-id <span class="keyword">for</span> your cluster: 123456</span><br></pre></td></tr></table></figure>
+<h2 id="启动OpenPAI服务"><a href="#启动OpenPAI服务" class="headerlink" title="启动OpenPAI服务"></a>启动OpenPAI服务</h2><blockquote>
+<p>此步骤将依次安装如下服务：</p>
+<p><code>[&#39;watchdog&#39;, &#39;node-exporter&#39;, &#39;yarn-frameworklauncher&#39;, &#39;hadoop-name-node&#39;, &#39;cleaner&#39;, &#39;rest-server&#39;, &#39;grafana&#39;, &#39;hadoop-resource-manager&#39;, &#39;hadoop-batch-job&#39;, &#39;drivers&#39;, &#39;cluster-configuration&#39;, &#39;alert-manager&#39;, &#39;pylon&#39;, &#39;hadoop-jobhistory&#39;, &#39;hadoop-node-manager&#39;, &#39;end-to-end-test&#39;, &#39;job-exporter&#39;, &#39;webportal&#39;, &#39;zookeeper&#39;, &#39;prometheus&#39;, &#39;hadoop-data-node&#39;]</code></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/pai</span><br><span class="line">python paictl.py service start</span><br></pre></td></tr></table></figure>
+<p>此时可以通过kebernetes的管理界面查看服务所在容器的部署情况：<code>http://127.0.0.1:9090/#!/job?namespace=default</code></p>
+<p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/k8s-management.png" alt="k8s-management"></p>
+<p>在此步骤中遇到了<code>watchdog</code>无法部署成功的问题，指定的配置文件版本无法找到对应0.8.3的watchdog：</p>
+<p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/watchdog-error.png" alt="watchdog-error"></p>
+<ul>
+<li><p>解决办法</p>
+<ul>
+<li><p>通过如下命令删除已经部署的watchdog容器</p>
+</li>
+<li><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python paictl.py service delete -n watchdog</span><br></pre></td></tr></table></figure>
+<p>更新<code>pai-config</code>中的配置文件<code>services-configuration.yaml</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">namespace: xudifsd</span><br><span class="line">tag: latest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新执行配置更新命令</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/pai</span><br><span class="line">python paictl.py<span class="built_in"> config </span>push -p ~/pai-config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启启动服务部署命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/pai</span><br><span class="line">python paictl.py service start</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>end-to-end-test</code>服务可以通过如下命令删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;python paictl.py service delete -n end-to-end-test</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>最后，可以通过如下链接的方法验证部署成功与否：</p>
+<p><a href="https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/validate-deployment.md" target="_blank" rel="noopener">https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/validate-deployment.md</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/26/深度学习资源调度平台OpenPAI部署/" target="_blank" title="深度学习资源调度平台OpenPAI部署">http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/开源平台/">开源平台</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/资源调度/">资源调度</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/部署/">部署</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/11/机器在学习——EDA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">机器在学习——EDA</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境要求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖包安装"><span class="nav-number">1.2.</span> <span class="nav-text">2. 依赖包安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件准备"><span class="nav-number">2.</span> <span class="nav-text">配置文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Kubernetes-集群"><span class="nav-number">3.</span> <span class="nav-text">部署Kubernetes 集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新集群配置"><span class="nav-number">4.</span> <span class="nav-text">更新集群配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动OpenPAI服务"><span class="nav-number">5.</span> <span class="nav-text">启动OpenPAI服务</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2018 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

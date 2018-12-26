@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_calc.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-03-02-深度学习基础之目标及评估/continuous_loss_functions.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-03-02-深度学习基础之目标及评估/all_loss_functions.png">
-<meta property="og:updated_time" content="2018-06-26T05:47:28.380Z">
+<meta property="og:updated_time" content="2018-11-22T09:38:55.316Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习基础之目标及评估">
 <meta name="twitter:description" content="明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。">
@@ -52,10 +52,10 @@
   <link rel="icon" href="/css/images/logo.png">
   <link rel="apple-touch-icon" href="/css/images/logo.png">
   
-    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
   
-  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
   <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
 
@@ -207,12 +207,6 @@
     <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
 
       
-	<a class="article-views">
-	<span id="busuanzi_container_page_pv">
-		阅读量<span id="busuanzi_value_page_pv"></span>
-	</span>
-	</a>
-
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -290,6 +284,11 @@ F1 = 2 \frac{Recall*Precision}{Recall + Precision} =\frac{TP}{TP+(FN+FP)/2}</scr
 <p>曲线下面积对所有可能的分类阈值的效果进行综合衡量。曲线下面积的一种解读方式是看作模型将某个随机正类别样本排列在某个随机负类别样本之上的概率。以下面的样本为例，逻辑回归预测从左到右以升序排列。</p>
 <p>曲线下面积表示随机正类别（绿色）样本位于随机负类别（红色）样本右侧的概率。</p>
 <p>曲线下面积的取值范围为 0-1。预测结果 100% 错误的模型的曲线下面积为 0.0；而预测结果 100% 正确的模型的曲线下面积为 1.0。</p>
+<ul>
+<li>AUC ＝ 1，代表完美分类器</li>
+<li>0.5 &lt; AUC &lt; 1，优于随机分类器</li>
+<li>0 &lt; AUC &lt; 0.5，差于随机分类器</li>
+</ul>
 <p>曲线下面积因以下两个原因而比较实用：</p>
 <ul>
 <li>曲线下面积的<strong>尺度不变</strong>。它测量预测的排名情况，而不是测量其绝对值。</li>
@@ -339,7 +338,7 @@ MAE = \frac{\sum_{i=1}^n |\hat y - y_{true}|}{n}</script><p><img src="/qnsource/
 <p>在这种情况下，HuberLoss可能会非常有用，因为它会使最小值附近弯曲，从而降低梯度。另外它比MSE对异常值更鲁棒。因此，它结合了MSE和MAE的优良特性。但是，HuberLoss的问题是我们可能需要迭代地训练超参数<code>delta</code>。</p>
 <h3 id="Log-Cosh-Loss"><a href="#Log-Cosh-Loss" class="headerlink" title="Log-Cosh Loss"></a>Log-Cosh Loss</h3><p>Log-cosh是用于回归任务的另一种损失函数，它比L2更加平滑。Log-cosh是预测误差的双曲余弦的对数。</p>
 <script type="math/tex; mode=display">
-L(\hat y,y_{true}) = \sum^n_{i=1} log(cosh(y_{true}-\hat y))</script><p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/log-cosh.png" alt="log-cosh"></p>
+L(\hat y,y_{true}) = \sum^n_{i=1} log(cosh(y_{true}-\hat y))</script><p><img src="/../qnsource/images/2018-03-02-深度学习基础之目标及评估/log-cosh.png" alt="log-cosh"></p>
 <p><strong>优点：</strong> log(cosh(x))对于小的x来说，其大约等于 (x ** 2) / 2，而对于大的x来说，其大约等于 abs(x) -<br>log(2)。这意味着<code>logcosh</code>的作用大部分与均方误差一样，但不会受到偶尔出现的极端不正确预测的强烈影响。它具有Huber Loss的所有优点，和Huber Loss不同之处在于，其处处二次可导。</p>
 <p>为什么我们需要二阶导数？许多机器学习模型的实现（如XGBoost）使用牛顿方法来寻找最优解，这就是为什么需要二阶导数（Hessian）的原因。对于像XGBoost这样的机器学习框架，二阶可导函数更有利。</p>
 <p>但Log-chshLoss并不完美。它仍然存在梯度和Hessian问题，对于误差很大的预测，其梯度和hessian是恒定的。因此会导致XGBoost中没有分裂。</p>
@@ -348,7 +347,7 @@ L(\hat y,y_{true}) = \sum^n_{i=1} log(cosh(y_{true}-\hat y))</script><p><img src
 <h3 id="Quantile-Loss-分位数损失"><a href="#Quantile-Loss-分位数损失" class="headerlink" title="Quantile Loss(分位数损失)"></a>Quantile Loss(分位数损失)</h3><p>在大多数真实预测问题中，我们通常想了解我们预测的不确定性。了解预测值的范围而不仅仅是单一的预测点可以显着改善许多业务问题的决策过程。</p>
 <p>当我们有兴趣预测一个区间而不仅仅是预测一个点时，Quantile Loss函数就很有用。最小二乘回归的预测区间是基于这样一个假设：残差（y -y_hat）在独立变量的值之间具有不变的方差。我们不能相信线性回归模型，因为它违反了这一假设。当然，我们也不能仅仅认为这种情况一般使用非线性函数或基于树的模型就可以更好地建模，而简单地抛弃拟合线性回归模型作为基线的想法。这时，Quantile Loss就派上用场了。因为基于Quantile Loss的回归模型可以提供合理的预测区间，即使是对于具有非常数方差或非正态分布的残差亦是如此。</p>
 <p>让我们看一个有效的例子，以更好地理解为什么基于QuantileLoss的回归模型对异方差数据表现良好。</p>
-<h4 id="Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归"><a href="#Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归" class="headerlink" title="Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归"></a>Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归</h4><p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss.png" alt="左：线性关系b/w X1和Y，残差的方差恒定。右：线性关系b/w X2和Y，但Y的方差随着X2增加而变大（异方差"></p>
+<h4 id="Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归"><a href="#Quantile-回归-vs-普通最小二乘（Ordinary-Least-Square-OLS）回归" class="headerlink" title="Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归"></a>Quantile 回归 vs 普通最小二乘（Ordinary Least Square, OLS）回归</h4><p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss.png" alt="左：线性关系b/w X1和Y，残差的方差恒定。右：线性关系b/w X2和Y，但Y的方差随着X2增加而变大(异方差"></p>
 <p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_1.png" alt="quantile_loss_1"></p>
 <p>橙线表示两种情况下的OLS估计</p>
 <p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_2.png" alt="Quantile回归：虚线表示基于0.05和0.95分位数损失函数的回归估计"></p>
@@ -356,9 +355,9 @@ L(\hat y,y_{true}) = \sum^n_{i=1} log(cosh(y_{true}-\hat y))</script><p><img src
 <p>QuantileLoss的思想是根据我们是打算给正误差还是负误差更多的值来选择分位数数值。损失函数根据所选quantile(γ)的值对高估和低估的预测值给予不同的惩罚值。举个例子，γ= 0.25的Quantile Loss函数给高估的预测值更多的惩罚，并试图使预测值略低于中位数。</p>
 <p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_function.png" alt="quantile_loss_function"></p>
 <p>γ 是给定的分位数，其值介于0和1之间。</p>
-<p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_diff.png" alt="Quantile Loss（Y轴）与预测值（X轴）关系图。真值为Y= 0"></p>
+<p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_diff.png" alt="Quantile Loss(Y轴)与预测值(X轴)关系图。真值为Y= 0"></p>
 <p>我们也可以使用这个损失函数来计算神经网络或基于树的模型的预测区间。下图是sklearn实现的梯度提升树回归。</p>
-<p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_calc.png" alt="使用Quantile Loss的预测区间（梯度提升回归）"></p>
+<p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/quantile_loss_calc.png" alt="使用Quantile Loss的预测区间(梯度提升回归)"></p>
 <p>上图显示的是sklearn库的GradientBoostingRegression中的quantile loss函数计算的90％预测区间。上限的计算使用了γ = 0.95，下限则是使用了γ = 0.05。</p>
 <h3 id="几种算法的比较"><a href="#几种算法的比较" class="headerlink" title="几种算法的比较"></a>几种算法的比较</h3><p>“Gradient boosting machines, a tutorial”中提供了一个很好的比较研究。为了演示上述所有的损失函数的性质，研究人员创造了一个人工数据集，数据集从sinc(x)函数中采样，其中加入了两种人造模拟噪声：高斯噪声分量和脉冲噪声分量。脉冲噪声项是用来展示结果的鲁棒效果的。以下是使用不同损失函数来拟合 BM（Gradient Boosting Machine, 梯度提升回归）的结果。</p>
 <p><img src="/qnsource/images/2018-03-02-深度学习基础之目标及评估/continuous_loss_functions.png" alt="Continuous loss functions: (A) MSE loss function; (B) MAE loss function; (C) Huber loss function; (D) Quantile loss function. Demonstration of fitting a smooth GBM to a noisy sinc(x) data: (E) original sinc(x) function; (F) smooth GBM fitted with MSE and MAE loss; (G) smooth GBM fitted with Huber loss with δ = {4, 2, 1}; (H) smooth GBM fitted with Quantile loss with α = {0.5, 0.1, 0.9}."></p>
@@ -391,8 +390,8 @@ var a = new Donate({
   title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
   btnText: '打赏支持', // 可选参数，打赏按钮文字
   el: document.getElementById('donation_div'),
-  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
-  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
 });
 </script>
       
@@ -452,6 +451,8 @@ var a = new Donate({
 
       
       <!--  -->
+
+      <!--  -->
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/预处理/">预处理</a></li></ul>
 
@@ -505,10 +506,7 @@ var a = new Donate({
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-    		<p class="busuanzi_uv">
-				访客数 : <span id="busuanzi_value_site_uv"></span> |  
-				访问量 : <span id="busuanzi_value_site_pv"></span>
-		    </p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
   		   
 		</div>
 
@@ -603,9 +601,6 @@ var a = new Donate({
 
 
 
-
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-	</script>
 
 
 

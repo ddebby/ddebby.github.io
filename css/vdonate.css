@@ -41,7 +41,7 @@
 	vertical-align: text-bottom;
 	width: 32px;
 	height: 32px;
-	background: url("http://p4ygzcmtw.bkt.clouddn.com/css/58c158afac35c.png")
+	background: url("/qnsource/css/58c158afac35c.png")
 }
 
 #donate-modal-container .donate-quote-word {
@@ -54,7 +54,7 @@
 	vertical-align: text-bottom;
 	width: 32px;
 	height: 32px;
-	background: url("http://p4ygzcmtw.bkt.clouddn.com/css/58c1584d5fd9d.png")
+	background: url("/qnsource/css/58c1584d5fd9d.png")
 }
 
 #donate-modal-container .donate-tab {
@@ -132,7 +132,7 @@
 	vertical-align: -0.2em;
 	width: 16px;
 	height: 16px;
-	background: url("http://p4ygzcmtw.bkt.clouddn.com/css/58c16b1f3eaa4.png") no-repeat
+	background: url("/qnsource/css/58c16b1f3eaa4.png") no-repeat
 }
 
 @keyframes blowUpModal {

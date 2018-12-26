@@ -32,10 +32,10 @@
   <link rel="icon" href="/css/images/logo.png">
   <link rel="apple-touch-icon" href="/css/images/logo.png">
   
-    <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
   
-  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="http://p4ygzcmtw.bkt.clouddn.com/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
   <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
 
@@ -187,12 +187,6 @@
     <a class="article-category-link" href="/categories/工具/">工具</a><a class="article-category-link" href="/categories/工具/MarkDown/">MarkDown</a>
 
       
-	<a class="article-views">
-	<span id="busuanzi_container_page_pv">
-		阅读量<span id="busuanzi_value_page_pv"></span>
-	</span>
-	</a>
-
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -536,7 +530,7 @@ sign(x)=
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">Google</span>][<span class="symbol"></span>]</span><br><span class="line">And then define the link:</span><br><span class="line"></span><br><span class="line">[<span class="symbol">Google</span>]: <span class="link">http://google.com/</span></span><br></pre></td></tr></table></figure>
 <p>In typora click link will expand it for editing, command+click will open the hyperlink in web browser.</p>
 <h3 id="URLs"><a href="#URLs" class="headerlink" title="URLs"></a>URLs</h3><p>Typora allows you to insert urls as links, wrapped by <code>&lt;</code>brackets<code>&gt;</code>.</p>
-<p><code>&lt;i@typora.io&gt;</code> becomes <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x69;&#64;&#116;&#x79;&#x70;&#x6f;&#x72;&#97;&#x2e;&#105;&#111;">&#x69;&#64;&#116;&#x79;&#x70;&#x6f;&#x72;&#97;&#x2e;&#105;&#111;</a>.</p>
+<p><code>&lt;i@typora.io&gt;</code> becomes <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x69;&#64;&#x74;&#x79;&#x70;&#x6f;&#x72;&#97;&#46;&#105;&#x6f;">&#x69;&#64;&#x74;&#x79;&#x70;&#x6f;&#x72;&#97;&#46;&#105;&#x6f;</a>.</p>
 <p>Typora will aslo auto link standard URLs. e.g: www.google.com.</p>
 <h3 id="Images"><a href="#Images" class="headerlink" title="Images"></a>Images</h3><p>Image looks similar with links, but it requires an additional <code>!</code> char before the start of link. Image syntax looks like this:</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">Alt text</span>](<span class="link">/path/to/img.jpg</span>)</span><br><span class="line"></span><br><span class="line">![<span class="string">Alt text</span>](<span class="link">/path/to/img.jpg "Optional title"</span>)</span><br></pre></td></tr></table></figure>
@@ -597,8 +591,8 @@ var a = new Donate({
   title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
   btnText: '打赏支持', // 可选参数，打赏按钮文字
   el: document.getElementById('donation_div'),
-  wechatImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/weixin.png',
-  alipayImage: 'http://p4ygzcmtw.bkt.clouddn.com/site/alipay.jpg'
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
 });
 </script>
       
@@ -658,6 +652,8 @@ var a = new Donate({
 
       
       <!--  -->
+
+      <!--  -->
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/总结/">总结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技巧/">技巧</a></li></ul>
 
@@ -711,10 +707,7 @@ var a = new Donate({
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-    		<p class="busuanzi_uv">
-				访客数 : <span id="busuanzi_value_site_uv"></span> |  
-				访问量 : <span id="busuanzi_value_site_pv"></span>
-		    </p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
   		   
 		</div>
 
@@ -809,9 +802,6 @@ var a = new Donate({
 
 
 
-
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-	</script>
 
 
 
