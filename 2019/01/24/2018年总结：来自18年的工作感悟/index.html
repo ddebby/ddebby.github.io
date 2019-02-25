@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>2018年总结：来自18年的工作感悟 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法" />
+  
+  
+  
+  
+  <meta name="description" content="摘要： 2018年在从事人工智能工作过程中，有着诸多的感悟，记录下来激励自己2019年不要放松要求。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018年总结：来自18年的工作感悟">
+<meta property="og:url" content="http://blog.a-stack.com/2019/01/24/2018年总结：来自18年的工作感悟/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 2018年在从事人工智能工作过程中，有着诸多的感悟，记录下来激励自己2019年不要放松要求。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/24/2018年总结：来自18年的工作感悟/感悟二.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/24/2018年总结：来自18年的工作感悟/不同人眼中的人工智能工程师2.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/24/2018年总结：来自18年的工作感悟/感悟三.png">
+<meta property="og:updated_time" content="2019-01-24T07:12:33.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2018年总结：来自18年的工作感悟">
+<meta name="twitter:description" content="摘要： 2018年在从事人工智能工作过程中，有着诸多的感悟，记录下来激励自己2019年不要放松要求。">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018年总结：来自18年的工作感悟" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      2018年总结：来自18年的工作感悟
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="article-date">
+	  <time datetime="2019-01-24T06:50:22.000Z" itemprop="datePublished">2019-01-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/工作总结/">工作总结</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/qnsource/banner/08.jpg" alt="年度总结报告"></p>
+<p><strong>摘要：</strong> 2018年在从事人工智能工作过程中，有着诸多的感悟，记录下来激励自己2019年不要放松要求。</p>
+<a id="more"></a>
+<blockquote>
+<p>这是我在2019年年度工作会议上代表人工智能团队的讲话内容，总结了18年团队工作过程中的几点感悟。</p>
+</blockquote>
+<h2 id="安而不忘危，存而不忘亡，治而不忘乱"><a href="#安而不忘危，存而不忘亡，治而不忘乱" class="headerlink" title="安而不忘危，存而不忘亡，治而不忘乱"></a>安而不忘危，存而不忘亡，治而不忘乱</h2><p>第一个感悟，我引用了《周易》中的一段话：</p>
+<blockquote>
+<p>安而不忘危，存而不忘亡，治而不忘乱。——《周易》       </p>
+<p> 原话内容是：“安而不忘危、存而不忘亡、治而不忘乱、富而不忘贫、乐而不忘忧、顺而不忘逆、甘而不忘苦、福而不忘祸“。</p>
+</blockquote>
+<p>其实三句话都在讲述同一个道理，要有忧患意识，懂得居安思危。我之所以有这样的感悟，来自于18年几次人工智能交流活动，让我对所从事的工作充满了紧迫感：</p>
+<ol>
+<li><p>今年下半年，我们去云智科技调研，这曾经是一家在传统视频图像分析领域很领先的公司，随着这波深度学习技术兴起，他们在技术转型上慢了一小步，便被抛下了，很难在智能安防这个市场下占有一席之地；逆境求生存，他们只能在一些边缘行业寻找机会，比如参与了航天员的训练监控项目、音频分析等特质化的业务场景；云智是众多拥有一定技术的人工智能小公司的真实写照；这也是人工智能对传统行业的冲击；</p>
+</li>
+<li><p>10月份，我们去塞嘉电子正在驻场的一家客户——杭州卷烟厂进行实地调研，塞嘉在烟厂落地了一个烟包检测的人工智能的小项目，项目虽小，但为了推动后续合作，专门在现场设了驻场人员，一点一点的从客户身上挖需求，这让我真切感受到了人工智能外部项目落地的艰辛。跟赛嘉驻场人员沟通时，我问：你们觉得在实现客户需求有什么技术困难么？他说其实我们最终技术实现也没用什么深度学习技术，更多是在用传统的机器视觉分析，与技术比起来更头痛的是，烟厂更看重人工智能项目的学术价值，让我们帮他们发几篇SCI论文；</p>
+</li>
+<li><p>同样在10月，微软亚洲研究院副院长，自然语言处理领域的权威周明博士来公司做了一次交流，会上我问道了如何能够在人工智能领域跟的上？ 周院长笑了笑，说这是个开放的问题，我是做理论研究的，光我所从事的领域每天就更新几十篇重要论文，我休个假回来就需要补好久。我只能给你提供一些高效的工具。</p>
+</li>
+</ol>
+<p>这些只是18年发生在身边众多感触的一小部分，在外部环境风起云涌，技术飞速发展的今天，一方面请珍惜xx给予了我们相对稳定、宽松的研发环境，但更重要的是安而不忘危，存而不忘亡，治而不忘乱。需要提升紧迫感和危机意识。没有压力就没有动力，去年这个时候我曾经开玩笑说唯一让我睡不着觉的恐怕是牛总在熬夜学习人工智能技术给我的压迫感，今年让我紧迫的可不止牛总一个了。</p>
+<h2 id="学如逆水行舟，不进则退；心似平原纵马，易放难收"><a href="#学如逆水行舟，不进则退；心似平原纵马，易放难收" class="headerlink" title="学如逆水行舟，不进则退；心似平原纵马，易放难收"></a>学如逆水行舟，不进则退；心似平原纵马，易放难收</h2><p>2018年给我们的第二个感悟： </p>
+<blockquote>
+<p>学如逆水行舟，不进则退；心似平原纵马，易放难收。——《增广贤文》</p>
+</blockquote>
+<p>在过去的一年里，团队在技术跟进和项目研发过程中面临了很多全新的技术内容，在人工智能领域，技术上跟的上对我们团队是个很大的无形压力。我们一起啃论文、扣算法、业余充电。</p>
+<p>在此，我要感谢团队这过去一年的辛勤付出，让技能时刻更新，让项目如期完成：</p>
+<ul>
+<li><p>…</p>
+</li>
+<li><p>对我而言，18年是我整体规划、系统学习的一年，迫于压力，在过去的一年来我读了二十四本书；拿了30门课程认证证书，花了400个学时来补技术短板；</p>
+<p><img src="/2019/01/24/2018年总结：来自18年的工作感悟/感悟二.png" alt="感悟二"></p>
+</li>
+<li><p>在人工智能技术影响越来越多行业领域今天，它作为一项技能不再单是人工智能工程师一个角色的事情，我们即将迎来的是个全民AI时代，就像程序员都需要学习并使用一门编程语言一样，大家也应该尝试了解一两个机器学习算法，说不定对你手头工作大有裨益。</p>
+<h2 id="路逢剑客须呈剑，不是诗人莫献诗"><a href="#路逢剑客须呈剑，不是诗人莫献诗" class="headerlink" title="路逢剑客须呈剑，不是诗人莫献诗"></a>路逢剑客须呈剑，不是诗人莫献诗</h2></li>
+</ul>
+<p>我的第三个感悟：</p>
+<blockquote>
+<p>“路逢剑客须呈剑，不是诗人莫献诗。”———《庄子》</p>
+</blockquote>
+<p>在过去的一年里，我们技术上对接过来自集团内外不同背景、不同需求、不用业务条线的很多人。每次我都怀着一个技术人员的执念，跟他们介绍什么是人工智能，什么是这个技术能做的，人工智能不是万能，没有什么是100%准确的。但每次都感觉收效甚微。</p>
+<p>经历了几次碰壁，我去好好思考了这个问题，结论见图：</p>
+<blockquote>
+<p>你以为你给别人呈现的未必是别人以为你能给别人呈现的内容。</p>
+</blockquote>
+<p><img src="/2019/01/24/2018年总结：来自18年的工作感悟/不同人眼中的人工智能工程师2.jpg" alt="不同人眼中的人工智能工程师2"></p>
+<p>我们人工智能的工作是每天都在想如何把这些数学模型做好，再通过计算机程序实现。当然在这期间我们也做了不少艺术化的工作，比如一直尝试把饼图画得更圆一点、哪种配色展示效果更好，这似乎是我们唯一的艺术追求，但实际上我们的追求还是要更大一点的。我觉得一个技术人员除了内修技术之外，还要在艺术上有所作为，做好一个演员。</p>
+<p><img src="/2019/01/24/2018年总结：来自18年的工作感悟/感悟三.png" alt="感悟三"></p>
+<p>我一直觉得，在人工智能领域奇缺一类人才，我姑且叫他们“人工智能需求转化工程师”。他们一方面具备快速了解客户业务场景的能力，另一方面需要明白人工智能技术的边界，当然更为关键的是懂得如何与客户沟通，要能迅速入戏，成为他们期待你成为的样子，知道该呈剑，还是献诗。只有如此才能将业务需求很好的和对应的人工智能技术衔接。</p>
+<p>在18年，为了更好的让别人了解我们在做什么，更好的展现研发的技术，团队成员一起利用空余时间搭建了研究院的人工智能AI实验室平台，将一些可视化的技术成果和培训课程移值了上去，同时一起为集团进行了人工智能的技术分享，（我们在演员的道路上走出了第一步）；台上一分钟，台下十年功，18年只是一个开始，19年人工智能大戏，我们已经准备好粉墨登场。</p>
+<p>2018年一代武侠大师金庸先生驾鹤西去，但19年技术武学仍要刻苦修炼，留本武林秘籍，供大家参悟：</p>
+<blockquote>
+<p>“知识是内功，执行是外功，经验是心法，领悟是贯通。”</p>
+</blockquote>
+<p>祝大家19年工作顺利！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" target="_blank" title="2018年总结：来自18年的工作感悟">http://blog.a-stack.com/2019/01/24/2018年总结：来自18年的工作感悟/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/总结/">总结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/感悟/">感悟</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/01/从头训练一个图像分类器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          从头训练一个图像分类器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/12/Batch-Normalization-批量归一化/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Batch-Normalization(批量归一化)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安而不忘危，存而不忘亡，治而不忘乱"><span class="nav-number">1.</span> <span class="nav-text">安而不忘危，存而不忘亡，治而不忘乱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学如逆水行舟，不进则退；心似平原纵马，易放难收"><span class="nav-number">2.</span> <span class="nav-text">学如逆水行舟，不进则退；心似平原纵马，易放难收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路逢剑客须呈剑，不是诗人莫献诗"><span class="nav-number">3.</span> <span class="nav-text">路逢剑客须呈剑，不是诗人莫献诗</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

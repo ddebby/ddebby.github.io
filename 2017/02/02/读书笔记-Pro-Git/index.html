@@ -19,12 +19,12 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/blog/lifecycleForGit.jpg">
-<meta property="og:updated_time" content="2018-05-15T09:14:33.908Z">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/lifecycleForGit.jpg">
+<meta property="og:updated_time" content="2019-01-13T14:06:14.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git使用总结">
 <meta name="twitter:description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
-<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/blog/lifecycleForGit.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/blog/lifecycleForGit.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -189,6 +189,8 @@
     <a class="article-category-link" href="/categories/工具/">工具</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -229,7 +231,7 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.unstage 'reset HEAD --'</span><br><span class="line">$ git config --global alias.last 'log -1 HEAD'</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="1-Git基础"><a href="#1-Git基础" class="headerlink" title="1. Git基础"></a>1. Git基础</h3><p>​    下图描述了git处理文件的生命周期<br><img src="/qnsource/images/blog/lifecycleForGit.jpg" alt="lifecycleForGit"></p>
+<h3 id="1-Git基础"><a href="#1-Git基础" class="headerlink" title="1. Git基础"></a>1. Git基础</h3><p>​    下图描述了git处理文件的生命周期<br><img src="/qnsource/blog/lifecycleForGit.jpg" alt="lifecycleForGit"></p>
 <h4 id="关于-gitignore文件"><a href="#关于-gitignore文件" class="headerlink" title="关于.gitignore文件"></a>关于<code>.gitignore</code>文件</h4><p>​    文件 <code>.gitignore</code> 的格式规范如下：</p>
 <ul>
 <li>所有空行或者以 <code>＃</code> 开头的行都会被 Git 忽略。</li>
@@ -310,7 +312,7 @@
 <p>​    必须注意 git fetch 命令会将数据拉取到你的本地仓库 - 它并不会自动合并或修改你当前的工作。 当准备好时你必须手动将其合并入你的工作。</p>
 <h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p><strong>附注标签</strong><br>在 Git 中创建一个附注标签是很简单的。 最简单的方式是当你在运行 tag 命令时指定<code>-a</code> 选项：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -a v1.4 -m 'my version 1.4'</span><br><span class="line"></span><br><span class="line">$ git tag</span><br><span class="line">v0.1</span><br><span class="line">v1.3</span><br><span class="line">v1.4</span><br></pre></td></tr></table></figure></p>
 <p>​    <code>-m</code>选项指定了一条将会存储在标签中的信息。 如果没有为附注标签指定一条信息，Git 会运行编辑器要求你输入信息。</p>
-<p><strong>后期打标签</strong><br>    要在那个提交上打标签，你需要在命令的末尾指定提交的校验和（或部分校验和）:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -a v1.2 9fceb02</span><br></pre></td></tr></table></figure></p>
+<p><strong>后期打标签</strong><br>​    要在那个提交上打标签，你需要在命令的末尾指定提交的校验和（或部分校验和）:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag -a v1.2 9fceb02</span><br></pre></td></tr></table></figure></p>
 <p><strong>共享标签</strong><br>​    默认情况下，git push 命令并不会传送标签到远程仓库服务器上。 在创建完标签后你必须显式地推送标签到共享服务器上。 这个过程就像共享远程分支一样 - 你可以运行<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin [tagname] </span><br><span class="line"># or</span><br><span class="line">$ git push origin --tags</span><br></pre></td></tr></table></figure></p>
 <p><strong>检出标签</strong><br>​    在 Git 中你并不能真的检出一个标签，因为它们并不能像分支一样来回移动。 如果你想要工作目录与仓库中特定的标签版本完全一样，可以使用 <code>git checkout -b [branchname][tagname]</code>在特定的标签上创建一个新分支：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b version2 v2.0.0</span><br><span class="line">Switched to a new branch 'version2'</span><br></pre></td></tr></table></figure></p>
 <h4 id="分支管理-git-branch"><a href="#分支管理-git-branch" class="headerlink" title="分支管理 git branch"></a>分支管理 <code>git branch</code></h4><p>​    如果需要查看每一个分支的最后一次提交，可以运行 <code>git branch -v</code>命令：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">* dev    1a158fd 新增两篇读书笔记</span><br><span class="line">  master f8f05fb Accept Merge Request #1 Merge Resource branch to Master branch : (resource -&gt; master)</span><br></pre></td></tr></table></figure></p>
@@ -516,7 +518,7 @@ var a = new Donate({
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
@@ -592,7 +594,8 @@ var a = new Donate({
     });
 </script>
 
-<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
 </script>
 
 
@@ -621,7 +624,7 @@ var a = new Donate({
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -675,7 +678,7 @@ var a = new Donate({
             Ebby&#39;s Notes
           </div>
           <div class="panel-body">
-            Copyright © 2018 Ebby DD All Rights Reserved.
+            Copyright © 2019 Ebby DD All Rights Reserved.
           </div>
         </div>
       </div>

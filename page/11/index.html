@@ -285,7 +285,7 @@
         
           <section id="main">
   
-    <article id="post-Tips-for-Keras"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-读书笔记：《Practical-Python-and-OpenCV》"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -293,7 +293,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/02/22/Tips-for-Keras/">Tips for Keras</a>
+      <a class="article-title" href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/">读书笔记：《Practical Python and OpenCV》</a>
     </h1>
   
 
@@ -301,84 +301,164 @@
     
     <div class="article-meta">
       
-	<a href="/2018/02/22/Tips-for-Keras/" class="article-date">
-	  <time datetime="2018-02-22T05:20:28.000Z" itemprop="datePublished">2018-02-22</time>
+	<a href="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/" class="article-date">
+	  <time datetime="2018-03-05T08:52:33.000Z" itemprop="datePublished">2018-03-05</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a><a class="article-category-link" href="/categories/工具/Keras/">Keras</a>
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/机器视觉/">机器视觉</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。</p>
-      
-    </div>
-    <footer class="article-footer">
-
-      
-      
-
-      
-      <!--  -->
-
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技巧/">技巧</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-hexo_config"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/02/20/hexo_config/">博客相关配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/02/20/hexo_config/" class="article-date">
-	  <time datetime="2018-02-19T16:00:00.000Z" itemprop="datePublished">2018-02-20</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/工具/">工具</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2018年2月20日，重新启用个人blog系统，用于整理技术文档并进行技术分享，主要围绕人工智能相关技术最新技术进展和动态。</p>
-<!--excerpt-->
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>2018年2月20日，重新启用个人blog系统，用于整理技术文档并进行技术分享，主要围绕人工智能相关技术最新技术进展和动态。</p>
+        <p>《Practical Python and OpenCV》读书札记。</p>
+<!-- excerpt -->
+<h2 id="1-Load，Display-and-Save-an-Image"><a href="#1-Load，Display-and-Save-an-Image" class="headerlink" title="1. Load，Display and Save an Image"></a>1. Load，Display and Save an Image</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="comment"># Load the image and show some basic information on it</span></span><br><span class="line">image = cv2.imread(<span class="string">"Path/to/Image"</span>)</span><br><span class="line"><span class="comment"># Show the image and wait for a keypress</span></span><br><span class="line">cv2.imshow(<span class="string">"Image"</span>, image)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"><span class="comment"># Save the image -- OpenCV handles converting filetypes</span></span><br><span class="line"><span class="comment"># automatically</span></span><br><span class="line">cv2.imwrite(<span class="string">"newimage.jpg"</span>, image)</span><br></pre></td></tr></table></figure>
+<h2 id="2-cv2"><a href="#2-cv2" class="headerlink" title="2. cv2"></a>2. cv2</h2><p><strong>图像上添加线条及形状</strong></p>
 <ul>
-<li><strong>使用框架：</strong> hexo(v1.0.4)</li>
-<li><strong>主题</strong>： <a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener">hexo-theme-melody</a></li>
-<li><strong>相关依赖</strong>: <ul>
-<li>hexo-renderer-jade </li>
-<li>hexo-renderer-stylus</li>
-<li><a href="https://github.com/LouisBarranqueiro/hexo-algoliasearch" target="_blank" rel="noopener">hexo-algoliasearch</a></li>
-<li>hexo-wordcount</li>
-<li>hexo-deployer-git</li>
-<li>hexo-generator-searchdb​</li>
+<li><code>cv2.line(image, start_point, stop_point, color, thickness)</code></li>
+<li><code>cv2.rectangle(image,top_left, bottom_right, color, thickness)</code><ul>
+<li><code>thickness</code> 为负数，填充形状</li>
 </ul>
 </li>
 </ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Initialize our canvas as a 300x300 with 3 channels,</span></span><br><span class="line"><span class="comment"># Red, Green, and Blue, with a black background</span></span><br><span class="line">canvas = np.zeros((<span class="number">300</span>, <span class="number">300</span>, <span class="number">3</span>), dtype = <span class="string">"uint8"</span>)</span><br><span class="line"><span class="comment"># Draw a green line from the top-left corner of our canvas</span></span><br><span class="line"><span class="comment"># to the bottom-right</span></span><br><span class="line">green = (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>)</span><br><span class="line">cv2.line(canvas, (<span class="number">0</span>, <span class="number">0</span>), (<span class="number">300</span>, <span class="number">300</span>), green)</span><br><span class="line"><span class="comment"># Now, draw a 3 pixel thick red line from the top-right</span></span><br><span class="line"><span class="comment"># corner to the bottom-left</span></span><br><span class="line">red = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">cv2.line(canvas, (<span class="number">300</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">300</span>), red, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># Draw a green 50x50 pixel square, starting at 10x10 and</span></span><br><span class="line"><span class="comment"># ending at 60x60</span></span><br><span class="line">cv2.rectangle(canvas, (<span class="number">10</span>, <span class="number">10</span>), (<span class="number">60</span>, <span class="number">60</span>), green)</span><br><span class="line"><span class="comment"># Draw another rectangle, this time we'll make it red and</span></span><br><span class="line"><span class="comment"># 5 pixels thick</span></span><br><span class="line">cv2.rectangle(canvas, (<span class="number">50</span>, <span class="number">200</span>), (<span class="number">200</span>, <span class="number">225</span>), red, <span class="number">5</span>)</span><br><span class="line"><span class="comment"># Let's draw one last rectangle: blue and filled in</span></span><br><span class="line">blue = (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">cv2.rectangle(canvas, (<span class="number">200</span>, <span class="number">50</span>), (<span class="number">225</span>, <span class="number">125</span>), blue, <span class="number">-1</span>)</span><br><span class="line">cv2.imshow(<span class="string">"Canvas"</span>, canvas)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/Line and Rectangle.png" alt="Line and Rectangle"></p>
+<p><strong>添加圆形</strong></p>
+<ul>
+<li><code>cv2.circle(image, (centerX, centerY), r, color,thickness)</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Reset our canvas and draw a white circle at the center</span></span><br><span class="line"><span class="comment"># of the canvas with increasing radii - from 25 pixels to</span></span><br><span class="line"><span class="comment"># 150 pixels</span></span><br><span class="line">canvas = np.zeros((<span class="number">300</span>, <span class="number">300</span>, <span class="number">3</span>), dtype = <span class="string">"uint8"</span>)</span><br><span class="line">(centerX, centerY) = (canvas.shape[<span class="number">1</span>] // <span class="number">2</span>, canvas.shape[<span class="number">0</span>] // <span class="number">2</span>)</span><br><span class="line">white = (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</span><br><span class="line"><span class="keyword">for</span> r <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">175</span>, <span class="number">25</span>):</span><br><span class="line">	cv2.circle(canvas, (centerX, centerY), r, white)</span><br><span class="line">cv2.imshow(<span class="string">"Canvas"</span>, canvas)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/Circles.png" alt="Circles"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Let's go crazy and draw 25 random circles</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">25</span>):</span><br><span class="line">	<span class="comment"># randomly generate a radius size between 5 and 200,</span></span><br><span class="line">	<span class="comment"># generate a random color, and then pick a random</span></span><br><span class="line">	<span class="comment"># point on our canvas where the circle will be drawn</span></span><br><span class="line">	radius = np.random.randint(<span class="number">5</span>, high = <span class="number">200</span>)</span><br><span class="line">	color = np.random.randint(<span class="number">0</span>, high = <span class="number">256</span>, size = (<span class="number">3</span>,)).tolist()</span><br><span class="line">	pt = np.random.randint(<span class="number">0</span>, high = <span class="number">300</span>, size = (<span class="number">2</span>,))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># draw our random circle</span></span><br><span class="line">	cv2.circle(canvas, tuple(pt), radius, color, <span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Show our masterpiece</span></span><br><span class="line">cv2.imshow(<span class="string">"Canvas"</span>, canvas)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/RandomCircles.png" alt="RandomCircles"></p>
+<h2 id="3-Image-Processing"><a href="#3-Image-Processing" class="headerlink" title="3. Image Processing"></a>3. Image Processing</h2><ol>
+<li><p>平移</p>
+<ul>
+<li><code>cv2.warpAffine()</code></li>
+<li>imutil</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">translate</span><span class="params">(image, x, y)</span>:</span></span><br><span class="line">	<span class="comment"># Define the translation matrix and perform the translation</span></span><br><span class="line">	M = np.float32([[<span class="number">1</span>, <span class="number">0</span>, x], [<span class="number">0</span>, <span class="number">1</span>, y]])</span><br><span class="line">	shifted = cv2.warpAffine(image, M, (image.shape[<span class="number">1</span>], image.shape[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Return the translated image</span></span><br><span class="line">	<span class="keyword">return</span> shifted</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>旋转</p>
+<ul>
+<li><code>cv2.getRotationMatrix2D</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rotate</span><span class="params">(image, angle, center = None, scale = <span class="number">1.0</span>)</span>:</span></span><br><span class="line">	<span class="comment"># Grab the dimensions of the image</span></span><br><span class="line">	(h, w) = image.shape[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">	<span class="comment"># If the center is None, initialize it as the center of</span></span><br><span class="line">	<span class="comment"># the image</span></span><br><span class="line">	<span class="keyword">if</span> center <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">		center = (w / <span class="number">2</span>, h / <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Perform the rotation</span></span><br><span class="line">	M = cv2.getRotationMatrix2D(center, angle, scale)</span><br><span class="line">	rotated = cv2.warpAffine(image, M, (w, h))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Return the rotated image</span></span><br><span class="line">	<span class="keyword">return</span> rotated</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>缩放</p>
+<ul>
+<li><code>cv2.resize</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">resize</span><span class="params">(image, width = None, height = None, inter = cv2.INTER_AREA)</span>:</span></span><br><span class="line">	<span class="comment"># initialize the dimensions of the image to be resized and grab the image size</span></span><br><span class="line">	dim = <span class="keyword">None</span></span><br><span class="line">	(h, w) = image.shape[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">	<span class="comment"># if both the width and height are None, then return the original image</span></span><br><span class="line">	<span class="keyword">if</span> width <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">and</span> height <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">		<span class="keyword">return</span> image</span><br><span class="line"></span><br><span class="line">	<span class="comment"># check to see if the width is None</span></span><br><span class="line">	<span class="keyword">if</span> width <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">		<span class="comment"># calculate the ratio of the height and construct the dimensions</span></span><br><span class="line">		r = height / float(h)</span><br><span class="line">		dim = (int(w * r), height)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># otherwise, the height is None</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="comment"># calculate the ratio of the width and construct the dimensions</span></span><br><span class="line">		r = width / float(w)</span><br><span class="line">		dim = (width, int(h * r))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># resize the image</span></span><br><span class="line">	resized = cv2.resize(image, dim, interpolation = inter)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># return the resized image</span></span><br><span class="line">	<span class="keyword">return</span> resized</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>反转</p>
+<ul>
+<li><code>cv2.flip(image, num)</code></li>
+<li>num=1, 水平反转；num=0，垂直翻转；num为负，对角反转</li>
+</ul>
+</li>
+<li><p>bitwise</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bitwiseAnd = cv2.bitwise_and(rectangle, circle) cv2.imshow(<span class="string">"AND"</span>, bitwiseAnd) </span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MASKING</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mask = np.zeros(image.shape[:<span class="number">2</span>], dtype = <span class="string">"uint8"</span>) </span><br><span class="line">cv2.circle(mask, (cX, cY), <span class="number">100</span>, <span class="number">255</span>, <span class="number">-1</span>) </span><br><span class="line">masked = cv2.bitwise_and(image, image, mask = mask)  cv2.imshow(<span class="string">"Mask"</span>, mask) </span><br><span class="line">cv2.imshow(<span class="string">"Mask Applied to Image"</span>, masked) </span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>色彩空间变换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load the image and show it</span></span><br><span class="line">image = cv2.imread(args[<span class="string">"image"</span>])</span><br><span class="line"><span class="comment"># Convert the image to grayscale</span></span><br><span class="line">gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line"><span class="comment"># Convert the image to the HSV (Hue, Saturation, Value)</span></span><br><span class="line"><span class="comment"># color spaces</span></span><br><span class="line">hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)</span><br><span class="line"><span class="comment"># Convert the image to the L*a*b* color spaces</span></span><br><span class="line">lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>平滑/模糊（blurring）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Averaging Blurring</span></span><br><span class="line">cv2.blur(image, (<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line"><span class="comment"># Gaussian Blurring</span></span><br><span class="line">cv2.GaussianBlur(image, (<span class="number">3</span>, <span class="number">3</span>), <span class="number">0</span>)</span><br><span class="line"><span class="comment"># Median Blurring</span></span><br><span class="line">cv2.medianBlur(image, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># Bilateral Blurring</span></span><br><span class="line">cv2.bilateralFilter(image, <span class="number">5</span>, <span class="number">21</span>, <span class="number">21</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>Traditionally, the median blur method has been most effective when removing salt-and-pepper noise. </p>
+</blockquote>
+<ol>
+<li><p>Threshold</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(T, thresh) = cv2.threshold(blurred, <span class="number">155</span>, <span class="number">255</span>, cv2.THRESH_BINARY) </span><br><span class="line">cv2.imshow(<span class="string">"Threshold Binary"</span>, thresh) </span><br><span class="line">(T, threshInv) = cv2.threshold(blurred, <span class="number">155</span>, <span class="number">255</span>, cv2. THRESH_BINARY_INV)</span><br><span class="line">cv2.bitwise_and(image, image, mask = threshInv)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>边缘检测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">image = cv2.imread(img)</span><br><span class="line">image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">image = cv2.GaussianBlur(image, (<span class="number">5</span>,<span class="number">5</span>), <span class="number">0</span>)</span><br><span class="line">canny = cv2.Canny(image, <span class="number">30</span> ,<span class="number">150</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/canny.jpg" alt="canny"></p>
+<ol>
+<li><p>轮廓检测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">image = cv2.imread(img)</span><br><span class="line">image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">image = cv2.GaussianBlur(image, (<span class="number">11</span>,<span class="number">11</span>), <span class="number">0</span>)</span><br><span class="line">canny = cv2.Canny(image, <span class="number">30</span> ,<span class="number">150</span>)</span><br><span class="line">(_, cnts, _) = cv2.findContours(canny.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">print(<span class="string">"I count &#123;&#125; coins in this image"</span>.format(len(cnts)))</span><br><span class="line">coins = image.copy()</span><br><span class="line">cv2.drawContours(coins, cnts, <span class="number">-1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/countours.jpg" alt="countours"></p>
+<ul>
+<li>从图像中将对象扣取</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Now, let's loop over each contour</span></span><br><span class="line"><span class="keyword">for</span> (i, c) <span class="keyword">in</span> enumerate(cnts):</span><br><span class="line">	<span class="comment"># We can compute the 'bounding box' for each contour, which is the rectangle that encloses the contour</span></span><br><span class="line">	(x, y, w, h) = cv2.boundingRect(c)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Now that we have the contour, let's extract it using array slices</span></span><br><span class="line">	print(<span class="string">"Coin #&#123;&#125;"</span>.format(i + <span class="number">1</span>))</span><br><span class="line">	coin = image[y:y + h, x:x + w]</span><br><span class="line">	cv2.imshow(<span class="string">"Coin"</span>, coin)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Just for fun, let's construct a mask for the coin by finding The minumum enclosing circle of the contour</span></span><br><span class="line">	mask = np.zeros(image.shape[:<span class="number">2</span>], dtype = <span class="string">"uint8"</span>)</span><br><span class="line">	((centerX, centerY), radius) = cv2.minEnclosingCircle(c)</span><br><span class="line">	cv2.circle(mask, (int(centerX), int(centerY)), int(radius), <span class="number">255</span>, <span class="number">-1</span>)</span><br><span class="line">	mask = mask[y:y + h, x:x + w]</span><br><span class="line">	cv2.imshow(<span class="string">"Masked Coin"</span>, cv2.bitwise_and(coin, coin, mask = mask))</span><br><span class="line">	cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ol>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><ol>
+<li><p>为解决python 2.7和python 3中<code>print</code>函数不兼容的问题，可通过导入如下命令解决在python 2.7环境运行python 3中<code>print</code>函数不兼容的问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>OpenCV存储RGB信息采用的逆向存储方式，即为BGR; <code>matplotlib.plot</code>中为<code>RGB</code></p>
+</li>
+<li><p><code>np.random</code></p>
+</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Desription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.rand.html#numpy.random.rand" target="_blank" rel="noopener"><code>rand</code></a>(d0, d1, …, dn)</td>
+<td>Random values in a given shape.</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html#numpy.random.randn" target="_blank" rel="noopener"><code>randn</code></a>(d0, d1, …, dn)</td>
+<td>Return a sample (or samples) from the “standard normal” distribution.</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randint.html#numpy.random.randint" target="_blank" rel="noopener"><code>randint</code></a>(low[, high, size, dtype])</td>
+<td>Return random integers from <em>low</em> (inclusive) to <em>high</em> (exclusive).</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.random_integers.html#numpy.random.random_integers" target="_blank" rel="noopener"><code>random_integers</code></a>(low[, high, size])</td>
+<td>Random integers of type np.int between <em>low</em> and <em>high</em>, inclusive.</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.random_sample.html#numpy.random.random_sample" target="_blank" rel="noopener"><code>random_sample</code></a>([size])</td>
+<td>Return random floats in the half-open interval [0.0, 1.0).</td>
+</tr>
+<tr>
+<td><strong>random([size])</strong></td>
+<td>Return random floats in the half-open interval [0.0, 1.0).产生随机矩阵，如random.random([2,3])产生一个2x3维的随机数</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.ranf.html#numpy.random.ranf" target="_blank" rel="noopener">ranf</a>([size])</td>
+<td>Return random floats in the half-open interval [0.0, 1.0).</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.sample.html#numpy.random.sample" target="_blank" rel="noopener"><code>sample</code></a>([size])</td>
+<td>Return random floats in the half-open interval [0.0, 1.0).</td>
+</tr>
+<tr>
+<td><strong>choice(a[, size, replace, p])</strong></td>
+<td>Generates a random sample from a given 1-D array</td>
+</tr>
+<tr>
+<td><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.bytes.html#numpy.random.bytes" target="_blank" rel="noopener"><code>bytes</code></a>(length)</td>
+<td>Return random bytes.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
       
     </div>
     <footer class="article-footer">
@@ -391,7 +471,7 @@
 
       <!--  -->
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客/">博客</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/配置/">配置</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
     </footer>
   </div>
@@ -402,7 +482,7 @@
 
 
   
-    <article id="post-Markdown_Reference"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-深度学习基础之正则化"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -410,7 +490,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/01/Markdown_Reference/">Markdown Formats</a>
+      <a class="article-title" href="/2018/03/04/深度学习基础之正则化/">深度学习基础之正则化</a>
     </h1>
   
 
@@ -418,18 +498,20 @@
     
     <div class="article-meta">
       
-	<a href="/2018/01/01/Markdown_Reference/" class="article-date">
-	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">2018-01-01</time>
+	<a href="/2018/03/04/深度学习基础之正则化/" class="article-date">
+	  <time datetime="2018-03-04T07:35:01.000Z" itemprop="datePublished">2018-03-04</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a><a class="article-category-link" href="/categories/工具/MarkDown/">MarkDown</a>
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Markdown相关语法总结</p>
+        <p>明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。</p>
       
     </div>
     <footer class="article-footer">
@@ -442,7 +524,7 @@
 
       <!--  -->
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/总结/">总结</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技巧/">技巧</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/正则化/">正则化</a></li></ul>
 
     </footer>
   </div>
@@ -453,7 +535,7 @@
 
 
   
-    <article id="post-读书笔记-腾讯传"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-Deep-Learning-for-Computer-Vision"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -461,7 +543,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/02/02/读书笔记-腾讯传/">读书笔记-&lt;腾讯传：中国互联网公司进化论&gt;</a>
+      <a class="article-title" href="/2018/03/03/Deep-Learning-for-Computer-Vision/">Deep Learning for Computer Vision</a>
     </h1>
   
 
@@ -469,18 +551,232 @@
     
     <div class="article-meta">
       
-	<a href="/2017/02/02/读书笔记-腾讯传/" class="article-date">
-	  <time datetime="2017-02-02T07:33:43.000Z" itemprop="datePublished">2017-02-02</time>
+	<a href="/2018/03/03/Deep-Learning-for-Computer-Vision/" class="article-date">
+	  <time datetime="2018-03-03T14:12:49.000Z" itemprop="datePublished">2018-03-03</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a>
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/机器视觉/">机器视觉</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>2017年1月份，整理了一堆计划在2017年阅读的<a href="http://a-stack.com/weblog/reading/" target="_blank" rel="noopener">书籍清单</a>，其中包括一些读过多遍的老书，也有一些刚刚问世的新书。希望通过一轮全新的阅读能能够获得更多的感悟。其中《腾讯传：中国互联网公司进化论》在2016年12月刚刚出版，又是关于BAT巨头的全新著作，不免先睹为快。</p>
+        <blockquote>
+<p>本文记录深度学习书籍《Deep Learning for Computer Vision with Python》的读书笔记。</p>
+</blockquote>
+<!-- excerpt -->
+<p>@toc</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ul>
+<li>深度学习拥有60多年历史，虽然曾经采用过不同的名称和不同的主导技术：“deep learning” has existed since the 1940s undergoing various name changes, including cybernetics, connectionism, and the most familiar, Artificial Neural Networks (ANNs).</li>
+<li>神经网络的普适定律：Further research demonstrated that neural networks are universal approximators , capable of approximating any continuous function (but placing <strong>no guarantee</strong> on whether or not the network can actually learn the parameters required to represent a function).</li>
+<li>Classic machine learning algorithms for <strong>unsupervised learning</strong> include Principle Component Analysis (PCA) and k-means clustering. Specific to neural networks, we see Autoencoders, Self-Organizing Maps (SOMs), and Adaptive Resonance Theory applied to unsupervised learning. </li>
+<li>Popular choices for <strong>semisupervised learning</strong> include label spreading, label propagation, ladder networks, and co-learning/co-training.</li>
+</ul>
+<h2 id="Image-and-Pixels"><a href="#Image-and-Pixels" class="headerlink" title="Image and Pixels"></a>Image and Pixels</h2><ul>
+<li>Pixels are represented in two ways:<ul>
+<li>Grayscale: Each pixel is a scalar value between 0 and 255.（0 for “Black” and 255 for “White”），0—&gt;255 dark —&gt; light</li>
+<li>Color: RGB color space, (R,G,B), Each Red, Green, and Blue channel can have values defined in the range [0,255] for a total of 256 “shades”, where 0 indicates no representation and 255 demonstrates full representation.</li>
+</ul>
+</li>
+<li>Given that the pixel value only needs to be in the range [0,255], we normally use 8-bit unsigned integers to represent the intensity.</li>
+</ul>
+<h3 id="Images-as-Numpy-Arrays"><a href="#Images-as-Numpy-Arrays" class="headerlink" title="Images as Numpy Arrays"></a>Images as Numpy Arrays</h3><ul>
+<li>(height, width, depth) 表示</li>
+</ul>
+<blockquote>
+<p>height 排第一的主要原因是由于矩阵表示形式中，一般把行放在前面，而图像中height大小表征了行的数目。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">image = cv2.imread(<span class="string">"example.png"</span>) print(image.shape)</span><br><span class="line">cv2.imshow(<span class="string">"Image"</span>, image)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"><span class="comment">## Access an individual pixel value</span></span><br><span class="line">(b, g, r) = image[<span class="number">20</span>, <span class="number">100</span>] <span class="comment"># accesses pixel at x=100, y=20</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>取像素y在x前面，还是由于矩阵的表示形式；</li>
+<li>RGB顺序反的，这是由于OpenCV历史原因导致的表示形式差异: Because the BGR ordering was popular among camera manufacturers and other software developers at the time.</li>
+</ol>
+</blockquote>
+<h3 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h3><p><strong>aspect ratio</strong>: the ratio of the width to the height of the image.</p>
+<p>神经网络模型一般都是固定输入，比如32×32, 64×64, 224×224, 227×227, 256×256, and 299×299. 需要对不同大小的图像进行reshape操作，For some datasets you can simply ignore the aspect ratio and squish, distort, and compress your images prior to feeding them through your network. On other datasets, it’s advantageous to preprocess them further by resizing along the shortest dimension and then cropping the center.</p>
+<h2 id="Image-Classification"><a href="#Image-Classification" class="headerlink" title="Image Classification"></a>Image Classification</h2><p>图像分类和图像理解是当今技术视觉领域最火的课题。</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p><strong>图像分类：</strong> the task of assigning a label to an image from a predefined set ofcategories.</p>
+<blockquote>
+<p>图像分类的过程是学习图片中的“underlying patterns”</p>
+</blockquote>
+<p><strong>Semantic Gap：</strong> the difference between how a human perceives the contents of an image versus how an image can be represented in a way a computer can understand the process.</p>
+<h3 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h3><p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Challenge for Image Classification.png" alt="Challenge for Image Classification"></p>
+<h3 id="数据集-TODO"><a href="#数据集-TODO" class="headerlink" title="数据集(TODO)"></a>数据集(TODO)</h3><ol>
+<li><p>MNIST</p>
+<ul>
+<li><p><strong>目标：</strong> 完成0-9手写字符的识别</p>
+</li>
+<li><p><strong>说明：</strong></p>
+<ul>
+<li><code>NIST</code>代表<code>National Institute ofStandards and Technology</code>， <code>M</code>代表<code>Modified</code></li>
+<li>深度学习的<code>Hello World</code></li>
+<li>包含60,000训练样本，10,000测试样本，每个样本为28x28的灰度图像</li>
+</ul>
+</li>
+<li><p><strong>目前准确度：</strong> &gt;99%</p>
+</li>
+<li><p><strong>获取地址：</strong> <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a></p>
+<p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/MNIST.jpg" alt="MNIST"></p>
+</li>
+</ul>
+</li>
+<li><p>Fashion-MNIST</p>
+<ul>
+<li><p><strong>目标：</strong> 完成10种不同衣服的识别</p>
+</li>
+<li><p><strong>说明：</strong></p>
+<ul>
+<li>根据MNIST设计的新的数据集，难度比MNIST略高</li>
+<li>包含60,000训练样本，10,000测试样本，每个样本为28x28的灰度图像</li>
+</ul>
+</li>
+<li><p><strong>目前准确度：</strong> &gt;95%</p>
+</li>
+<li><p><strong>获取地址：</strong> <a href="https://github.com/zalandoresearch/fashion-mnist" target="_blank" rel="noopener">https://github.com/zalandoresearch/fashion-mnist</a></p>
+<p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Fashion-MNIST.png" alt="Fashion-MNIST"></p>
+</li>
+</ul>
+</li>
+<li><p>CIFAR-10</p>
+</li>
+<li><p>Animals： Dogs，Cat， Pandas</p>
+</li>
+<li><p>Flowers-17</p>
+</li>
+<li><p>CALtECH-101</p>
+</li>
+<li><p>Tiny ImageNet 200</p>
+</li>
+<li><p>Adience</p>
+</li>
+<li><p>ImageNet</p>
+</li>
+<li><p>表情识别(是否笑脸)</p>
+<ul>
+<li><strong>说明：</strong></li>
+<li>共计13165张灰度图片，每张图片大小为64x64</li>
+<li>分为笑脸和非笑脸两类，其中笑脸3690张，非笑脸9475张（数据不平衡）</li>
+<li><strong>获取地址：</strong><a href="https://github.com/hromi/SMILEsmileD" target="_blank" rel="noopener">https://github.com/hromi/SMILEsmileD</a></li>
+<li>另外<a href="https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data" target="_blank" rel="noopener">fer2013</a>提供了更多表情的训练用数据集</li>
+</ul>
+</li>
+</ol>
+<p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Smile Datasets.png" alt="Smile Datasets"></p>
+<ol>
+<li>性别和年龄数据集</li>
+</ol>
+<ul>
+<li><p>IMDB-WIKI – 500k+ face images with age and gender labels</p>
+<ul>
+<li><p>获取地址： <a href="https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/" target="_blank" rel="noopener">https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/</a></p>
+<p><img src="https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/static/img/pipeline.png" alt="img"></p>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><p>Indoor CVPR</p>
+</li>
+<li><p>Stanford Cars</p>
+</li>
+<li><p>…</p>
+</li>
+</ol>
+<h2 id="神经网络基础"><a href="#神经网络基础" class="headerlink" title="神经网络基础"></a>神经网络基础</h2><h3 id="优化算法（TODO，整合到单独Note）"><a href="#优化算法（TODO，整合到单独Note）" class="headerlink" title="优化算法（TODO，整合到单独Note）"></a>优化算法（TODO，整合到单独Note）</h3><ul>
+<li>Chapter 8</li>
+</ul>
+<h3 id="Regularization-TODO-整合到单独Note"><a href="#Regularization-TODO-整合到单独Note" class="headerlink" title="Regularization (TODO, 整合到单独Note)"></a>Regularization (TODO, 整合到单独Note)</h3><ul>
+<li>Chapter 9</li>
+<li>chapter 10,激活函数，perception</li>
+</ul>
+<h3 id="为什么验证损失函数值有时候小于训练损失函数"><a href="#为什么验证损失函数值有时候小于训练损失函数" class="headerlink" title="为什么验证损失函数值有时候小于训练损失函数"></a>为什么验证损失函数值有时候小于训练损失函数</h3><p>这可能是有几方面原因导致的，或多方面原因综合作用的结果，主要的原因包括：</p>
+<ol>
+<li>训练集和验证集分布不均，导致训练集数据难度大，验证集简单数据分布比例大；</li>
+<li>数据放大本身形成了一种规则化，降低了训练集的训练结果；（这本身是规则化的目标，降低在训练集的表现，提升泛化性能）</li>
+<li>训练时间或轮数不够；</li>
+</ol>
+<h3 id="关于学习率"><a href="#关于学习率" class="headerlink" title="关于学习率"></a>关于学习率</h3><ul>
+<li><p>keras中提供了<code>decay</code>参数来调节学习率的变化情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opt = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">0.01</span> / <span class="number">40</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>使用公式：</p>
+<script type="math/tex; mode=display">
+\alpha_{e+1} = \alpha_e \times 1 /(1+\gamma * e)</script></li>
+<li><p>另一种学习率为阶梯学习率：<code>ctrl + c</code></p>
+<p>Keras提供一个类：<code>LearningrateScheduler</code>来配置自定义的学习率函数</p>
+<p>比如：</p>
+<script type="math/tex; mode=display">
+\alpha_{E+1} = \alpha_1 \times F^{(1+E)/D}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step_decay</span><span class="params">(epoch)</span>:</span></span><br><span class="line">    <span class="comment"># initialize the base initial learning rate, drop factor, and epochs to drop every</span></span><br><span class="line">    initAlpha = <span class="number">0.01</span></span><br><span class="line">    factor = <span class="number">0.25</span></span><br><span class="line">    dropEvery = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># compute learning rate for the current epoch</span></span><br><span class="line">    alpha = initAlpha * (factor ** np.floor((<span class="number">1</span> + epoch) / dropEvery))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># return the learning rate</span></span><br><span class="line">    <span class="keyword">return</span> float(alpha)</span><br><span class="line">  </span><br><span class="line"><span class="comment">##定义callback</span></span><br><span class="line">callbacks = [LearningRateScheduler(step_decay)]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>当定义了学习率之后，SGD中声明的配置信息将被忽略</p>
+</blockquote>
+<h2 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h2><h3 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h3><ul>
+<li>所有的卷积层使用同一种卷积核：3X3</li>
+<li>堆积多个<code>CONV=&gt;RELU</code>层再进行一次<code>POOL</code>操作</li>
+</ul>
+<h3 id="MNIST"><a href="#MNIST" class="headerlink" title="MNIST"></a>MNIST</h3><p>Researchers tend to use the MNIST dataset as a benchmark to evaluate new classification algorithms. If their methods cannot obtain &gt; 95% classification accuracy, then there is either a flaw in (1) the logic of the algorithm or (2) the implementation itself.</p>
+<h2 id="Case-Study"><a href="#Case-Study" class="headerlink" title="Case Study"></a>Case Study</h2><blockquote>
+<p>使用OpenCV的Haar cascade 算法进行人脸检测，提取人脸的ROI(Region of intrest), 通过一个卷积神经网络进行表情识别；</p>
+<p>可以结合Github开源的表情识别代码一起研究</p>
+</blockquote>
+<ul>
+<li>路径处理 <code>os.path.sep</code>： 提取路径分隔符</li>
+<li>数据不平衡的处理，可以考虑不同分类的权重，在训练时通过赋权调整平衡性，代码如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Handle data imbalance</span></span><br><span class="line"><span class="comment"># account for skew in the labeled data</span></span><br><span class="line">classTotals = labels.sum(axis=<span class="number">0</span>)</span><br><span class="line">classWeight = classTotals.max() / classTotals</span><br><span class="line"></span><br><span class="line"><span class="comment">## When training</span></span><br><span class="line">H = model.fit(trainX, trainY, validation_data=(testX, testY),</span><br><span class="line">    class_weight=classWeight, batch_size=<span class="number">64</span>, epochs=<span class="number">15</span>, verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="手写字的预处理"><a href="#手写字的预处理" class="headerlink" title="手写字的预处理"></a>手写字的预处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(image, width, height)</span>:</span></span><br><span class="line">    <span class="comment">#grap the dimensions of the image, then initialize the padding values</span></span><br><span class="line">    (h, w) = image.shape[:<span class="number">2</span>]</span><br><span class="line">    <span class="comment">#if width greater than height, resize along the width</span></span><br><span class="line">    <span class="keyword">if</span> w &gt; h:</span><br><span class="line">        image = imutils.resize(iamge, width=width)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        image = imutils.resize(image, height=height)</span><br><span class="line">    <span class="comment">#padding values for w and h to obtain the target dimensions</span></span><br><span class="line">    padW = int((width - image.shape[<span class="number">1</span>])/<span class="number">2.0</span>)</span><br><span class="line">    padH = int((height - image.shape[<span class="number">0</span>])/<span class="number">2.0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#pad the image then apply one more resizing to handle any rounding issues</span></span><br><span class="line">    image = cv2.copyMakeBorder(image, padH, padH, padW, padW, cv2.BORDER_REPLICATE)</span><br><span class="line">    iamge = cv2.resize(image, (width, height))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> image</span><br><span class="line"></span><br><span class="line">image = cv2.imread(img)</span><br><span class="line">gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">gray = cv2.copyMakeBorder(gray, <span class="number">20</span>,<span class="number">20</span>,<span class="number">20</span>,<span class="number">20</span>, cv2.BORDER_REPLICATE)</span><br><span class="line"><span class="comment"># threshold the image to reveal the digits</span></span><br><span class="line">thresh = cv2.threshold(gray, <span class="number">0</span>, <span class="number">255</span>, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[<span class="number">1</span>]</span><br><span class="line"><span class="comment">#find contours in the image, keeping only the four largest ones</span></span><br><span class="line">cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">cnts = cnts[<span class="number">0</span>] <span class="keyword">if</span> imutils.is_cv2() <span class="keyword">else</span> cnts[<span class="number">1</span>]</span><br><span class="line">cnts = sorted(cnts, key=cv2.contourArea, reverse=<span class="keyword">True</span>)[:<span class="number">4</span>]</span><br><span class="line">cnts = contours.sort_contours(cnts)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the output image as a "grayscale" image with 3</span></span><br><span class="line"><span class="comment"># channels along with the output predictions</span></span><br><span class="line">output = cv2.merge([gray] * <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> cnts:</span><br><span class="line">    <span class="comment"># compute the bounding box for the contour then extract the</span></span><br><span class="line">    <span class="comment"># digit</span></span><br><span class="line">    (x, y, w, h) = cv2.boundingRect(c)</span><br><span class="line">    roi = gray[y - <span class="number">5</span>:y + h + <span class="number">5</span>, x - <span class="number">5</span>:x + w + <span class="number">5</span>] </span><br><span class="line">    roi = preprocess(roi, <span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">    roi = np.expand_dims(img_to_array(roi), axis=<span class="number">0</span>) / <span class="number">255.0</span></span><br><span class="line">    <span class="comment">#pred = model.predict(roi).argmax(axis=1)[0] + 1</span></span><br><span class="line">    <span class="comment">#predictions.append(str(pred))</span></span><br><span class="line">    <span class="comment"># draw the prediction on the output image</span></span><br><span class="line">    cv2.rectangle(output, (x - <span class="number">2</span>, y - <span class="number">2</span>),(x + w + <span class="number">4</span>, y + h + <span class="number">4</span>), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">1</span>)</span><br><span class="line">    <span class="comment">#cv2.putText(output, str(pred), (x - 5, y - 5),cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 0), 2)</span></span><br><span class="line"><span class="comment"># show the output image</span></span><br><span class="line"><span class="comment">#print("[INFO] captcha: &#123;&#125;".format("".join(predictions)))</span></span><br><span class="line"></span><br><span class="line">plt.imshow(output)</span><br><span class="line"><span class="comment">#cv2.waitKey()</span></span><br></pre></td></tr></table></figure>
+<h2 id="Useful-Functions"><a href="#Useful-Functions" class="headerlink" title="Useful Functions"></a>Useful Functions</h2><h3 id="图像预处理及加载模板"><a href="#图像预处理及加载模板" class="headerlink" title="图像预处理及加载模板"></a>图像预处理及加载模板</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">File1: Preprocessor</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimplePreporcessor</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height, inter=cv2.INTER_AREA)</span>：</span></span><br><span class="line">        # store the target image width, height, and interpolation method used when resizing</span><br><span class="line">        self.width = width</span><br><span class="line">        self.height = height</span><br><span class="line">        self.inter = inter</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, image)</span>:</span></span><br><span class="line">        <span class="comment"># resize the image to a fixed size, ignoring the aspect ratio</span></span><br><span class="line">        <span class="keyword">return</span> cv2.resize(image, (self.width, self.height), interpolation = self.inter)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Data Loader</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># import the necessary packages </span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"><span class="keyword">import</span> cv2 </span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleDatasetLoader</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, preprocessors=None)</span>:</span></span><br><span class="line">        self.preprocessors = preprocessors</span><br><span class="line">        <span class="comment"># if the preprocessors are None, initialize them as an empty list</span></span><br><span class="line">        <span class="keyword">if</span> self.preprocessors <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            self.preprocessors = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(self, imagePaths, verbose =<span class="number">-1</span>)</span>:</span></span><br><span class="line">        data = []</span><br><span class="line">        labels = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i, imagePath) <span class="keyword">in</span> enumerate(imagePaths):</span><br><span class="line">           <span class="comment"># load the image and extract the class label assuming </span></span><br><span class="line">           <span class="comment"># # that our path has the following format: </span></span><br><span class="line">           <span class="comment"># # /path/to/dataset/&#123;class&#125;/&#123;image&#125;.jpg   </span></span><br><span class="line">           image = cv2.imread(imagePath)</span><br><span class="line">           label = imagePath.split(os.path.sep)[<span class="number">-2</span>]</span><br><span class="line"></span><br><span class="line">           <span class="comment"># check to see if our preprocessors are not None</span></span><br><span class="line">           <span class="keyword">if</span> self.preprocessors <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">               <span class="keyword">for</span> p <span class="keyword">in</span> self.preprocessors:</span><br><span class="line">                   image = p.preprocess(image)</span><br><span class="line">            </span><br><span class="line">            data.append(image)</span><br><span class="line">            labels.append(label)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># show an update every ‘verbose‘ images</span></span><br><span class="line">            <span class="keyword">if</span> verbose &gt;<span class="number">0</span> <span class="keyword">and</span> i &gt;<span class="number">0</span> <span class="keyword">and</span> (i+<span class="number">1</span>)%verbose == <span class="number">0</span>:</span><br><span class="line">                print(<span class="string">"[INFON] process &#123;&#125;/&#123;&#125;"</span>).format(i+<span class="number">1</span>,len(imagePaths))</span><br><span class="line">        <span class="comment"># return a tuple of the data and labels</span></span><br><span class="line">        <span class="keyword">return</span> (np.array(data), np.array(labels))</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Main</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># import the necessary packages</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier </span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder </span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split </span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"><span class="keyword">from</span> imutils <span class="keyword">import</span> paths </span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the argument parse and parse the arguments ap = argparse.ArgumentParser()</span></span><br><span class="line">ap.add_argument(<span class="string">"-d"</span>, <span class="string">"--dataset"</span>, required=<span class="keyword">True</span>, help=<span class="string">"path to input dataset"</span>)</span><br><span class="line">ap.add_argument(<span class="string">"-k"</span>, <span class="string">"--neighbors"</span>, type=int, default=<span class="number">1</span>, help=<span class="string">"# of nearest neighbors for classification"</span>)</span><br><span class="line"> ap.add_argument(<span class="string">"-j"</span>, <span class="string">"--jobs"</span>, type=int, default=<span class="number">-1</span>, help=<span class="string">"# of jobs for k-NN distance (-1 uses all available cores)"</span>)</span><br><span class="line">args = vars(ap.parse_args())</span><br><span class="line"></span><br><span class="line">print(<span class="string">"[INFO] loading images ..."</span>)</span><br><span class="line">imagePaths = list(paths.list_images(args[<span class="string">"dataset"</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the image preprocessor, load the dataset from disk,</span></span><br><span class="line"><span class="comment"># and reshape the data matrix</span></span><br><span class="line">sp = SimplePreporcessor(<span class="number">32</span>, <span class="number">32</span>)</span><br><span class="line">sdl = SimpleDatasetLoader(preprocessors=[sp])</span><br><span class="line"></span><br><span class="line">(data, labels) = sdl.load(imagePaths, verbose=<span class="number">500</span>)</span><br><span class="line"><span class="comment">#flatten for use in KNN</span></span><br><span class="line">data = data.reshape((data.shape[<span class="number">0</span>],<span class="number">32</span>*<span class="number">32</span>*<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">print(<span class="string">"[INFO] feature matrix: &#123;:.1f&#125;MB"</span>).format(data.nbytes/(<span class="number">1024</span>*<span class="number">1000.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># encode the labels as integers</span></span><br><span class="line">le = LabelEncoder()</span><br><span class="line">labels = le.fit_transform(labels)</span><br><span class="line"></span><br><span class="line">(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=<span class="number">0.25</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># train and evaluate a kNN classifier on raw pixel intensities</span></span><br><span class="line">print(<span class="string">"[INFO] evaluate kNN classifier ..."</span>)</span><br><span class="line">model = KNeighborsClassifier(n_neighbors=args[<span class="string">"neighbors"</span>]), n_jobs=args[<span class="string">"jobs"</span>])</span><br><span class="line">model.fit(trainX, trainY)</span><br><span class="line">print(classification_report(testY, model.predict(testX),target_names==le.classes_))</span><br></pre></td></tr></table></figure>
+<h3 id="sklearn-metrics-classification-report"><a href="#sklearn-metrics-classification-report" class="headerlink" title="sklearn.metrics.classification_report"></a><code>sklearn.metrics.classification_report</code></h3><p>sklearn中的classification_report函数用于显示主要分类指标的文本报告．在报告中显示每个类的精确度，召回率，F1值等信息。<br><strong>主要参数:</strong> </p>
+<ul>
+<li>y_true：1维数组，或标签指示器数组/稀疏矩阵，目标值。 </li>
+<li>y_pred：1维数组，或标签指示器数组/稀疏矩阵，分类器返回的估计值。 </li>
+<li>labels：array，shape = [n_labels]，报表中包含的标签索引的可选列表。 </li>
+<li>target_names：字符串列表，与标签匹配的可选显示名称（相同顺序）。 </li>
+<li>sample_weight：类似于shape = [n_samples]的数组，可选项，样本权重。 </li>
+<li>digits：int，输出浮点值的位数．</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line">y_true = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]</span><br><span class="line">y_pred = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">target_names = [<span class="string">'class 0'</span>, <span class="string">'class 1'</span>, <span class="string">'class 2'</span>]</span><br><span class="line">print(classification_report(y_true, y_pred, target_names=target_names))</span><br></pre></td></tr></table></figure>
+<h3 id="opencv-给图像添加描述"><a href="#opencv-给图像添加描述" class="headerlink" title="opencv 给图像添加描述"></a>opencv 给图像添加描述</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="comment"># draw the label with the highest score on the image as our # prediction</span></span><br><span class="line">cv2.putText(orig, <span class="string">"Label: &#123;&#125;"</span>.format(labels[np.argmax(scores)]), (<span class="number">10</span>, <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.9</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Keras中的Checkpoint机制"><a href="#Keras中的Checkpoint机制" class="headerlink" title="Keras中的Checkpoint机制"></a>Keras中的Checkpoint机制</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.callbacks <span class="keyword">import</span> ModelCheckpoint</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the callback to save only the *best* model to disk</span></span><br><span class="line"><span class="comment"># based on the validation loss</span></span><br><span class="line">fname = os.path.sep.join([args[<span class="string">"weights"</span>],</span><br><span class="line">	<span class="string">"weights-&#123;epoch:03d&#125;-&#123;val_loss:.4f&#125;.hdf5"</span>])</span><br><span class="line">checkpoint = ModelCheckpoint(fname, monitor=<span class="string">"val_loss"</span>, mode=<span class="string">"min"</span>,</span><br><span class="line">	save_best_only=<span class="keyword">True</span>, verbose=<span class="number">1</span>)</span><br><span class="line">callbacks = [checkpoint]</span><br><span class="line"></span><br><span class="line">print(<span class="string">"[INFO] training network..."</span>)</span><br><span class="line">H = model.fit(trainX, trainY, validation_data=(testX, testY),</span><br><span class="line">	batch_size=<span class="number">64</span>, epochs=<span class="number">40</span>, callbacks=callbacks, verbose=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>参数：</strong></p>
+<ul>
+<li>filename：字符串，保存模型的路径</li>
+<li>monitor：需要监视的值</li>
+<li>verbose：信息展示模式，0或1</li>
+<li>save_best_only：当设置为<code>True</code>时，将只保存在验证集上性能最好的模型</li>
+<li>mode：‘auto’，‘min’，‘max’之一，在<code>save_best_only=True</code>时决定性能最佳模型的评判准则，例如，当监测值为<code>val_acc</code>时，模式应为<code>max</code>，当检测值为<code>val_loss</code>时，模式应为<code>min</code>。在<code>auto</code>模式下，评价准则由被监测值的名字自动推断。</li>
+<li>save_weights_only：若设置为True，则只保存模型权重，否则将保存整个模型（包括模型结构，配置信息等）</li>
+<li>period：CheckPoint之间的间隔的epoch数</li>
+</ul>
+<blockquote>
+<ol>
+<li>可以monitor loss值也可以是val_acc，train_loss, train_acc;</li>
+<li>更多内容参见：<a href="http://keras-cn.readthedocs.io/en/latest/other/callbacks/" target="_blank" rel="noopener">http://keras-cn.readthedocs.io/en/latest/other/callbacks/</a></li>
+</ol>
+</blockquote>
+<h3 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keras.callbacks.EarlyStopping(monitor=<span class="string">'val_loss'</span>, patience=<span class="number">0</span>, verbose=<span class="number">0</span>, mode=<span class="string">'auto'</span>)</span><br></pre></td></tr></table></figure>
+<p>当监测值不再改善时，该回调函数将中止训练</p>
+<p><strong>参数</strong></p>
+<ul>
+<li>monitor：需要监视的量</li>
+<li>patience：当early stop被激活（如发现loss相比上一个epoch训练没有下降），则经过<code>patience</code>个epoch后停止训练。</li>
+<li>verbose：信息展示模式</li>
+<li>mode：‘auto’，‘min’，‘max’之一，在<code>min</code>模式下，如果检测值停止下降则中止训练。在<code>max</code>模式下，当检测值不再上升则停止训练。</li>
+</ul>
+<h3 id="基于keras-callback实现训练过程监控"><a href="#基于keras-callback实现训练过程监控" class="headerlink" title="基于keras callback实现训练过程监控"></a>基于keras callback实现训练过程监控</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import the necessary packages</span></span><br><span class="line"><span class="keyword">from</span> keras.callbacks <span class="keyword">import</span> BaseLogger</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TrainingMonitor</span><span class="params">(BaseLogger)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, figPath, jsonPath=None, startAt=<span class="number">0</span>)</span>:</span></span><br><span class="line">        <span class="comment"># store the output path for the figure, the path to the JSON serialized file, and the starting epoch</span></span><br><span class="line">        super(TrainingMonitor, self).__init__()</span><br><span class="line">        self.figPath = figPath</span><br><span class="line">        self.jsonPath = jsonPath</span><br><span class="line">        self.startAt = startAt</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_train_begin</span><span class="params">(self, logs=&#123;&#125;)</span>:</span></span><br><span class="line">        <span class="comment"># initialize the history dictionary</span></span><br><span class="line">        self.H = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># if the JSON history path exists, load the training history</span></span><br><span class="line">        <span class="keyword">if</span> self.jsonPath <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">if</span> os.path.exists(self.jsonPath):</span><br><span class="line">                self.H = json.loads(open(self.jsonPath).read())</span><br><span class="line"></span><br><span class="line">                <span class="comment"># check to see if a starting epoch was supplied</span></span><br><span class="line">                <span class="keyword">if</span> self.startAt &gt; <span class="number">0</span>:</span><br><span class="line">                    <span class="comment"># loop over the entries in the history log and</span></span><br><span class="line">                    <span class="comment"># trim any entries that are past the starting</span></span><br><span class="line">                    <span class="comment"># epoch</span></span><br><span class="line">                    <span class="keyword">for</span> k <span class="keyword">in</span> self.H.keys():</span><br><span class="line">                        self.H[k] = self.H[k][:self.startAt]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_epoch_end</span><span class="params">(self, epoch, logs=&#123;&#125;)</span>:</span></span><br><span class="line">        <span class="comment"># loop over the logs and update the loss, accuracy, etc.</span></span><br><span class="line">        <span class="comment"># for the entire training process</span></span><br><span class="line">        <span class="keyword">for</span> (k, v) <span class="keyword">in</span> logs.items():</span><br><span class="line">            l = self.H.get(k, [])</span><br><span class="line">            l.append(v)</span><br><span class="line">            self.H[k] = l</span><br><span class="line">        <span class="comment"># check to see if the training history should be serialized</span></span><br><span class="line">        <span class="comment"># to file</span></span><br><span class="line">        <span class="keyword">if</span> self.jsonPath <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            f = open(self.jsonPath, <span class="string">"w"</span>)</span><br><span class="line">            f.write(json.dumps(self.H))</span><br><span class="line">            f.close()</span><br><span class="line">        <span class="comment"># ensure at least two epochs have passed before plotting</span></span><br><span class="line">        <span class="comment"># (epoch starts at zero)</span></span><br><span class="line">        <span class="keyword">if</span> len(self.H[<span class="string">"loss"</span>]) &gt; <span class="number">1</span>:</span><br><span class="line">            <span class="comment">#plot the training loss and accuracy</span></span><br><span class="line">            N = np.arange(<span class="number">0</span>, len(self.H[<span class="string">"loss"</span>]))</span><br><span class="line">            plt.style.use(<span class="string">"ggplot"</span>)</span><br><span class="line">            plt.figure()</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"loss"</span>], label=<span class="string">"train_loss"</span>)</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"val_loss"</span>], label=<span class="string">"val_loss"</span>)</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"acc"</span>], label=<span class="string">"train_acc"</span>)</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"val_acc"</span>], label=<span class="string">"val_acc"</span>)</span><br><span class="line">            plt.title(<span class="string">"Training Loss and Accuracy [Epoch &#123;&#125;]"</span>.format(len(self.H[<span class="string">"loss"</span>])))</span><br><span class="line">            plt.xlabel(<span class="string">"Epoch #"</span>)</span><br><span class="line">            plt.ylabel(<span class="string">"Loss/Accuracy"</span>)</span><br><span class="line">            plt.legend()</span><br><span class="line"></span><br><span class="line">            <span class="comment">#save the figure</span></span><br><span class="line">            plt.savefig(self.figPath)</span><br><span class="line">            plt.close()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>figPath: The path to the output plot that we can use to visualize loss and accuracy over time.</li>
+<li>jsonPath: An optional path used to serialize the loss and accuracy values as a JSON file. This path is useful if you want to use the training history to create custom plots of your own.</li>
+<li>startAt: This is the starting epoch that training is resumed at when using ctrl + c training.</li>
+</ul>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>
       
     </div>
     <footer class="article-footer">
@@ -493,7 +789,7 @@
 
       <!--  -->
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
 
     </footer>
   </div>
@@ -504,7 +800,7 @@
 
 
   
-    <article id="post-读书笔记-Pro-Git"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-深度学习基础之目标及评估"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -512,7 +808,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/02/02/读书笔记-Pro-Git/">Git使用总结</a>
+      <a class="article-title" href="/2018/03/02/深度学习基础之目标及评估/">深度学习基础之目标及评估</a>
     </h1>
   
 
@@ -520,18 +816,20 @@
     
     <div class="article-meta">
       
-	<a href="/2017/02/02/读书笔记-Pro-Git/" class="article-date">
-	  <time datetime="2017-02-02T04:45:13.000Z" itemprop="datePublished">2017-02-02</time>
+	<a href="/2018/03/02/深度学习基础之目标及评估/" class="article-date">
+	  <time datetime="2018-03-02T07:35:01.000Z" itemprop="datePublished">2018-03-02</time>
 	</a>
 
       
-    <a class="article-category-link" href="/categories/工具/">工具</a>
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。<br></p>
+        <p>明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。</p>
       
     </div>
     <footer class="article-footer">
@@ -544,7 +842,82 @@
 
       <!--  -->
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/预处理/">预处理</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-深度学习基础之模型压缩"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/01/深度学习基础之模型压缩/">深度学习基础之模型压缩</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/01/深度学习基础之模型压缩/" class="article-date">
+	  <time datetime="2018-03-01T08:02:01.000Z" itemprop="datePublished">2018-03-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>深度学习中模型压缩关键技术总结。</p>
+<!-- excerpt -->
+<blockquote>
+<p>深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳汇总：</p>
+<ol>
+<li>问题定义</li>
+<li>目标及评估</li>
+<li>数据准备与预处理</li>
+<li>激活函数的归纳及总结</li>
+<li>优化算法的归纳及总结</li>
+<li>正则化与泛化性能</li>
+<li><strong>模型压缩</strong></li>
+<li>数据扩充</li>
+</ol>
+</blockquote>
+<p>为了增加深度学习模型的容量，往往包含了大量的待训练参数和模型规模，以VGG-16为例，参数数目为1亿3千万，占用空间500MB，如果利用VGG-16进行一次图片识别任务，需要进行309亿次的浮点运算（FLOPs）。如此大的模型体积和对算力的依赖，为深度学习模型迁移到嵌入式设备或者利用CPU进行推理带来了很大的难度，为此通过合理的模型压缩技术在保证模型性能没有明显下降的情况下降低模型体积和参数数目成为一个热点的研究问题。</p>
+<p>同时，研究发现深度神经网络面临严峻的过参数化问题，需要注意的是，这种冗余在模型训练阶段是十分必要的。因为深度神经网络面临的是一个极其复杂的非凸优化问题，对于现有的基于梯度下降的优化算法而言，这种参数上的冗余保证了网络能够收敛到一个比较好的最优值。因而在一定程度上，网络越深，参数越多，模型越复杂，其最终的效果也往往越好。</p>
+<p>按照压缩过程对网络结构的破坏程度，我们将模型压缩技术分为“前端压缩”与“后端压缩”两部分。所谓“前端压缩”，是指不改变原网络结构的压缩技术，主要包括知识蒸馏、紧凑的模型结构设计以及滤波器层面的剪枝等；而“后端压缩”则包括低秩近似、未加限制的剪枝、参数量化以及二值网络等，其目标在于尽可能地减少模型大小，因而会对原始网络结构造成极大程度的改造。其中，由于“前端压缩”未改变原有的网络结构，仅仅只是在原模型的基础上减少了网络的层数或者滤波器的个数，其最终的模型可完美适配现有的深度学习库。相比之下，“后端压缩”为了追求极致的压缩比，不得不对原有的网络结构进行改造，如对参数进行量化表示等，而这样的改造往往是不可逆的。同时，为了获得理想的压缩效果，必须开发相配套的运行库，甚至是专门的硬件设备，其最终的结果往往是一种压缩技术对应于一套运行库，从而带来了巨大的维护成本。</p>
+<h2 id="剪枝与稀疏约束"><a href="#剪枝与稀疏约束" class="headerlink" title="剪枝与稀疏约束"></a>剪枝与稀疏约束</h2><h2 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><h2 id="参数量化"><a href="#参数量化" class="headerlink" title="参数量化"></a>参数量化</h2><h2 id="二值网络"><a href="#二值网络" class="headerlink" title="二值网络"></a>二值网络</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://lamda.nju.edu.cn/weixs/book/CNN_book.html" target="_blank" rel="noopener">《解析卷积神经网络—深度学习实践手册》</a></li>
+<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras文档</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模型/">模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
 
     </footer>
   </div>
@@ -559,7 +932,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/10/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span>
+    <a class="extend prev" rel="prev" href="/page/10/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -910,7 +1283,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作总结/">工作总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -920,7 +1293,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 10px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 10px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+      <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 11px;">总结</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
   </div>
 
@@ -930,7 +1303,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -943,23 +1316,23 @@
       <ul>
         
           <li>
-            <a href="/2018/12/26/深度学习资源调度平台OpenPAI部署/">深度学习资源调度平台OpenPAI部署</a>
+            <a href="/2019/02/01/从头训练一个图像分类器/">从头训练一个图像分类器</a>
           </li>
         
           <li>
-            <a href="/2018/12/11/机器在学习——EDA/">机器在学习——EDA</a>
+            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/">2018年总结：来自18年的工作感悟</a>
           </li>
         
           <li>
-            <a href="/2018/12/04/机器在学习-时序数据分析/">机器在学习-时序数据分析</a>
+            <a href="/2019/01/12/Batch-Normalization-批量归一化/">Batch-Normalization(批量归一化)</a>
           </li>
         
           <li>
-            <a href="/2018/11/29/机器在学习-随机森林/">机器在学习-线性回归与分类</a>
+            <a href="/2019/01/02/数据科学工具——Pandas/">数据科学工具——Pandas</a>
           </li>
         
           <li>
-            <a href="/2018/11/23/机器在学习—-KNN/">机器在学习-KNN</a>
+            <a href="/2018/12/30/数据科学工具——Numpy/">数据科学工具——Numpy</a>
           </li>
         
       </ul>
@@ -979,7 +1352,7 @@
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
@@ -1055,7 +1428,8 @@
     });
 </script>
 
-<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
 </script>
 
 
@@ -1084,7 +1458,7 @@
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -1138,7 +1512,7 @@
             Ebby&#39;s Notes
           </div>
           <div class="panel-body">
-            Copyright © 2018 Ebby DD All Rights Reserved.
+            Copyright © 2019 Ebby DD All Rights Reserved.
           </div>
         </div>
       </div>

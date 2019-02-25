@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
 <meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/k8s-management.png">
 <meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/watchdog-error.png">
-<meta property="og:updated_time" content="2018-12-26T13:16:58.578Z">
+<meta property="og:updated_time" content="2019-02-22T08:46:33.926Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习资源调度平台OpenPAI部署">
 <meta name="twitter:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
@@ -188,6 +188,8 @@
     <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -297,6 +299,7 @@
 </blockquote>
 <p>最后，可以通过如下链接的方法验证部署成功与否：</p>
 <p><a href="https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/validate-deployment.md" target="_blank" rel="noopener">https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/validate-deployment.md</a></p>
+<h4 id="删掉整个集群"><a href="#删掉整个集群" class="headerlink" title="删掉整个集群"></a>删掉整个集群</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python paictl.py service delete</span><br><span class="line">sudo python paictl.py cluster k8s-clean -p ~/pai-config/</span><br><span class="line"></span><br><span class="line"><span class="comment">#optional</span></span><br><span class="line">sudo rm –rf /var/etcd/data</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -383,6 +386,15 @@ var a = new Donate({
     
 <nav id="article-nav">
   
+    <a href="/2018/12/29/数据科学工具——Ipython/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          数据科学工具——Ipython
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/12/11/机器在学习——EDA/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
@@ -400,7 +412,7 @@ var a = new Donate({
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境要求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖包安装"><span class="nav-number">1.2.</span> <span class="nav-text">2. 依赖包安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件准备"><span class="nav-number">2.</span> <span class="nav-text">配置文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Kubernetes-集群"><span class="nav-number">3.</span> <span class="nav-text">部署Kubernetes 集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新集群配置"><span class="nav-number">4.</span> <span class="nav-text">更新集群配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动OpenPAI服务"><span class="nav-number">5.</span> <span class="nav-text">启动OpenPAI服务</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境要求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖包安装"><span class="nav-number">1.2.</span> <span class="nav-text">2. 依赖包安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件准备"><span class="nav-number">2.</span> <span class="nav-text">配置文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Kubernetes-集群"><span class="nav-number">3.</span> <span class="nav-text">部署Kubernetes 集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新集群配置"><span class="nav-number">4.</span> <span class="nav-text">更新集群配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动OpenPAI服务"><span class="nav-number">5.</span> <span class="nav-text">启动OpenPAI服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删掉整个集群"><span class="nav-number">5.0.1.</span> <span class="nav-text">删掉整个集群</span></a></li></ol></li></ol></li></ol>
     
     </div>
   </aside>
@@ -415,7 +427,7 @@ var a = new Donate({
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
@@ -491,7 +503,8 @@ var a = new Donate({
     });
 </script>
 
-<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
 </script>
 
 
@@ -520,7 +533,7 @@ var a = new Donate({
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -574,7 +587,7 @@ var a = new Donate({
             Ebby&#39;s Notes
           </div>
           <div class="panel-body">
-            Copyright © 2018 Ebby DD All Rights Reserved.
+            Copyright © 2019 Ebby DD All Rights Reserved.
           </div>
         </div>
       </div>

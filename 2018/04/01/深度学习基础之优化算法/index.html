@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif">
-<meta property="og:updated_time" content="2018-07-02T15:47:11.000Z">
+<meta property="og:updated_time" content="2019-01-09T13:11:43.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习基础之优化算法">
 <meta name="twitter:description" content="合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。">
@@ -195,6 +195,8 @@
     <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -243,7 +245,7 @@ W = W-lr * dW</script><p>其中，</p>
 <p>使用mini-batch的另一个主要原因是为了利用向量化的并行计算来提升处理效率。</p>
 <p>理论上，从mini-batch中获得梯度的统计估计源于训练集的冗余。mini-batch的选择主要由如下几个因素决定：</p>
 <ol>
-<li>更大的批量会计算更精确的梯度估计，但是汇报确实小于线性的；</li>
+<li>更大的批量会计算更精确的梯度估计，但是回报确实小于线性的；</li>
 <li>如果批量处理中的所有样本可以并行地处理（通常确是如此），那么内存消耗和批量大小会正比；</li>
 <li>在某些硬件上使用特定大小的数组时，运行时间会更少。尤其是在使用GPU时， 通常使用 2 的幂数作为批量大小可以获得更少的运行时间；</li>
 <li>可能是由于小批量在学习过程中加入了噪声，它们会有一些正则化效果 (Wilson and Martinez, 2003)。</li>
@@ -275,7 +277,7 @@ W += v_{t}</script><p><img src="/qnsource/images/2018-04-28-cs231n-notes/nestero
 <p>缺点： cache是个累加值，当训练比较多轮的大型网络，在后期学不到太多东西。</p>
 </blockquote>
 <script type="math/tex; mode=display">
-cache += {dW}^2</script><script type="math/tex; mode=display">
+cache += {(dW)}^2</script><script type="math/tex; mode=display">
 W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adadelta"><a href="#Adadelta" class="headerlink" title="Adadelta"></a>Adadelta</h3><blockquote>
 <p>Adagrad的扩展，修正了学习率单调下降的问题。值使用近期几轮的dW来进行平滑累积。</p>
 </blockquote>
@@ -286,16 +288,16 @@ W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adadelta"><a href="#
 </blockquote>
 <p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png" alt="RMSprop"></p>
 <script type="math/tex; mode=display">
-cache = \rho * cache + (1-\rho) * {dW}^2</script><script type="math/tex; mode=display">
+cache = \rho * cache + (1-\rho) * {(dW)}^2</script><script type="math/tex; mode=display">
 W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><blockquote>
-<p>Adapitive Moment Estimation,2014年提出。将dW和$dW^2$的更新都采用了滑动平均。</p>
+<p>Adapitive Moment Estimation,2014年提出。将dW和$(dW)^2$的更新都采用了滑动平均。</p>
 <p>一般地，$\beta_1=0.9, \beta_2=0.999$；</p>
 <p>经验证，Adam在多个场景下效果优于RMSprop；</p>
 <p>Adam可以认为RMSprop+动量，对应的Nadam算法=RMSprop + Nesterov加速</p>
 </blockquote>
 <script type="math/tex; mode=display">
 m = \beta_1 * m + (1-\beta_1)*dW</script><script type="math/tex; mode=display">
-v = \beta_2 * v + (1-\beta_2)*dW^2</script><script type="math/tex; mode=display">
+v = \beta_2 * v + (1-\beta_2)*(dW)^2</script><script type="math/tex; mode=display">
 m =\frac{m}{1-\beta^t_1}</script><script type="math/tex; mode=display">
 v =\frac{v}{1-\beta^t_2}</script><script type="math/tex; mode=display">
 W += -\frac{lr}{\sqrt{v}+\epsilon} * m</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">m = config[<span class="string">'beta1'</span>] * config[<span class="string">'m'</span>] + (<span class="number">1</span>-config[<span class="string">'beta1'</span>]) * dw</span><br><span class="line">v = config[<span class="string">'beta2'</span>] * config[<span class="string">'v'</span>] + (<span class="number">1</span>-config[<span class="string">'beta2'</span>]) * np.square(dw)</span><br><span class="line">t = config[<span class="string">'t'</span>] + <span class="number">1</span></span><br><span class="line">_m = m / (<span class="number">1</span>-config[<span class="string">'beta1'</span>]**t)</span><br><span class="line">_v = v / (<span class="number">1</span>-config[<span class="string">'beta2'</span>]**t)</span><br><span class="line"></span><br><span class="line">next_w = w - config[<span class="string">'learning_rate'</span>]/(np.sqrt(_v) + config[<span class="string">'epsilon'</span>]) * _m</span><br><span class="line"></span><br><span class="line">config[<span class="string">'m'</span>] = m</span><br><span class="line">config[<span class="string">'v'</span>] = v</span><br><span class="line">config[<span class="string">'t'</span>] = t</span><br></pre></td></tr></table></figure>
@@ -350,7 +352,7 @@ lr = \frac{1}{1+decay\_rate*epoch\_num}*lr_0</script><blockquote>
 <li><a href="">Deep Learning for Computer Vision with Python</a></li>
 <li><a href="https://www.coursera.org/learn/deep-neural-network/lecture/qcogH/mini-batch-gradient-descent" target="_blank" rel="noopener">Deep Learning Specialization</a></li>
 <li><a href="https://arxiv.org/abs/1609.04747" target="_blank" rel="noopener">An overview of gradient descent optimization algorithms</a></li>
-<li>Deep Learning Book</li>
+<li>《Deep Learning Book》</li>
 </ol>
 
       
@@ -479,7 +481,7 @@ var a = new Donate({
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
@@ -555,7 +557,8 @@ var a = new Donate({
     });
 </script>
 
-<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
 </script>
 
 
@@ -584,7 +587,7 @@ var a = new Donate({
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -638,7 +641,7 @@ var a = new Donate({
             Ebby&#39;s Notes
           </div>
           <div class="panel-body">
-            Copyright © 2018 Ebby DD All Rights Reserved.
+            Copyright © 2019 Ebby DD All Rights Reserved.
           </div>
         </div>
       </div>

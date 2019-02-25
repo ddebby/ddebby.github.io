@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/classify.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/challenges.jpeg">
-<meta property="og:updated_time" content="2018-05-16T13:59:22.970Z">
+<meta property="og:updated_time" content="2018-12-29T07:14:28.186Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n课程笔记:（Lecture 2）图像分类">
 <meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
@@ -190,6 +190,8 @@
     <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/课程笔记/">课程笔记</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -274,7 +276,7 @@
 <p><strong>缺点：</strong> </p>
 <ul>
 <li>计算量大(每预测一个图片都需要与所有训练数据计算一遍距离)，准确率低（~40%准确率在 CIFAR-10）；</li>
-<li>图像的三维特征和边缘特性，导致仅从像素力度上很难进行比对，维度越好，NN算法就越无能为力</li>
+<li>图像的三维特征和边缘特性，导致仅从像素力度上很难进行比对，维度越高，NN算法就越无能为力</li>
 </ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_1">
 <sup>1</sup>. <a href="http://cs231n.github.io/classification/" target="_blank" rel="noopener">CS231n Notes:Classification</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
@@ -418,7 +420,7 @@ var a = new Donate({
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
@@ -494,7 +496,8 @@ var a = new Donate({
     });
 </script>
 
-<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
 </script>
 
 
@@ -523,7 +526,7 @@ var a = new Donate({
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -577,7 +580,7 @@ var a = new Donate({
             Ebby&#39;s Notes
           </div>
           <div class="panel-body">
-            Copyright © 2018 Ebby DD All Rights Reserved.
+            Copyright © 2019 Ebby DD All Rights Reserved.
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/machine_learning_1.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/bias_variance.png">
-<meta property="og:updated_time" content="2018-05-15T09:14:33.416Z">
+<meta property="og:updated_time" content="2018-12-29T08:12:26.198Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习圣经">
 <meta name="twitter:description" content="摘要： 机器学习中充满很多难以理解的技巧和方法，姑且利用摄影中无忌77条那样的摄影圣经来称之为机器学习圣经吧。">
@@ -190,38 +190,33 @@
     <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
+      
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>摘要：</strong> 机器学习中充满很多难以理解的技巧和方法，姑且利用摄影中无忌77条那样的摄影圣经来称之为机器学习圣经吧。<br><a id="more"></a></p>
-<p>@[toc]</p>
 <p>这篇文章的内容主要来自Pedro Domingos的论文《A Few Useful Things to Know About Machine Learning》<sup><a href="#fn_1" id="reffn_1">1</a></sup> ，作为一篇读书笔记。同时Pedro也是畅销书《The Master Algorithm》（中文译为《终极算法:机器学习和人工智能如何重塑世界》）的作者。</p>
 <p>机器学习中充满很多难以理解的技巧和方法，Pedro称之为<code>black art</code>，姑且利用摄影中无忌77条那样的摄影圣经来称之为机器学习圣经吧。</p>
 <h2 id="机器学习圣经1"><a href="#机器学习圣经1" class="headerlink" title="机器学习圣经1"></a>机器学习圣经<sup><a href="#fn_1" id="reffn_1">1</a></sup></h2><blockquote>
 <p>《The Master Algorithm》的作者</p>
 </blockquote>
 <ol>
-<li><strong>学习=表示+评价+优化</strong> (Learning = Representation + Evaluation + optimization)</li>
-</ol>
+<li><p><strong>学习=表示+评价+优化</strong> (Learning = Representation + Evaluation + optimization)</p>
 <p><img src="/qnsource/images/2018-04-28-cs231n-notes/machine_learning_1.png" alt="machine_learning"></p>
-<ol>
+</li>
 <li><p><strong>泛化</strong></p>
 <p>模型的泛化性能是机器学习算法追求的最终目标。所有设计良好的训练数据、验证数据和测试数据尤为关键。在早期的机器学习系统中，由于学习器学到的模型表示十分有限，所以训练集和测试集的误差不是十分显现。</p>
 </li>
 <li><p><strong>只有数据还不够</strong></p>
-<p>​除了数据，我们还需要知识（归纳+推理）和假设（一致性、同分布、独立性），来实现模型的泛化特征。</p>
+<p>除了数据，我们还需要知识（归纳+推理）和假设（一致性、同分布、独立性），来实现模型的泛化特征。</p>
 </li>
 <li><p><strong>过拟合的多个方面</strong></p>
 <ul>
-<li>bias和variance</li>
+<li>bias和variance<br><code>Bias is a learner’s tendency to consistently learn the same wrong thing. Variance is the tendency to learn random things irrespective of the real signal.</code></li>
+<li>​    <img src="/qnsource/images/2018-04-28-cs231n-notes/bias_variance.png" alt="bias_variance"></li>
 </ul>
 </li>
-</ol>
-<blockquote>
-<p>Bias is a learner’s tendency to consistently learn the same wrong thing. Variance is the tendency to learn random things irrespective of the real signal.</p>
-</blockquote>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/bias_variance.png" alt="bias_variance"></p>
-<ol>
 <li><p><strong>维度灾难</strong></p>
 <p>随着维度增加，数据之间差异会变小，泛化将指数级的变难。</p>
 </li>
@@ -240,12 +235,10 @@
 </li>
 <li><p><strong>模型组合</strong></p>
 <p>与尝试N多模型，选择其中最好的相比，组合多个不同的模型（model ensembles）效果往往更好。常见组合有bagging，boosting，stacking。模型组合与贝叶斯模型平均的区别：在贝叶斯模型平均方法中，对新样例的预测是对假设空间中的所有分类器的预测取平均得到的，每个分类器会根据它解释训练数据的能力和我们对它的先验信任度而有不同的权重。模型组合修改了假设空间；贝叶斯模型平均给假设空间添加固定的权重。</p>
-</li>
-</ol>
 <blockquote>
 <p><strong>Jensen’s Inequality</strong>，简森不等式提供了理论依据</p>
 </blockquote>
-<ol>
+</li>
 <li><p><strong>简单 $\neq$ 准确</strong></p>
 <p>著名的奥坎姆剃刀（<strong>occam’s razor</strong>）原理称：若无必要，勿增实体（entities should not be multi-plied beyond necessity）。但并非总是简单的模型可以获得更好的泛化性能，比如模型组合是在增加模型复杂度换取更好的准确率。模型参数的数量和过拟合之间并无直接的联系。奥坎姆最初的意思是说，开始的时候选择简单的假设，可以修正它，直到效果理想。但是不要一开始从复杂的做起，而不是说要找简单作为最终的学习器。</p>
 </li>
@@ -387,7 +380,7 @@ var a = new Donate({
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 Ebby&#39;s Notes All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2019 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
   		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
@@ -463,7 +456,8 @@ var a = new Donate({
     });
 </script>
 
-<script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
 </script>
 
 
@@ -492,7 +486,7 @@ var a = new Donate({
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?{{ theme.baidu_analytics }}";
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -546,7 +540,7 @@ var a = new Donate({
             Ebby&#39;s Notes
           </div>
           <div class="panel-body">
-            Copyright © 2018 Ebby DD All Rights Reserved.
+            Copyright © 2019 Ebby DD All Rights Reserved.
           </div>
         </div>
       </div>
