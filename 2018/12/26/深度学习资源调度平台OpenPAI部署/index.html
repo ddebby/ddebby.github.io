@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
 <meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/k8s-management.png">
 <meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/watchdog-error.png">
-<meta property="og:updated_time" content="2019-02-22T08:46:33.926Z">
+<meta property="og:updated_time" content="2019-03-14T04:53:43.184Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习资源调度平台OpenPAI部署">
 <meta name="twitter:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
@@ -300,6 +300,10 @@
 <p>最后，可以通过如下链接的方法验证部署成功与否：</p>
 <p><a href="https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/validate-deployment.md" target="_blank" rel="noopener">https://github.com/Microsoft/pai/blob/master/docs/pai-management/doc/validate-deployment.md</a></p>
 <h4 id="删掉整个集群"><a href="#删掉整个集群" class="headerlink" title="删掉整个集群"></a>删掉整个集群</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python paictl.py service delete</span><br><span class="line">sudo python paictl.py cluster k8s-clean -p ~/pai-config/</span><br><span class="line"></span><br><span class="line"><span class="comment">#optional</span></span><br><span class="line">sudo rm –rf /var/etcd/data</span><br></pre></td></tr></table></figure>
+<h2 id="其它更新"><a href="#其它更新" class="headerlink" title="其它更新"></a>其它更新</h2><h3 id="2019-03-14-更新"><a href="#2019-03-14-更新" class="headerlink" title="2019/03/14 更新"></a>2019/03/14 更新</h3><blockquote>
+<p>最近在一台新的虚拟机环境部署v0.9.1版本，遇到了 <code>pylon</code>hung住的问题，详见github提交的issue: <a href="https://github.com/Microsoft/pai/issues/2282" target="_blank" rel="noopener">https://github.com/Microsoft/pai/issues/2282</a></p>
+<p>后来发现是Linux默认配置的apache服务占用了80端口，导致docker-proxy抢占端口失败，pylon无法启动，停掉apache服务或修改pylon的端口(<code>services-configuration.yaml</code>)可以解决问题。</p>
+</blockquote>
 
       
     </div>
@@ -412,7 +416,7 @@ var a = new Donate({
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境要求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖包安装"><span class="nav-number">1.2.</span> <span class="nav-text">2. 依赖包安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件准备"><span class="nav-number">2.</span> <span class="nav-text">配置文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Kubernetes-集群"><span class="nav-number">3.</span> <span class="nav-text">部署Kubernetes 集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新集群配置"><span class="nav-number">4.</span> <span class="nav-text">更新集群配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动OpenPAI服务"><span class="nav-number">5.</span> <span class="nav-text">启动OpenPAI服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删掉整个集群"><span class="nav-number">5.0.1.</span> <span class="nav-text">删掉整个集群</span></a></li></ol></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-环境要求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 环境要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖包安装"><span class="nav-number">1.2.</span> <span class="nav-text">2. 依赖包安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件准备"><span class="nav-number">2.</span> <span class="nav-text">配置文件准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Kubernetes-集群"><span class="nav-number">3.</span> <span class="nav-text">部署Kubernetes 集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新集群配置"><span class="nav-number">4.</span> <span class="nav-text">更新集群配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动OpenPAI服务"><span class="nav-number">5.</span> <span class="nav-text">启动OpenPAI服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删掉整个集群"><span class="nav-number">5.0.1.</span> <span class="nav-text">删掉整个集群</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它更新"><span class="nav-number">6.</span> <span class="nav-text">其它更新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2019-03-14-更新"><span class="nav-number">6.1.</span> <span class="nav-text">2019/03/14 更新</span></a></li></ol></li></ol>
     
     </div>
   </aside>

@@ -285,6 +285,60 @@
         
           <section id="main">
   
+    <article id="post-数据科学工具——Numpy"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/12/30/数据科学工具——Numpy/">数据科学工具——Numpy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/30/数据科学工具——Numpy/" class="article-date">
+	  <time datetime="2018-12-30T08:54:48.000Z" itemprop="datePublished">2018-12-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/工具/">工具</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/12/30/数据科学工具——Numpy/Numpy.png" alt="Numpy"></p>
+<p><strong>摘要：</strong>工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。</p>
+      
+    </div>
+    <footer class="article-footer">
+
+      
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Numpy/">Numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具使用/">工具使用</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教学/">教学</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-数据科学工具——Ipython"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -488,67 +542,6 @@
       <!--  -->
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Prophet/">Prophet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SARIMA/">SARIMA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Time-Series/">Time Series</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/时序数据/">时序数据</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-机器在学习-随机森林"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/11/29/机器在学习-随机森林/">机器在学习-线性回归与分类</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/11/29/机器在学习-随机森林/" class="article-date">
-	  <time datetime="2018-11-29T08:50:11.000Z" itemprop="datePublished">2018-11-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/qnsource/banner/15.jpg" alt="Test Picture"></p>
-<h2 id="算法理论"><a href="#算法理论" class="headerlink" title="算法理论"></a>算法理论</h2><h3 id="集成学习"><a href="#集成学习" class="headerlink" title="集成学习"></a>集成学习</h3><p><strong>集成方法</strong> 的目标是把多个使用给定学习算法构建的基估计器的预测结果结合起来，从而获得比单个估计器更好的泛化能力/鲁棒性。</p>
-<p>集成方法通常分为两种:</p>
-<ul>
-<li><p><strong>平均方法</strong>，该方法的原理是构建多个独立的估计器，然后取它们的预测结果的平均。一般来说组合之后的估计器是会比单个估计器要好的，因为它的方差减小了。</p>
-<p><strong>示例:</strong> <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/ensemble.html#bagging" target="_blank" rel="noopener">Bagging 方法</a> , <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/ensemble.html#forest" target="_blank" rel="noopener">随机森林</a> , …</p>
-</li>
-<li><p>相比之下，在 <strong>boosting 方法</strong> 中，基估计器是依次构建的，并且每一个基估计器都尝试去减少组合估计器的偏差。这种方法主要目的是为了结合多个弱模型，使集成的模型更加强大。</p>
-<p><strong>示例:</strong> <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/ensemble.html#adaboost" target="_blank" rel="noopener">AdaBoost</a> , <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/ensemble.html#gradient-boosting" target="_blank" rel="noopener">梯度提升树</a> , …</p></li></ul>
-      
-    </div>
-    <footer class="article-footer">
-
-      
-      
-
-      
-      <!--  -->
-
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
 
     </footer>
   </div>
@@ -914,7 +907,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作总结/">工作总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作总结/">工作总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -924,7 +917,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 11px;">总结</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+      <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 11px;">总结</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
   </div>
 
@@ -934,7 +927,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -945,6 +938,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/">Pathlib--Python的路径管理库</a>
+          </li>
         
           <li>
             <a href="/2019/02/01/从头训练一个图像分类器/">从头训练一个图像分类器</a>
@@ -960,10 +957,6 @@
         
           <li>
             <a href="/2019/01/02/数据科学工具——Pandas/">数据科学工具——Pandas</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/30/数据科学工具——Numpy/">数据科学工具——Numpy</a>
           </li>
         
       </ul>

@@ -19,12 +19,21 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg">
-<meta property="og:updated_time" content="2018-07-20T15:52:42.648Z">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/cover/12.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/GPUs.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet-Details.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-loss.png">
+<meta property="og:updated_time" content="2019-02-26T05:20:17.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典网络复现之AlexNet">
 <meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/cover/12.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -168,16 +177,6 @@
           <section id="main" style="float:none;"><article id="post-经典网络复现之AlexNet" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
-<div class="article-gallery">
-  <div class="article-gallery-photos">
-    
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg" rel="gallery_cjsjz4p4z003bocv27u20ipjx">
-        <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/20.jpg" itemprop="image">
-      </a>
-    
-  </div>
-</div>
-
     
       <header class="article-header">
         
@@ -204,7 +203,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/12.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/cover/12.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
 <a id="more"></a>
 <p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
@@ -350,7 +349,6 @@
 </li>
 <li><p>选取125轮的训练结果，在测试集数据上进行验证，结果如下：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-1</span>: 60<span class="selector-class">.20</span>%</span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-5</span>: 81<span class="selector-class">.99</span>%</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 </ol>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>

@@ -19,12 +19,18 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络GoogLeNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg">
-<meta property="og:updated_time" content="2018-07-20T15:52:31.842Z">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/inception.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/parameters.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/47epoch-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/47epoch-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/1e-2lr.png">
+<meta property="og:updated_time" content="2019-02-26T05:20:00.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典网络复现之GoogleNet">
 <meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络GoogLeNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之GoogleNet/inception.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -168,16 +174,6 @@
           <section id="main" style="float:none;"><article id="post-经典网络复现之GoogleNet" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
-<div class="article-gallery">
-  <div class="article-gallery-photos">
-    
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg" rel="gallery_cjsjz4p50003eocv29p08tej8">
-        <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/21.jpg" itemprop="image">
-      </a>
-    
-  </div>
-</div>
-
     
       <header class="article-header">
         
@@ -245,7 +241,7 @@
 <ol>
 <li>与原网络不同，我们将BN放在了activation之后，提升了模型效果；</li>
 <li>Dropout原网络使用40%，当然现在更常见的是使用50%；</li>
-<li>​Inception Module中几个分支网络通过concat连接在一起，这点与ResNet的本质区别；</li>
+<li>Inception Module中几个分支网络通过concat连接在一起，这点与ResNet的本质区别；</li>
 </ol>
 </blockquote>
 <h3 id="训练GoogLeNet"><a href="#训练GoogLeNet" class="headerlink" title="训练GoogLeNet"></a>训练GoogLeNet</h3><p>训练用的脚本和前面几个网络一致。</p>
@@ -292,11 +288,11 @@
 </ol>
 </blockquote>
 <ol>
-<li><p>第一遍训练采用1e-3的学习率配合Adam算法训练31轮，发现饱和现象，降低学习率到1e-4，继续训练到42轮；</p>
-<p>​</p>
-<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-accuracy.png" alt="42epoch-accuracy"></p>
-<p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-loss.png" alt="42epoch-loss"></p>
-</li>
+<li>第一遍训练采用1e-3的学习率配合Adam算法训练31轮，发现饱和现象，降低学习率到1e-4，继续训练到42轮；</li>
+</ol>
+<p>   <img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-accuracy.png" alt="42epoch-accuracy"></p>
+<p>   <img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/42epoch-loss.png" alt="42epoch-loss"></p>
+<ol>
 <li><p>发现40轮之后就已经出现了验证准确率的饱和现象，在40轮之后调整学习率为1e-5继续训练几轮完成：</p>
 <p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/47epoch-accuracy.png" alt="47epoch-accuracy"></p>
 <p><img src="/qnsource/images/2018-07-10-经典网络复现之GoogleNet/47epoch-loss.png" alt="47epoch-loss"></p>

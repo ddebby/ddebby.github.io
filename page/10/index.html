@@ -285,6 +285,231 @@
         
           <section id="main">
   
+    <article id="post-Object-Detection-Faster-RCNN"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/04/13/Object-Detection-Faster-RCNN/">物体识别技术之Faster R-CNN</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/13/Object-Detection-Faster-RCNN/" class="article-date">
+	  <time datetime="2018-04-13T06:45:52.000Z" itemprop="datePublished">2018-04-13</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/机器视觉/">机器视觉</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要:</strong> 2015年提出的Faster R-CNN架构在基于机器视觉的物体识别领域占据重要的地位，从R-CNN到fast R-CNN再到faster R-CNN,乃至后续的Mask-R-CNN形成了一条完整的两步识别的物体识别技术生态。</p>
+<!-- excerpt -->
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>物体识别技术一直是机器视觉中业务场景最丰富，关注度最高的一个类别。将花几期来分别对主流的物体识别技术如Faster RCNN，SSD，YOLO，Mask-RCNN进行整理和分析，并利用实践的方式进行强化。</p>
+<p>在R-CNN,Fast R-CNN，Faster R-CNN中，物体识别被分为两个步骤实现（与SSD、YOLO的主要差异）：候选区域选择和基于深度网络的物体识别。</p>
+<h3 id="传统的物体识别算法"><a href="#传统的物体识别算法" class="headerlink" title="传统的物体识别算法"></a>传统的物体识别算法</h3><p>传统的物体识别技术采用的滑动窗口+图像金字塔+分类器的算法，可以参见前述博文在<a href="/Deep-Learning-Lab-Logo-Detection">基于机器视觉技术的品牌LOGO检测</a>中做的实际测试，原理易于理解，但效率较低，很难达到实时处理的需求：</p>
+<ol>
+<li>速度慢，效率低：需要利用滑动窗口遍历图像的不同位置；</li>
+<li>受图像畸变影响严重：由于CNN的输入必须是固定大小的图像，所以限制了检测目标的长宽比例，比如这种方法不能同时检测矮胖对象和长瘦对象；</li>
+<li>错误率高，没法识别图像的全局特征，每个窗口只能看到局部特征，所以检测精度也受到了比较大的影响。</li>
+</ol>
+<h3 id="物体识别精度的衡量指标"><a href="#物体识别精度的衡量指标" class="headerlink" title="物体识别精度的衡量指标"></a>物体识别精度的衡量指标</h3><ul>
+<li><p>IoU(Intersection over Union)</p>
+<script type="math/tex; mode=display">
+IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png" alt="IoU"></p>
+</li>
+<li><p>mAP(Mean Average Precision)</p>
+<ul>
+<li>所有分类的IoU均值；</li>
+</ul>
+</li>
+</ul>
+<h3 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h3><ol>
+<li>R-CNN： Rich feature hierarchies for accurate object detection and semantic segmentation</li>
+<li>Faster R-CNN</li>
+</ol>
+<h2 id="R-CNN"><a href="#R-CNN" class="headerlink" title="R-CNN"></a>R-CNN</h2><blockquote>
+<p><strong>论文：</strong> Rich feature hierarchies for accurate object detection and semantic segmentation，2013，Girshick</p>
+</blockquote>
+<p>问题：解决目标检测网络</p>
+<p>R-CNN的实现包括如下图所示的4个主要步骤：</p>
+<ol>
+<li>接受输入图像；</li>
+<li>利用Selective Search算法从图像中抽取大约2000个候选区域；</li>
+<li>对每个候选区域利用预训练的CNN进行特征抽取（迁移学习）；</li>
+<li>对每个特征抽取区域利用线性SVM进行分类</li>
+</ol>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png" alt="R-CNN"></p>
+<p>论文的主要贡献：</p>
+<ol>
+<li>使用Selective Search替代了特征金字塔和滑动窗口实现的兴趣区域选择，提升了效率；</li>
+<li>利用预训练的神经网络进行特征提取替代了手工特征如HOG的特征提取方法，正是由于CNN学习的特征具备的鲁棒性大大提供了系统的泛化性能</li>
+</ol>
+<p>仍然存在的问题：</p>
+<ol>
+<li>识别慢，效率低；</li>
+<li>不是一个端到端的解决方案</li>
+</ol>
+<h3 id="Selective-Search算法"><a href="#Selective-Search算法" class="headerlink" title="Selective Search算法"></a>Selective Search算法</h3><blockquote>
+<p>论文：<a href="https://koen.me/research/pub/uijlings-ijcv2013-draft.pdf" target="_blank" rel="noopener">Selective Search for Object Recognition</a>，2012，J.R.R.Uijings</p>
+</blockquote>
+<p>之前很多算法都是基于蛮力搜索(Exhaustive Search),对整张图片进行扫描，或者是采用动态窗口的方法，这种方法耗时严重，操作麻烦。J.R.R提出的选择性搜索的方法，在识别前期在整张图片中生成1~3K个proposal的方法，再对每个proposal进行处理。</p>
+<p>Selective Search [4], one of the most popular methods, greedily merges superpixels based on engineered low-level features.</p>
+<blockquote>
+<p>缺点：效率低，计算量大，使用1个CPU处理一张图片，需要2s<sup><a href="#fn_1" id="reffn_1">1</a></sup></p>
+</blockquote>
+<h2 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h2><p>问题提出：解决端到端训练的问题，提出了Region of Interest（ROI）Pooling</p>
+<p>跟R-CNN中使用深度CNN的方式不同，Fast R-CNN中首先将CNN应用到整个图像中进行特征提取，利用一个固定窗口在抽取特征上滑动，分别进行分类预测和回归预测。Fast R-CNN的主要处理流程包括：</p>
+<ol>
+<li>输入图像和标定的识别框信息；</li>
+<li>利用深度卷积神经网络抽取图像特征；</li>
+<li>利用ROI pooling获取ROI特征向量；</li>
+<li>利用两个全联通层进行分类和回归预测</li>
+</ol>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png" alt="Fast RCNN"></p>
+<p>端到端的训练过程源于提出了多任务损失函数，将分类问题和回归问题整合在一起，打通了梯度的更新路径，下图描述了Fast R-CNN的训练和测试过程：</p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png" alt="fast R-CNN 训练与测试"></p>
+<blockquote>
+<p>缺点：仍然没有摆脱Selective Search算法在推理阶段进行候选区域生成。</p>
+</blockquote>
+<h2 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h2><blockquote>
+<p>论文：<a href="https://arxiv.org/abs/1506.01497" target="_blank" rel="noopener">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a>, 2015, <a href="https://arxiv.org/find/cs/1/au:+Ren_S/0/1/0/all/0/1" target="_blank" rel="noopener">Shaoqing Ren</a>, <a href="https://arxiv.org/find/cs/1/au:+He_K/0/1/0/all/0/1" target="_blank" rel="noopener">Kaiming He</a>, <a href="https://arxiv.org/find/cs/1/au:+Girshick_R/0/1/0/all/0/1" target="_blank" rel="noopener">Ross Girshick</a>, <a href="https://arxiv.org/find/cs/1/au:+Sun_J/0/1/0/all/0/1" target="_blank" rel="noopener">Jian Sun</a></p>
+<p>实现：<a href="https://github.com/rbgirshick/py-faster-rcnn" target="_blank" rel="noopener">Github上作者提供的Python实现</a></p>
+<p>商业实现：Pinterests<sup><a href="#fn_2" id="reffn_2">2</a></sup></p>
+</blockquote>
+<p><strong>问题提出：</strong>在基于候选区域选择的CNN（region-based CNN）物体识别网络中，候选区域选择的效率成为了整个系统的瓶颈；Faster R-CNN中提出了<em>Region Proposal Netwrok</em>与物体识别网络共享网络参数（替代了Fast R-CNN中的Selective Search算法），降低了候选区域选择的时间代价。</p>
+<ul>
+<li>基础网络（Base Network）：特征抽取（迁移学习），抽取的特征将同时应用于RPN和RoIP阶段</li>
+<li>RPN：候选区域选择（利用了网络的Attention机制），用于发掘图像中潜在的可能存在物体的区域</li>
+<li>RoIP：兴趣区域特征提取</li>
+<li>R-CNN：分类预测和候选框回归</li>
+</ul>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png" alt="fasterrcnn-architecture.b9035cba"></p>
+<blockquote>
+<p>使用一块GPU，性能大概在7-10 FPS</p>
+</blockquote>
+<h3 id="基础网络"><a href="#基础网络" class="headerlink" title="基础网络"></a>基础网络</h3><p>基础网络的主要作用是利用迁移学习完成原始图像的特征抽取，在论文中使用了 在ImageNet预训练的<a href="https://arxiv.org/abs/1311.2901" target="_blank" rel="noopener">ZF</a> 或 <a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">VGG</a>来完成这一任务。当然根据物体识别任务的不同应用场景可以在模型精度和推理时间上进行折中选择 <a href="https://arxiv.org/abs/1704.04861" target="_blank" rel="noopener">MobileNet</a>, ResNet-152， <a href="https://arxiv.org/abs/1608.06993" target="_blank" rel="noopener">DenseNet</a>。</p>
+<blockquote>
+<p>文献中，Faster R-CNN的基础网络在使用VGG作为特征提取网络时，使用<code>conv5/conv5_1</code>层的输出特征；</p>
+<p>目前ResNet在很多情况下已经替代了VGG16作为特征提取网络；</p>
+<p>为了保证网络是全卷积神经网络架构，需要把全连接层剔除，保证可以输入任意维度的输入图像</p>
+</blockquote>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png" alt="base-network"></p>
+<h3 id="Anchor-Box"><a href="#Anchor-Box" class="headerlink" title="Anchor Box"></a>Anchor Box</h3><blockquote>
+<p>替代传统算法的特征金字塔或filter金字塔</p>
+</blockquote>
+<p>一张图像中被识别目标形状大小各异，这也是在原始算法中加入特征金子塔来对原始图像进行多个维度特征变换的原因。</p>
+<p><strong>Anchor Box</strong>也是为了解决上述问题，我们可以不改变图像的形状，通过改变预测每个区域物体的“窗口”来框出不同大小的物体。首先在原始图像中均匀的选取一些Anchor Box中心点，然后在每个中心点上预制多个Anchor Box。</p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png" alt="anchors-centers.141181d6"></p>
+<p>在Faster R-CNN是使用3个不同形状（1:1, 1:2,2:1）和3个不同大小(128x128,256x256,512x512，按照原图尺寸生成)进行组合共计3x3=9种不同的Anchor box。</p>
+<blockquote>
+<p>使用VGG16做特征提取的情况下，一张输入图片总共可以刻画为512个窗口区域，生成512x(4+2)x9个输出参数。</p>
+</blockquote>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png" alt="anchors-progress.119e1e92"></p>
+<p>由于直接预测bouding box难以实现，作者将问题转变为预测预测值与真实值之间的偏移，将问题转变为四个偏移值的预测问题。</p>
+<h3 id="Region-Proposal-Network-RPN"><a href="#Region-Proposal-Network-RPN" class="headerlink" title="Region Proposal Network(RPN)"></a>Region Proposal Network(RPN)</h3><p>RPN的主要目的是对每个区域是否可能有物体进行打分，基于打分值决定是否进行下一步的分类任务。在基础网络抽取的特征图上使用一个3x3的滑动窗口（512个卷积核），每个滑动窗口的中心点位置为上述Achor Box的中心点区域，在每个滑动窗口区域，将得到两个1x1卷积网络输出，分别为2k的前景/背景预测（该区域是否存在可被预测物体，分类问题）以及4k的位置信息预测（回归问题），四个值分别是 $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$。</p>
+<blockquote>
+<p>k是Anchor Box的数目</p>
+<p>我们将从候选区域中选择打分较高的前N个进行下一轮分析，如果物体打分足够高，下一步将进行非极大抑制和区域选择，如果打分值很低将抛弃这些区域</p>
+</blockquote>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png" alt="rpn-conv-layers.63c5bf86"></p>
+<h4 id="目标和损失函数"><a href="#目标和损失函数" class="headerlink" title="目标和损失函数"></a>目标和损失函数</h4><p>The RPN does two different type of predictions: the binary classification and the bounding box regression adjustment.</p>
+<p>For training, we take all the anchors and put them into two different categories. Those that overlap a ground-truth object with an <a href="https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/" target="_blank" rel="noopener">Intersection over Union</a> (IoU) bigger than 0.5 are considered “foreground” and those that don’t overlap any ground truth object or have less than 0.1 IoU with ground-truth objects are considered “background”.</p>
+<script type="math/tex; mode=display">
+L({p_i}, {t_i}) = \frac{1}{N_{cls}}\sum_iL_{cls}(p_i,p_i^*)+\lambda\frac{1}{N_{reg}}\sum_ip_i^*L_{reg}(t_i,t_i^*)</script><p>其中分类的损失函数为：</p>
+<script type="math/tex; mode=display">
+L_{cls}(p_i,p_i^*) = -log[p_i^*p_i+(1-p_i^*)(1-p_i)]</script><p>$p_i$为第$i$个参考框是物体的预测概率值，$p_i^*$为实际值，如果anchor是物体的话该值为1，否则为0。</p>
+<p>回归损失函数为：</p>
+<script type="math/tex; mode=display">
+L_{reg}(t_i,t_i^*)=R(t_i-t_i^*)</script><p>其中R为smooth L1平滑方程：</p>
+<script type="math/tex; mode=display">
+smooth_{L_1}(x)=\left\{  
+             \begin{array}{lr}  
+             0.5x^2  & if \  |x|<1 \\  
+             |x|-0.5 & otherwise.     
+             \end{array}  
+\right.</script><p>$t_i$与$t_i^<em>$分别对应四个偏差值。$t_i$是预测框与anchor之间的偏差，$t_i^</em>$是ground truth与anchor之间的偏差</p>
+<h4 id="参数选择"><a href="#参数选择" class="headerlink" title="参数选择"></a>参数选择</h4><blockquote>
+<p>参数选择与其说是一个技术活倒不如认为是一个经验活，是通过大量实践验证出来的最佳实践，所以有必要分析整理每篇文章对参数选择和优化的技巧。</p>
+</blockquote>
+<ul>
+<li>非极大抑制的IoU阈值一般使用<strong>0.6</strong>；</li>
+<li>论文中关于候选区域选择了N=2000,但一般而言比这个小的数目也能取得不错的效果，比如50，100 …</li>
+</ul>
+<h3 id="Region-of-Interest（ROI）Pooling"><a href="#Region-of-Interest（ROI）Pooling" class="headerlink" title="Region of Interest（ROI）Pooling"></a>Region of Interest（ROI）Pooling</h3><p>ROI阶段的主要作用为使用矩阵操作（Array Slicing）从特征图中捕获N个兴趣区域，并降采样到7x7xD的尺寸，服务于接下来的全联同网络。</p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png" alt="roi"></p>
+<h3 id="Region-based-CNN"><a href="#Region-based-CNN" class="headerlink" title="Region-based CNN"></a>Region-based CNN</h3><p>使用两个不同的全联通网络（Fully-Connected Network，FC）：</p>
+<ul>
+<li>A fully-connected layer with N+1units where N is the total number of classes and that extra one is for the background class.</li>
+<li>A fully-connected layer with 4N units. We want to have a regression prediction, thus we need $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$ for each of the N possible classes.</li>
+</ul>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png" alt="rcnn-architecture.6732b9bd"></p>
+<p>在这个步骤中同样由两个损失函数构成：Categorical cross-entropy分类损失和Smooth L1回归损失</p>
+<h3 id="网络训练"><a href="#网络训练" class="headerlink" title="网络训练"></a>网络训练</h3><ul>
+<li>实验表明：联合训练（使用weighted sum）优于单独训练两个网络；<ul>
+<li>将每个阶段的4个损失函数（其中RPN阶段2个，R-CNN阶段2个）组合在一起，并赋不同的权重，分类损失需要获得比回归损失更多的权重；</li>
+<li>使用L2正则损失</li>
+</ul>
+</li>
+<li>是否单独训练基础网络取悦于目标与预训练网络的差异，这个跟迁移学习类似；</li>
+<li>使用带动量的随机梯度下降（SGD with momentum），其中<code>monmentum=0.9</code>，初始学习率<code>lr=0.001</code>， 50k步之后，lr调整为0.0001</li>
+</ul>
+<h2 id="实践时间"><a href="#实践时间" class="headerlink" title="实践时间"></a>实践时间</h2><h3 id="数据集：LISA交通标志数据库"><a href="#数据集：LISA交通标志数据库" class="headerlink" title="数据集：LISA交通标志数据库"></a>数据集：LISA交通标志数据库</h3><ul>
+<li>下载地址：<a href="http://cvrr.ucsd.edu/LISA/lisa-traffic-sign-dataset.html" target="_blank" rel="noopener">http://cvrr.ucsd.edu/LISA/lisa-traffic-sign-dataset.html</a></li>
+<li>47 US sign types</li>
+<li>7855 annotations on 6610 frames.</li>
+<li>Sign sizes from 6x6 to 167x168 pixels.</li>
+<li>Images obtained from different cameras. Image sizes vary from 640x480 to 1024x522 pixels.</li>
+<li>Some images in color and some in grayscale.</li>
+<li>Full version of the dataset includes videos for all annotated signs.</li>
+<li>Each sign is annotated with sign type, position, size, occluded (yes/no), on side road (yes/no).</li>
+<li>All annotations are save in plain text .csv-files.</li>
+<li>~7.7GB大小</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_1">
+<sup>1</sup>. <a href="https://arxiv.org/abs/1506.01497" target="_blank" rel="noopener">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a>, 2015, <a href="https://arxiv.org/find/cs/1/au:+Ren_S/0/1/0/all/0/1" target="_blank" rel="noopener">Shaoqing Ren</a>, <a href="https://arxiv.org/find/cs/1/au:+He_K/0/1/0/all/0/1" target="_blank" rel="noopener">Kaiming He</a>, <a href="https://arxiv.org/find/cs/1/au:+Girshick_R/0/1/0/all/0/1" target="_blank" rel="noopener">Ross Girshick</a>, <a href="https://arxiv.org/find/cs/1/au:+Sun_J/0/1/0/all/0/1" target="_blank" rel="noopener">Jian Sun</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. D. Kislyuk, Y. Liu, D. Liu, E. Tzeng, and Y. Jing, “Human curation and convnets: Powering item-to-item recommendations on pinterest,” arXiv:1511.04003, 2015.<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a href="https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/" target="_blank" rel="noopener">Faster R-CNN: Down the rabbit hole of modern object detection</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/物体识别/">物体识别</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-Vechicle-identification-by-stanford-car-dataset"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -954,59 +1179,6 @@
 
 
   
-    <article id="post-神经网络之感知机"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/09/神经网络之感知机/">神经网络之感知机（Perceptron）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/09/神经网络之感知机/" class="article-date">
-	  <time datetime="2018-03-09T08:37:04.000Z" itemprop="datePublished">2018-03-09</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
-
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>感知机于1957年由Rosenblatt等人提出，是神经网络和支持向量机的基础。</p>
-      
-    </div>
-    <footer class="article-footer">
-
-      
-      
-
-      
-      <!--  -->
-
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/感知机/">感知机</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
 
 
   <nav id="page-nav">
@@ -1362,7 +1534,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作总结/">工作总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/云存储/">云存储</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/">动手实践营</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/动手实践营/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工作总结/">工作总结</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Keras/">Keras</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/机器视觉/">机器视觉</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/基础知识/">基础知识</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/算法/迁移学习/">迁移学习</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/机器视觉/">机器视觉</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/课程笔记/">课程笔记</a><span class="category-list-count">5</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -1372,7 +1544,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 11px;">总结</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+      <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 11px;">总结</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
   </div>
 
@@ -1382,7 +1554,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -1393,6 +1565,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/">Pathlib--Python的路径管理库</a>
+          </li>
         
           <li>
             <a href="/2019/02/01/从头训练一个图像分类器/">从头训练一个图像分类器</a>
@@ -1408,10 +1584,6 @@
         
           <li>
             <a href="/2019/01/02/数据科学工具——Pandas/">数据科学工具——Pandas</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/30/数据科学工具——Numpy/">数据科学工具——Numpy</a>
           </li>
         
       </ul>

@@ -19,12 +19,22 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络SqueezeNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg">
-<meta property="og:updated_time" content="2018-07-20T15:52:08.839Z">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/architechtureofSqueezeNet.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/parameters-in-SqueezeNet.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/lab_results.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-86-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-86-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-89-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-89-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/lr=0.04.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/cost_AWS.png">
+<meta property="og:updated_time" content="2019-02-26T05:20:32.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典网络复现之SqueezeNet">
 <meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络SqueezeNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/Fire-Module.PNG">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -168,16 +178,6 @@
           <section id="main" style="float:none;"><article id="post-经典网络复现之SqueezeNet" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
-<div class="article-gallery">
-  <div class="article-gallery-photos">
-    
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg" rel="gallery_cjsjz4p55003locv2wf6u2df3">
-        <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/23.jpg" itemprop="image">
-      </a>
-    
-  </div>
-</div>
-
     
       <header class="article-header">
         
@@ -239,7 +239,7 @@
 </ul>
 </li>
 <li>比如FPGA中只有10MB的片上内存空间，没有片下存储，对模型大小要求较高；ASICs也会有相同的需求；</li>
-<li>​</li>
+<li></li>
 </ul>
 <h3 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h3><p>作者在论文中给出SqueezeNet的三条设计原则：</p>
 <ul>
@@ -345,10 +345,10 @@
 <li><p>将学习率调整到1e-3之后，验证集准确率有大幅提升，代表调整有效，80轮之后再度饱和，降低学习率到1e-4;到89轮验证集结果如下：</p>
 <p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-89-accuracy.png" alt="0-89-accuracy"></p>
 <p><img src="/qnsource/images/2018-07-12-经典网络复现之SqueezeNet/0-89-loss.png" alt="0-89-loss"></p>
-<p>​</p>
 </li>
-<li><p>进一步降低学习率到1e-5，发现整个网络没有性能提升，结束该批次参数训练过程。</p>
-</li>
+</ol>
+<ol>
+<li>进一步降低学习率到1e-5，发现整个网络没有性能提升，结束该批次参数训练过程。</li>
 </ol>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
 <li>初始学习率的选择</li>
@@ -474,7 +474,7 @@
 <li>Data Augmentation</li>
 <li>计算框架：TensorFlow or MxNet</li>
 <li>论文阅读与讨论</li>
-<li>​…</li>
+<li>…</li>
 </ol>
 </li>
 </ol>
