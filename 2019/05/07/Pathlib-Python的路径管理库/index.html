@@ -20,7 +20,7 @@
 <meta property="og:description" content="摘要： 整理了Pathlib的使用方法，便于速查。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/16.jpg">
-<meta property="og:updated_time" content="2019-05-07T09:45:29.919Z">
+<meta property="og:updated_time" content="2019-05-07T09:49:54.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pathlib--Python的路径管理库">
 <meta name="twitter:description" content="摘要： 整理了Pathlib的使用方法，便于速查。">
@@ -194,7 +194,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/qnsource/banner/16.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/banner/16.jpg" alt="Pathlib使用手册"></p>
 <p><strong>摘要：</strong> 整理了Pathlib的使用方法，便于速查。</p>
 <a id="more"></a>
 <h2 id="Pathlib使用方法归纳"><a href="#Pathlib使用方法归纳" class="headerlink" title="Pathlib使用方法归纳"></a>Pathlib使用方法归纳</h2><h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br></pre></td></tr></table></figure>
@@ -214,8 +214,7 @@
 <li>with_suffix(suffix)：补充扩展名到尾部，扩展名存在无效</li>
 <li>with_name(name)：替换目录最后一个部分并返回一个新的路径</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2 = Path(<span class="string">'/data/home/gaoc/data/99.test/Untitled.ipynb.test'</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.name</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p2 = Path(<span class="string">'/data/home/gaoc/data/99.test/Untitled.ipynb.test'</span>)</span><br><span class="line">p2.name</span><br></pre></td></tr></table></figure>
 <pre><code>&#39;Untitled.ipynb&#39;
 </code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.stem</span><br></pre></td></tr></table></figure>
 <pre><code>&#39;Untitled&#39;

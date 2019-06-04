@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.a-stack.com/"/>
-  <updated>2019-05-07T09:45:29.919Z</updated>
+  <updated>2019-05-07T09:49:54.672Z</updated>
   <id>http://blog.a-stack.com/</id>
   
   <author>
@@ -21,13 +21,13 @@
     <link href="http://blog.a-stack.com/2019/05/07/Pathlib-Python%E7%9A%84%E8%B7%AF%E5%BE%84%E7%AE%A1%E7%90%86%E5%BA%93/"/>
     <id>http://blog.a-stack.com/2019/05/07/Pathlib-Python的路径管理库/</id>
     <published>2019-05-07T08:53:05.000Z</published>
-    <updated>2019-05-07T09:45:29.919Z</updated>
+    <updated>2019-05-07T09:49:54.672Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="/qnsource/banner/16.jpg" alt="Test Picture"></p><p><strong>摘要：</strong> 整理了Pathlib的使用方法，便于速查。</p><a id="more"></a><h2 id="Pathlib使用方法归纳"><a href="#Pathlib使用方法归纳" class="headerlink" title="Pathlib使用方法归纳"></a>Pathlib使用方法归纳</h2><h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p1 = Path()</span><br><span class="line">print(p1)</span><br></pre></td></tr></table></figure><pre><code>.</code></pre><h4 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1.cwd()</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/1.fast.ai/nbs/dl1&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回一个新的路径，这个新路径就是当前Path对象的绝对路径</span></span><br><span class="line">p1.resolve()</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/1.fast.ai/nbs/dl1&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 也可以获取绝对路径，但是推荐使用resolve()</span></span><br><span class="line">p1.absolute()</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/1.fast.ai/nbs/dl1&#39;)</code></pre><h4 id="获取文件名，文件后缀，文件目录"><a href="#获取文件名，文件后缀，文件目录" class="headerlink" title="获取文件名，文件后缀，文件目录"></a>获取文件名，文件后缀，文件目录</h4><ul><li>name: 目录的最后一个部分</li><li>suffix:目录中最后一个部分的扩展名</li><li>stem：目录最后一个部分，没有后缀</li><li>suffixes：返回多个扩展名列表</li><li>with_suffix(suffix)：补充扩展名到尾部，扩展名存在无效</li><li>with_name(name)：替换目录最后一个部分并返回一个新的路径</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2 = Path(<span class="string">'/data/home/gaoc/data/99.test/Untitled.ipynb.test'</span>)</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.name</span><br></pre></td></tr></table></figure><pre><code>&#39;Untitled.ipynb&#39;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.stem</span><br></pre></td></tr></table></figure><pre><code>&#39;Untitled&#39;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.suffix</span><br></pre></td></tr></table></figure><pre><code>&#39;.ipynb&#39;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.suffixes</span><br></pre></td></tr></table></figure><pre><code>[&#39;.ipynb&#39;, &#39;.test&#39;]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.parent</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回一个iterable, 包含所有父目录</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> p2.parents:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/data/home/gaoc/data/data/home/gaoc/data/home/data/</code></pre><h3 id="拼接、检查与分解"><a href="#拼接、检查与分解" class="headerlink" title="拼接、检查与分解"></a>拼接、检查与分解</h3><p>操作符：/<br>Path对象 / Path对象</p><p>Path对象 / 字符串 或者 字符串 / Path对象</p><p>分解：<br>parts 属性, 可以返回路径中的每一个部分</p><p>joinpath：</p><p>joinpath(*other) 连接多个字符串到Path对象中</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = Path(p2.parent, <span class="string">'test.txt'</span>)</span><br><span class="line">p3</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/test.txt&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = p2.parent / <span class="string">'test2.txt'</span></span><br><span class="line">p3</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/test2.txt&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = p2.parent.joinpath(<span class="string">'etc'</span>, <span class="string">'init.d'</span>, Path(<span class="string">'abc'</span>))</span><br><span class="line">p3</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/etc/init.d/abc&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.exists()</span><br></pre></td></tr></table></figure><pre><code>False</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.is_file()</span><br></pre></td></tr></table></figure><pre><code>False</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.is_dir()</span><br></pre></td></tr></table></figure><pre><code>False</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将路径通过分隔符分割成一个元组</span></span><br><span class="line">p2.parts</span><br></pre></td></tr></table></figure><pre><code>(&#39;/&#39;, &#39;data&#39;, &#39;home&#39;, &#39;gaoc&#39;, &#39;data&#39;, &#39;99.test&#39;, &#39;Untitled.ipynb.test&#39;)</code></pre><h3 id="遍历文件夹"><a href="#遍历文件夹" class="headerlink" title="遍历文件夹"></a>遍历文件夹</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p4 = p2.parent</span><br><span class="line">p4.iterdir()</span><br></pre></td></tr></table></figure><pre><code>&lt;generator object Path.iterdir at 0x7f6dfc0fbeb8&gt;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相当于os.listdir</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> p4.iterdir():</span><br><span class="line">    print(file)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/.ipynb_checkpoints/data/home/gaoc/data/99.test/data-science/data/home/gaoc/data/99.test/Untitled.ipynb</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(p4.iterdir())</span><br></pre></td></tr></table></figure><pre><code>[PosixPath(&#39;/data/home/gaoc/data/99.test/.ipynb_checkpoints&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/test&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/data-science&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/Untitled.ipynb&#39;)]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相当于os.listdir, 但是可以添加匹配条件</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> p4.glob(<span class="string">"*.ipynb"</span>):</span><br><span class="line">    print(file)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/Untitled.ipynb</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(p4.glob(<span class="string">"*.ipynb"</span>))</span><br></pre></td></tr></table></figure><pre><code>[PosixPath(&#39;/data/home/gaoc/data/99.test/Untitled.ipynb&#39;)]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相当于os.walk, 也可以添加匹配条件</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> p4.rglob(<span class="string">"*.ipynb"</span>):</span><br><span class="line">    print(file)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/Untitled.ipynb/data/home/gaoc/data/99.test/.ipynb_checkpoints/Untitled-checkpoint.ipynb</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(p4.rglob(<span class="string">"*.ipynb"</span>))</span><br></pre></td></tr></table></figure><pre><code>[PosixPath(&#39;/data/home/gaoc/data/99.test/Untitled.ipynb&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/.ipynb_checkpoints/Untitled-checkpoint.ipynb&#39;)]</code></pre><h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p5 = Path(p4,<span class="string">'test'</span>)</span><br><span class="line">p5.mkdir(exist_ok=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p5</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/test&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p5.mkdir((exist_ok=<span class="keyword">True</span>, parents=<span class="keyword">True</span>) <span class="comment"># 递归创建文件目录</span></span><br></pre></td></tr></table></figure><h3 id="查看文件信息"><a href="#查看文件信息" class="headerlink" title="查看文件信息"></a>查看文件信息</h3><h4 id="获取详细信息"><a href="#获取详细信息" class="headerlink" title="获取详细信息"></a>获取详细信息</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p6 = Path(<span class="string">'/data/home/gaoc/data/99.test/Untitled.ipynb'</span>)</span><br><span class="line">p6.stat()</span><br></pre></td></tr></table></figure><pre><code>os.stat_result(st_mode=33204, st_ino=57147394, st_dev=2096, st_nlink=1, st_uid=1003, st_gid=1003, st_size=636, st_atime=1555927128, st_mtime=1555926338, st_ctime=1555926338)</code></pre><h4 id="文件大小"><a href="#文件大小" class="headerlink" title="文件大小"></a>文件大小</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p6.stat().st_size</span><br></pre></td></tr></table></figure><pre><code>636</code></pre><h4 id="创建时间"><a href="#创建时间" class="headerlink" title="创建时间"></a>创建时间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p6.stat().st_atime</span><br></pre></td></tr></table></figure><pre><code>1555927128.4478571</code></pre><h4 id="修改时间"><a href="#修改时间" class="headerlink" title="修改时间"></a>修改时间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p6.stat().st_mtime</span><br></pre></td></tr></table></figure><pre><code>1555926338.8676176</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol><li><a href="https://www.jianshu.com/p/a820038e65c3" target="_blank" rel="noopener">https://www.jianshu.com/p/a820038e65c3</a></li><li><a href="https://www.cnblogs.com/hkcs/p/7773484.html" target="_blank" rel="noopener">https://www.cnblogs.com/hkcs/p/7773484.html</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<p><img src="/qnsource/banner/16.jpg" alt="Pathlib使用手册"></p><p><strong>摘要：</strong> 整理了Pathlib的使用方法，便于速查。</p><a id="more"></a><h2 id="Pathlib使用方法归纳"><a href="#Pathlib使用方法归纳" class="headerlink" title="Pathlib使用方法归纳"></a>Pathlib使用方法归纳</h2><h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p1 = Path()</span><br><span class="line">print(p1)</span><br></pre></td></tr></table></figure><pre><code>.</code></pre><h4 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p1.cwd()</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/1.fast.ai/nbs/dl1&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回一个新的路径，这个新路径就是当前Path对象的绝对路径</span></span><br><span class="line">p1.resolve()</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/1.fast.ai/nbs/dl1&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 也可以获取绝对路径，但是推荐使用resolve()</span></span><br><span class="line">p1.absolute()</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/1.fast.ai/nbs/dl1&#39;)</code></pre><h4 id="获取文件名，文件后缀，文件目录"><a href="#获取文件名，文件后缀，文件目录" class="headerlink" title="获取文件名，文件后缀，文件目录"></a>获取文件名，文件后缀，文件目录</h4><ul><li>name: 目录的最后一个部分</li><li>suffix:目录中最后一个部分的扩展名</li><li>stem：目录最后一个部分，没有后缀</li><li>suffixes：返回多个扩展名列表</li><li>with_suffix(suffix)：补充扩展名到尾部，扩展名存在无效</li><li>with_name(name)：替换目录最后一个部分并返回一个新的路径</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p2 = Path(<span class="string">'/data/home/gaoc/data/99.test/Untitled.ipynb.test'</span>)</span><br><span class="line">p2.name</span><br></pre></td></tr></table></figure><pre><code>&#39;Untitled.ipynb&#39;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.stem</span><br></pre></td></tr></table></figure><pre><code>&#39;Untitled&#39;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.suffix</span><br></pre></td></tr></table></figure><pre><code>&#39;.ipynb&#39;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.suffixes</span><br></pre></td></tr></table></figure><pre><code>[&#39;.ipynb&#39;, &#39;.test&#39;]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p2.parent</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回一个iterable, 包含所有父目录</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> p2.parents:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/data/home/gaoc/data/data/home/gaoc/data/home/data/</code></pre><h3 id="拼接、检查与分解"><a href="#拼接、检查与分解" class="headerlink" title="拼接、检查与分解"></a>拼接、检查与分解</h3><p>操作符：/<br>Path对象 / Path对象</p><p>Path对象 / 字符串 或者 字符串 / Path对象</p><p>分解：<br>parts 属性, 可以返回路径中的每一个部分</p><p>joinpath：</p><p>joinpath(*other) 连接多个字符串到Path对象中</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = Path(p2.parent, <span class="string">'test.txt'</span>)</span><br><span class="line">p3</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/test.txt&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = p2.parent / <span class="string">'test2.txt'</span></span><br><span class="line">p3</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/test2.txt&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p3 = p2.parent.joinpath(<span class="string">'etc'</span>, <span class="string">'init.d'</span>, Path(<span class="string">'abc'</span>))</span><br><span class="line">p3</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/etc/init.d/abc&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.exists()</span><br></pre></td></tr></table></figure><pre><code>False</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.is_file()</span><br></pre></td></tr></table></figure><pre><code>False</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p3.is_dir()</span><br></pre></td></tr></table></figure><pre><code>False</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将路径通过分隔符分割成一个元组</span></span><br><span class="line">p2.parts</span><br></pre></td></tr></table></figure><pre><code>(&#39;/&#39;, &#39;data&#39;, &#39;home&#39;, &#39;gaoc&#39;, &#39;data&#39;, &#39;99.test&#39;, &#39;Untitled.ipynb.test&#39;)</code></pre><h3 id="遍历文件夹"><a href="#遍历文件夹" class="headerlink" title="遍历文件夹"></a>遍历文件夹</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p4 = p2.parent</span><br><span class="line">p4.iterdir()</span><br></pre></td></tr></table></figure><pre><code>&lt;generator object Path.iterdir at 0x7f6dfc0fbeb8&gt;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相当于os.listdir</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> p4.iterdir():</span><br><span class="line">    print(file)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/.ipynb_checkpoints/data/home/gaoc/data/99.test/data-science/data/home/gaoc/data/99.test/Untitled.ipynb</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(p4.iterdir())</span><br></pre></td></tr></table></figure><pre><code>[PosixPath(&#39;/data/home/gaoc/data/99.test/.ipynb_checkpoints&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/test&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/data-science&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/Untitled.ipynb&#39;)]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相当于os.listdir, 但是可以添加匹配条件</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> p4.glob(<span class="string">"*.ipynb"</span>):</span><br><span class="line">    print(file)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/Untitled.ipynb</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(p4.glob(<span class="string">"*.ipynb"</span>))</span><br></pre></td></tr></table></figure><pre><code>[PosixPath(&#39;/data/home/gaoc/data/99.test/Untitled.ipynb&#39;)]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 相当于os.walk, 也可以添加匹配条件</span></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> p4.rglob(<span class="string">"*.ipynb"</span>):</span><br><span class="line">    print(file)</span><br></pre></td></tr></table></figure><pre><code>/data/home/gaoc/data/99.test/Untitled.ipynb/data/home/gaoc/data/99.test/.ipynb_checkpoints/Untitled-checkpoint.ipynb</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(p4.rglob(<span class="string">"*.ipynb"</span>))</span><br></pre></td></tr></table></figure><pre><code>[PosixPath(&#39;/data/home/gaoc/data/99.test/Untitled.ipynb&#39;), PosixPath(&#39;/data/home/gaoc/data/99.test/.ipynb_checkpoints/Untitled-checkpoint.ipynb&#39;)]</code></pre><h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p5 = Path(p4,<span class="string">'test'</span>)</span><br><span class="line">p5.mkdir(exist_ok=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p5</span><br></pre></td></tr></table></figure><pre><code>PosixPath(&#39;/data/home/gaoc/data/99.test/test&#39;)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p5.mkdir((exist_ok=<span class="keyword">True</span>, parents=<span class="keyword">True</span>) <span class="comment"># 递归创建文件目录</span></span><br></pre></td></tr></table></figure><h3 id="查看文件信息"><a href="#查看文件信息" class="headerlink" title="查看文件信息"></a>查看文件信息</h3><h4 id="获取详细信息"><a href="#获取详细信息" class="headerlink" title="获取详细信息"></a>获取详细信息</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p6 = Path(<span class="string">'/data/home/gaoc/data/99.test/Untitled.ipynb'</span>)</span><br><span class="line">p6.stat()</span><br></pre></td></tr></table></figure><pre><code>os.stat_result(st_mode=33204, st_ino=57147394, st_dev=2096, st_nlink=1, st_uid=1003, st_gid=1003, st_size=636, st_atime=1555927128, st_mtime=1555926338, st_ctime=1555926338)</code></pre><h4 id="文件大小"><a href="#文件大小" class="headerlink" title="文件大小"></a>文件大小</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p6.stat().st_size</span><br></pre></td></tr></table></figure><pre><code>636</code></pre><h4 id="创建时间"><a href="#创建时间" class="headerlink" title="创建时间"></a>创建时间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p6.stat().st_atime</span><br></pre></td></tr></table></figure><pre><code>1555927128.4478571</code></pre><h4 id="修改时间"><a href="#修改时间" class="headerlink" title="修改时间"></a>修改时间</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p6.stat().st_mtime</span><br></pre></td></tr></table></figure><pre><code>1555926338.8676176</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol><li><a href="https://www.jianshu.com/p/a820038e65c3" target="_blank" rel="noopener">https://www.jianshu.com/p/a820038e65c3</a></li><li><a href="https://www.cnblogs.com/hkcs/p/7773484.html" target="_blank" rel="noopener">https://www.cnblogs.com/hkcs/p/7773484.html</a></li></ol>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;/qnsource/banner/16.jpg&quot; alt=&quot;Test Picture&quot;&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;/qnsource/banner/16.jpg&quot; alt=&quot;Pathlib使用手册&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;摘要：&lt;/strong&gt; 整理了Pathlib的使用方法，便于速查。&lt;/p&gt;
     
     </summary>
@@ -62,9 +62,9 @@
       <category term="深度学习" scheme="http://blog.a-stack.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
       <category term="Fast.ai" scheme="http://blog.a-stack.com/tags/Fast-ai/"/>
     
@@ -114,11 +114,11 @@
       <category term="深度学习" scheme="http://blog.a-stack.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -172,9 +172,9 @@
     
       <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
-      <category term="Numpy" scheme="http://blog.a-stack.com/tags/Numpy/"/>
-    
       <category term="教学" scheme="http://blog.a-stack.com/tags/%E6%95%99%E5%AD%A6/"/>
+    
+      <category term="Numpy" scheme="http://blog.a-stack.com/tags/Numpy/"/>
     
       <category term="工具使用" scheme="http://blog.a-stack.com/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
     
@@ -227,9 +227,9 @@
       <category term="动手实践营" scheme="http://blog.a-stack.com/categories/%E5%8A%A8%E6%89%8B%E5%AE%9E%E8%B7%B5%E8%90%A5/"/>
     
     
-      <category term="部署" scheme="http://blog.a-stack.com/tags/%E9%83%A8%E7%BD%B2/"/>
-    
       <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="部署" scheme="http://blog.a-stack.com/tags/%E9%83%A8%E7%BD%B2/"/>
     
       <category term="资源调度" scheme="http://blog.a-stack.com/tags/%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6/"/>
     
@@ -255,11 +255,11 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -281,9 +281,9 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
       <category term="时序数据" scheme="http://blog.a-stack.com/tags/%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE/"/>
     
@@ -321,11 +321,11 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -347,11 +347,11 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -377,11 +377,11 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -404,11 +404,11 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -436,9 +436,9 @@
     
       <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
-      <category term="教学" scheme="http://blog.a-stack.com/tags/%E6%95%99%E5%AD%A6/"/>
-    
       <category term="工程实践" scheme="http://blog.a-stack.com/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+      <category term="教学" scheme="http://blog.a-stack.com/tags/%E6%95%99%E5%AD%A6/"/>
     
   </entry>
   
@@ -461,11 +461,11 @@
       <category term="机器学习" scheme="http://blog.a-stack.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="文献" scheme="http://blog.a-stack.com/tags/%E6%96%87%E7%8C%AE/"/>
     
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -494,9 +494,9 @@
       <category term="读书笔记" scheme="http://blog.a-stack.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
     
-      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="算法" scheme="http://blog.a-stack.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="人工智能" scheme="http://blog.a-stack.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
       <category term="书籍" scheme="http://blog.a-stack.com/tags/%E4%B9%A6%E7%B1%8D/"/>
     
