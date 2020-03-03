@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>经典网络复现之resnet | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典网络复现之ResNet">
+<meta property="og:url" content="http://blog.a-stack.com/2018/07/12/经典网络复现之ResNet/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/07/12/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png">
+<meta property="og:updated_time" content="2019-02-26T05:19:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="经典网络复现之ResNet">
+<meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/07/12/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-经典网络复现之ResNet" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      经典网络复现之ResNet
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/12/经典网络复现之ResNet/" class="article-date">
+	  <time datetime="2018-07-12T05:58:12.000Z" itemprop="datePublished">2018-07-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/07/12/经典网络复现之ResNet/../qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG" alt="Residual Module"></p>
+<p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
+<a id="more"></a>
+<p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
+<ul>
+<li>ImageNet数据集及数据准备</li>
+<li>AlexNet网络</li>
+<li>VGG网络</li>
+<li>GoogLeNet网络</li>
+<li><strong>ResNet网络</strong></li>
+<li>SqueezeNet网络</li>
+</ul>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ResNet在整个深度神经网络发展过程中国起到了里程碑式的意义，残差模块的提出为训练数千层的神经网络提供了方法，后续许多网络也纷纷在其网络架构中增加残差模块，力图提升训练效率。</p>
+<ul>
+<li>论文：<ul>
+<li><a href="http://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">Deep Residual Learning for Image Recognition</a></li>
+<li><a href="https://arxiv.org/abs/1603.05027" target="_blank" rel="noopener">Identity Mappings in Deep Residual Networks</a></li>
+</ul>
+</li>
+<li>数据集： ImageNet 2012 ILSRVC数据集（数据集的获取及准备详见<a href="/2018/07/06/ImageNet-DataSet/">ImageNet-DataSet</a>）</li>
+<li>计算框架： MxNet</li>
+<li>算力资源：AWS云主机p2.8xlarge：8个Tesla K80 GPU ($7.20/hour)<ul>
+<li>总计训练时间3天左右</li>
+<li>每轮迭代时间：~3500秒(~1小时)</li>
+</ul>
+</li>
+</ul>
+<h2 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a>ResNet</h2><p>由于之前准备写过一篇博客来分析ResNet，再次不再展开说明了，详细内容参见：<a href="/2018/05/21/ResNet/">经典网络归纳： ResNet</a></p>
+<h2 id="重头训练一个ResNet"><a href="#重头训练一个ResNet" class="headerlink" title="重头训练一个ResNet"></a>重头训练一个ResNet</h2><p>我们训练的标的是ResNet50，即50层的残差网络，50代表了整个网络中所有含参数层的数目：</p>
+<p>1 + （3x3） + (4x3) + (6x3) + (3x3) + 1 = 50</p>
+<p>第一个卷积层使用7x7的卷积核，用于快速降低网络尺寸，配合紧接着的池化层，将输入224x224的尺寸降低到56x56。</p>
+<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png" alt="ResNet—Architecture"></p>
+<ol>
+<li>使用MxNet构建ResNet代码</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MxResNet</span>:</span></span><br><span class="line">	<span class="comment"># uses "bottleneck" module with pre-activation (He et al. 2016)</span></span><br><span class="line"><span class="meta">	@staticmethod</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">residual_module</span><span class="params">(data, K, stride, red=False, bnEps=<span class="number">2e-5</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">		bnMom=<span class="number">0.9</span>)</span>:</span></span><br><span class="line">		<span class="comment"># the shortcut branch of the ResNet module should be</span></span><br><span class="line">		<span class="comment"># initialized as the input (identity) data</span></span><br><span class="line">		shortcut = data</span><br><span class="line"></span><br><span class="line">		<span class="comment"># the first block of the ResNet module are 1x1 CONVs</span></span><br><span class="line">		bn1 = mx.sym.BatchNorm(data=data, fix_gamma=<span class="keyword">False</span>,</span><br><span class="line">			eps=bnEps, momentum=bnMom)</span><br><span class="line">		act1 = mx.sym.Activation(data=bn1, act_type=<span class="string">"relu"</span>)</span><br><span class="line">		conv1 = mx.sym.Convolution(data=act1, pad=(<span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">			kernel=(<span class="number">1</span>, <span class="number">1</span>), stride=(<span class="number">1</span>, <span class="number">1</span>), num_filter=int(K * <span class="number">0.25</span>),</span><br><span class="line">			no_bias=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># the second block of the ResNet module are 3x3 CONVs</span></span><br><span class="line">		bn2 = mx.sym.BatchNorm(data=conv1, fix_gamma=<span class="keyword">False</span>,</span><br><span class="line">			eps=bnEps, momentum=bnMom)</span><br><span class="line">		act2 = mx.sym.Activation(data=bn2, act_type=<span class="string">"relu"</span>)</span><br><span class="line">		conv2 = mx.sym.Convolution(data=act2, pad=(<span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">			kernel=(<span class="number">3</span>, <span class="number">3</span>), stride=stride, num_filter=int(K * <span class="number">0.25</span>),</span><br><span class="line">			no_bias=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># the third block of the ResNet module is another set of 1x1</span></span><br><span class="line">		<span class="comment"># CONVs</span></span><br><span class="line">		bn3 = mx.sym.BatchNorm(data=conv2, fix_gamma=<span class="keyword">False</span>,</span><br><span class="line">			eps=bnEps, momentum=bnMom)</span><br><span class="line">		act3 = mx.sym.Activation(data=bn3, act_type=<span class="string">"relu"</span>)</span><br><span class="line">		conv3 = mx.sym.Convolution(data=act3, pad=(<span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">			kernel=(<span class="number">1</span>, <span class="number">1</span>), stride=(<span class="number">1</span>, <span class="number">1</span>), num_filter=K, no_bias=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># if we are to reduce the spatial size, apply a CONV layer</span></span><br><span class="line">		<span class="comment"># to the shortcut</span></span><br><span class="line">		<span class="keyword">if</span> red:</span><br><span class="line">			shortcut = mx.sym.Convolution(data=act1, pad=(<span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">				kernel=(<span class="number">1</span>, <span class="number">1</span>), stride=stride, num_filter=K,</span><br><span class="line">				no_bias=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># add together the shortcut and the final CONV</span></span><br><span class="line">		add = conv3 + shortcut</span><br><span class="line"></span><br><span class="line">		<span class="comment"># return the addition as the output of the ResNet module</span></span><br><span class="line">		<span class="keyword">return</span> add</span><br><span class="line"></span><br><span class="line"><span class="meta">	@staticmethod</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(classes, stages, filters, bnEps=<span class="number">2e-5</span>, bnMom=<span class="number">0.9</span>)</span>:</span></span><br><span class="line">		<span class="comment"># data input</span></span><br><span class="line">		data = mx.sym.Variable(<span class="string">"data"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Block #1: BN =&gt; CONV =&gt; ACT =&gt; POOL, then initialize the</span></span><br><span class="line">		<span class="comment"># "body" of the network</span></span><br><span class="line">		bn1_1 = mx.sym.BatchNorm(data=data, fix_gamma=<span class="keyword">True</span>,</span><br><span class="line">			eps=bnEps, momentum=bnMom)</span><br><span class="line">		conv1_1 = mx.sym.Convolution(data=bn1_1, pad=(<span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">			kernel=(<span class="number">7</span>, <span class="number">7</span>), stride=(<span class="number">2</span>, <span class="number">2</span>), num_filter=filters[<span class="number">0</span>],</span><br><span class="line">			no_bias=<span class="keyword">True</span>)</span><br><span class="line">		bn1_2 = mx.sym.BatchNorm(data=conv1_1, fix_gamma=<span class="keyword">False</span>,</span><br><span class="line">			eps=bnEps, momentum=bnMom)</span><br><span class="line">		act1_2 = mx.sym.Activation(data=bn1_2, act_type=<span class="string">"relu"</span>)</span><br><span class="line">		pool1 = mx.sym.Pooling(data=act1_2, pool_type=<span class="string">"max"</span>,</span><br><span class="line">			pad=(<span class="number">1</span>, <span class="number">1</span>), kernel=(<span class="number">3</span>, <span class="number">3</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">		body = pool1</span><br><span class="line"></span><br><span class="line">		<span class="comment"># loop over the number of stages</span></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(stages)):</span><br><span class="line">			<span class="comment"># initialize the stride, then apply a residual module</span></span><br><span class="line">			<span class="comment"># used to reduce the spatial size of the input volume</span></span><br><span class="line">			stride = (<span class="number">1</span>, <span class="number">1</span>) <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">else</span> (<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">			body = MxResNet.residual_module(body, filters[i + <span class="number">1</span>],</span><br><span class="line">				stride, red=<span class="keyword">True</span>, bnEps=bnEps, bnMom=bnMom)</span><br><span class="line"></span><br><span class="line">			<span class="comment"># loop over the number of layers in the stage</span></span><br><span class="line">			<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, stages[i] - <span class="number">1</span>):</span><br><span class="line">				<span class="comment"># apply a ResNet module</span></span><br><span class="line">				body = MxResNet.residual_module(body, filters[i + <span class="number">1</span>],</span><br><span class="line">					(<span class="number">1</span>, <span class="number">1</span>), bnEps=bnEps, bnMom=bnMom)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># apply BN =&gt; ACT =&gt; POOL</span></span><br><span class="line">		bn2_1 = mx.sym.BatchNorm(data=body, fix_gamma=<span class="keyword">False</span>,</span><br><span class="line">			eps=bnEps, momentum=bnMom)</span><br><span class="line">		act2_1 = mx.sym.Activation(data=bn2_1, act_type=<span class="string">"relu"</span>)</span><br><span class="line">		pool2 = mx.sym.Pooling(data=act2_1, pool_type=<span class="string">"avg"</span>,</span><br><span class="line">			global_pool=<span class="keyword">True</span>, kernel=(<span class="number">7</span>, <span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">		<span class="comment"># softmax classifier</span></span><br><span class="line">		flatten = mx.sym.Flatten(data=pool2)</span><br><span class="line">		fc1 = mx.sym.FullyConnected(data=flatten, num_hidden=classes)</span><br><span class="line">		model = mx.sym.SoftmaxOutput(data=fc1, name=<span class="string">"softmax"</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># return the network architecture</span></span><br><span class="line">		<span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>几点注意点：</strong></p>
+<ol>
+<li>在bottleneck版本的残差模块中，前两个卷积核的数目是第三个的1/4；</li>
+<li>本次试验中使用了预激活版本的残差块；</li>
+<li>整个网络中没有使用dropout层；</li>
+<li>注意，网络结构一开始，先使用一个BN应用到输入数据，起到正则化的作用；</li>
+<li>全局池化输出被flatten之后接一个FC层丢给softmax</li>
+</ol>
+</blockquote>
+<h3 id="训练ResNet"><a href="#训练ResNet" class="headerlink" title="训练ResNet"></a>训练ResNet</h3><p>训练用的脚本和前面几个网络一致。</p>
+<blockquote>
+<p><strong>几个注意点：</strong></p>
+<ol>
+<li><code>batchSize = config.BATCH_SIZE * config.NUM_DEVICES</code>; 使用k80 12GB先存，选择batchSzie=<strong>32</strong>；</li>
+<li>优化算法使用SGD，初始学习率为1e-1，动量0.9，L2权重正则化参数0.0001；rescale参数尤为关键，根据批的大小放大梯度：rescale_grad=1.0 / batchSize；（He论文的建议参数）</li>
+<li>使用了MSRA进行参数初始化，initializer=mx.initializer.MSRAPrelu()；</li>
+</ol>
+</blockquote>
+<h4 id="学习率的控制"><a href="#学习率的控制" class="headerlink" title="学习率的控制"></a>学习率的控制</h4><blockquote>
+<p>训练ResNet由于初始学习率高，所以最终完成训练所需的迭代数目要小很多；</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Epoch</th>
+<th>学习率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1-64</td>
+<td>1e-2</td>
+</tr>
+<tr>
+<td>65-80</td>
+<td>1e-3</td>
+</tr>
+<tr>
+<td>81-89</td>
+<td>1e-4</td>
+</tr>
+<tr>
+<td>90-100</td>
+<td>1e-5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<ol>
+<li>控制每轮学习率修改的观察窗口要在10-15个epoch之后再下结论，确定该阶段验证集准确率饱和了再行降低学习率；</li>
+<li>调整学习率 <code>python train_alexnet.py --checkpoints checkpoints --prefix alexnet \ --start-epoch 50</code></li>
+<li>在8个GPU上，每轮用时1000多秒；</li>
+</ol>
+</blockquote>
+<ol>
+<li><p>第一遍训练采用1e-1的学习率训练16轮，发现饱和现象，而且训练误差和测试误差约拉越大；</p>
+<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png" alt="1-16"></p>
+<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png" alt="1-16-loss"></p>
+</li>
+<li><p>在第10个迭代调整学习率到1e-2，验证集准确率有大幅提升，代表调整有效，之后在16轮迭代之后再次降低学习率到1e-3,25轮调整学习率到1e-4，最终top-5的准确率为0.884073，top-1准确率为0.68338：</p>
+<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png" alt="1-31-accuracy"><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png" alt="1-31-loss"></p>
+</li>
+</ol>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
+<li><p>初始学习率的选择</p>
+<p>初始学习率如果选择1e-2，与1e-1比，很早模型就出现过拟合现象，无法到达更高的训练精度；</p>
+<p>比如使用1e-1，在第10轮调整学习率到1e-2之后，网络准确率会出现一个10%以上的跳变；</p>
+</li>
+<li><p>如果不采用预激活</p>
+</li>
+</ol>
+<p>   3-5%点的性能下降，原因见作者原文分析；</p>
+<ol>
+<li>选取30轮的训练结果，在测试集数据上进行验证，结果如下：</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-1</span>: 71<span class="selector-class">.49</span>%</span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">rank-5</span>: 89<span class="selector-class">.96</span>%</span><br></pre></td></tr></table></figure>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li>效果不是十分理想，主要原因应该是第一阶段1e-1学习率的训练过程过早的认为过拟合打断了训练过程，应该让这个过程再持续一段时间观察效果，无奈训练一次ResNet实在太久，放弃继续尝试了；</li>
+<li>训练一个大型数据集的深度神经网络是个费时费力的活，为了获得最优的参数，一般需要进行10-100次参数实验，需要极大的耐心和计算资源；</li>
+<li>训练深度神经网络的目的不是找寻全局最优解，因为一般很难找到这个解，我们只是在探寻一个比上次效果更好的模型；</li>
+<li>先使用ReLU作为激活函数获得baseline，再选择提花为ELU来获得提升；</li>
+<li>训练深层网络时，考虑使用MSRA/HE的初始化参数，并配合PReLU一起使用，效果更好；</li>
+<li>对于ResNet要想再进一步提升性能，需要考虑加强正则化、更多的数据放大、合理的应用dropout等方式。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf" target="_blank" rel="noopener">ImageNet Classification with Deep Convolutional Neural Networks</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/07/12/经典网络复现之ResNet/" target="_blank" title="经典网络复现之ResNet">http://blog.a-stack.com/2018/07/12/经典网络复现之ResNet/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络复现/">网络复现</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/12/经典网络复现之GoogleNet/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          经典网络复现之GoogleNet
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/12/经典网络复现之SqueezeNet/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">经典网络复现之SqueezeNet</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResNet"><span class="nav-number">2.</span> <span class="nav-text">ResNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重头训练一个ResNet"><span class="nav-number">3.</span> <span class="nav-text">重头训练一个ResNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#训练ResNet"><span class="nav-number">3.1.</span> <span class="nav-text">训练ResNet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#学习率的控制"><span class="nav-number">3.1.1.</span> <span class="nav-text">学习率的控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验"><span class="nav-number">3.2.</span> <span class="nav-text">实验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

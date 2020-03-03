@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>数据科学工具——numpy | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要：工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据科学工具——Numpy">
+<meta property="og:url" content="http://blog.a-stack.com/2018/12/30/数据科学工具——Numpy/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要：工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/30/数据科学工具——Numpy/2018-12-30-数据科学工具——Numpy/Numpy.png">
+<meta property="og:updated_time" content="2018-12-30T14:11:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据科学工具——Numpy">
+<meta name="twitter:description" content="摘要：工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/30/数据科学工具——Numpy/2018-12-30-数据科学工具——Numpy/Numpy.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-数据科学工具——Numpy" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      数据科学工具——Numpy
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/30/数据科学工具——Numpy/" class="article-date">
+	  <time datetime="2018-12-30T08:54:48.000Z" itemprop="datePublished">2018-12-30</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/工具/">工具</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/12/30/数据科学工具——Numpy/2018-12-30-数据科学工具——Numpy/Numpy.png" alt="Numpy"></p>
+<p><strong>摘要：</strong>工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。</p>
+<a id="more"></a>
+<h2 id="Numpy"><a href="#Numpy" class="headerlink" title="Numpy"></a>Numpy</h2><ul>
+<li>Python List and Numpy</li>
+<li>一个Numpy矩阵中的所有元素类型必须相同；</li>
+<li>矩阵slicing操作，返回的是对原矩阵的引用而非复制，所以对其操作将影响原矩阵；</li>
+</ul>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create a 3x5 array filled with 3.14 </span></span><br><span class="line">np.full((<span class="number">3</span>, <span class="number">5</span>), <span class="number">3.14</span>)</span><br><span class="line"><span class="comment"># Create an array filled with a linear sequence # Starting at 0, ending at 20, stepping by 2 # (this is similar to the built-in range() function) </span></span><br><span class="line">np.arange(<span class="number">0</span>, <span class="number">20</span>, <span class="number">2</span>)</span><br><span class="line"><span class="comment">#&gt;&gt; array([ 0,  2,  4,  6,  8, 10, 12, 14, 16, 18])</span></span><br><span class="line"><span class="comment"># Create an array of five values evenly spaced between 0 and 1 </span></span><br><span class="line">np.linspace(<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>)</span><br><span class="line"><span class="comment">#&gt;&gt; array([0.  , 0.25, 0.5 , 0.75, 1.  ])</span></span><br></pre></td></tr></table></figure>
+<h2 id="矩阵组合：-np-concatenate-np-vstack-np-hstack"><a href="#矩阵组合：-np-concatenate-np-vstack-np-hstack" class="headerlink" title="矩阵组合： np.concatenate,np.vstack,np.hstack"></a>矩阵组合： <code>np.concatenate</code>,<code>np.vstack</code>,<code>np.hstack</code></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># concatenate along the second axis (zero-indexed) </span></span><br><span class="line">np.concatenate([grid, grid], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="np-random"><a href="#np-random" class="headerlink" title="np.random"></a><code>np.random</code></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create a 3x3 array of uniformly distributed # random values between 0 and 1  </span></span><br><span class="line">  np.random.random((<span class="number">3</span>, <span class="number">3</span>)) </span><br><span class="line">Out[<span class="number">17</span>]: array([[ <span class="number">0.99844933</span>, <span class="number">0.52183819</span>, <span class="number">0.22421193</span>], [ <span class="number">0.08007488</span>, <span class="number">0.45429293</span>, <span class="number">0.20941444</span>], [ <span class="number">0.14360941</span>, <span class="number">0.96910973</span>, <span class="number">0.946117</span> ]])</span><br><span class="line">In[<span class="number">18</span>]: <span class="comment"># Create a 3x3 array of normally distributed random values # with mean 0 and standard deviation 1 </span></span><br><span class="line">  np.random.normal(<span class="number">0</span>, <span class="number">1</span>, (<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">Out[<span class="number">18</span>]: array([[ <span class="number">1.51772646</span>, <span class="number">0.39614948</span>, <span class="number">-0.10634696</span>], [ <span class="number">0.25671348</span>, <span class="number">0.00732722</span>, <span class="number">0.37783601</span>], [ <span class="number">0.68446945</span>, <span class="number">0.15926039</span>, <span class="number">-0.70744073</span>]])</span><br><span class="line">In[<span class="number">19</span>]: <span class="comment"># Create a 3x3 array of random integers in the interval [0, 10) </span></span><br><span class="line">  np.random.randint(<span class="number">0</span>, <span class="number">10</span>, (<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">Out[<span class="number">19</span>]: array([[<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>], [<span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ol>
+<li><p>矩阵元素反置</p>
+<p>x是一维矩阵</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x[::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>Book《Python Data Science Handbook》](<a href="https://jakevdp.github.io/PythonDataScienceHandbook/" target="_blank" rel="noopener">https://jakevdp.github.io/PythonDataScienceHandbook/</a>)</li>
+<li><a href="https://github.com/jakevdp/PythonDataScienceHandbook" target="_blank" rel="noopener">https://github.com/jakevdp/PythonDataScienceHandbook</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/30/数据科学工具——Numpy/" target="_blank" title="数据科学工具——Numpy">http://blog.a-stack.com/2018/12/30/数据科学工具——Numpy/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Numpy/">Numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具使用/">工具使用</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教学/">教学</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/02/数据科学工具——Pandas/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          数据科学工具——Pandas
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/29/数据科学工具——Ipython/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">数据科学工具——Ipython</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Numpy"><span class="nav-number">1.</span> <span class="nav-text">Numpy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">2.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵组合：-np-concatenate-np-vstack-np-hstack"><span class="nav-number">3.</span> <span class="nav-text">矩阵组合： np.concatenate,np.vstack,np.hstack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#np-random"><span class="nav-number">4.</span> <span class="nav-text">np.random</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧"><span class="nav-number">5.</span> <span class="nav-text">技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

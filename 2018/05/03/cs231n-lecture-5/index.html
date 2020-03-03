@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>cs231n课程笔记:（lecture 5）cnn基础 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs231n课程笔记:（Lecture 5）CNN基础">
+<meta property="og:url" content="http://blog.a-stack.com/2018/05/03/cs231n-lecture-5/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/05/03/qnsource/images/2018-04-28-cs231n-notes/FCN_CNN.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/05/03/qnsource/images/2018-04-28-cs231n-notes/convnet.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/05/03/qnsource/images/2018-04-28-cs231n-notes/depthcol.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/05/03/qnsource/images/2018-04-28-cs231n-notes/max-pooling.png">
+<meta property="og:updated_time" content="2019-01-08T03:13:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cs231n课程笔记:（Lecture 5）CNN基础">
+<meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/05/03/qnsource/images/2018-04-28-cs231n-notes/FCN_CNN.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-cs231n-lecture-5" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      cs231n课程笔记:（Lecture 5）CNN基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/03/cs231n-lecture-5/" class="article-date">
+	  <time datetime="2018-05-03T08:55:26.000Z" itemprop="datePublished">2018-05-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/课程笔记/">课程笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。</p>
+<!-- excerpt -->
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：</p>
+<ul>
+<li>课程主页： <a href="http://cs231n.stanford.edu/" target="_blank" rel="noopener">http://cs231n.stanford.edu/</a></li>
+<li>课程Notes：<a href="http://cs231n.github.io/" target="_blank" rel="noopener">http://cs231n.github.io/</a></li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Date</th>
+<th>Description</th>
+<th>Course Materials</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lecture 5</td>
+<td>Tuesday April 17</td>
+<td><strong>Convolutional Neural Networks</strong> History Convolution and pooling ConvNets outside vision</td>
+<td><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_lecture05.pdf" target="_blank" rel="noopener">[slides]</a> <a href="http://cs231n.github.io/convolutional-networks/" target="_blank" rel="noopener">ConvNet notes</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Convolutional-Neural-Network-CNN-ConvNet"><a href="#Convolutional-Neural-Network-CNN-ConvNet" class="headerlink" title="Convolutional Neural Network(CNN/ConvNet)"></a>Convolutional Neural Network(CNN/ConvNet)</h2><blockquote>
+<p>更多内容参见<sup><a href="#fn_4" id="reffn_4">4</a></sup></p>
+</blockquote>
+<p><strong>FCN vs CNN</strong> </p>
+<p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/FCN_CNN.png" alt="FCN_CNN"></p>
+<p><strong>CNN的层次结构</strong></p>
+<p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/convnet.jpeg" alt="convnet"></p>
+<p><strong>The brain view</strong>. If you’re a fan of the brain/neuron analogies, every entry in the 3D output volume can also be interpreted as an output of a neuron that looks at only a small region in the input and shares parameters with all neurons to the left and right spatially (since these numbers all result from applying the same filter). </p>
+<p><strong>Local Connectivity.</strong> filter 大小的区域内容，卷积层的每个神经元只与前一层filter中的神经元保持连接，深度为上一层网络的深度。</p>
+<p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/depthcol.jpeg" alt="depthcol"></p>
+<p><strong>卷积层的输出：</strong></p>
+<script type="math/tex; mode=display">
+\frac{W - F + 2P}{S} + 1</script><p>其中，</p>
+<ul>
+<li>$W$ 代表输入层大小；</li>
+<li>$F$ filter的大小；</li>
+<li>$P$ Zero-Padding的大小；</li>
+<li>$S$ 滑动窗口滑动步长</li>
+</ul>
+<p>当$S=1$, $P=(F-1)/2$ 时，输入输出网络具有相同的大小。</p>
+<p><strong>参数共享：</strong></p>
+<ul>
+<li>卷积神经网络<strong>每一层</strong>共享同一套权重参数（W，b），降低参数总量。</li>
+<li>全部参数数目为：$(F\cdot F \cdot D_1 +1)* K$,其中 $D_1$ 为上一层的深度，$K$ 为filter个数。</li>
+</ul>
+<blockquote>
+<p>直观解释，在一个图像一个filter区域学到的特征（比如纹理），在图像其它地方用来匹配纹理特征也奏效</p>
+</blockquote>
+<h4 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h4><p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/max-pooling.png" alt="max-pooling"></p>
+<ul>
+<li>一般max pooling常采用的参数为$F=3,S=2$ (Overlapping pooling),$F=2, S=2$ (Max Pooling);</li>
+<li>反向传播时，对于$max(x,y)$ 形式，梯度传递最大的激活值；</li>
+<li>一般很少使用$F \gt 3$ 的filter</li>
+<li>目前很多新的论文中已经尽量避免使用池化操作，构建全卷积的神经网络架构，除了最后一层采用全局池化层。</li>
+</ul>
+<h4 id="FC和CNN可以相互转换"><a href="#FC和CNN可以相互转换" class="headerlink" title="FC和CNN可以相互转换"></a>FC和CNN可以相互转换</h4><ul>
+<li>FC表示CNN： 使用一个很大的参数矩阵，矩阵中多数单元为0少数表征本地连接的地方为非0，同时很多单元的权重相同（参数共享的描述）；</li>
+<li>CNN表示FC： 使用K层的1x1卷积网络可以描述K个节点的FC。</li>
+</ul>
+<h3 id="堆叠小size卷积核的好处"><a href="#堆叠小size卷积核的好处" class="headerlink" title="堆叠小size卷积核的好处"></a>堆叠小size卷积核的好处</h3><ul>
+<li>比大的卷积核有更多的非线性，可以获得更复杂的特征提取能力</li>
+<li>更少的权重数目</li>
+</ul>
+<h4 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">INPUT: [<span class="number">224</span>x224x3]        memory:  <span class="number">224</span>*<span class="number">224</span>*<span class="number">3</span>=<span class="number">150</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-64</span>: [<span class="number">224</span>x224x64]  memory:  <span class="number">224</span>*<span class="number">224</span>*<span class="number">64</span>=<span class="number">3.2</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">3</span>)*<span class="number">64</span> = <span class="number">1</span>,<span class="number">728</span></span><br><span class="line">CONV3<span class="number">-64</span>: [<span class="number">224</span>x224x64]  memory:  <span class="number">224</span>*<span class="number">224</span>*<span class="number">64</span>=<span class="number">3.2</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">64</span>)*<span class="number">64</span> = <span class="number">36</span>,<span class="number">864</span></span><br><span class="line">POOL2: [<span class="number">112</span>x112x64]  memory:  <span class="number">112</span>*<span class="number">112</span>*<span class="number">64</span>=<span class="number">800</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-128</span>: [<span class="number">112</span>x112x128]  memory:  <span class="number">112</span>*<span class="number">112</span>*<span class="number">128</span>=<span class="number">1.6</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">64</span>)*<span class="number">128</span> = <span class="number">73</span>,<span class="number">728</span></span><br><span class="line">CONV3<span class="number">-128</span>: [<span class="number">112</span>x112x128]  memory:  <span class="number">112</span>*<span class="number">112</span>*<span class="number">128</span>=<span class="number">1.6</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">128</span>)*<span class="number">128</span> = <span class="number">147</span>,<span class="number">456</span></span><br><span class="line">POOL2: [<span class="number">56</span>x56x128]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">128</span>=<span class="number">400</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-256</span>: [<span class="number">56</span>x56x256]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">256</span>=<span class="number">800</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">128</span>)*<span class="number">256</span> = <span class="number">294</span>,<span class="number">912</span></span><br><span class="line">CONV3<span class="number">-256</span>: [<span class="number">56</span>x56x256]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">256</span>=<span class="number">800</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">256</span>)*<span class="number">256</span> = <span class="number">589</span>,<span class="number">824</span></span><br><span class="line">CONV3<span class="number">-256</span>: [<span class="number">56</span>x56x256]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">256</span>=<span class="number">800</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">256</span>)*<span class="number">256</span> = <span class="number">589</span>,<span class="number">824</span></span><br><span class="line">POOL2: [<span class="number">28</span>x28x256]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">256</span>=<span class="number">200</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">28</span>x28x512]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">512</span>=<span class="number">400</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">256</span>)*<span class="number">512</span> = <span class="number">1</span>,<span class="number">179</span>,<span class="number">648</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">28</span>x28x512]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">512</span>=<span class="number">400</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">28</span>x28x512]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">512</span>=<span class="number">400</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">POOL2: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">POOL2: [<span class="number">7</span>x7x512]  memory:  <span class="number">7</span>*<span class="number">7</span>*<span class="number">512</span>=<span class="number">25</span>K  weights: <span class="number">0</span></span><br><span class="line">FC: [<span class="number">1</span>x1x4096]  memory:  <span class="number">4096</span>  weights: <span class="number">7</span>*<span class="number">7</span>*<span class="number">512</span>*<span class="number">4096</span> = <span class="number">102</span>,<span class="number">760</span>,<span class="number">448</span></span><br><span class="line">FC: [<span class="number">1</span>x1x4096]  memory:  <span class="number">4096</span>  weights: <span class="number">4096</span>*<span class="number">4096</span> = <span class="number">16</span>,<span class="number">777</span>,<span class="number">216</span></span><br><span class="line">FC: [<span class="number">1</span>x1x1000]  memory:  <span class="number">1000</span> weights: <span class="number">4096</span>*<span class="number">1000</span> = <span class="number">4</span>,<span class="number">096</span>,<span class="number">000</span></span><br><span class="line"></span><br><span class="line">TOTAL memory: <span class="number">24</span>M * <span class="number">4</span> bytes ~= <span class="number">93</span>MB / image (only forward! ~*<span class="number">2</span> <span class="keyword">for</span> bwd)</span><br><span class="line">TOTAL params: <span class="number">138</span>M parameters</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>存储空间的使用主要是前面几层中间变量的存储；权重数目主要集中在后面几个全联通网络中。</p>
+</blockquote>
+<ul>
+<li>存储空间的计算：数据个数 x 4(bytes)</li>
+</ul>
+<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ul>
+<li>输入图像尺寸：2的幂次方，Common numbers include 32 (e.g. CIFAR-10), 64, 96 (e.g. STL-10), or 224 (e.g. common ImageNet ConvNets), 384, and 512.</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_4">
+<sup>4</sup>. <a href="http://cs231n.github.io/convolutional-networks/" target="_blank" rel="noopener">cs231n notes: CNN</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/03/cs231n-lecture-5/" target="_blank" title="cs231n课程笔记:（Lecture 5）CNN基础">http://blog.a-stack.com/2018/05/03/cs231n-lecture-5/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/07/cs231n-lecture-6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cs231n课程笔记:（Lecture 6-7）Training Neural Networks
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/03/cs231n-lecture-4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cs231n课程笔记：（Lecture 4）神经网络基础</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolutional-Neural-Network-CNN-ConvNet"><span class="nav-number">2.</span> <span class="nav-text">Convolutional Neural Network(CNN/ConvNet)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#池化层"><span class="nav-number">2.0.1.</span> <span class="nav-text">池化层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FC和CNN可以相互转换"><span class="nav-number">2.0.2.</span> <span class="nav-text">FC和CNN可以相互转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆叠小size卷积核的好处"><span class="nav-number">2.1.</span> <span class="nav-text">堆叠小size卷积核的好处</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VGG"><span class="nav-number">2.1.1.</span> <span class="nav-text">VGG</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧"><span class="nav-number">3.</span> <span class="nav-text">技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>cs231n课程笔记:（lecture 3）线性分类器和优化方法 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs231n课程笔记:（Lecture 3）线性分类器和优化方法">
+<meta property="og:url" content="http://blog.a-stack.com/2018/05/03/cs231n-lecture-3/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/linear_classification.png">
+<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/linear_classification_3view_points.png">
+<meta property="og:updated_time" content="2018-05-16T13:59:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cs231n课程笔记:（Lecture 3）线性分类器和优化方法">
+<meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
+<meta name="twitter:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/linear_classification.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-cs231n-lecture-3" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      cs231n课程笔记:（Lecture 3）线性分类器和优化方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/03/cs231n-lecture-3/" class="article-date">
+	  <time datetime="2018-05-03T08:51:26.000Z" itemprop="datePublished">2018-05-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/课程笔记/">课程笔记</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：</p>
+<ul>
+<li>课程主页： <a href="http://cs231n.stanford.edu/" target="_blank" rel="noopener">http://cs231n.stanford.edu/</a></li>
+<li>课程Notes：<a href="http://cs231n.github.io/" target="_blank" rel="noopener">http://cs231n.github.io/</a></li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Date</th>
+<th>Description</th>
+<th>Course Materials</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lecture 3</td>
+<td>Tuesday April 10</td>
+<td><strong>Loss Functions and Optimization</strong> Linear classification IIHigher-level representations, image featuresOptimization, stochastic gradient descent</td>
+<td><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_lecture03.pdf" target="_blank" rel="noopener">[slides]</a> <a href="http://cs231n.github.io/linear-classify" target="_blank" rel="noopener">[linear classification notes]</a><a href="http://cs231n.github.io/optimization-1" target="_blank" rel="noopener">[optimization notes]</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="线性分类器-2"><a href="#线性分类器-2" class="headerlink" title="线性分类器 2"></a>线性分类器 <sup><a href="#fn_2" id="reffn_2">2</a></sup></h2><p><img src="/2018/05/03/cs231n-lecture-3/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/linear_classification.png" alt="linear_classification"></p>
+<p><strong>Interpretation of linear classifiers as template matching.</strong> Another interpretation for the weights WW is that each row of WW corresponds to a <em>template</em> (or sometimes also called a <em>prototype</em>) for one of the classes. The score of each class for an image is then obtained by comparing each template with the image using an <em>inner product</em> (or <em>dot product</em>) one by one to find the one that “fits” best. With this terminology, the linear classifier is doing template matching, where the templates are learned. Another way to think of it is that we are still effectively doing Nearest Neighbor, but instead of having thousands of training images we are only using a single image per class (although we will learn it, and it does not necessarily have to be one of the images in the training set), and we use the (negative) inner product as the distance instead of the L1 or L2 distance.</p>
+<p>线性分类器本质上可以理解为一种模板匹配算法，匹配与分类模板最相近的模板，但由于线性分类器的简单性质，导致每个类最终只能学习到一个模板，如果目标类别有较大的差异，就需要把这些差异平均化。（这也是神经网络层次特性的优越性）</p>
+<p><img src="/2018/05/03/cs231n-lecture-3/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/linear_classification_3view_points.png" alt="linear_classification_3view_points"></p>
+<h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><h4 id="多分类SVM代价函数5"><a href="#多分类SVM代价函数5" class="headerlink" title="多分类SVM代价函数5"></a>多分类SVM代价函数<sup><a href="#fn_5" id="reffn_5">5</a></sup></h4><p>SVM的目标函数定义：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\min_{ {w},\xi_n}\frac{1}{2} {w}^T {w}+C\sum_{n=1}^N\xi_n  \\
+s.t.  {w}^T {x}_ny_n\ge1-\xi_n \ \forall n \\
+ \xi_n \ge 0 \ \forall n
+ \end{equation}</script><p>为计算方便，其中偏移量已经被包含在权重之中。</p>
+<p>上述问题的优化问题对等如下问题(L1-SVM)：</p>
+<script type="math/tex; mode=display">
+\min_{\bold{w}}\frac{1}{2}\bold{w}^T\bold{w}+C\sum_{n=1}^N \max(1-\bold{w}^T \bold{x_n}y_n, 0)</script><p>和L2-SVM：</p>
+<script type="math/tex; mode=display">
+\min_{\bold{w}}\frac{1}{2}\bold{w}^T\bold{w}+C\sum_{n=1}^N \max(1-\bold{w}^T \bold{x_n}y_n, 0)^2</script><p>对于第i个样本，多分类SVM代价函数定义为：</p>
+<script type="math/tex; mode=display">
+L_i = \sum_{j\neq y_i} \max(0, s_j - s_{y_i} + \Delta)</script><blockquote>
+<p>合页损失函数（hinge loss），一般我们令$\Delta =1$</p>
+<p>其中$s_{y_i}$ 为预测值</p>
+<p>$j \neq y_i$ 的意思是只有错误的分类才叠加损失，正确的分类不对损失产生影响</p>
+</blockquote>
+<p><strong>带正则化的损失函数</strong></p>
+<script type="math/tex; mode=display">
+L =  \underbrace{ \frac{1}{N} \sum_i L_i }_\text{data loss} + \underbrace{ \lambda R(W) }_\text{regularization loss}</script><script type="math/tex; mode=display">
+L = \frac{1}{N} \sum_i \sum_{j\neq y_i} \left[ \max(0, f(x_i; W)_j - f(x_i; W)_{y_i} + \Delta) \right] + \lambda \sum_k\sum_l W_{k,l}^2</script><blockquote>
+<p>Note that biases do not have the same effect since, unlike the weights, they do not control the strength of influence of an input dimension. Therefore, it is common to only regularize the weights $W$ but not the biases $b$. </p>
+<p>$\Delta=1.0$ 即可，由于权重可以比例调节，所以实际上$\Delta$ 等于1和100意义是一样的；</p>
+</blockquote>
+<p><strong>与SVM线性分类器关系</strong></p>
+<p>SVM线性分类器是多分类的一个特例，</p>
+<script type="math/tex; mode=display">
+L_i = C \max(0, 1 - y_i w^Tx_i) + R(W)</script><h4 id="引申阅读-SVM4"><a href="#引申阅读-SVM4" class="headerlink" title="[引申阅读]SVM4"></a>[<strong>引申阅读</strong>]SVM<sup><a href="#fn_4" id="reffn_4">4</a></sup></h4><blockquote>
+<p>单独摘成一篇博文吧，要想彻底搞清楚SVM内容实在是有点多</p>
+</blockquote>
+<h4 id="Softmax-分类器"><a href="#Softmax-分类器" class="headerlink" title="Softmax 分类器"></a>Softmax 分类器</h4><p>在Softmax中使用交叉熵(cross-entropy loss)损失函数，</p>
+<script type="math/tex; mode=display">
+L_i = -\log\left(\frac{e^{f_{y_i}}}{ \sum_j e^{f_j} }\right) \hspace{0.5in} \text{or equivalently} \hspace{0.5in} L_i = -f_{y_i} + \log\sum_j e^{f_j}</script><p>其中函数$f_j(z) = \frac{e^{z_j}}{\sum_k e^{z_k}}$ 为Softmax函数,给出了分类结果的概率分布描述。</p>
+<p><strong>梯度计算公式：</strong></p>
+<script type="math/tex; mode=display">
+\begin{equation}  
+dW=
+\left\{  
+             \begin{array}{lr}  
+             (-1 + \frac{e^{\hat f_{y_i}}}{\sum_j e^{f_j}})x_i, &  j=i\\  
+              \frac{e^{\hat f_{y_i}}}{\sum_j e^{f_j}}x_i, &   j \neq i 
+             \end{array}  
+\right.  
+\end{equation}</script><p><strong>向量化实现：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">score = X.dot(W)  <span class="comment"># N x C</span></span><br><span class="line">N = X.shape[<span class="number">0</span>]</span><br><span class="line">correct_score = score[np.arange(N),y].reshape(N,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">exp_sum = np.sum(np.exp(score),axis=<span class="number">1</span>).reshape(N,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">loss += np.sum(np.log(exp_sum) - correct_score)</span><br><span class="line"></span><br><span class="line">loss /= N</span><br><span class="line">loss += reg * <span class="number">0.5</span> * np.sum(W*W)</span><br><span class="line"></span><br><span class="line">margin = np.exp(score)/exp_sum</span><br><span class="line">margin[np.arange(N),y] -= <span class="number">1</span></span><br><span class="line">dW = X.T.dot(margin)</span><br><span class="line"></span><br><span class="line">dW /=N</span><br><span class="line">dW += reg*W</span><br></pre></td></tr></table></figure>
+<p><strong>交叉熵函数：</strong></p>
+<p>真实分类的分布$p$ 和估计分布$q$ 的交叉熵定义为：</p>
+<script type="math/tex; mode=display">
+H(p,q) = - \sum_x p(x) \log q(x)</script><blockquote>
+<p>Softmax 最小化交叉熵或最大化极大似然函数来求解问题；SVM通过寻找最大界面距离来优化目标。</p>
+</blockquote>
+<h2 id="优化算法3"><a href="#优化算法3" class="headerlink" title="优化算法3"></a>优化算法<sup><a href="#fn_3" id="reffn_3">3</a></sup></h2><ol>
+<li><p>梯度数值解（梯度校验）</p>
+<script type="math/tex; mode=display">
+\frac{df(x)}{dx} = \lim_{h\ \to 0} \frac{f(x + h) - f(x)}{h}</script><p>$[f(x+h) - f(x-h)] / 2 h$ 是一种更好的实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eval_numerical_gradient</span><span class="params">(f, x)</span>:</span></span><br><span class="line">  <span class="string">""" </span></span><br><span class="line"><span class="string">  a naive implementation of numerical gradient of f at x </span></span><br><span class="line"><span class="string">  - f should be a function that takes a single argument</span></span><br><span class="line"><span class="string">  - x is the point (numpy array) to evaluate the gradient at</span></span><br><span class="line"><span class="string">  """</span> </span><br><span class="line"></span><br><span class="line">  fx = f(x) <span class="comment"># evaluate function value at original point</span></span><br><span class="line">  grad = np.zeros(x.shape)</span><br><span class="line">  h = <span class="number">0.00001</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># iterate over all indexes in x</span></span><br><span class="line">  it = np.nditer(x, flags=[<span class="string">'multi_index'</span>], op_flags=[<span class="string">'readwrite'</span>])</span><br><span class="line">  <span class="keyword">while</span> <span class="keyword">not</span> it.finished:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># evaluate function at x+h</span></span><br><span class="line">    ix = it.multi_index</span><br><span class="line">    old_value = x[ix]</span><br><span class="line">    x[ix] = old_value + h <span class="comment"># increment by h</span></span><br><span class="line">    fxh = f(x) <span class="comment"># evalute f(x + h)</span></span><br><span class="line">    x[ix] = old_value <span class="comment"># restore to previous value (very important!)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># compute the partial derivative</span></span><br><span class="line">    grad[ix] = (fxh - fx) / h <span class="comment"># the slope</span></span><br><span class="line">    it.iternext() <span class="comment"># step to next dimension</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> grad</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当适应SVM代价函数：</p>
+<script type="math/tex; mode=display">
+L_i = \sum_{j\neq y_i} \left[ \max(0, w_j^Tx_i - w_{y_i}^Tx_i + \Delta) \right]</script><p>代价函数关于权重的偏导为：</p>
+<script type="math/tex; mode=display">
+\nabla_{w_{y_i}} L_i = - \left( \sum_{j\neq y_i} \mathbb{1}(w_j^Tx_i - w_{y_i}^Tx_i + \Delta > 0) \right) x_i</script><script type="math/tex; mode=display">
+\nabla_{w_j} L_i = \mathbb{1}(w_j^Tx_i - w_{y_i}^Tx_i + \Delta > 0) x_i</script></li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_2">
+<sup>2</sup>. <a href="http://cs231n.github.io/linear-classify/" target="_blank" rel="noopener">CS231n Notes:linear classify</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a href="http://cs231n.github.io/optimization-1/" target="_blank" rel="noopener">CS231n Notes:Optimization</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. <a href="http://cs229.stanford.edu/notes/cs229-notes3.pdf" target="_blank" rel="noopener">CS229 Lecture Notes: SVM</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a href="http://arxiv.org/abs/1306.0239" target="_blank" rel="noopener">Deep Learning using Linear Support Vector Machines</a> from Charlie Tang 2013 presents some results claiming that the L2SVM outperforms Softmax.<a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/05/03/cs231n-lecture-3/" target="_blank" title="cs231n课程笔记:（Lecture 3）线性分类器和优化方法">http://blog.a-stack.com/2018/05/03/cs231n-lecture-3/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/03/cs231n-lecture-4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cs231n课程笔记：（Lecture 4）神经网络基础
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/03/cs231n-lecture-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cs231n课程笔记:（Lecture 2）图像分类</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性分类器-2"><span class="nav-number">2.</span> <span class="nav-text">线性分类器 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数"><span class="nav-number">2.1.</span> <span class="nav-text">代价函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多分类SVM代价函数5"><span class="nav-number">2.1.1.</span> <span class="nav-text">多分类SVM代价函数5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引申阅读-SVM4"><span class="nav-number">2.1.2.</span> <span class="nav-text">[引申阅读]SVM4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Softmax-分类器"><span class="nav-number">2.1.3.</span> <span class="nav-text">Softmax 分类器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化算法3"><span class="nav-number">3.</span> <span class="nav-text">优化算法3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

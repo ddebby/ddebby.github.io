@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>深度学习基础之优化算法 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法">
+  
+  
+  
+  
+  <meta name="description" content="合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。">
+<meta name="keywords" content="算法,优化,AI,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习基础之优化算法">
+<meta property="og:url" content="http://blog.a-stack.com/2018/04/01/深度学习基础之优化算法/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-28-cs231n-notes/nesterov.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/learning_rate.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif">
+<meta property="og:updated_time" content="2019-01-09T13:11:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习基础之优化算法">
+<meta name="twitter:description" content="合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-深度学习基础之优化算法" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习基础之优化算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/01/深度学习基础之优化算法/" class="article-date">
+	  <time datetime="2018-04-01T07:35:01.000Z" itemprop="datePublished">2018-04-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。</p>
+<a id="more"></a>
+<blockquote>
+<p>深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳汇总：</p>
+<ol>
+<li>问题定义</li>
+<li>目标及评估</li>
+<li>数据准备与预处理</li>
+<li>激活函数的归纳及总结</li>
+<li><strong>优化算法的归纳及总结</strong></li>
+<li>正则化与泛化性能</li>
+<li>模型压缩</li>
+<li>数据扩充</li>
+</ol>
+</blockquote>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>深度学习模型训练的优化算法可以通过寻找降低代价函数$J(\theta)$的一组参数$\theta$来实现优化目标。其中代价函数可以定义为训练集上的评价损失：</p>
+<script type="math/tex; mode=display">
+J(\theta)=E_{(x,y)\sim \hat{p}_{data}} L(f(\boldsymbol{x}; \boldsymbol{\theta}), y)</script><p>其中，$\hat p_{data}$ 为经验分布，$L$是每个样本的损失函数。由于分布只是真实数据分布的一部分，该式叫做经验风险最小化。我们并不直接最优化风险，而是最优化经验风险，希望也能够很大地降低风险。一方面由于经验风险最小化很容易过拟合训练数据，另一方面深度学习中很多损失函数没有有效的导数形式，所以一般使用代理损失函数来近似优化目标。</p>
+<p>好的优化算法在深度学习中主要起到如下作用：</p>
+<ol>
+<li>提升收敛速度，降低训练时间；</li>
+<li>使网络模型表现更加全面，而不单依靠学习率；</li>
+<li>获得更好的模型性能。</li>
+</ol>
+<h3 id="深度学习优化算法的挑战"><a href="#深度学习优化算法的挑战" class="headerlink" title="深度学习优化算法的挑战"></a>深度学习优化算法的挑战</h3><ol>
+<li>非凸优化众多的局部极小值；</li>
+<li>梯度为零的点——鞍点；多类随机函数表现出以下性质：低维空间中，局部极小值很普遍。在更高维空<br>间中，局部极小值很罕见，而鞍点则很常见；</li>
+<li>梯度消失与梯度爆炸；（梯度截断解决爆炸问题）</li>
+<li>许多现有研究方法在求解具有困难全局结构的问题时，旨在寻求良好的初始点， 而不是开发非局部范围更新的算法。</li>
+</ol>
+<h2 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h2><h3 id="从经典的SGD算法开始"><a href="#从经典的SGD算法开始" class="headerlink" title="从经典的SGD算法开始"></a>从经典的SGD算法开始</h3><script type="math/tex; mode=display">
+W = W-lr * dW</script><p>其中，</p>
+<ul>
+<li><em>W</em> 为权重矩阵</li>
+<li><em>lr</em> 为学习率</li>
+<li><em>dW</em> 为权重W的梯度</li>
+</ul>
+<p>在经典SGD中，学习率lr是固定的，为了实现学习率的自适应，提出了多种算法来应对不同的场景需求。</p>
+<h3 id="mini-batch和梯度下降"><a href="#mini-batch和梯度下降" class="headerlink" title="mini-batch和梯度下降"></a>mini-batch和梯度下降</h3><p>在每一轮（epoch）中，使用1个mini-batch的样本来计算梯度下降方向；使用mini-batch的梯度近似全部样本的梯度；是Batch梯度下降和随机梯度下降的折中。</p>
+<blockquote>
+<p>每次只使用单个样本的优化算法有时被称为随机（stochastic）或者在线（online）算法。术语 “在线’’ 通常是指从连续产生样本的数据流中抽取样本的情况，而 不是从一个固定大小的训练集中遍历多次采样的情况。</p>
+</blockquote>
+<p>使用mini-batch的另一个主要原因是为了利用向量化的并行计算来提升处理效率。</p>
+<p>理论上，从mini-batch中获得梯度的统计估计源于训练集的冗余。mini-batch的选择主要由如下几个因素决定：</p>
+<ol>
+<li>更大的批量会计算更精确的梯度估计，但是回报确实小于线性的；</li>
+<li>如果批量处理中的所有样本可以并行地处理（通常确是如此），那么内存消耗和批量大小会正比；</li>
+<li>在某些硬件上使用特定大小的数组时，运行时间会更少。尤其是在使用GPU时， 通常使用 2 的幂数作为批量大小可以获得更少的运行时间；</li>
+<li>可能是由于小批量在学习过程中加入了噪声，它们会有一些正则化效果 (Wilson and Martinez, 2003)。</li>
+</ol>
+<blockquote>
+<p>其中mini-batch的大小一般设置为2的幂指数，比如64，128，256，…,需要根据CPU/GPU内存大小进行设置</p>
+</blockquote>
+<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png" alt="mini-batch"></p>
+<h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><blockquote>
+<p> 目的：使用指数移动平均平滑梯度下降的抖动,一般$\beta=0.9$, 适用于处理高曲率、小但一致的梯度或带有噪声的梯度；</p>
+<p> 可取的参数有[0.5, 0.9, 0.95, 0.99]</p>
+</blockquote>
+<script type="math/tex; mode=display">
+v_{t} = \beta v_{t-1} - lr*dW</script><script type="math/tex; mode=display">
+W_t = W_{t-1}  + v_{t}</script><h3 id="Nesterov型动量随机下降法"><a href="#Nesterov型动量随机下降法" class="headerlink" title="Nesterov型动量随机下降法"></a>Nesterov型动量随机下降法</h3><blockquote>
+<p>在上述动量的基础上加上了对当前梯度的矫正。Nesterov对凸函数在收敛性证明上有更强的理论保证</p>
+</blockquote>
+<script type="math/tex; mode=display">
+w_{ahead} = w_{t-1} +\beta v_{t-1}</script><script type="math/tex; mode=display">
+v_{t} = \beta v_{t-1}  - \alpha dw_{ahead}</script><script type="math/tex; mode=display">
+W += v_{t}</script><p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-28-cs231n-notes/nesterov.jpeg" alt="nesterov"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v_prev = v <span class="comment"># back this up</span></span><br><span class="line">v = mu * v - learning_rate * dx <span class="comment"># velocity update stays the same</span></span><br><span class="line">x += -mu * v_prev + (<span class="number">1</span> + mu) * v <span class="comment"># position update changes form</span></span><br></pre></td></tr></table></figure>
+<h2 id="高级优化算法（自适应学习率算法）"><a href="#高级优化算法（自适应学习率算法）" class="headerlink" title="高级优化算法（自适应学习率算法）"></a>高级优化算法（自适应学习率算法）</h2><blockquote>
+<p> 自适应学习率的设计</p>
+<p> 更多内容参见：<a href="https://arxiv.org/abs/1609.04747" target="_blank" rel="noopener">An overview of gradient descent optimization algorithms</a></p>
+</blockquote>
+<h3 id="Adagrad"><a href="#Adagrad" class="headerlink" title="Adagrad"></a>Adagrad</h3><blockquote>
+<p>引入新变量<code>cache</code>来衡量每个min-batch中哪些参数更新频繁，给与更高的学习率。</p>
+<p>缺点： cache是个累加值，当训练比较多轮的大型网络，在后期学不到太多东西。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+cache += {(dW)}^2</script><script type="math/tex; mode=display">
+W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adadelta"><a href="#Adadelta" class="headerlink" title="Adadelta"></a>Adadelta</h3><blockquote>
+<p>Adagrad的扩展，修正了学习率单调下降的问题。值使用近期几轮的dW来进行平滑累积。</p>
+</blockquote>
+<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><blockquote>
+<p>Geoffery Hinton在其Cousera课程中提供的一种方法，采用指数权重滑动平均修正Adagrad的问题。一般$\rho=0.9$。</p>
+<p>RMSprop性能比Adagrad和Adaelta都优秀，收敛速度也优于SGD，是目前用的比较多的优化算法。使用频次仅次于SGD。</p>
+<p>如下图，RMSpror的效果：减缓垂直方向的大小，增大水平方向的大小</p>
+</blockquote>
+<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png" alt="RMSprop"></p>
+<script type="math/tex; mode=display">
+cache = \rho * cache + (1-\rho) * {(dW)}^2</script><script type="math/tex; mode=display">
+W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><blockquote>
+<p>Adapitive Moment Estimation,2014年提出。将dW和$(dW)^2$的更新都采用了滑动平均。</p>
+<p>一般地，$\beta_1=0.9, \beta_2=0.999$；</p>
+<p>经验证，Adam在多个场景下效果优于RMSprop；</p>
+<p>Adam可以认为RMSprop+动量，对应的Nadam算法=RMSprop + Nesterov加速</p>
+</blockquote>
+<script type="math/tex; mode=display">
+m = \beta_1 * m + (1-\beta_1)*dW</script><script type="math/tex; mode=display">
+v = \beta_2 * v + (1-\beta_2)*(dW)^2</script><script type="math/tex; mode=display">
+m =\frac{m}{1-\beta^t_1}</script><script type="math/tex; mode=display">
+v =\frac{v}{1-\beta^t_2}</script><script type="math/tex; mode=display">
+W += -\frac{lr}{\sqrt{v}+\epsilon} * m</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">m = config[<span class="string">'beta1'</span>] * config[<span class="string">'m'</span>] + (<span class="number">1</span>-config[<span class="string">'beta1'</span>]) * dw</span><br><span class="line">v = config[<span class="string">'beta2'</span>] * config[<span class="string">'v'</span>] + (<span class="number">1</span>-config[<span class="string">'beta2'</span>]) * np.square(dw)</span><br><span class="line">t = config[<span class="string">'t'</span>] + <span class="number">1</span></span><br><span class="line">_m = m / (<span class="number">1</span>-config[<span class="string">'beta1'</span>]**t)</span><br><span class="line">_v = v / (<span class="number">1</span>-config[<span class="string">'beta2'</span>]**t)</span><br><span class="line"></span><br><span class="line">next_w = w - config[<span class="string">'learning_rate'</span>]/(np.sqrt(_v) + config[<span class="string">'epsilon'</span>]) * _m</span><br><span class="line"></span><br><span class="line">config[<span class="string">'m'</span>] = m</span><br><span class="line">config[<span class="string">'v'</span>] = v</span><br><span class="line">config[<span class="string">'t'</span>] = t</span><br></pre></td></tr></table></figure>
+<h2 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h2><script type="math/tex; mode=display">
+lr = \frac{1}{1+decay\_rate*epoch\_num}*lr_0</script><blockquote>
+<p>学习率的设置原则：</p>
+<ol>
+<li>开始时学习率不宜过大，0.01或0.001作为起点。通过观察收敛速度调整学习率；</li>
+<li>学习率衰减可以采用：1）上式中随训练轮数衰减；2）指数衰减；3）分数衰减 $lr=\frac{lr_0}{1+kt}$</li>
+</ol>
+</blockquote>
+<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/learning_rate.png" alt="learning_rate"></p>
+<ul>
+<li><p>keras中提供了<code>decay</code>参数来调节学习率的变化情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opt = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">0.01</span> / <span class="number">40</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>使用公式：</p>
+<script type="math/tex; mode=display">
+\alpha_{e+1} = \alpha_e \times 1 /(1+\gamma * e)</script></li>
+<li><p>另一种学习率为阶梯学习率：<code>ctrl + c</code></p>
+<p>Keras提供一个类：<code>LearningrateScheduler</code>来配置自定义的学习率函数</p>
+<p>比如：</p>
+<script type="math/tex; mode=display">
+\alpha_{E+1} = \alpha_1 \times F^{(1+E)/D}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step_decay</span><span class="params">(epoch)</span>:</span></span><br><span class="line">    <span class="comment"># initialize the base initial learning rate, drop factor, and epochs to drop every</span></span><br><span class="line">    initAlpha = <span class="number">0.01</span></span><br><span class="line">    factor = <span class="number">0.25</span></span><br><span class="line">    dropEvery = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># compute learning rate for the current epoch</span></span><br><span class="line">    alpha = initAlpha * (factor ** np.floor((<span class="number">1</span> + epoch) / dropEvery))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># return the learning rate</span></span><br><span class="line">    <span class="keyword">return</span> float(alpha)</span><br><span class="line">  </span><br><span class="line"><span class="comment">##定义callback</span></span><br><span class="line">callbacks = [LearningRateScheduler(step_decay)]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>当定义了学习率之后，SGD中声明的配置信息将被忽略</p>
+</blockquote>
+<h2 id="二阶近似方法"><a href="#二阶近似方法" class="headerlink" title="二阶近似方法"></a>二阶近似方法</h2><blockquote>
+<p>牛顿法、拟牛顿法、共轭梯度法、BFGS法</p>
+</blockquote>
+<h2 id="如何选择优化算法"><a href="#如何选择优化算法" class="headerlink" title="如何选择优化算法"></a>如何选择优化算法</h2><p>事实上各种优化算法没有本质的优劣，也没有完全的选择规则，更多的靠经验和试错。算法的选择更多的来自于每个人对算法的熟悉程度。最常用的三种：SGD、Adam和RMSprop必须研究透，掌握其本质。</p>
+<p>目前很多主流的学术论文中还是使用SGD作为训练的优化算法，虽然自适应学习率算法可以提高收敛速度，但收敛速度不是算法的全部，尤其是SGD有可能带来更高的模型精度。</p>
+<blockquote>
+<p>选择一族容易优化的模型比使用一个强大的优化算法更重要。</p>
+</blockquote>
+<h3 id="几种算法性能比较"><a href="#几种算法性能比较" class="headerlink" title="几种算法性能比较"></a>几种算法性能比较</h3><p>下面几张gif对比了SGD、Momentum、Nesterov、AdaGrad、AdaDelta、RMSProp等优化算法在不同情况下的特性。</p>
+<ol>
+<li>Long Valley</li>
+</ol>
+<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif" alt="blog-long_valley-resize"></p>
+<ol>
+<li>Beale‘s Function</li>
+</ol>
+<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif" alt="blog-beale-resize"></p>
+<ol>
+<li>Saddle Point</li>
+</ol>
+<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif" alt="blog-saddle_point-resize"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras文档</a></li>
+<li><a href="">Deep Learning for Computer Vision with Python</a></li>
+<li><a href="https://www.coursera.org/learn/deep-neural-network/lecture/qcogH/mini-batch-gradient-descent" target="_blank" rel="noopener">Deep Learning Specialization</a></li>
+<li><a href="https://arxiv.org/abs/1609.04747" target="_blank" rel="noopener">An overview of gradient descent optimization algorithms</a></li>
+<li>《Deep Learning Book》</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/04/01/深度学习基础之优化算法/" target="_blank" title="深度学习基础之优化算法">http://blog.a-stack.com/2018/04/01/深度学习基础之优化算法/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/优化/">优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/09/Deep-Learning-Lab-Logo-Detection/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          基于机器视觉技术的品牌LOGO检测
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/30/Transfer-Learning-Summary/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Transfer Learning Summary</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#深度学习优化算法的挑战"><span class="nav-number">1.1.</span> <span class="nav-text">深度学习优化算法的挑战</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化算法"><span class="nav-number">2.</span> <span class="nav-text">优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从经典的SGD算法开始"><span class="nav-number">2.1.</span> <span class="nav-text">从经典的SGD算法开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mini-batch和梯度下降"><span class="nav-number">2.2.</span> <span class="nav-text">mini-batch和梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">2.3.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nesterov型动量随机下降法"><span class="nav-number">2.4.</span> <span class="nav-text">Nesterov型动量随机下降法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级优化算法（自适应学习率算法）"><span class="nav-number">3.</span> <span class="nav-text">高级优化算法（自适应学习率算法）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Adagrad"><span class="nav-number">3.1.</span> <span class="nav-text">Adagrad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adadelta"><span class="nav-number">3.2.</span> <span class="nav-text">Adadelta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习率衰减"><span class="nav-number">4.</span> <span class="nav-text">学习率衰减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二阶近似方法"><span class="nav-number">5.</span> <span class="nav-text">二阶近似方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何选择优化算法"><span class="nav-number">6.</span> <span class="nav-text">如何选择优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#几种算法性能比较"><span class="nav-number">6.1.</span> <span class="nav-text">几种算法性能比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

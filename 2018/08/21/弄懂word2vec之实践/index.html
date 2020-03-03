@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>弄懂word2vec之实践 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要：">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="弄懂word2vec之实践">
+<meta property="og:url" content="http://blog.a-stack.com/2018/08/21/弄懂word2vec之实践/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/21/qnsource/banner/08.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/21/弄懂word2vec之实践/2018-08-21-弄懂word2vec之实践/v2-7a3b04197eab7a2ccc40bfab3f81b7f6_hd.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/21/弄懂word2vec之实践/2018-08-21-弄懂word2vec之实践/v2-e8f100b3b0b5be4c343317e2db2bb706_hd.jpg">
+<meta property="og:updated_time" content="2018-08-24T06:26:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="弄懂word2vec之实践">
+<meta name="twitter:description" content="摘要：">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/08/21/qnsource/banner/08.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-弄懂word2vec之实践" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      弄懂word2vec之实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/21/弄懂word2vec之实践/" class="article-date">
+	  <time datetime="2018-08-21T05:34:57.000Z" itemprop="datePublished">2018-08-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/NLP/">NLP</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/08/21/弄懂word2vec之实践/../qnsource/banner/08.jpg" alt="Test Picture"></p>
+<p><strong>摘要：</strong></p>
+<a id="more"></a>
+<h2 id="训练词向量模型"><a href="#训练词向量模型" class="headerlink" title="训练词向量模型"></a>训练词向量模型</h2><h3 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h3><ul>
+<li><p>opencc 1.04</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、下载包地址（我下载的是opencc-1.0.4.tar.gz）：</span></span><br><span class="line"><span class="comment"># https://bintray.com/package/files/byvoid/opencc/OpenCC</span></span><br><span class="line"><span class="comment"># https://bintray.com/byvoid/opencc/download_file?file_path=opencc-1.0.4.tar.gz</span></span><br><span class="line"><span class="comment">#2、进入tar.gz目录，命令行解压：</span></span><br><span class="line">tar -xzvf opencc-1.0.4.tar.gz</span><br><span class="line"><span class="comment"># 3、编译（需要工具cmake、gcc（4.6）gcc -v查看gcc版本、doxygen）</span></span><br><span class="line"><span class="built_in">cd</span> opencc-1.0.4/</span><br><span class="line">make</span><br><span class="line"><span class="comment"># 4.安装</span></span><br><span class="line">sudo make install</span><br><span class="line"><span class="comment"># 5.使用</span></span><br><span class="line">opencc -i &lt;input-file&gt; -o output-file&gt; -c &lt;config-file&gt; </span><br><span class="line"><span class="comment"># 例如：opencc -i wiki.zh.txt -o wiki.zh.simp.txt -c t2s.json</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>gensim</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install gensim</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Wikipedia Extractor</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install unzip python python-dev python-pip</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/attardi/wikiextractor.git wikiextractor</span><br><span class="line">$ <span class="built_in">cd</span> wikiextractor</span><br><span class="line">$ sudo python setup.py install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>jieba</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jieba</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="下载语料库并准备预料资源"><a href="#下载语料库并准备预料资源" class="headerlink" title="下载语料库并准备预料资源"></a>下载语料库并准备预料资源</h3><ol>
+<li>标准的word2vec中文语料库目前影响范围最广的为维基百科语料库，下载地址：</li>
+</ol>
+<ul>
+<li><a href="https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2" target="_blank" rel="noopener">https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2</a> （1.3G）</li>
+</ul>
+<ol>
+<li><p>抽取语料正文</p>
+<p>可以使用工具<code>Wikipedia Extractor</code>进行抽取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./WikiExtractor.py -b 1024M -o extracted zhwiki-latest-pages-articles.xml.bz2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数-b 1024M表示以1024M为单位切分文件，默认是1M。</p>
+</blockquote>
+<p>（推荐，处理完成可以跳过第4步）也可以使用网上大牛写的处理脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> gensim.corpora.wikicorpus <span class="keyword">import</span> extract_pages,filter_wiki</span><br><span class="line"><span class="keyword">import</span> bz2file</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> opencc</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line">wiki = extract_pages(bz2file.open(<span class="string">'zhwiki-latest-pages-articles.xml.bz2'</span>))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wiki_replace</span><span class="params">(d)</span>:</span></span><br><span class="line">    s = d[<span class="number">1</span>]</span><br><span class="line">    s = re.sub(<span class="string">':*&#123;\|[\s\S]*?\|&#125;'</span>, <span class="string">''</span>, s)</span><br><span class="line">    s = re.sub(<span class="string">'&lt;gallery&gt;[\s\S]*?&lt;/gallery&gt;'</span>, <span class="string">''</span>, s)</span><br><span class="line">    s = re.sub(<span class="string">'(.)&#123;&#123;([^&#123;&#125;\n]*?\|[^&#123;&#125;\n]*?)&#125;&#125;'</span>, <span class="string">'\\1[[\\2]]'</span>, s)</span><br><span class="line">    s = filter_wiki(s)</span><br><span class="line">    s = re.sub(<span class="string">'\* *\n|\'&#123;2,&#125;'</span>, <span class="string">''</span>, s)</span><br><span class="line">    s = re.sub(<span class="string">'\n+'</span>, <span class="string">'\n'</span>, s)</span><br><span class="line">    s = re.sub(<span class="string">'\n[:;]|\n +'</span>, <span class="string">'\n'</span>, s)</span><br><span class="line">    s = re.sub(<span class="string">'\n=='</span>, <span class="string">'\n\n=='</span>, s)</span><br><span class="line">    s = <span class="string">u'【'</span> + d[<span class="number">0</span>] + <span class="string">u'】\n'</span> + s</span><br><span class="line">    <span class="keyword">return</span> opencc.convert(s).strip()</span><br><span class="line">i = <span class="number">0</span></span><br><span class="line">f = codecs.open(<span class="string">'wiki.txt'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">w = tqdm(wiki, desc=<span class="string">u'已获取0篇文章'</span>)</span><br><span class="line"><span class="keyword">for</span> d <span class="keyword">in</span> w:</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> re.findall(<span class="string">'^[a-zA-Z]+:'</span>, d[<span class="number">0</span>]) <span class="keyword">and</span> d[<span class="number">0</span>] <span class="keyword">and</span> <span class="keyword">not</span> re.findall(<span class="string">u'^#'</span>, d[<span class="number">1</span>]):</span><br><span class="line">        s = wiki_replace(d)</span><br><span class="line">        f.write(s+<span class="string">'\n\n\n'</span>)</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">            w.set_description(<span class="string">u'已获取%s篇文章'</span>%i)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>繁体转简体</p>
+<p>维基百科的中文数据是繁简混杂的，里面包含大陆简体、台湾繁体、港澳繁体等多种不同的数据。有时候在一篇文章的不同段落间也会使用不同的繁简字。</p>
+<p>为了处理方便起见，我们直接使用了开源项目<code>opencc</code>。参照安装说明的方法，安装完成之后，使用下面的命令进行繁简转换，整个过程也很快：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install opencc</span><br><span class="line">$ opencc -i wiki_00 -o zh_wiki_00 -c zht2zhs.ini</span><br></pre></td></tr></table></figure>
+<p>命令中的<code>wiki_00</code>这个文件是此前使用<code>Wikipedia Extractor</code>得到的。到了这里，我们已经完成了大部分繁简转换工作。</p>
+</li>
+<li><p>预处理</p>
+<p>由于Wikipedia Extractor抽取正文时，会将有特殊标记的外文直接剔除。我们最后再将「」『』这些符号替换成引号，顺便删除空括号，就大功告成了！代码如下： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myfun</span><span class="params">(input_file)</span>:</span></span><br><span class="line">    p1 = re.compile(<span class="string">ur'-\&#123;.*?(zh-hans|zh-cn):([^;]*?)(;.*?)?\&#125;-'</span>)</span><br><span class="line">    p2 = re.compile(<span class="string">ur'[（\(][，；。？！\s]*[）\)]'</span>)</span><br><span class="line">    p3 = re.compile(<span class="string">ur'[「『]'</span>)</span><br><span class="line">    p4 = re.compile(<span class="string">ur'[」』]'</span>)</span><br><span class="line">    outfile = codecs.open(<span class="string">'std_'</span> + input_file, <span class="string">'w'</span>, <span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">with</span> codecs.open(input_file, <span class="string">'r'</span>, <span class="string">'utf-8'</span>) <span class="keyword">as</span> myfile:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> myfile:</span><br><span class="line">            line = p1.sub(<span class="string">ur'\2'</span>, line)</span><br><span class="line">            line = p2.sub(<span class="string">ur''</span>, line)</span><br><span class="line">            line = p3.sub(<span class="string">ur'“'</span>, line)</span><br><span class="line">            line = p4.sub(<span class="string">ur'”'</span>, line)</span><br><span class="line">			   <span class="comment"># line = re.sub('[a-zA-Z0-9]','',line)</span></span><br><span class="line">	            outfile.write(line)</span><br><span class="line">    outfile.close()</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Usage: python script.py inputfile"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    reload(sys)</span><br><span class="line">    sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line">    input_file = sys.argv[<span class="number">1</span>]</span><br><span class="line">    myfun(input_file)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>5.中文分词</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python -m jieba -d <span class="string">" "</span> ./std_zh_wiki_00 &gt; ./cut_std_zh_wiki_00</span><br></pre></td></tr></table></figure>
+<h3 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h3><p>模型训练使用工具<code>gensim</code>，可以通过<code>pip install gensim</code>直接安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from gensim.models import word2vec</span><br><span class="line">import logging</span><br><span class="line">	logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">sentences = word2vec.LineSentence(u<span class="string">'./cut_std_zh_wiki_00'</span>)</span><br><span class="line">model = word2vec.Word2Vec(sentences,size=200,window=5,min_count=5,workers=4)</span><br><span class="line">	outp1 = <span class="string">'wiki.zh.text.model'</span></span><br><span class="line">outp2 = <span class="string">'wiki.zh.text.vector'</span></span><br><span class="line">model.save(outp1)</span><br><span class="line">model.wv.save_word2vec_format(outp2, binary=False)</span><br></pre></td></tr></table></figure>
+<h3 id="训练效果评价"><a href="#训练效果评价" class="headerlink" title="训练效果评价"></a>训练效果评价</h3><h4 id="词聚类"><a href="#词聚类" class="headerlink" title="词聚类"></a>词聚类</h4><p>可以采用 kmeans 聚类，看聚类簇的分布</p>
+<h4 id="词cos-相关性"><a href="#词cos-相关性" class="headerlink" title="词cos 相关性"></a>词cos 相关性</h4><p>查找cos相近的词</p>
+<h4 id="Analogy对比"><a href="#Analogy对比" class="headerlink" title="Analogy对比"></a>Analogy对比</h4><p>a:b 与 c:d的cos距离 (man-king woman-queen )</p>
+<h4 id="使用tnse，pca等降维可视化展示"><a href="#使用tnse，pca等降维可视化展示" class="headerlink" title="使用tnse，pca等降维可视化展示"></a>使用tnse，pca等降维可视化展示</h4><p>词的分布，推荐用google的<a href="https://link.zhihu.com/?target=https%3A//www.tensorflow.org/get_started/summaries_and_tensorboard" target="_blank" rel="noopener">tensorboard</a>，可以多视角查看，如果不想搭建服务，直接<a href="https://link.zhihu.com/?target=http%3A//projector.tensorflow.org/" target="_blank" rel="noopener">访问这里</a>。另外可以用python的matplotlib。</p>
+<p><img src="/2018/08/21/弄懂word2vec之实践/2018-08-21-弄懂word2vec之实践/v2-7a3b04197eab7a2ccc40bfab3f81b7f6_hd.jpg" alt="img"></p>
+<p><img src="/2018/08/21/弄懂word2vec之实践/2018-08-21-弄懂word2vec之实践/v2-e8f100b3b0b5be4c343317e2db2bb706_hd.jpg" alt="img"></p>
+<h4 id="Categorization-分类-看词在每个分类中的概率"><a href="#Categorization-分类-看词在每个分类中的概率" class="headerlink" title="Categorization 分类 看词在每个分类中的概率"></a>Categorization 分类 看词在每个分类中的概率</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>词</th>
+<th>动物</th>
+<th>食物</th>
+<th>汽车</th>
+<th>电子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>橘子</td>
+<td>0.11</td>
+<td>0.68</td>
+<td>0.12</td>
+<td>0.11</td>
+</tr>
+<tr>
+<td>鸟</td>
+<td>0.66</td>
+<td>0.11</td>
+<td>0.13</td>
+<td>0.11</td>
+</tr>
+<tr>
+<td>雅阁</td>
+<td>0.14</td>
+<td>0.23</td>
+<td>0.67</td>
+<td>0.11</td>
+</tr>
+<tr>
+<td>苹果</td>
+<td>0.11</td>
+<td>0.65</td>
+<td>0.11</td>
+<td>0.65</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>前三条来自<a href="https://link.zhihu.com/?target=https%3A//code.google.com/archive/p/word2vec/" target="_blank" rel="noopener">官网的评测</a>方法</p>
+<p>网上也有相关的word embedding 的评估方法，可以<a href="https://link.zhihu.com/?target=http%3A//www.aclweb.org/anthology/D15-1036" target="_blank" rel="noopener">参考这里</a></p>
+</blockquote>
+<h2 id="模型使用"><a href="#模型使用" class="headerlink" title="模型使用"></a>模型使用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="comment"># 模型加载</span></span><br><span class="line">model = gensim.models.word2vec.Word2Vec.load(<span class="string">'/data2/word2vec/new.model'</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>比较词关联</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model.wv.most_similar(positive=[<span class="string">'woman'</span>, <span class="string">'king'</span>], negative=[<span class="string">'man'</span>], topn=<span class="number">1</span>)</span><br><span class="line">[(<span class="string">'queen'</span>, <span class="number">0.50882536</span>)]</span><br><span class="line">model.doesnt_match(<span class="string">"breakfast cereal dinner lunch"</span>;.split())</span><br><span class="line"><span class="string">'cereal'</span></span><br><span class="line">model.similarity(<span class="string">'woman'</span>, <span class="string">'man'</span>)</span><br><span class="line"><span class="number">0.73723527</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>输出词向量</li>
+</ol>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">model</span>[<span class="string">'中国'</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="利用word2vec实现的关键词提取"><a href="#利用word2vec实现的关键词提取" class="headerlink" title="利用word2vec实现的关键词提取"></a>利用word2vec实现的关键词提取</h3><blockquote>
+<p>参考自<a href="https://kexue.fm/archives/4316" target="_blank" rel="noopener">【不可思议的Word2Vec】 3.提取关键词</a> </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line">model = gensim.models.word2vec.Word2Vec.load(<span class="string">'word2vec_wx'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict_proba</span><span class="params">(oword, iword)</span>:</span></span><br><span class="line">    iword_vec = model[iword]</span><br><span class="line">    oword = model.wv.vocab[oword]</span><br><span class="line">    oword_l = model.syn1[oword.point].T</span><br><span class="line">    dot = np.dot(iword_vec, oword_l)</span><br><span class="line">    lprob = -sum(np.logaddexp(<span class="number">0</span>, -dot) + oword.code*dot) </span><br><span class="line">    <span class="keyword">return</span> lprob</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">keywords</span><span class="params">(s)</span>:</span></span><br><span class="line">    s = [w <span class="keyword">for</span> w <span class="keyword">in</span> s <span class="keyword">if</span> w <span class="keyword">in</span> model]</span><br><span class="line">    ws = &#123;w:sum([predict_proba(u, w) <span class="keyword">for</span> u <span class="keyword">in</span> s]) <span class="keyword">for</span> w <span class="keyword">in</span> s&#125;</span><br><span class="line">    <span class="keyword">return</span> Counter(ws).most_common()</span><br><span class="line">  </span><br><span class="line"> s = <span class="string">u'2018年7月17日，国务院食品安全办在全国食品安全宣传周主会场公布了7起食品保健食品欺诈和虚假宣传整治案件：一、广东广州钟某、林某等制售非法添加药品的食品案2017年10月，广东省广州市公安机关联合食品药品监管部门破获钟某、林某等制售非法添加药品的食品案，涉案货值逾亿元。查获非法添加西药成分的咖啡1万多盒、半成品及原料粉末3吨。林某等在咖啡、蜂蜜、减肥茶等食品中非法添加他达拉非、西布曲明等西药成分，并假冒其他品牌食品销售。钟某、林某等5名犯罪嫌疑人已被依法批捕。二、河北石家庄秦某等制售非法添加药品的食品案2018年1月，河北省石家庄市公安机关、食品药品监管部门联手侦破秦某等制售非法添加药品的食品案，涉案货值3500余万元，捣毁生产、销售、储存窝点7处，打掉加工生产线12条，食品成品6500余盒。秦某等非法添加苯乙双胍等西药成分生产“胰宝唐安” “唐康”等宣称降糖功能的食品，通过电话推销、聘用假冒专家等进行销售。秦某等犯罪嫌疑人已被依法批捕。'</span></span><br><span class="line">pd.Series(keywords(jieba.cut(s)))</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"><span class="number">0</span>        (制售, <span class="number">-1987.67916328</span>)</span><br><span class="line"><span class="number">1</span>        (药品, <span class="number">-2023.50590123</span>)</span><br><span class="line"><span class="number">2</span>        (食品, <span class="number">-2037.03856341</span>)</span><br><span class="line"><span class="number">3</span>        (查获, <span class="number">-2042.32583652</span>)</span><br><span class="line"><span class="number">4</span>        (窝点, <span class="number">-2056.79129232</span>)</span><br><span class="line"><span class="number">5</span>      (保健食品, <span class="number">-2064.19993636</span>)</span><br><span class="line"><span class="number">6</span>        (西药, <span class="number">-2073.77825261</span>)</span><br><span class="line"><span class="number">7</span>      (监管部门, <span class="number">-2082.29241248</span>)</span><br><span class="line"><span class="number">8</span>        (非法, <span class="number">-2089.17887737</span>)</span><br><span class="line"><span class="number">9</span>        (销售, <span class="number">-2099.67683021</span>)</span><br><span class="line"><span class="number">10</span>     (食品安全, <span class="number">-2104.52601517</span>)</span><br><span class="line"><span class="number">11</span>       (涉案, <span class="number">-2106.51930849</span>)</span><br><span class="line"><span class="number">12</span>        (加工, <span class="number">-2110.4709589</span>)</span><br><span class="line"><span class="number">13</span>       (破获, <span class="number">-2111.47298087</span>)</span><br><span class="line"><span class="number">14</span>        (案, <span class="number">-2111.82806077</span>)</span><br><span class="line"><span class="number">15</span>       (欺诈, <span class="number">-2112.95137531</span>)</span><br><span class="line"><span class="number">16</span>       (生产, <span class="number">-2115.57760446</span>)</span><br><span class="line"><span class="number">17</span>       (原料, <span class="number">-2124.36521695</span>)</span><br><span class="line"><span class="number">18</span>       (案件, <span class="number">-2125.21520575</span>)</span><br><span class="line"><span class="number">19</span>        (等, <span class="number">-2126.20670381</span>)</span><br><span class="line"><span class="number">20</span>       (依法, <span class="number">-2126.65278663</span>)</span><br><span class="line"><span class="number">21</span>     (公安机关, <span class="number">-2130.61494485</span>)</span><br><span class="line"><span class="number">22</span>       (咖啡, <span class="number">-2140.98083555</span>)</span><br><span class="line"><span class="number">23</span>      (半成品, <span class="number">-2143.70307556</span>)</span><br><span class="line"><span class="number">24</span>        (虚假, <span class="number">-2144.3973437</span>)</span><br><span class="line"><span class="number">25</span>        (侦破, <span class="number">-2144.4260255</span>)</span><br><span class="line"><span class="number">26</span>       (假冒, <span class="number">-2145.73825612</span>)</span><br><span class="line"><span class="number">27</span>       (曲明, <span class="number">-2147.48180124</span>)</span><br><span class="line"><span class="number">28</span>     (食品药品, <span class="number">-2151.19137764</span>)</span><br><span class="line"><span class="number">29</span>       (专家, <span class="number">-2151.42459357</span>)</span><br><span class="line">                ...          </span><br><span class="line">dtype: object</span><br></pre></td></tr></table></figure>
+<h3 id="基于词向量的聚类分析"><a href="#基于词向量的聚类分析" class="headerlink" title="基于词向量的聚类分析"></a>基于词向量的聚类分析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> Word2Vec</span><br><span class="line">sentences = [[<span class="string">'this'</span>, <span class="string">'is'</span>, <span class="string">'the'</span>, <span class="string">'good'</span>, <span class="string">'machine'</span>, <span class="string">'learning'</span>, <span class="string">'book'</span>],</span><br><span class="line">            [<span class="string">'this'</span>, <span class="string">'is'</span>,  <span class="string">'another'</span>, <span class="string">'book'</span>],</span><br><span class="line">            [<span class="string">'one'</span>, <span class="string">'more'</span>, <span class="string">'book'</span>],</span><br><span class="line">            [<span class="string">'this'</span>, <span class="string">'is'</span>, <span class="string">'the'</span>, <span class="string">'new'</span>, <span class="string">'post'</span>],</span><br><span class="line">                        [<span class="string">'this'</span>, <span class="string">'is'</span>, <span class="string">'about'</span>, <span class="string">'machine'</span>, <span class="string">'learning'</span>, <span class="string">'post'</span>],  </span><br><span class="line">            [<span class="string">'and'</span>, <span class="string">'this'</span>, <span class="string">'is'</span>, <span class="string">'the'</span>, <span class="string">'last'</span>, <span class="string">'post'</span>]]</span><br><span class="line">model = Word2Vec(sentences, min_count=<span class="number">1</span>)</span><br><span class="line">X = model[model.wv.vocab]</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>使用nltk.cluster.KMeansClusterer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">from nltk.cluster import KMeansClusterer</span><br><span class="line">import nltk</span><br><span class="line">NUM_CLUSTERS=3</span><br><span class="line">kclusterer = KMeansClusterer(NUM_CLUSTERS, distance=nltk.cluster.util.cosine_distance, repeats=25)</span><br><span class="line">assigned_clusters = kclusterer.cluster(X, assign_clusters=True)</span><br><span class="line"><span class="built_in">print</span> (assigned_clusters)</span><br><span class="line"></span><br><span class="line">[1, 0, 2, 2, 0, 2, 2, 2, 2, 2, 1, 0, 2, 1, 0]</span><br><span class="line">words = list(model.wv.vocab)</span><br><span class="line"><span class="keyword">for</span> i, word <span class="keyword">in</span> enumerate(words):  </span><br><span class="line">    <span class="built_in">print</span> (word + <span class="string">":"</span> + str(assigned_clusters[i]))</span><br><span class="line">post:1</span><br><span class="line">one:0</span><br><span class="line">the:2</span><br><span class="line">machine:2</span><br><span class="line">another:0</span><br><span class="line">this:2</span><br><span class="line">last:2</span><br><span class="line">is:2</span><br><span class="line">book:2</span><br><span class="line">learning:2</span><br><span class="line">new:1</span><br><span class="line">good:0</span><br><span class="line">more:2</span><br><span class="line">and:1</span><br><span class="line">about:0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用sklearn.Keams</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> cluster</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">kmeans = cluster.KMeans(n_clusters=NUM_CLUSTERS)</span><br><span class="line">kmeans.fit(X)</span><br><span class="line"> </span><br><span class="line">labels = kmeans.labels_</span><br><span class="line">centroids = kmeans.cluster_centers_</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> (<span class="string">"Cluster id labels for inputted data"</span>)</span><br><span class="line"><span class="keyword">print</span> (labels)</span><br><span class="line"><span class="comment">#print ("Centroids data")</span></span><br><span class="line"><span class="comment">#print (centroids)</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> (<span class="string">"Score (Opposite of the value of X on the K-means objective which is Sum of distances of samples to their closest cluster center):"</span>)</span><br><span class="line"><span class="keyword">print</span> (kmeans.score(X))</span><br><span class="line"> </span><br><span class="line">silhouette_score = metrics.silhouette_score(X, labels, metric=<span class="string">'euclidean'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> (<span class="string">"Silhouette_score: "</span>)</span><br><span class="line"><span class="keyword">print</span> (silhouette_score)</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">Cluster id labels <span class="keyword">for</span> inputted data</span><br><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span>]</span><br><span class="line">Score (Opposite of the value of X on the K-means objective which <span class="keyword">is</span> Sum of distances of samples to their closest cluster center):</span><br><span class="line"><span class="number">-0.00961963500595</span></span><br><span class="line">Silhouette_score: </span><br><span class="line"><span class="number">0.0289495</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Word2vec的可视化"><a href="#Word2vec的可视化" class="headerlink" title="Word2vec的可视化"></a>Word2vec的可视化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys, os</span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> Word2Vec</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> tensorflow.contrib.tensorboard.plugins <span class="keyword">import</span> projector</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize</span><span class="params">(model, output_path)</span>:</span></span><br><span class="line">    meta_file = <span class="string">"w2x_metadata.tsv"</span></span><br><span class="line">    placeholder = np.zeros((len(model.wv.index2word), <span class="number">256</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> open(os.path.join(output_path,meta_file), <span class="string">'wb'</span>) <span class="keyword">as</span> file_metadata:</span><br><span class="line">        <span class="keyword">for</span> i, word <span class="keyword">in</span> enumerate(model.wv.index2word):</span><br><span class="line">            placeholder[i] = model[word]</span><br><span class="line">            <span class="comment"># temporary solution for https://github.com/tensorflow/tensorflow/issues/9094</span></span><br><span class="line">            <span class="keyword">if</span> word == <span class="string">''</span>:</span><br><span class="line">                print(<span class="string">"Emply Line, should replecaed by any thing else, or will cause a bug of tensorboard"</span>)</span><br><span class="line">                file_metadata.write(<span class="string">"&#123;0&#125;"</span>.format(<span class="string">'&lt;Empty Line&gt;'</span>).encode(<span class="string">'utf-8'</span>) + <span class="string">b'\n'</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                file_metadata.write(<span class="string">"&#123;0&#125;"</span>.format(word).encode(<span class="string">'utf-8'</span>) + <span class="string">b'\n'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the model without training</span></span><br><span class="line">    sess = tf.InteractiveSession()</span><br><span class="line"></span><br><span class="line">    embedding = tf.Variable(placeholder, trainable = <span class="keyword">False</span>, name = <span class="string">'w2x_metadata'</span>)</span><br><span class="line">    tf.global_variables_initializer().run()</span><br><span class="line"></span><br><span class="line">    saver = tf.train.Saver()</span><br><span class="line">    writer = tf.summary.FileWriter(output_path, sess.graph)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># adding into projector</span></span><br><span class="line">    config = projector.ProjectorConfig()</span><br><span class="line">    embed = config.embeddings.add()</span><br><span class="line">    embed.tensor_name = <span class="string">'w2x_metadata'</span></span><br><span class="line">    embed.metadata_path = meta_file</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Specify the width and height of a single thumbnail.</span></span><br><span class="line">    projector.visualize_embeddings(writer, config)</span><br><span class="line">    saver.save(sess, os.path.join(output_path,<span class="string">'w2x_metadata.ckpt'</span>))</span><br><span class="line">    print(<span class="string">'Run `tensorboard --logdir=&#123;0&#125;` to run visualize result on tensorboard'</span>.format(output_path))</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    model = Word2Vec.load(<span class="string">"./data/model/word2vec_wx"</span>)</span><br><span class="line">    visualize(model,<span class="string">"./visual/"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Run `tensorboard --logdir=./visual/` to run visualize result on tensorboard</span><br></pre></td></tr></table></figure>
+<h2 id="Word2vec的应用场景"><a href="#Word2vec的应用场景" class="headerlink" title="Word2vec的应用场景"></a>Word2vec的应用场景</h2><blockquote>
+<p>参考自<a href="http://www.zhuanzhi.ai/document/b614a5ceb61c95574515415a53cbf2e3" target="_blank" rel="noopener">word2vec在工业界的应用场景</a></p>
+</blockquote>
+<h3 id="在社交网络中的推荐"><a href="#在社交网络中的推荐" class="headerlink" title="在社交网络中的推荐"></a>在社交网络中的推荐</h3><p>在个性化推荐的场景，给当前用户推荐他可能关注的『大V』。对一个新用户，此题基本无解，如果在已知用户关注了几个『大V』之后，相当于知道了当前用户的一些关注偏好，根据此偏好给他推荐和他关注过大V相似的大V，就是一个很不错的推荐策略。所以，如果可以求出来任何两个V用户的相似度，上面问题就可以基本得到解决。</p>
+<p>我们知道word2vec中两个词的相似度可以直接通过余弦来衡量，接下来就是如何将每个V用户变为一个词向量的问题了。巧妙的地方就是如何定义doc和word，针对上面问题，可以将doc和word定义为：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">word</span> -&gt;</span>   每一个大V就是一个词</span><br><span class="line"><span class="function"><span class="title">doc</span>  -&gt;</span>   根据每一个用户关注大V的顺序，生成一篇文章</span><br></pre></td></tr></table></figure>
+<p>由于用户量很大（大约4亿），可以将关注word个数少的doc删掉，因为本身大V的种类是十万级别（如果我没记错的话）， 选择可以覆盖绝大多数大V的文章数量就足够了。</p>
+<h3 id="计算商品的相似度"><a href="#计算商品的相似度" class="headerlink" title="计算商品的相似度"></a>计算商品的相似度</h3><p>在商品推荐的场景中，竞品推荐和搭配推荐的时候都有可能需要计算任何两个商品的相似度，根据浏览/收藏/下单/App下载等行为，可以将商品看做词，将每一个用户的一类行为序看做一个文档，通过word2vec将其训练为一个向量。</p>
+<p>同样的，在计算广告中，根据用户的点击广告的点击序列，将每一个广告变为一个向量。变为向量后，用此向量可以生成特征融入到rank模型中。</p>
+<h3 id="作为另一个模型的输入"><a href="#作为另一个模型的输入" class="headerlink" title="作为另一个模型的输入"></a>作为另一个模型的输入</h3><p>在nlp的任务中，可以通过将词聚类后，生成一维新的特征来使用。在CRF实体识别的任务中，聚类结果类似词性，可以作为特征来使用。</p>
+<p>在依存句法分析的任务中，哈工大ltp的nndepparser则是将词向量直接作为输入。</p>
+<p>具体论文『A Fast and Accurate Dependency Parser using Neural Networks』</p>
+<h3 id="向量快速检索"><a href="#向量快速检索" class="headerlink" title="向量快速检索"></a>向量快速检索</h3><p>当我们将一个文档变成一个向量之后，如何根据余弦/欧氏距离快速得到其最相似的top k个文章，是工程实现上不得不考虑的问题。例如线上可以允许的时间是5ms以内，如果文章数量往往上万或者更多，O(n)的方式计算明显不可接受了。</p>
+<p>如果文章更新的速度很慢，可以通过离线的方式一天或者几天计算一次，导入redis（或者别的）提供线上快速查询。 但是如果文章实时新增，并且大量流量来自新文章，这个问题就要好好考虑一下。</p>
+<p>一般可以通过PQ, kd-tree、simhash、聚类等方式解决，选择不同的方式和具体的推荐场景、数据分布有关。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://zhuanlan.zhihu.com/p/29364112" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29364112</a></li>
+<li><a href="https://code.google.com/archive/p/word2vec/" target="_blank" rel="noopener">https://code.google.com/archive/p/word2vec/</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/21/弄懂word2vec之实践/" target="_blank" title="弄懂word2vec之实践">http://blog.a-stack.com/2018/08/21/弄懂word2vec之实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/word2vec/">word2vec</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/实践/">实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/词向量/">词向量</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/21/弄懂word2vec之原理解析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          弄懂word2vec之原理解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/19/CRUSH-in-Ceph/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">CRUSH in Ceph</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#训练词向量模型"><span class="nav-number">1.</span> <span class="nav-text">训练词向量模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工具准备"><span class="nav-number">1.1.</span> <span class="nav-text">工具准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载语料库并准备预料资源"><span class="nav-number">1.2.</span> <span class="nav-text">下载语料库并准备预料资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型训练"><span class="nav-number">1.3.</span> <span class="nav-text">模型训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练效果评价"><span class="nav-number">1.4.</span> <span class="nav-text">训练效果评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#词聚类"><span class="nav-number">1.4.1.</span> <span class="nav-text">词聚类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#词cos-相关性"><span class="nav-number">1.4.2.</span> <span class="nav-text">词cos 相关性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Analogy对比"><span class="nav-number">1.4.3.</span> <span class="nav-text">Analogy对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用tnse，pca等降维可视化展示"><span class="nav-number">1.4.4.</span> <span class="nav-text">使用tnse，pca等降维可视化展示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Categorization-分类-看词在每个分类中的概率"><span class="nav-number">1.4.5.</span> <span class="nav-text">Categorization 分类 看词在每个分类中的概率</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型使用"><span class="nav-number">2.</span> <span class="nav-text">模型使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用word2vec实现的关键词提取"><span class="nav-number">2.1.</span> <span class="nav-text">利用word2vec实现的关键词提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于词向量的聚类分析"><span class="nav-number">2.2.</span> <span class="nav-text">基于词向量的聚类分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Word2vec的可视化"><span class="nav-number">3.</span> <span class="nav-text">Word2vec的可视化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Word2vec的应用场景"><span class="nav-number">4.</span> <span class="nav-text">Word2vec的应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在社交网络中的推荐"><span class="nav-number">4.1.</span> <span class="nav-text">在社交网络中的推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算商品的相似度"><span class="nav-number">4.2.</span> <span class="nav-text">计算商品的相似度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作为另一个模型的输入"><span class="nav-number">4.3.</span> <span class="nav-text">作为另一个模型的输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向量快速检索"><span class="nav-number">4.4.</span> <span class="nav-text">向量快速检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>数据科学工具——ipython | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： 工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据科学工具——Ipython">
+<meta property="og:url" content="http://blog.a-stack.com/2018/12/29/数据科学工具——Ipython/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/29/数据科学工具——Ipython/2018-12-29-数据科学工具——Ipython/Jupyter%20Notebook.png">
+<meta property="og:updated_time" content="2018-12-30T08:54:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据科学工具——Ipython">
+<meta name="twitter:description" content="摘要： 工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/29/数据科学工具——Ipython/2018-12-29-数据科学工具——Ipython/Jupyter%20Notebook.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-数据科学工具——Ipython" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      数据科学工具——Ipython
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/29/数据科学工具——Ipython/" class="article-date">
+	  <time datetime="2018-12-29T08:13:36.000Z" itemprop="datePublished">2018-12-29</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/工具/">工具</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/12/29/数据科学工具——Ipython/2018-12-29-数据科学工具——Ipython/Jupyter Notebook.png" alt="Jupyter Notebook"></p>
+<p><strong>摘要：</strong> 工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。</p>
+<a id="more"></a>
+<h2 id="数据科学的定义"><a href="#数据科学的定义" class="headerlink" title="数据科学的定义"></a>数据科学的定义</h2><blockquote>
+<p>Data science comprises three distinct and overlapping areas: the skills of a <em>statistician</em> who knows how to model and summarize datasets (which are growing ever larger); the skills of a <em>computer scientist</em> who can design and use algorithms to efficiently store, process, and visualize this data; and the <em>domain expertise</em>—what we might think of as “classical” training in a subject—necessary both to formulate the right questions and to put their answers in context.</p>
+</blockquote>
+<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ol>
+<li><p>Accessing Documentation with <code>?</code> | Accessing Source Code with <code>??</code></p>
+</li>
+<li><p><code>+ &lt;TAB&gt;</code> 的使用</p>
+</li>
+<li><p>查找命令的通配符匹配策略： <code>*</code> + <code>?</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*Warning?</span><br><span class="line"></span><br><span class="line">str.*find*?</span><br><span class="line">  str.find</span><br><span class="line">  str.rfind</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Notebook中可以使用<code>automagic</code>,直接通过<code>cd</code>命令切换目录；</p>
+<ol>
+<li>其它还有<code>%cat,%cp,%env,%ls,%man,%mkdir,%more,%mv, %pwd, %rm, and %rmdir</code></li>
+</ol>
+</li>
+<li></li>
+</ol>
+<h2 id="魔法字符"><a href="#魔法字符" class="headerlink" title="魔法字符%"></a>魔法字符<code>%</code></h2><ol>
+<li><p><code>%run</code></p>
+<p>运行<code>.py</code>文件,同时把文件中的上下文环境加载到当前环境中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%run xxx.py</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>%timeit</code>，<code>%time</code>,<code>%%time</code></p>
+</li>
+<li><p><code>%history -n 1-4</code></p>
+</li>
+</ol>
+<h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><p><code>ipdb</code>:Ipython Debugger</p>
+<p><code>%debug</code> 进入调试模式，<code>quit</code>命令退出；</p>
+<ul>
+<li><code>up</code>和<code>down</code>可以控制代码执行位置；</li>
+</ul>
+<p>命令<code>%pdb on</code>可以开启自动调试模式，每次出异常自动触发调试；</p>
+<p>其它相关调试命令见下表：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list</code></td>
+<td>显示当前异常在文件中的位置</td>
+</tr>
+<tr>
+<td><code>h(elp)</code></td>
+<td>查看帮助文件</td>
+</tr>
+<tr>
+<td><code>q(uit)</code></td>
+<td>退出调试模式</td>
+</tr>
+<tr>
+<td><code>c(ontinue)</code></td>
+<td>中断调试，继续执行程序</td>
+</tr>
+<tr>
+<td><code>n(ext)</code></td>
+<td>继续程序下一步</td>
+</tr>
+<tr>
+<td><code>&lt;enter&gt;</code></td>
+<td>重复上一个命令</td>
+</tr>
+<tr>
+<td><code>p(rint)</code></td>
+<td>打印变量</td>
+</tr>
+<tr>
+<td><code>s(tep)</code></td>
+<td>进入子程序</td>
+</tr>
+<tr>
+<td><code>r(etrun)</code></td>
+<td>返回子程序</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><h4 id="命令行模式-按-Esc-生效-编辑快捷键"><a href="#命令行模式-按-Esc-生效-编辑快捷键" class="headerlink" title="命令行模式(按 Esc 生效)编辑快捷键"></a>命令行模式(按 Esc 生效)编辑快捷键</h4><p>F: 查找并且替换</p>
+<p>Enter: 进入编辑模式</p>
+<p>P: 打开命令配置</p>
+<p>Shift-Enter: 运行代码块, 选择下面的代码块</p>
+<p>Ctrl-Enter: 运行选中的代码块</p>
+<p>Alt-Enter: 运行代码块并且插入下面</p>
+<p><strong>Y: 把代码块变成代码</strong></p>
+<p><strong>M: 把代码块变成标签</strong></p>
+<p><strong>R: 清除代码块格式</strong></p>
+<p>1: 把代码块变成heading 1</p>
+<p>2: 把代码块变成heading 2</p>
+<p>3: 把代码块变成heading 3</p>
+<p>4: 把代码块变成heading 4</p>
+<p>5: 把代码块变成heading 5</p>
+<p>6: 把代码块变成heading 6</p>
+<p>K: 选择上面的代码块</p>
+<p>J: 选择下面的代码块</p>
+<p>Shift-K: 扩展上面选择的代码块</p>
+<p>Shift-上: 扩展上面选择的代码块</p>
+<p>Shift-下: 扩展下面选择的代码块</p>
+<p>Shift-J: 扩展下面选择的代码块</p>
+<p><strong>A: 在上面插入代码块</strong></p>
+<p><strong>B: 在下面插入代码块</strong></p>
+<p>X: 剪切选择的代码块</p>
+<p>C: 复制选择的代码块</p>
+<p>Shift-V: 粘贴到上面</p>
+<p>V: 粘贴到下面</p>
+<p>Z: 撤销删除</p>
+<p>D,D: 删除选中单元格</p>
+<p><strong>Shift-M: 合并选中单元格, 如果只有一个单元格被选中</strong></p>
+<p>Ctrl-S: 保存并检查</p>
+<p>L: 切换行号</p>
+<p>O: 选择单元格的输出</p>
+<p>Shift-O: 切换选定单元的输出滚动</p>
+<p>H: 显示快捷键</p>
+<p>I,I: 中断服务</p>
+<p>0,0: 重启服务(带窗口)</p>
+<p>Esc: 关闭页面</p>
+<p>Q: 关闭页面</p>
+<p>Shift-L: 在所有单元格中切换行号，并保持设置</p>
+<p>Shift-空格: 向上滚动</p>
+<p>空格: 向下滚动</p>
+<h4 id="编辑模式-按-Enter-生效"><a href="#编辑模式-按-Enter-生效" class="headerlink" title="编辑模式(按 Enter 生效)"></a>编辑模式(按 Enter 生效)</h4><p>Tab: 代码完成或缩进</p>
+<p><strong>Shift-Tab: 工具提示</strong></p>
+<p>Ctrl-]: 缩进</p>
+<p>Ctrl-[: 取消缩进</p>
+<p>Ctrl-A: 全选</p>
+<p>Ctrl-Z: 撤销</p>
+<p><strong>Ctrl-/: 注释代码</strong></p>
+<p>Ctrl-D: 删除整行</p>
+<p>Ctrl-U: 撤销选择</p>
+<p>Insert: 切换 重写标志</p>
+<p>Ctrl-Home: 跳到单元格起始处</p>
+<p>Ctrl-上: 跳到单元格起始处</p>
+<p>Ctrl-End: 跳到单元格最后</p>
+<p>Ctrl-下: 跳到单元格最后</p>
+<p>Ctrl-左: 跳到单词左边</p>
+<p>Ctrl-右: 跳到单词右边</p>
+<p>Ctrl-删除: 删除前面的单词</p>
+<p>Ctrl-Delete: 删除后面的单词</p>
+<p>Ctrl-Y: 重做</p>
+<p>Alt-U: 重新选择</p>
+<p>Ctrl-M: 进入命令行模式</p>
+<p>Ctrl-Shift-F: 打开命令配置</p>
+<p>Ctrl-Shift-P: 打开命令配置</p>
+<p>Esc: 进入命令行模式</p>
+<p>Shift-Enter: 运行代码块, 选择下面的代码块</p>
+<p>Ctrl-Enter: 运行选中的代码块</p>
+<p>Alt-Enter: 运行代码块并且插入下面</p>
+<p>Ctrl-Shift-Minus: 在鼠标出分割代码块</p>
+<p>Ctrl-S: 保存并检查</p>
+<p>下: 光标下移</p>
+<p>上: 光标上移</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/" target="_blank" rel="noopener">Book《Python Data Science Handbook》</a></li>
+<li><a href="https://github.com/jakevdp/PythonDataScienceHandbook" target="_blank" rel="noopener">https://github.com/jakevdp/PythonDataScienceHandbook</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/12/29/数据科学工具——Ipython/" target="_blank" title="数据科学工具——Ipython">http://blog.a-stack.com/2018/12/29/数据科学工具——Ipython/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ipython/">Ipython</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JupyterNotebook/">JupyterNotebook</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/教学/">教学</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/30/数据科学工具——Numpy/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          数据科学工具——Numpy
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/26/深度学习资源调度平台OpenPAI部署/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度学习资源调度平台OpenPAI部署</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据科学的定义"><span class="nav-number">1.</span> <span class="nav-text">数据科学的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧"><span class="nav-number">2.</span> <span class="nav-text">技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#魔法字符"><span class="nav-number">3.</span> <span class="nav-text">魔法字符%</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Debug"><span class="nav-number">4.</span> <span class="nav-text">Debug</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键"><span class="nav-number">5.</span> <span class="nav-text">快捷键</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行模式-按-Esc-生效-编辑快捷键"><span class="nav-number">5.0.1.</span> <span class="nav-text">命令行模式(按 Esc 生效)编辑快捷键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编辑模式-按-Enter-生效"><span class="nav-number">5.0.2.</span> <span class="nav-text">编辑模式(按 Enter 生效)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

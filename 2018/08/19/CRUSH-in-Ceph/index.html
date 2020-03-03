@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>crush in ceph | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRUSH in Ceph">
+<meta property="og:url" content="http://blog.a-stack.com/2018/08/19/CRUSH-in-Ceph/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/19/qnsource/banner/22.jpg">
+<meta property="og:updated_time" content="2018-08-19T15:32:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CRUSH in Ceph">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/08/19/qnsource/banner/22.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-CRUSH-in-Ceph" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      CRUSH in Ceph
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/19/CRUSH-in-Ceph/" class="article-date">
+	  <time datetime="2018-08-19T11:13:01.000Z" itemprop="datePublished">2018-08-19</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/云存储/">云存储</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2018/08/19/CRUSH-in-Ceph/../qnsource/banner/22.jpg" alt="聊聊Ceph中的核心数据分布选择算法——CRUSH"></p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>CRUSH算法构建了Ceph存储体系的核心，解决了计算效率和计算性能的同步优化，解放了元数据节点，让ceph的客户端侧完成数据目标位置的计算任务，保障了系统的可扩展性和鲁棒性。具备计算寻址、高并发能力、动态数据再平衡、可定制的副本策略等优秀特性。</p>
+<p><strong>CRUSH</strong>：Controlled Replication Under Scalable Hashing ，基于可扩展哈希的受控副本分布策略。CRUSH本质上是一种基于hash的数据分布式算法，主要解决两个问题：</p>
+<ol>
+<li><p>当系统发生变化时，如何最小化数据的迁移量并尽快恢复平衡；</p>
+</li>
+<li><p>如何保证数据的多个副本合理分布，保证数据的可靠性；</p>
+</li>
+</ol>
+<h2 id="CRUSH中的5种设备选择算法"><a href="#CRUSH中的5种设备选择算法" class="headerlink" title="CRUSH中的5种设备选择算法"></a>CRUSH中的5种设备选择算法</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>对比项/算法</th>
+<th>unique</th>
+<th>list</th>
+<th>tree</th>
+<th>straw</th>
+<th>staw2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>时间复杂度</td>
+<td>O(1)</td>
+<td>O(N)</td>
+<td>O(log(N))</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>添加元素</td>
+<td>差</td>
+<td>最好</td>
+<td>好</td>
+<td>最好</td>
+<td>最好</td>
+</tr>
+<tr>
+<td>删除元素</td>
+<td>差</td>
+<td>差</td>
+<td>好</td>
+<td>最好</td>
+<td>最好</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上对比可以看出，straw虽然时间复杂度高，但应对环境变化能力强，所以作为ceph的默认配置算法。</p>
+<p>straw算法的本质是一个抽签算法，选取抽取签长最长的作为结果，同时考虑不同设备的权重，来补偿签长权重，让容量大的设备更容易被抽中。</p>
+<p>straw抽签算法可以保证，每个设备的签长计算只与该设备的权重有关，这样当添加或删除设备时，不会导致数据在除添加/删除之外的两个元素之间迁移。</p>
+<p>但straw算法并非完美，在算法设计的权重排序中，由于需要和其它元素的权重进行比较，从而导致每次有元素加入当前集合或从当前集合删除时，都会引起不相关的数据迁移。为此，straw2提出了改良算法。</p>
+<h2 id="CRUSH算法"><a href="#CRUSH算法" class="headerlink" title="CRUSH算法"></a>CRUSH算法</h2><p><strong>输入：</strong>x，cluster map，placement rule</p>
+<p>目的： 为输入PG寻找合适的OSD set</p>
+<script type="math/tex; mode=display">
+CRUSH（x,cluster map, placement rule） = (osd0,osd1,…, osdn)</script><h3 id="Cluster-Map"><a href="#Cluster-Map" class="headerlink" title="Cluster Map"></a>Cluster Map</h3><p>cluster map也成为CRUSH map是集群拓扑结构的逻辑描述形式，采用树这种数据结构实现，比如“数据中心——机架——主机——磁盘”的树状层级关系。其中叶子节点为device，中间节点统称bucket，根节点为root，每个节点通过ID和类型描述。</p>
+<p>cluster map中包含CRUSH MAP Devices表，用于统计所有的设备资源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#devices</span></span><br><span class="line">device &#123;num&#125; &#123;osd.name&#125;</span><br></pre></td></tr></table></figure>
+<p>Bucket类型表，描述了不同的设备类型信息：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">type 0 osd</span><br><span class="line">type 1 host</span><br><span class="line">type 2 chassis</span><br><span class="line">type 3 rack</span><br><span class="line">type 4 row</span><br><span class="line">type 5 pdu</span><br><span class="line">type 6 pod</span><br><span class="line">type 7 room</span><br><span class="line">type 8 datacenter</span><br><span class="line">type 9 region</span><br><span class="line">type 10 root</span><br></pre></td></tr></table></figure>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[bucket-type] [bucket-name] &#123;</span><br><span class="line">        id [a unique negative numeric ID]</span><br><span class="line">        weight [the relative capacity/capability of the item(<span class="name">s</span>)]</span><br><span class="line">        alg [the bucket type: uniform | list | tree | straw | straw2]</span><br><span class="line">        hash [the hash type: <span class="number">0</span> by default]</span><br><span class="line">        item [item-name] weight [weight]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">host ceph-node3 &#123;</span><br><span class="line">        id <span class="number">-4</span>           # do not change unnecessarily</span><br><span class="line">        # weight <span class="number">0.053</span></span><br><span class="line">        alg straw</span><br><span class="line">        hash <span class="number">0</span>  # rjenkins1</span><br><span class="line">        item osd<span class="number">.4</span> weight <span class="number">0.018</span></span><br><span class="line">        item osd<span class="number">.5</span> weight <span class="number">0.018</span></span><br><span class="line">        item osd<span class="number">.8</span> weight <span class="number">0.018</span></span><br><span class="line">&#125;</span><br><span class="line">root <span class="section">default</span> &#123;</span><br><span class="line">        id <span class="number">-1</span>           # do not change unnecessarily</span><br><span class="line">        # weight <span class="number">0.158</span></span><br><span class="line">        alg straw</span><br><span class="line">        hash <span class="number">0</span>  # rjenkins1</span><br><span class="line">        item ceph-node1 weight <span class="number">0.053</span></span><br><span class="line">        item ceph-node2 weight <span class="number">0.053</span></span><br><span class="line">        item ceph-node3 weight <span class="number">0.053</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Placement-Rule"><a href="#Placement-Rule" class="headerlink" title="Placement Rule"></a>Placement Rule</h3><p>数据分布策略：Placement Rule，用于利用cluster map完成数据映射，包括take，select和emit三种操作。</p>
+<p>核心是select算法，将根据需求返回指定数量的叶子设备，并保证这些叶子设备位于不同的指定类型的容灾域之下。 </p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rule &lt;rulename&gt; &#123;</span><br><span class="line"></span><br><span class="line">        ruleset &lt;ruleset&gt;</span><br><span class="line">       <span class="built_in"> type </span>[ replicated | erasure ]</span><br><span class="line">        min_size &lt;min-size&gt;</span><br><span class="line">        max_size &lt;max-size&gt;</span><br><span class="line">        <span class="keyword">step</span> take &lt;bucket-name&gt;</span><br><span class="line">        <span class="keyword">step</span> [choose|chooseleaf] [firstn|indep] &lt;N&gt; &lt;bucket-type&gt;</span><br><span class="line">        <span class="keyword">step</span> emit</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CRUSH算法的缺陷"><a href="#CRUSH算法的缺陷" class="headerlink" title="CRUSH算法的缺陷"></a>CRUSH算法的缺陷</h3><p>CRUSH算法本身仍然存在缺陷，从基本选择算法上看，每次选择都是计算单个条目被选中的独立概率，但是CRUSH所要求的副本策略使得针对同一输入、多个副本之间的选择变成了计算条件概率，所以CRUSH无法处理好多副本模式下的副本均匀分布问题；</p>
+<p>这导致了在Ceph集群中，特别是异构集群中，出现大量磁盘数据分布悬殊的情况，因此需要对其计算结果进行人工干预。除了本身的weight，人工设置一个reweight值，叫做过载测试。</p>
+<h3 id="CRUSH规则修改常用命令"><a href="#CRUSH规则修改常用命令" class="headerlink" title="CRUSH规则修改常用命令"></a>CRUSH规则修改常用命令</h3><p>CRUSH修改满足如下流程：</p>
+<ol>
+<li><a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#getcrushmap" target="_blank" rel="noopener">Get the CRUSH map</a>.</li>
+<li><a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#decompilecrushmap" target="_blank" rel="noopener">Decompile</a> the CRUSH map.</li>
+<li>Edit at least one of <a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#crushmapdevices" target="_blank" rel="noopener">Devices</a>, <a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#crushmapbuckets" target="_blank" rel="noopener">Buckets</a> and <a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#crushmaprules" target="_blank" rel="noopener">Rules</a>.</li>
+<li><a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#compilecrushmap" target="_blank" rel="noopener">Recompile</a> the CRUSH map.</li>
+<li>Test it.</li>
+<li><a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/#setcrushmap" target="_blank" rel="noopener">Set the CRUSH map</a>.</li>
+</ol>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.</span></span><br><span class="line"><span class="string">ceph </span><span class="string">osd </span><span class="string">getcrushmap </span>-o &#123;<span class="string">compiled </span><span class="string">crush </span><span class="string">map </span><span class="string">file&#125;</span></span><br><span class="line"><span class="comment"># 2.</span></span><br><span class="line"><span class="string">crushtool </span>-d &#123;<span class="string">compiled </span><span class="string">crush </span><span class="string">map </span><span class="string">file&#125;</span> -o &#123;<span class="string">decompiled </span><span class="string">crush </span><span class="string">map </span><span class="string">file&#125;</span></span><br><span class="line"><span class="comment"># 3.</span></span><br><span class="line"><span class="comment">#4.</span></span><br><span class="line"><span class="string">crushtool </span>-c &#123;<span class="string">decompiled </span><span class="string">crush </span><span class="string">map </span><span class="string">file&#125;</span> -o &#123;<span class="string">compiled </span><span class="string">crush </span><span class="string">map </span><span class="string">file&#125;</span></span><br><span class="line"><span class="comment"># 5. 模拟测试</span></span><br><span class="line"><span class="string">crushtool </span>-i <span class="string">mycrushmap </span><span class="built_in">--test</span> <span class="built_in">--min-x</span> - <span class="built_in">--max-x</span> 9 <span class="built_in">--num-rep</span> 3 <span class="built_in">--ruleset</span> 0 <span class="built_in">--show_mappings</span></span><br><span class="line"><span class="built_in">crushtool</span> -i <span class="string">mycrushmap </span><span class="built_in">--test</span> <span class="built_in">--min-x</span> - <span class="built_in">--max-x</span> 9 <span class="built_in">--num-rep</span> 3 <span class="built_in">--ruleset</span> 0 <span class="built_in">--show_utilization</span></span><br><span class="line"><span class="built_in">#</span> 6.</span><br><span class="line"><span class="string">ceph </span><span class="string">osd </span><span class="string">setcrushmap </span>-i &#123;<span class="string">compiled </span><span class="string">crush </span><span class="string">map </span><span class="string">file&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="定制CRUSH规则"><a href="#定制CRUSH规则" class="headerlink" title="定制CRUSH规则"></a>定制CRUSH规则</h3><ol>
+<li><p>修改容灾域（如下为以rack作为容灾域）</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rules</span></span><br><span class="line">rule replicated_ruleset &#123;</span><br><span class="line">	ruleset 0</span><br><span class="line"><span class="built_in">	type </span>replicated</span><br><span class="line">	min_size 1</span><br><span class="line">	max_size 10</span><br><span class="line">	<span class="keyword">step</span> take default</span><br><span class="line">	<span class="keyword">step</span> chooseleaf firstn 0<span class="built_in"> type </span>rack</span><br><span class="line">	<span class="keyword">step</span> emit</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>2.限制只选择特定范围的OSD，比如下面只选择rack2的OSD</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rules</span></span><br><span class="line">rule replicated_ruleset &#123;</span><br><span class="line">	ruleset 0</span><br><span class="line"><span class="built_in">	type </span>replicated</span><br><span class="line">	min_size 1</span><br><span class="line">	max_size 10</span><br><span class="line">	<span class="keyword">step</span> take rack2</span><br><span class="line">	<span class="keyword">step</span> chooseleaf firstn 0<span class="built_in"> type </span>host</span><br><span class="line">	<span class="keyword">step</span> emit</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>构建虚拟隔离池</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">host virtualhost &#123;</span><br><span class="line">	id -10		# <span class="keyword">do</span> <span class="keyword">not</span> change unnecessarily</span><br><span class="line">	# weight 0.053</span><br><span class="line">	alg straw2</span><br><span class="line">	hash 0	# rjenkins1</span><br><span class="line">	item osd.3 weight 0.018</span><br><span class="line">	item osd.6 weight 0.018</span><br><span class="line">	item osd.7 weight 0.018</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># rules</span></span><br><span class="line">rule replicated_ruleset &#123;</span><br><span class="line">	ruleset 0</span><br><span class="line"><span class="built_in">	type </span>replicated</span><br><span class="line">	min_size 1</span><br><span class="line">	max_size 10</span><br><span class="line">	<span class="keyword">step</span> take virtualhost</span><br><span class="line">	<span class="keyword">step</span> chooseleaf firstn 0<span class="built_in"> type </span>osd</span><br><span class="line">	<span class="keyword">step</span> emit</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="数据重平衡"><a href="#数据重平衡" class="headerlink" title="数据重平衡"></a>数据重平衡</h3><p>人为干预可以通过reweight来调节数据分布：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd reweight &#123;osd_numeric_id&#125; &#123;reweight&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以批量调整，比如按照<code>reweight-by-utilizaiton</code> 或 <code>reweight-by-pg</code>,可以调整前通过如下命令测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ceph osd <span class="built_in">test</span>-reweight-by-utilization &#123;overload&#125; &#123;max_change&#125; &#123;max_osds&#125; &#123;--no-incresing&#125;</span><br><span class="line">[root@ceph-node1 ~]<span class="comment"># ceph osd test-reweight-by-utilization 105 .2 4 --no-increasing</span></span><br><span class="line">no change</span><br><span class="line">moved 6 / 384 (1.5625%)</span><br><span class="line">avg 42.6667</span><br><span class="line">stddev 5.4365 -&gt; 4.49691 (expected baseline 6.1584)</span><br><span class="line">min osd.7 with 33 -&gt; 37 pgs (0.773438 -&gt; 0.867188 * mean)</span><br><span class="line">max osd.6 with 52 -&gt; 48 pgs (1.21875 -&gt; 1.125 * mean)</span><br><span class="line"></span><br><span class="line">oload 105</span><br><span class="line">max_change 0.2</span><br><span class="line">max_change_osds 4</span><br><span class="line">average 0.007894</span><br><span class="line">overload 0.008289</span><br><span class="line">osd.6 weight 1.000000 -&gt; 0.843857</span><br><span class="line">osd.4 weight 1.000000 -&gt; 0.940109</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>overload</td>
+<td>可选，默认值为120，为大于100的数，当且仅当OSD的空间利用与大于等于集群平均利用率的overload/100时，调整reweight</td>
+</tr>
+<tr>
+<td>max_change</td>
+<td>[0,1],每次调整reweight的最大幅度，默认0.05</td>
+</tr>
+<tr>
+<td>max_osds</td>
+<td>整型，默认 4；每次至多调整的OSD数目</td>
+</tr>
+<tr>
+<td>–no-incresing</td>
+<td>可选，不将reweight进行上调</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="其它可配置信息"><a href="#其它可配置信息" class="headerlink" title="其它可配置信息"></a>其它可配置信息</h2><h3 id="主OSD的选择"><a href="#主OSD的选择" class="headerlink" title="主OSD的选择"></a>主OSD的选择</h3><p>可以通过给OSD一个[0,1]之间的权重，来选择该OSD是否适合作为主OSD，0代表不作为主OSD，1作为可以被选为主OSD。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd primary-affinity <span class="tag">&lt;<span class="name">osd-id</span>&gt;</span> <span class="tag">&lt;<span class="name">weight</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Tunable"><a href="#Tunable" class="headerlink" title="Tunable"></a>Tunable</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ceph osd crush tunables optimal</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>legacy</code>: the legacy behavior from argonaut and earlier.</li>
+<li><code>argonaut</code>: the legacy values supported by the original argonaut release</li>
+<li><code>bobtail</code>: the values supported by the bobtail release</li>
+<li><code>firefly</code>: the values supported by the firefly release</li>
+<li><code>optimal</code>: the current best values</li>
+<li><code>default</code>: the current default values for a new cluster</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>《Ceph设计与实现原理》</li>
+<li><a href="https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf" target="_blank" rel="noopener">《CRUSH: Controlled, Scalable, Decentralized Placement of Replicated Data》</a></li>
+<li><a href="http://docs.ceph.com/docs/jewel/rados/operations/crush-map/" target="_blank" rel="noopener">http://docs.ceph.com/docs/jewel/rados/operations/crush-map/</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/08/19/CRUSH-in-Ceph/" target="_blank" title="CRUSH in Ceph">http://blog.a-stack.com/2018/08/19/CRUSH-in-Ceph/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ceph/">Ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/云存储/">云存储</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/21/弄懂word2vec之实践/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          弄懂word2vec之实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/04/Ceph-install-by-ceph-ansible/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Ceph-install-by-ceph-ansible</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRUSH中的5种设备选择算法"><span class="nav-number">2.</span> <span class="nav-text">CRUSH中的5种设备选择算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRUSH算法"><span class="nav-number">3.</span> <span class="nav-text">CRUSH算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster-Map"><span class="nav-number">3.1.</span> <span class="nav-text">Cluster Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Placement-Rule"><span class="nav-number">3.2.</span> <span class="nav-text">Placement Rule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CRUSH算法的缺陷"><span class="nav-number">3.3.</span> <span class="nav-text">CRUSH算法的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CRUSH规则修改常用命令"><span class="nav-number">3.4.</span> <span class="nav-text">CRUSH规则修改常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制CRUSH规则"><span class="nav-number">3.5.</span> <span class="nav-text">定制CRUSH规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据重平衡"><span class="nav-number">3.6.</span> <span class="nav-text">数据重平衡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它可配置信息"><span class="nav-number">4.</span> <span class="nav-text">其它可配置信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主OSD的选择"><span class="nav-number">4.1.</span> <span class="nav-text">主OSD的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tunable"><span class="nav-number">4.2.</span> <span class="nav-text">Tunable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

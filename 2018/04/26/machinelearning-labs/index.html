@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>《机器学习》课程实验回顾 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。  概要 可以使用Matlab Online进行代码测试，地址; 相关代码已经传输至Github： https://github.com/ddebby/machine_learning_cousera.git  Lab1: 线性回归1. 简单线性">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《机器学习》课程实验回顾">
+<meta property="og:url" content="http://blog.a-stack.com/2018/04/26/machinelearning-labs/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。  概要 可以使用Matlab Online进行代码测试，地址; 相关代码已经传输至Github： https://github.com/ddebby/machine_learning_cousera.git  Lab1: 线性回归1. 简单线性">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_01.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_02.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_03.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_04.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_01.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_02.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_03.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_04.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_05.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_10.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab7_09.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab8_01.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab8_02.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-26-machinelearning-labs/lab8_03.png">
+<meta property="og:updated_time" content="2018-05-15T09:14:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《机器学习》课程实验回顾">
+<meta name="twitter:description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。  概要 可以使用Matlab Online进行代码测试，地址; 相关代码已经传输至Github： https://github.com/ddebby/machine_learning_cousera.git  Lab1: 线性回归1. 简单线性">
+<meta name="twitter:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_01.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-machinelearning-labs" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      《机器学习》课程实验回顾
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/26/machinelearning-labs/" class="article-date">
+	  <time datetime="2018-04-26T05:56:28.000Z" itemprop="datePublished">2018-04-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/动手实践营/">动手实践营</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。</p>
+<!-- excerpt -->
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ul>
+<li>可以使用Matlab Online进行代码测试，<a href="https://matlab.mathworks.com/" target="_blank" rel="noopener">地址</a>;</li>
+<li>相关代码已经传输至Github： <a href="https://github.com/ddebby/machine_learning_cousera.git" target="_blank" rel="noopener">https://github.com/ddebby/machine_learning_cousera.git</a></li>
+</ul>
+<h2 id="Lab1-线性回归"><a href="#Lab1-线性回归" class="headerlink" title="Lab1: 线性回归"></a>Lab1: 线性回归</h2><h3 id="1-简单线性回归"><a href="#1-简单线性回归" class="headerlink" title="1. 简单线性回归"></a>1. 简单线性回归</h3><p>在第一个实验中提供了单变量线性回归的数据用来预测快餐车的盈利情况，其中输入为城市中的人口信息，输出为该城市快餐车的盈利情况，数据分布情况详见下图：</p>
+<p><img src="/2018/04/26/machinelearning-labs/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_01.jpg" alt="linear_regression_01"></p>
+<h4 id="代价函数和梯度更新实现"><a href="#代价函数和梯度更新实现" class="headerlink" title="代价函数和梯度更新实现"></a>代价函数和梯度更新实现</h4><p>计算代价函数 <code>computeCost.m</code> </p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">J</span> = <span class="title">computeCost</span><span class="params">(X, y, theta)</span></span></span><br><span class="line"><span class="comment">%COMPUTECOST Compute cost for linear regression</span></span><br><span class="line"><span class="comment">%   J = COMPUTECOST(X, y, theta) computes the cost of using theta as the</span></span><br><span class="line"><span class="comment">%   parameter for linear regression to fit the data points in X and y</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize some useful values</span></span><br><span class="line">m = <span class="built_in">length</span>(y); <span class="comment">% number of training examples</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly </span></span><br><span class="line">J = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% ====================== YOUR CODE HERE ======================</span></span><br><span class="line"><span class="comment">% Instructions: Compute the cost of a particular choice of theta</span></span><br><span class="line"><span class="comment">%               You should set J to the cost.</span></span><br><span class="line">J = <span class="number">1</span>/(<span class="number">2</span>*m) * (X*theta - y)'*(X*theta -y)</span><br><span class="line"><span class="comment">% =========================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>梯度更新 <code>gradientDescent.m</code></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[theta, J_history]</span> = <span class="title">gradientDescent</span><span class="params">(X, y, theta, alpha, num_iters)</span></span></span><br><span class="line"><span class="comment">%GRADIENTDESCENT Performs gradient descent to learn theta</span></span><br><span class="line"><span class="comment">%   theta = GRADIENTDESCENT(X, y, theta, alpha, num_iters) updates theta by </span></span><br><span class="line"><span class="comment">%   taking num_iters gradient steps with learning rate alpha</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize some useful values</span></span><br><span class="line">m = <span class="built_in">length</span>(y); <span class="comment">% number of training examples</span></span><br><span class="line">J_history = <span class="built_in">zeros</span>(num_iters, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> iter = <span class="number">1</span>:num_iters</span><br><span class="line"></span><br><span class="line">    <span class="comment">% ====================== YOUR CODE HERE ======================</span></span><br><span class="line">    <span class="comment">% Instructions: Perform a single gradient step on the parameter vector</span></span><br><span class="line">    <span class="comment">%               theta. </span></span><br><span class="line">    <span class="comment">%</span></span><br><span class="line">    <span class="comment">% Hint: While debugging, it can be useful to print out the values</span></span><br><span class="line">    <span class="comment">%       of the cost function (computeCost) and gradient here.</span></span><br><span class="line">    <span class="comment">%</span></span><br><span class="line"></span><br><span class="line">    theta = theta - alpha/m * X'*(X*theta - y);</span><br><span class="line"></span><br><span class="line">    <span class="comment">% ============================================================</span></span><br><span class="line">    <span class="comment">% Save the cost J in every iteration    </span></span><br><span class="line">    J_history(iter) = computeCost(X, y, theta);</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>实现并测试：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">data = load(<span class="string">'ex1data1.txt'</span>);</span><br><span class="line">X = data(:, <span class="number">1</span>); y = data(:, <span class="number">2</span>);</span><br><span class="line">m = <span class="built_in">length</span>(y); <span class="comment">% number of training examples</span></span><br><span class="line"></span><br><span class="line">X = [ones(m, <span class="number">1</span>), data(:,<span class="number">1</span>)]; <span class="comment">% Add a column of ones to x</span></span><br><span class="line">theta = <span class="built_in">zeros</span>(<span class="number">2</span>, <span class="number">1</span>); <span class="comment">% initialize fitting parameters</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Some gradient descent settings</span></span><br><span class="line">iterations = <span class="number">1500</span>;</span><br><span class="line">alpha = <span class="number">0.01</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% compute and display initial cost</span></span><br><span class="line">J = computeCost(X, y, theta);</span><br><span class="line"></span><br><span class="line"><span class="comment">% further testing of the cost function</span></span><br><span class="line">J = computeCost(X, y, [<span class="number">-1</span> ; <span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">% run gradient descent</span></span><br><span class="line">theta = gradientDescent(X, y, theta, alpha, iterations);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Plot the linear fit</span></span><br><span class="line">hold on; <span class="comment">% keep previous plot visible</span></span><br><span class="line">plot(X(:,<span class="number">2</span>), X*theta, <span class="string">'-'</span>)</span><br><span class="line">legend(<span class="string">'Training data'</span>, <span class="string">'Linear regression'</span>)</span><br><span class="line">hold off <span class="comment">% don't overlay any more plots on this figure</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Predict values for population sizes of 35,000 and 70,000</span></span><br><span class="line">predict1 = [<span class="number">1</span>, <span class="number">3.5</span>] *theta;</span><br><span class="line">fprintf(<span class="string">'For population = 35,000, we predict a profit of %f\n'</span>,...</span><br><span class="line">    predict1*<span class="number">10000</span>);</span><br><span class="line">predict2 = [<span class="number">1</span>, <span class="number">7</span>] * theta;</span><br><span class="line">fprintf(<span class="string">'For population = 70,000, we predict a profit of %f\n'</span>,...</span><br><span class="line">    predict2*<span class="number">10000</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_02.jpg" alt="linear_regression_02"></p>
+<h4 id="J-theta-的可视化"><a href="#J-theta-的可视化" class="headerlink" title="$J(\theta)$ 的可视化"></a>$J(\theta)$ 的可视化</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ============= Part 4: Visualizing J(theta_0, theta_1) =============</span></span><br><span class="line">fprintf(<span class="string">'Visualizing J(theta_0, theta_1) ...\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">% Grid over which we will calculate J</span></span><br><span class="line">theta0_vals = <span class="built_in">linspace</span>(<span class="number">-10</span>, <span class="number">10</span>, <span class="number">100</span>);</span><br><span class="line">theta1_vals = <span class="built_in">linspace</span>(<span class="number">-1</span>, <span class="number">4</span>, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% initialize J_vals to a matrix of 0's</span></span><br><span class="line">J_vals = <span class="built_in">zeros</span>(<span class="built_in">length</span>(theta0_vals), <span class="built_in">length</span>(theta1_vals));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Fill out J_vals</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:<span class="built_in">length</span>(theta0_vals)</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">1</span>:<span class="built_in">length</span>(theta1_vals)</span><br><span class="line">	  t = [theta0_vals(i); theta1_vals(j)];</span><br><span class="line">	  J_vals(<span class="built_in">i</span>,<span class="built_in">j</span>) = computeCost(X, y, t);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Because of the way meshgrids work in the surf command, we need to</span></span><br><span class="line"><span class="comment">% transpose J_vals before calling surf, or else the axes will be flipped</span></span><br><span class="line">J_vals = J_vals';</span><br><span class="line"><span class="comment">% Surface plot</span></span><br><span class="line">figure;</span><br><span class="line">surf(theta0_vals, theta1_vals, J_vals)</span><br><span class="line">xlabel(<span class="string">'\theta_0'</span>); ylabel(<span class="string">'\theta_1'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Contour plot</span></span><br><span class="line">figure;</span><br><span class="line"><span class="comment">% Plot J_vals as 15 contours spaced logarithmically between 0.01 and 100</span></span><br><span class="line">contour(theta0_vals, theta1_vals, J_vals, <span class="built_in">logspace</span>(<span class="number">-2</span>, <span class="number">3</span>, <span class="number">20</span>))</span><br><span class="line">xlabel(<span class="string">'\theta_0'</span>); ylabel(<span class="string">'\theta_1'</span>);</span><br><span class="line">hold on;</span><br><span class="line">plot(theta(<span class="number">1</span>), theta(<span class="number">2</span>), <span class="string">'rx'</span>, <span class="string">'MarkerSize'</span>, <span class="number">10</span>, <span class="string">'LineWidth'</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_03.jpg" alt="linear_regression_03"></p>
+<p><img src="/2018/04/26/machinelearning-labs/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_04.jpg" alt="linear_regression_04"></p>
+<h3 id="2-多元线性回归"><a href="#2-多元线性回归" class="headerlink" title="2. 多元线性回归"></a>2. 多元线性回归</h3><p>利用多元线性回归预测房价，输入的特征包括房子大小、房间数目，输出为房子价格。</p>
+<h3 id="2-1-特征归一化"><a href="#2-1-特征归一化" class="headerlink" title="2.1 特征归一化"></a>2.1 特征归一化</h3><p><code>featureNormalize.m</code></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[X_norm, mu, sigma]</span> = <span class="title">featureNormalize</span><span class="params">(X)</span></span></span><br><span class="line"><span class="comment">%FEATURENORMALIZE Normalizes the features in X </span></span><br><span class="line"><span class="comment">%   FEATURENORMALIZE(X) returns a normalized version of X where</span></span><br><span class="line"><span class="comment">%   the mean value of each feature is 0 and the standard deviation</span></span><br><span class="line"><span class="comment">%   is 1. This is often a good preprocessing step to do when</span></span><br><span class="line"><span class="comment">%   working with learning algorithms.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to set these values correctly</span></span><br><span class="line">X_norm = X;</span><br><span class="line">mu = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">size</span>(X, <span class="number">2</span>));</span><br><span class="line">sigma = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">size</span>(X, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">% ====================== YOUR CODE HERE ======================</span></span><br><span class="line"><span class="comment">%       </span></span><br><span class="line">mu = mean(X,<span class="number">1</span>);</span><br><span class="line">sigma = std(X,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">X_norm = (X - mu)./sigma;</span><br><span class="line"><span class="comment">% ============================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>bsxfun</code> is helpful for applying a function (limited to two arguments) in an element-wise fashion to rows of a matrix using a vector of source values. This is useful for feature normalization. An example you can enter at the octave command line:</li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Z=[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>; <span class="number">2</span> <span class="number">2</span> <span class="number">2</span>;];</span><br><span class="line"></span><br><span class="line">v=[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">bsxfun</span>(@minus,Z,v);</span><br><span class="line"></span><br><span class="line"><span class="built_in">ans</span> =</span><br><span class="line"></span><br><span class="line">    <span class="number">0</span>   <span class="number">0</span>   <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="number">1</span>   <span class="number">1</span>   <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>In this case, the corresponding elements of v are subtracted from each row of Z. The minus(a,b) function is equivalent to computing (a-b).</li>
+</ul>
+<ul>
+<li>代价函数和梯度更新与简单线性回归相同；</li>
+</ul>
+<h3 id="2-2-计算-theta-的数值解"><a href="#2-2-计算-theta-的数值解" class="headerlink" title="2.2 计算 $\theta$ 的数值解"></a>2.2 计算 $\theta$ 的数值解</h3><p><code>normalEqn.m</code></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[theta]</span> = <span class="title">normalEqn</span><span class="params">(X, y)</span></span></span><br><span class="line"><span class="comment">%NORMALEQN Computes the closed-form solution to linear regression </span></span><br><span class="line"><span class="comment">%   NORMALEQN(X,y) computes the closed-form solution to linear </span></span><br><span class="line"><span class="comment">%   regression using the normal equations.</span></span><br><span class="line"></span><br><span class="line">theta = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X, <span class="number">2</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% ====================== YOUR CODE HERE ======================</span></span><br><span class="line"><span class="comment">% Instructions: Complete the code to compute the closed form solution</span></span><br><span class="line"><span class="comment">%               to linear regression and put the result in theta.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% ---------------------- Sample Solution ----------------------</span></span><br><span class="line">theta = pinv(X'*X)*X'*y;</span><br><span class="line"></span><br><span class="line"><span class="comment">% -------------------------------------------------------------</span></span><br><span class="line"><span class="comment">% ============================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="Lab-2-Lab-5"><a href="#Lab-2-Lab-5" class="headerlink" title="Lab 2 - Lab 5:"></a>Lab 2 - Lab 5:</h2><blockquote>
+<p>留作后续更新 …</p>
+</blockquote>
+<h2 id="Lab-6-SVM"><a href="#Lab-6-SVM" class="headerlink" title="Lab 6: SVM"></a>Lab 6: SVM</h2><p>本实验利用SVM实现非线性分类器，核函数选择高斯核函数，高斯核函数的定义如下：</p>
+<script type="math/tex; mode=display">
+K_{gaussian}(x^{(i)},x^{(j)}) = exp(-\frac{||x^{(i)}-x^{(j)}||^2}{2\sigma^2})</script><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ========== Part 5: Training SVM with RBF Kernel (Dataset 2) ==========</span></span><br><span class="line"><span class="comment">%  After you have implemented the kernel, we can now use it to train the </span></span><br><span class="line"><span class="comment">%  SVM classifier.</span></span><br><span class="line"><span class="comment">% </span></span><br><span class="line">load(<span class="string">'ex6data2.mat'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% SVM Parameters</span></span><br><span class="line">C = <span class="number">1</span>; sigma = <span class="number">0.1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% We set the tolerance and max_passes lower here so that the code will run</span></span><br><span class="line"><span class="comment">% faster. However, in practice, you will want to run the training to</span></span><br><span class="line"><span class="comment">% convergence.</span></span><br><span class="line">model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma)); </span><br><span class="line">visualizeBoundary(X, y, model);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于目前scikit-learn库对各种SVM算法都有比较好的封装，所以也不在进一步深究matlab的实现了。</p>
+</blockquote>
+<h2 id="Lab-7-1-K-Means"><a href="#Lab-7-1-K-Means" class="headerlink" title="Lab 7.1: K-Means"></a>Lab 7.1: K-Means</h2><p>本实验使用K-Means进行图像压缩，K-Means算法的基本实现：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Initialize centroids</span></span><br><span class="line">centroids = kMeansInitCentroids(X, K);</span><br><span class="line"><span class="keyword">for</span> iter = <span class="number">1</span>:iterations</span><br><span class="line">    <span class="comment">% Cluster assignment step: Assign each data point to the</span></span><br><span class="line">    <span class="comment">% closest centroid. idx(i) corresponds to cˆ(i), the index</span></span><br><span class="line">    <span class="comment">% of the centroid assigned to example i</span></span><br><span class="line">    idx = findClosestCentroids(X, centroids);</span><br><span class="line">    <span class="comment">% Move centroid step: Compute means based on centroid</span></span><br><span class="line">    <span class="comment">% assignments</span></span><br><span class="line">    centroids = computeMeans(X, idx, K);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>在循环中关键实现两个步骤：1）重新划分聚类；2）计算新的均值及中心点</p>
+<ol>
+<li>寻找最近的聚类中心点，并聚类<script type="math/tex; mode=display">
+c^{(i)}:=j \ that \ minimizes \ ||x^{(i)} - \mu_j ||^2</script></li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">idx</span> = <span class="title">findClosestCentroids</span><span class="params">(X, centroids)</span></span></span><br><span class="line"><span class="comment">%FINDCLOSESTCENTROIDS computes the centroid memberships for every example</span></span><br><span class="line"><span class="comment">%   idx = FINDCLOSESTCENTROIDS (X, centroids) returns the closest centroids</span></span><br><span class="line"><span class="comment">%   in idx for a dataset X where each row is a single example. idx = m x 1 </span></span><br><span class="line"><span class="comment">%   vector of centroid assignments (i.e. each entry in range [1..K])</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Set K</span></span><br><span class="line">K = <span class="built_in">size</span>(centroids, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly.</span></span><br><span class="line">idx = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X,<span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Instructions: Go over every example, find its closest centroid, and store</span></span><br><span class="line"><span class="comment">%               the index inside idx at the appropriate location.</span></span><br><span class="line"><span class="comment">%               Concretely, idx(i) should contain the index of the centroid</span></span><br><span class="line"><span class="comment">%               closest to example i. Hence, it should be a value in the </span></span><br><span class="line"><span class="comment">%               range 1..K</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">% Note: You can use a for-loop over the examples to compute this.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="built_in">size</span>(X,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">1</span>: <span class="built_in">size</span>(centroids,<span class="number">1</span>)</span><br><span class="line">         dis(<span class="built_in">j</span>) = sum((centroids(<span class="built_in">j</span>, :) - X(<span class="built_in">i</span>, :)) .^ <span class="number">2</span>, <span class="number">2</span>);  </span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    [t,idx(i)] = min(dis);</span><br><span class="line"><span class="keyword">end</span>  </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>更新聚类中心点位置</li>
+</ol>
+<script type="math/tex; mode=display">
+\mu_k = \frac{1}{|C_k|} \sum_{i \in C_k} x^{(i)}</script><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">centroids</span> = <span class="title">computeCentroids</span><span class="params">(X, idx, K)</span></span></span><br><span class="line"><span class="comment">%COMPUTECENTROIDS returns the new centroids by computing the means of the </span></span><br><span class="line"><span class="comment">%data points assigned to each centroid.</span></span><br><span class="line"><span class="comment">%   centroids = COMPUTECENTROIDS(X, idx, K) returns the new centroids by </span></span><br><span class="line"><span class="comment">%   computing the means of the data points assigned to each centroid. It is</span></span><br><span class="line"><span class="comment">%   given a dataset X where each row is a single data point, a vector</span></span><br><span class="line"><span class="comment">%   idx of centroid assignments (i.e. each entry in range [1..K]) for each</span></span><br><span class="line"><span class="comment">%   example, and K, the number of centroids. You should return a matrix</span></span><br><span class="line"><span class="comment">%   centroids, where each row of centroids is the mean of the data points</span></span><br><span class="line"><span class="comment">%   assigned to it.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Useful variables</span></span><br><span class="line">[m n] = <span class="built_in">size</span>(X);</span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly.</span></span><br><span class="line">centroids = <span class="built_in">zeros</span>(K, n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:K</span><br><span class="line">    centroids(<span class="built_in">i</span>,:) = mean(X(<span class="built_in">find</span>(idx==<span class="built_in">i</span>),:));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_01.png" alt="lab7_01"></p>
+<p>3.初始起点的随机选取</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Randomly reorder the indices of examples </span></span><br><span class="line">randidx = randperm(<span class="built_in">size</span>(X, <span class="number">1</span>)); </span><br><span class="line"><span class="comment">% Take the first K examples as centroids </span></span><br><span class="line">centroids = X(randidx(<span class="number">1</span>:K), :);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>使用K-Means压缩图片</li>
+</ol>
+<p>我们将一张24bit的照片，压缩为4-bit（16个色彩）；对于每个像素点，将选择最近的类簇进行颜色表示。通过压缩将128x128x24=393,216bits的图像压缩为16x24 + 128x128x4=65,920bits（其中需要额外每种颜色需要一个24bit空间存储各个颜色字典）。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ============= Part 4: K-Means Clustering on Pixels ===============</span></span><br><span class="line"><span class="comment">%  In this exercise, you will use K-Means to compress an image. To do this,</span></span><br><span class="line"><span class="comment">%  you will first run K-Means on the colors of the pixels in the image and</span></span><br><span class="line"><span class="comment">%  then you will map each pixel onto its closest centroid.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Load an image of a bird</span></span><br><span class="line">A = double(imread(<span class="string">'bird_small.png'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">% If imread does not work for you, you can try instead</span></span><br><span class="line"><span class="comment">%   load ('bird_small.mat');</span></span><br><span class="line"></span><br><span class="line">A = A / <span class="number">255</span>; <span class="comment">% Divide by 255 so that all values are in the range 0 - 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Size of the image</span></span><br><span class="line">img_size = <span class="built_in">size</span>(A);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Reshape the image into an Nx3 matrix where N = number of pixels.</span></span><br><span class="line"><span class="comment">% Each row will contain the Red, Green and Blue pixel values</span></span><br><span class="line"><span class="comment">% This gives us our dataset matrix X that we will use K-Means on.</span></span><br><span class="line">X = <span class="built_in">reshape</span>(A, img_size(<span class="number">1</span>) * img_size(<span class="number">2</span>), <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Run your K-Means algorithm on this data</span></span><br><span class="line"><span class="comment">% You should try different values of K and max_iters here</span></span><br><span class="line">K = <span class="number">16</span>; </span><br><span class="line">max_iters = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% When using K-Means, it is important the initialize the centroids</span></span><br><span class="line"><span class="comment">% randomly. </span></span><br><span class="line"><span class="comment">% You should complete the code in kMeansInitCentroids.m before proceeding</span></span><br><span class="line">initial_centroids = kMeansInitCentroids(X, K);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Run K-Means</span></span><br><span class="line">[centroids, idx] = runkMeans(X, initial_centroids, max_iters);</span><br><span class="line"></span><br><span class="line"><span class="comment">%% ================= Part 5: Image Compression ======================</span></span><br><span class="line"><span class="comment">%  In this part of the exercise, you will use the clusters of K-Means to</span></span><br><span class="line"><span class="comment">%  compress an image. To do this, we first find the closest clusters for</span></span><br><span class="line"><span class="comment">%  each example. After that, we </span></span><br><span class="line"><span class="comment">% Find closest cluster members</span></span><br><span class="line">idx = findClosestCentroids(X, centroids);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Essentially, now we have represented the image X as in terms of the</span></span><br><span class="line"><span class="comment">% indices in idx. </span></span><br><span class="line"></span><br><span class="line"><span class="comment">% We can now recover the image from the indices (idx) by mapping each pixel</span></span><br><span class="line"><span class="comment">% (specified by its index in idx) to the centroid value</span></span><br><span class="line">X_recovered = centroids(idx,:);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Reshape the recovered image into proper dimensions</span></span><br><span class="line">X_recovered = <span class="built_in">reshape</span>(X_recovered, img_size(<span class="number">1</span>), img_size(<span class="number">2</span>), <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Display the original image </span></span><br><span class="line">subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line">imagesc(A); </span><br><span class="line">title(<span class="string">'Original'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Display compressed image side by side</span></span><br><span class="line">subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line">imagesc(X_recovered)</span><br><span class="line">title(sprintf(<span class="string">'Compressed, with %d colors.'</span>, K));</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_02.png" alt="lab7_02"></p>
+<h2 id="Lab-7-2：-PCA"><a href="#Lab-7-2：-PCA" class="headerlink" title="Lab 7.2： PCA"></a>Lab 7.2： PCA</h2><p>本实验利用PCA实现数据降维及可视化。</p>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_03.png" alt="lab7_03"></p>
+<ol>
+<li>数据归一化</li>
+<li>计算协方差和奇异值分解</li>
+</ol>
+<script type="math/tex; mode=display">
+\Sigma =\frac{1}{m}X^TX</script><script type="math/tex; mode=display">
+[U, S, V] = svd(\Sigma)</script><p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_04.png" alt="lab7_04"></p>
+<ol>
+<li>降维</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Z = X * U(:,<span class="number">1</span>:K);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>数据恢复</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_rec = Z * U(:,<span class="number">1</span>:K)';</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_05.png" alt="lab7_05"></p>
+<h3 id="数据可视化的降维显示"><a href="#数据可视化的降维显示" class="headerlink" title="数据可视化的降维显示"></a>数据可视化的降维显示</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Use PCA to project this cloud to 2D for visualization</span></span><br><span class="line"><span class="comment">% X (16383,3)</span></span><br><span class="line"><span class="comment">% Subtract the mean to use PCA</span></span><br><span class="line">[X_norm, mu, sigma] = featureNormalize(X);</span><br><span class="line"></span><br><span class="line"><span class="comment">% PCA and project the data to 2D</span></span><br><span class="line">[U, S] = pca(X_norm);</span><br><span class="line">Z = projectData(X_norm, U, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_10.png" alt="lab7_10"></p>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab7_09.png" alt="lab7_09"></p>
+<h2 id="Lab-8-1-异常检测"><a href="#Lab-8-1-异常检测" class="headerlink" title="Lab 8.1: 异常检测"></a>Lab 8.1: 异常检测</h2><p>本实验搭建一个异常检测系统，用来检测服务器的异常信息，输入为每台服务器的每分钟吞吐(mb/s)和响应延时（ms），数据提供了m=307组样本数据。期望通过非监督学习的手段来检测异常。</p>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab8_01.png" alt="lab8_01"></p>
+<p>为了对数据异常进行检测，首先需要将原始数据拟合到一个分布模型里，我们选择使用多元高斯模型进行数据拟合:</p>
+<script type="math/tex; mode=display">
+p(x;\mu,\Sigma) = \dfrac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} exp(-1/2(x-\mu)^T\Sigma^{-1}(x-\mu))</script><ol>
+<li>首先需要对参数$\mu$ ,$\sigma$ 进行估计，参见如下代码：</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mu = mean(X, <span class="number">1</span>);</span><br><span class="line">sigma2 = var(X, <span class="number">1</span>);</span><br><span class="line">p = multivariateGaussian(X, mu, sigma2);</span><br><span class="line"><span class="comment">%  Visualize the fit</span></span><br><span class="line">visualizeFit(X,  mu, sigma2);</span><br></pre></td></tr></table></figure>
+<p>拟合高斯分布的轮廓图如下：</p>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab8_02.png" alt="lab8_02"></p>
+<p>多元高斯分布函数<code>multivariateGaussian()</code>的定义如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">p</span> = <span class="title">multivariateGaussian</span><span class="params">(X, mu, Sigma2)</span></span></span><br><span class="line"><span class="comment">%MULTIVARIATEGAUSSIAN Computes the probability density function of the</span></span><br><span class="line"><span class="comment">%multivariate gaussian distribution.</span></span><br><span class="line"><span class="comment">%    p = MULTIVARIATEGAUSSIAN(X, mu, Sigma2) Computes the probability </span></span><br><span class="line"><span class="comment">%    density function of the examples X under the multivariate gaussian </span></span><br><span class="line"><span class="comment">%    distribution with parameters mu and Sigma2. If Sigma2 is a matrix, it is</span></span><br><span class="line"><span class="comment">%    treated as the covariance matrix. If Sigma2 is a vector, it is treated</span></span><br><span class="line"><span class="comment">%    as the \sigma^2 values of the variances in each dimension (a diagonal</span></span><br><span class="line"><span class="comment">%    covariance matrix)</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line">k = <span class="built_in">length</span>(mu);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">size</span>(Sigma2, <span class="number">2</span>) == <span class="number">1</span>) || (<span class="built_in">size</span>(Sigma2, <span class="number">1</span>) == <span class="number">1</span>)</span><br><span class="line">    Sigma2 = <span class="built_in">diag</span>(Sigma2);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">X = <span class="built_in">bsxfun</span>(@minus, X, mu(:)');</span><br><span class="line">p = (<span class="number">2</span> * <span class="built_in">pi</span>) ^ (- k / <span class="number">2</span>) * det(Sigma2) ^ (<span class="number">-0.5</span>) * ...</span><br><span class="line">    <span class="built_in">exp</span>(<span class="number">-0.5</span> * sum(<span class="built_in">bsxfun</span>(@times, X * pinv(Sigma2), X), <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>阈值$\epsilon$ 的选择，通过计算每个阈值的F1得分来评价验证集数据，选择最优得分的阈值：</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[bestEpsilon bestF1]</span> = <span class="title">selectThreshold</span><span class="params">(yval, pval)</span></span></span><br><span class="line"><span class="comment">%SELECTTHRESHOLD Find the best threshold (epsilon) to use for selecting</span></span><br><span class="line"><span class="comment">%outliers</span></span><br><span class="line"><span class="comment">%   [bestEpsilon bestF1] = SELECTTHRESHOLD(yval, pval) finds the best</span></span><br><span class="line"><span class="comment">%   threshold to use for selecting outliers based on the results from a</span></span><br><span class="line"><span class="comment">%   validation set (pval) and the ground truth (yval).</span></span><br><span class="line"></span><br><span class="line">bestEpsilon = <span class="number">0</span>;</span><br><span class="line">bestF1 = <span class="number">0</span>;</span><br><span class="line">F1 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">stepsize = (max(pval) - min(pval)) / <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">for</span> epsilon = min(pval):stepsize:max(pval)</span><br><span class="line">    <span class="comment">% Instructions: Compute the F1 score of choosing epsilon as the</span></span><br><span class="line">    <span class="comment">%               threshold and place the value in F1. The code at the</span></span><br><span class="line">    <span class="comment">%               end of the loop will compare the F1 score for this</span></span><br><span class="line">    <span class="comment">%               choice of epsilon and set it to be the best epsilon if</span></span><br><span class="line">    <span class="comment">%               it is better than the current choice of epsilon.</span></span><br><span class="line">    <span class="comment">%               </span></span><br><span class="line">    <span class="comment">% Note: You can use predictions = (pval &lt; epsilon) to get a binary vector</span></span><br><span class="line">    <span class="comment">%       of 0's and 1's of the outlier predictions</span></span><br><span class="line">    cvPredictions = (pval &lt; epsilon);</span><br><span class="line">    fp = sum((cvPredictions == <span class="number">1</span>)&amp; (yval == <span class="number">0</span>));</span><br><span class="line">    tp = sum((cvPredictions == <span class="number">1</span>)&amp;(yval == <span class="number">1</span>));</span><br><span class="line">    fn = sum((cvPredictions == <span class="number">0</span>)&amp;(yval == <span class="number">1</span>));</span><br><span class="line">    </span><br><span class="line">    prec = tp/(tp + fp);</span><br><span class="line">    rec = tp/(tp + fn);</span><br><span class="line"></span><br><span class="line">    F1 = <span class="number">2</span>*prec*rec/(prec + rec);</span><br><span class="line">    <span class="keyword">if</span> F1 &gt; bestF1</span><br><span class="line">       bestF1 = F1;</span><br><span class="line">       bestEpsilon = epsilon;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">pval = multivariateGaussian(Xval, mu, sigma2);</span><br><span class="line">[epsilon F1] = selectThreshold(yval, pval);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/26/machinelearning-labs/../../qnsource/images/2018-04-26-machinelearning-labs/lab8_03.png" alt="lab8_03"></p>
+<ol>
+<li>在更复杂场景下的应用，示例提供了个输入为11维特征的数据，对其异常数据进行预测，代码片段如下：</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%  Apply the same steps to the larger dataset</span></span><br><span class="line">[mu sigma2] = estimateGaussian(X);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Training set </span></span><br><span class="line">p = multivariateGaussian(X, mu, sigma2);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Cross-validation set</span></span><br><span class="line">pval = multivariateGaussian(Xval, mu, sigma2);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Find the best threshold</span></span><br><span class="line">[epsilon F1] = selectThreshold(yval, pval);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Best epsilon found using cross-validation: %e\n'</span>, epsilon);</span><br><span class="line">fprintf(<span class="string">'Best F1 on Cross Validation Set:  %f\n'</span>, F1);</span><br><span class="line">fprintf(<span class="string">'# Outliers found: %d\n\n'</span>, sum(p &lt; epsilon));</span><br></pre></td></tr></table></figure>
+<p>​</p>
+<h2 id="Lab-8-2：推荐系统"><a href="#Lab-8-2：推荐系统" class="headerlink" title="Lab 8.2：推荐系统"></a>Lab 8.2：推荐系统</h2><p>本实验将实现协同过滤算法，并应用到电影推荐之中。数据集来自943个用户的1682部电影的评分数据，每个评分范围为1-5，可以存在多个未评分数据。</p>
+<ul>
+<li>$X$ 为num_movies x num_features，是电影的特征矩阵</li>
+<li>$Y$ 为num_movies x num_user矩阵，描述了每个评分值$y^{(i,j)}$</li>
+<li>$R$ 为与$Y$ 同维度的二值矩阵，$R(i,j)=1$ 代表用户$j$ 对电影$i$ 进行了评分</li>
+</ul>
+<ol>
+<li>代价函数的定义</li>
+</ol>
+<script type="math/tex; mode=display">
+J(x,\theta) = \dfrac{1}{2} \displaystyle \sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2}\sum_{i=1}^{n_m} \sum_{k=1}^{n} (x_k^{(i)})^2 + \dfrac{\lambda}{2}\sum_{j=1}^{n_u} \sum_{k=1}^{n} (\theta_k^{(j)})^2</script><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[J, grad]</span> = <span class="title">cofiCostFunc</span><span class="params">(params, Y, R, num_users, num_movies, ...</span></span></span><br><span class="line"><span class="function"><span class="params">                                  num_features, lambda)</span></span></span><br><span class="line"><span class="comment">%COFICOSTFUNC Collaborative filtering cost function</span></span><br><span class="line"><span class="comment">%   [J, grad] = COFICOSTFUNC(params, Y, R, num_users, num_movies, ...</span></span><br><span class="line"><span class="comment">%   num_features, lambda) returns the cost and gradient for the</span></span><br><span class="line"><span class="comment">%   collaborative filtering problem.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Unfold the U and W matrices from params</span></span><br><span class="line">X = <span class="built_in">reshape</span>(params(<span class="number">1</span>:num_movies*num_features), num_movies, num_features);</span><br><span class="line">Theta = <span class="built_in">reshape</span>(params(num_movies*num_features+<span class="number">1</span>:<span class="keyword">end</span>), ...</span><br><span class="line">                num_users, num_features);</span><br><span class="line">            </span><br><span class="line"><span class="comment">% You need to return the following values correctly</span></span><br><span class="line">J = <span class="number">0</span>;</span><br><span class="line">X_grad = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X));</span><br><span class="line">Theta_grad = <span class="built_in">zeros</span>(<span class="built_in">size</span>(Theta));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Instructions: Compute the cost function and gradient for collaborative</span></span><br><span class="line"><span class="comment">%               filtering. </span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">% Notes: X - num_movies  x num_features matrix of movie features</span></span><br><span class="line"><span class="comment">%        Theta - num_users  x num_features matrix of user features</span></span><br><span class="line"><span class="comment">%        Y - num_movies x num_users matrix of user ratings of movies</span></span><br><span class="line"><span class="comment">%        R - num_movies x num_users matrix, where R(i, j) = 1 if the </span></span><br><span class="line"><span class="comment">%            i-th movie was rated by the j-th user</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">% You should set the following variables correctly:</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%        X_grad - num_movies x num_features matrix, containing the </span></span><br><span class="line"><span class="comment">%                 partial derivatives w.r.t. to each element of X</span></span><br><span class="line"><span class="comment">%        Theta_grad - num_users x num_features matrix, containing the </span></span><br><span class="line"><span class="comment">%                     partial derivatives w.r.t. to each element of Theta</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line">J = <span class="number">1</span>/<span class="number">2</span> * sum(sum(((X * Theta' - Y).*R).^<span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">X_grad = ((X * Theta' - Y).*R) * Theta;</span><br><span class="line">Theta_grad = ((X*Theta' -Y).*R)' * X;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Regular version</span></span><br><span class="line">J = J + lambda/<span class="number">2</span> * sum(sum(Theta .^<span class="number">2</span>)) + lambda/<span class="number">2</span> * sum(sum(X.^<span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">X_grad = X_grad + lambda * X;</span><br><span class="line">Theta_grad = Theta_grad + lambda * Theta;</span><br><span class="line"></span><br><span class="line">grad = [X_grad(:); Theta_grad(:)];</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Evaluate cost function</span></span><br><span class="line">J = cofiCostFunc([X(:) ; Theta(:)], Y, R, num_users, num_movies, num_features, <span class="number">1.5</span>);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>发起预测，在数据库中加入自己的数据，随便对一部分电影进行打分：</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ============== Part 6: Entering ratings for a new user ===============</span></span><br><span class="line"><span class="comment">%  Before we will train the collaborative filtering model, we will first</span></span><br><span class="line"><span class="comment">%  add ratings that correspond to a new user that we just observed. This</span></span><br><span class="line"><span class="comment">%  part of the code will also allow you to put in your own ratings for the</span></span><br><span class="line"><span class="comment">%  movies in our dataset!</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line">movieList = loadMovieList();</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Initialize my ratings</span></span><br><span class="line">my_ratings = <span class="built_in">zeros</span>(<span class="number">1682</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Check the file movie_idx.txt for id of each movie in our dataset</span></span><br><span class="line"><span class="comment">% For example, Toy Story (1995) has ID 1, so to rate it "4", you can set</span></span><br><span class="line">my_ratings(<span class="number">1</span>) = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Or suppose did not enjoy Silence of the Lambs (1991), you can set</span></span><br><span class="line">my_ratings(<span class="number">98</span>) = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% We have selected a few movies we liked / did not like and the ratings we</span></span><br><span class="line"><span class="comment">% gave are as follows:</span></span><br><span class="line">my_ratings(<span class="number">7</span>) = <span class="number">3</span>;</span><br><span class="line">my_ratings(<span class="number">12</span>)= <span class="number">5</span>;</span><br><span class="line">my_ratings(<span class="number">54</span>) = <span class="number">4</span>;</span><br><span class="line">my_ratings(<span class="number">64</span>)= <span class="number">5</span>;</span><br><span class="line">my_ratings(<span class="number">66</span>)= <span class="number">3</span>;</span><br><span class="line">my_ratings(<span class="number">69</span>) = <span class="number">5</span>;</span><br><span class="line">my_ratings(<span class="number">183</span>) = <span class="number">4</span>;</span><br><span class="line">my_ratings(<span class="number">226</span>) = <span class="number">5</span>;</span><br><span class="line">my_ratings(<span class="number">355</span>)= <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+<p>我们拥有了一份新的用户对电影打分的数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">New user ratings:</span><br><span class="line">Rated 4 <span class="keyword">for</span> Toy Story (1995)</span><br><span class="line">Rated 3 <span class="keyword">for</span> Twelve Monkeys (1995)</span><br><span class="line">Rated 5 <span class="keyword">for</span> Usual Suspects, The (1995)</span><br><span class="line">Rated 4 <span class="keyword">for</span> Outbreak (1995)</span><br><span class="line">Rated 5 <span class="keyword">for</span> Shawshank Redemption, The (1994)</span><br><span class="line">Rated 3 <span class="keyword">for</span> While You Were Sleeping (1995)</span><br><span class="line">Rated 5 <span class="keyword">for</span> Forrest Gump (1994)</span><br><span class="line">Rated 2 <span class="keyword">for</span> Silence of the Lambs, The (1991)</span><br><span class="line">Rated 4 <span class="keyword">for</span> Alien (1979)</span><br><span class="line">Rated 5 <span class="keyword">for</span> Die Hard 2 (1990)</span><br><span class="line">Rated 5 <span class="keyword">for</span> Sphere (1998)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>训练算法</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ================== Part 7: Learning Movie Ratings ====================</span></span><br><span class="line"><span class="comment">%  Now, you will train the collaborative filtering model on a movie rating </span></span><br><span class="line"><span class="comment">%  dataset of 1682 movies and 943 users</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Load data</span></span><br><span class="line">load(<span class="string">'ex8_movies.mat'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Add our own ratings to the data matrix</span></span><br><span class="line">Y = [my_ratings Y];</span><br><span class="line">R = [(my_ratings ~= <span class="number">0</span>) R];</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Normalize Ratings</span></span><br><span class="line">[Ynorm, Ymean] = normalizeRatings(Y, R);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Useful Values</span></span><br><span class="line">num_users = <span class="built_in">size</span>(Y, <span class="number">2</span>);</span><br><span class="line">num_movies = <span class="built_in">size</span>(Y, <span class="number">1</span>);</span><br><span class="line">num_features = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set Initial Parameters (Theta, X)</span></span><br><span class="line">X = <span class="built_in">randn</span>(num_movies, num_features);</span><br><span class="line">Theta = <span class="built_in">randn</span>(num_users, num_features);</span><br><span class="line"></span><br><span class="line">initial_parameters = [X(:); Theta(:)];</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set options for fmincg</span></span><br><span class="line">options = optimset(<span class="string">'GradObj'</span>, <span class="string">'on'</span>, <span class="string">'MaxIter'</span>, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set Regularization</span></span><br><span class="line">lambda = <span class="number">10</span>;</span><br><span class="line">theta = fmincg (@(t)(cofiCostFunc(t, Ynorm, R, num_users, num_movies, ...</span><br><span class="line">                                num_features, lambda)), ...</span><br><span class="line">                initial_parameters, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Unfold the returned theta back into U and W</span></span><br><span class="line">X = <span class="built_in">reshape</span>(theta(<span class="number">1</span>:num_movies*num_features), num_movies, num_features);</span><br><span class="line">Theta = <span class="built_in">reshape</span>(theta(num_movies*num_features+<span class="number">1</span>:<span class="keyword">end</span>), ...</span><br><span class="line">                num_users, num_features);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Recommender system learning completed.\n'</span>);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nProgram paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br></pre></td></tr></table></figure>
+<p>其中，函数<code>normalizeRatings</code> 用于对数据进行归一化，减去均值；函数<code>fmincg</code>为MATLAB自带的优化函数；</p>
+<ol>
+<li>利用算法进行推荐</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ================== Part 8: Recommendation for you ====================</span></span><br><span class="line"><span class="comment">%  After training the model, you can now make recommendations by computing</span></span><br><span class="line"><span class="comment">%  the predictions matrix.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line">p = X * Theta';</span><br><span class="line">my_predictions = p(:,<span class="number">1</span>) + Ymean;</span><br><span class="line"></span><br><span class="line">movieList = loadMovieList();</span><br><span class="line"></span><br><span class="line">[r, ix] = sort(my_predictions, <span class="string">'descend'</span>);</span><br><span class="line">fprintf(<span class="string">'\nTop recommendations for you:\n'</span>);</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">10</span></span><br><span class="line">    <span class="built_in">j</span> = ix(<span class="built_in">i</span>);</span><br><span class="line">    fprintf(<span class="string">'Predicting rating %.1f for movie %s\n'</span>, my_predictions(<span class="built_in">j</span>), ...</span><br><span class="line">            movieList&#123;j&#125;);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Top recommendations <span class="keyword">for</span> you:</span><br><span class="line">Predicting rating 5.0 <span class="keyword">for</span> movie Someone Else<span class="string">'s America (1995)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Aiqing wansui (1994)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Great Day in Harlem, A (1994)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Prefontaine (1997)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie They Made Me a Criminal (1939)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Entertaining Angels: The Dorothy Day Story (1996)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Saint of Fort Washington, The (1993)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Santa with Muscles (1996)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Star Kid (1997)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Marlene Dietrich: Shadow and Light (1996)</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>​</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/04/26/machinelearning-labs/" target="_blank" title="《机器学习》课程实验回顾">http://blog.a-stack.com/2018/04/26/machinelearning-labs/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/公开课/">公开课</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/实验/">实验</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线性回归/">线性回归</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/逻辑回归/">逻辑回归</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/29/Everything-About-SVM/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Everything-About-SVM
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/26/machinelearning-notes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Machine Learning Notes</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概要"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab1-线性回归"><span class="nav-number">2.</span> <span class="nav-text">Lab1: 线性回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简单线性回归"><span class="nav-number">2.1.</span> <span class="nav-text">1. 简单线性回归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代价函数和梯度更新实现"><span class="nav-number">2.1.1.</span> <span class="nav-text">代价函数和梯度更新实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#J-theta-的可视化"><span class="nav-number">2.1.2.</span> <span class="nav-text">$J(\theta)$ 的可视化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-多元线性回归"><span class="nav-number">2.2.</span> <span class="nav-text">2. 多元线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-特征归一化"><span class="nav-number">2.3.</span> <span class="nav-text">2.1 特征归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-计算-theta-的数值解"><span class="nav-number">2.4.</span> <span class="nav-text">2.2 计算 $\theta$ 的数值解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab-2-Lab-5"><span class="nav-number">3.</span> <span class="nav-text">Lab 2 - Lab 5:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab-6-SVM"><span class="nav-number">4.</span> <span class="nav-text">Lab 6: SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab-7-1-K-Means"><span class="nav-number">5.</span> <span class="nav-text">Lab 7.1: K-Means</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab-7-2：-PCA"><span class="nav-number">6.</span> <span class="nav-text">Lab 7.2： PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据可视化的降维显示"><span class="nav-number">6.1.</span> <span class="nav-text">数据可视化的降维显示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab-8-1-异常检测"><span class="nav-number">7.</span> <span class="nav-text">Lab 8.1: 异常检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lab-8-2：推荐系统"><span class="nav-number">8.</span> <span class="nav-text">Lab 8.2：推荐系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">9.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

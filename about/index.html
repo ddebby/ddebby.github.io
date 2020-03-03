@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法">
+  
+  
+  
+  
+  <meta name="description" content="一个用于记录AI学习路径的博客">
+<meta name="keywords" content="人工智能, AI, 神经网络, 算法">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ebby&#39;s Notes">
+<meta property="og:url" content="http://blog.a-stack.com/about/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="一个用于记录AI学习路径的博客">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/关于/GAN101.gif">
+<meta property="og:updated_time" content="2018-07-20T09:10:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ebby&#39;s Notes">
+<meta name="twitter:description" content="一个用于记录AI学习路径的博客">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/关于/GAN101.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+    <link rel="stylesheet" href="/css/archive.css">
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body>
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                 >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+  
+    <section class="awSlider">
+      <div class="carousel slide carousel-fade " data-ride="carousel">
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+           
+              
+                <div class="item active" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img0" src="/css/images/pose.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img0 = new Image();
+	                  var imageTag0 = document.getElementById("carousel-img0");
+	                  img0.src = imageTag0.src;
+	                  img0.onload=function(){
+	                    if (img0.width / img0.height <= document.body.clientWidth / h) {
+	                      imageTag0.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag0.style.height = h + "px";
+	                      imageTag0.style.marginLeft = -(h * img0.width / img0.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+              
+                <div class="item" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img1" src="/css/images/sample.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img1 = new Image();
+	                  var imageTag1 = document.getElementById("carousel-img1");
+	                  img1.src = imageTag1.src;
+	                  img1.onload=function(){
+	                    if (img1.width / img1.height <= document.body.clientWidth / h) {
+	                      imageTag1.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag1.style.height = h + "px";
+	                      imageTag1.style.marginLeft = -(h * img1.width / img1.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+              
+                <div class="item" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img2" src="/css/images/02.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img2 = new Image();
+	                  var imageTag2 = document.getElementById("carousel-img2");
+	                  img2.src = imageTag2.src;
+	                  img2.onload=function(){
+	                    if (img2.width / img2.height <= document.body.clientWidth / h) {
+	                      imageTag2.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag2.style.height = h + "px";
+	                      imageTag2.style.marginLeft = -(h * img2.width / img2.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+              
+                <div class="item" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img3" src="/css/images/01.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img3 = new Image();
+	                  var imageTag3 = document.getElementById("carousel-img3");
+	                  img3.src = imageTag3.src;
+	                  img3.onload=function(){
+	                    if (img3.width / img3.height <= document.body.clientWidth / h) {
+	                      imageTag3.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag3.style.height = h + "px";
+	                      imageTag3.style.marginLeft = -(h * img3.width / img3.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+              
+                <div class="item" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img4" src="/css/images/21.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img4 = new Image();
+	                  var imageTag4 = document.getElementById("carousel-img4");
+	                  img4.src = imageTag4.src;
+	                  img4.onload=function(){
+	                    if (img4.width / img4.height <= document.body.clientWidth / h) {
+	                      imageTag4.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag4.style.height = h + "px";
+	                      imageTag4.style.marginLeft = -(h * img4.width / img4.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href=".carousel" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Geri</span>
+        </a>
+        <a class="right carousel-control" href=".carousel" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">İleri</span>
+        </a>
+      </div>
+    </section>
+    
+  
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+    <div class="article-meta">
+      
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Profile"><a href="#Profile" class="headerlink" title=" Profile"></a><span class="fa fa-info-circle"></span> Profile</h3><blockquote class="pullquote right"><p><img src="/about/../../qnsource/images/关于/GAN101.gif" alt="GAN101"><br>Stay hungry，stay foolish.</p>
+<p>—— <a href="https://en.wikipedia.org/wiki/Steve_Jobs" target="_blank" rel="noopener"><strong>Steve Jobs</strong></a></p>
+</blockquote>
+<h2 id="关于本站"><a href="#关于本站" class="headerlink" title="关于本站"></a>关于本站</h2><blockquote>
+<p>为了记录人工智能技术学习路径和分享知识在2018年3月开始尝试建立关于人工智能的博客，连续更换多个Hexo的主题，为了折腾更符合文字特质的内容呈现方式。</p>
+<p> 如果对混合云技术感兴趣，可以前往2017年创立的混合云博客: <a href="http://www.a-stack.com" target="_blank" rel="noopener">『Azure Stack’s Notes』</a></p>
+</blockquote>
+<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><ul>
+<li>我是『<strong>Ebby</strong>』，云架构师，人工智能入门级科学家</li>
+<li>最近迷恋深度学习技术</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/about/index.html" target="_blank" title="">http://blog.a-stack.com/about/index.html</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+<!-- Table of Contents -->
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+</body>
+</html>

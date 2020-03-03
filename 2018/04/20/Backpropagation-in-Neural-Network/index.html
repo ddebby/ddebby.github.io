@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>backpropagation in neural network | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： 反向传播毋庸置疑是整个神经网络的精髓，正是由于它的提出标志着深度神经网络的训练在有限算力基础上成为可能，但反向传播本身的原理同样值得品读和思考。 本文主要总结神经网络中反向传播算法的推导流程并挖掘一些深层次的原理。反向传播算法在1970年就已经提出，直到1986年 David Rumelhart, Geoffrey Hinton, and Ronald Williams在一篇论文中对其实现">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Backpropagation in Neural Network">
+<meta property="og:url" content="http://blog.a-stack.com/2018/04/20/Backpropagation-in-Neural-Network/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 反向传播毋庸置疑是整个神经网络的精髓，正是由于它的提出标志着深度神经网络的训练在有限算力基础上成为可能，但反向传播本身的原理同样值得品读和思考。 本文主要总结神经网络中反向传播算法的推导流程并挖掘一些深层次的原理。反向传播算法在1970年就已经提出，直到1986年 David Rumelhart, Geoffrey Hinton, and Ronald Williams在一篇论文中对其实现">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-07T05:54:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Backpropagation in Neural Network">
+<meta name="twitter:description" content="摘要： 反向传播毋庸置疑是整个神经网络的精髓，正是由于它的提出标志着深度神经网络的训练在有限算力基础上成为可能，但反向传播本身的原理同样值得品读和思考。 本文主要总结神经网络中反向传播算法的推导流程并挖掘一些深层次的原理。反向传播算法在1970年就已经提出，直到1986年 David Rumelhart, Geoffrey Hinton, and Ronald Williams在一篇论文中对其实现">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Backpropagation-in-Neural-Network" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Backpropagation in Neural Network
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/20/Backpropagation-in-Neural-Network/" class="article-date">
+	  <time datetime="2018-04-20T01:09:14.000Z" itemprop="datePublished">2018-04-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>摘要：</strong> 反向传播毋庸置疑是整个神经网络的精髓，正是由于它的提出标志着深度神经网络的训练在有限算力基础上成为可能，但反向传播本身的原理同样值得品读和思考。<br><!-- excerpt --></p>
+<p>本文主要总结神经网络中反向传播算法的推导流程并挖掘一些深层次的原理。反向传播算法在1970年就已经提出，直到1986年 <a href="http://en.wikipedia.org/wiki/David_Rumelhart" target="_blank" rel="noopener">David Rumelhart</a>, <a href="http://www.cs.toronto.edu/~hinton/" target="_blank" rel="noopener">Geoffrey Hinton</a>, and <a href="http://en.wikipedia.org/wiki/Ronald_J._Williams" target="_blank" rel="noopener">Ronald Williams</a>在一篇<a href="https://www.nature.com/articles/323533a0" target="_blank" rel="noopener">论文</a>中对其实现的分析才得以普及。</p>
+<h2 id="1-表达式的定义"><a href="#1-表达式的定义" class="headerlink" title="1. 表达式的定义"></a>1. 表达式的定义</h2><ul>
+<li>$w_{jk}^l$ 代表第l−1层第k个神经元，与第l层第j个神经元之间的权重（注意j与k的顺序）；</li>
+<li>$b_j^l$  代表第l层中第j个神经元的偏移；</li>
+<li>$a_j^l$  代表第l层中第j个神经元的激活函数值；</li>
+<li>$L$  代表神经网络的总层数；</li>
+<li>$J(W,b)$ 简写为$J$ 代表神经网络的代价函数；</li>
+</ul>
+<p>假设我们有$m$ 个训练样本${(x^{(1)},y^{(1)}),…, (x^{(m)},y^{(m)})}$ ,对于每个训练样本$(x,y)$ 定义代价函数为：</p>
+<script type="math/tex; mode=display">
+J(W,b;x,y) = \frac{1}{2} ||h_{W,b}(x) - y||^2</script><p>对于$m$个训练样本，总的代价函数为：</p>
+<script type="math/tex; mode=display">
+J(W,b) = [\frac{1}{m} \sum_{i=1}^m J(W,b;x^{(i)},y^{(i)}] + \frac{\lambda}{2} \sum_{l=1}^{n_l -1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}}(W_{ji}^{(l)})^2</script><p>根据神经网络层与层之间关系的定义，我们有如下表达式（<strong>向量形式</strong>）：</p>
+<script type="math/tex; mode=display">
+z^l = w^l a^{l-1} + b^l,   l=2,3,...,L</script><script type="math/tex; mode=display">
+a^l = \sigma (z^l), l=2,3,...,L</script><script type="math/tex; mode=display">
+a^1=z^1=X</script><p>其中</p>
+<script type="math/tex; mode=display">
+z_j^l = \sum_k w_{jk}^l a_k^{l-1} + b_j^l</script><p>利用梯度下降法进行目标优化使用的主要梯度更新公式：</p>
+<script type="math/tex; mode=display">
+w^l := w^l - \alpha \frac{\partial J}{\partial w^l}</script><script type="math/tex; mode=display">
+b^l := b^l - \alpha \frac{\partial J}{\partial b^l}</script><p>因为神经网络的复杂性导致$\frac{\partial J}{\partial w^l}$ 无法直接计算或者计算代价太大（每个权重的计算都需要进行一次前向传播），反向传播的目的在于提供一种更加高效的手段，完成上述梯度的更新操作。</p>
+<h2 id="2-反向传播的直观理解"><a href="#2-反向传播的直观理解" class="headerlink" title="2. 反向传播的直观理解"></a>2. 反向传播的直观理解</h2><p>反向传播是用于理解改变网络中的任一权重如何影响网络代价函数的过程。假设神经网络中某个权重$w_{jk}^l$ </p>
+<p>产生了轻微的扰动误差 $\Delta w_{jk}^l$ ,扰动误差导致该神经元的输出产生误差 $\Delta z_j^l$ ,这个扰动将使对应的神经元$a_j^l$ 产生一个扰动误差 $\Delta a_j^l$ ，该误差将逐步向后层传递，直至达到输出层，并最终影响代价函数，生成一个代价误差 $\Delta J = \frac{\partial J}{\partial z_j^l}\Delta z_j^l$ 。我们可以给出如下式子来为通过误差近似计算梯度提供方向：</p>
+<script type="math/tex; mode=display">
+\Delta J \approx \frac{\partial J}{\partial a^L_m} 
+  \frac{\partial a^L_m}{\partial a^{L-1}_n}
+  \frac{\partial a^{L-1}_n}{\partial a^{L-2}_p} \ldots
+  \frac{\partial a^{l+1}_q}{\partial a^l_j}
+  \frac{\partial a^l_j}{\partial w^l_{jk}} \Delta w^l_{jk}</script><script type="math/tex; mode=display">
+ \frac{\Delta J}{\Delta z_{j}^l}=\delta_j^l=\frac{\partial J}{\partial z_j^l}</script><p>其中，$\delta_j^l$  可以定义为$l$层第$j$个神经元上的误差。</p>
+<p>我们先从计算最后一层误差$\delta_j^L$ 开始，</p>
+<script type="math/tex; mode=display">
+\delta^L_j = \frac{\partial J}{\partial a^L_j} \sigma'(z^L_j)</script><p><strong>公式E1</strong>（向量形式）：</p>
+<script type="math/tex; mode=display">
+\delta^L = \nabla_a J \odot \sigma'(z^L)</script><p><strong>证明</strong>：</p>
+<script type="math/tex; mode=display">
+\delta^L_j =\frac{\partial J}{\partial z_j^L}=\frac{\partial J}{\partial a_j^L}.\frac{\partial a_j^L}{\partial z_j^L}= \frac{\partial J}{\partial a^L_j} \sigma'(z^L_j).</script><p>现在把问题转变为如何利用反向传播由后往前逐步计算误差$\delta_j^l$ ，为计算不同层之间误差之间的关系，利用链式法则给出如下推理过程：</p>
+<script type="math/tex; mode=display">
+\delta^l =\frac{\partial J}{\partial z^l} = \frac{\partial J}{\partial z^{l+1}}.\frac{\partial z^{l+1}}{\partial z^l}=\delta^{l+1}.(\frac{\partial z^{l+1}}{\partial a^l}.\frac{\partial a^l}{\partial z^l})= ((w^{l+1})^T\delta^{l+1})\odot \sigma'(z^l)</script><p>即<strong>公式E2</strong>：</p>
+<script type="math/tex; mode=display">
+\delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma'(z^l)</script><p>有了以上误差的反向传播计算方法，我们可以利用计算的误差计算权重的梯度如下：</p>
+<p><strong>公式E3</strong>：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial b^l_j} =\delta^l_j</script><p><strong>公式E4</strong>：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j</script><p>其中公式（4）也可以写成：</p>
+<script type="math/tex; mode=display">
+\frac{\partial
+    J}{\partial w} = a_{\rm in} \delta_{\rm out}</script><p><strong>证明：</strong></p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial b^l_j} =\frac{\partial J}{\partial z^l_j}.\frac{\partial z^l_j}{\partial b^l_j}=  
+  \delta^l_j</script><script type="math/tex; mode=display">
+\frac{\partial J}{\partial w^l_{jk}} = \frac{\partial J}{\partial z^l_{jk}}.\frac{\partial z_{jk}^l}{\partial w^l_{jk}}=a^{l-1}_k \delta^l_j</script><h3 id="另一种求解方式"><a href="#另一种求解方式" class="headerlink" title="另一种求解方式"></a>另一种求解方式</h3><script type="math/tex; mode=display">
+\dfrac{\partial J}{\partial w_{ij}^l} =\frac{\partial J}{\partial a_j^l}.\frac{\partial a_j^l}{\partial z_j^l}.\frac{\partial z_j^l}{w_{ij}^l}=\frac{\partial J}{\partial a_j^l}.\sigma^{'}(z_j^l)a_i^{l-1}</script><p>如何我们令$\delta_j^l =\frac{\partial J}{\partial a_j^l}$ 也可以按照上述过程类似的方法推到出相关公式</p>
+<h2 id="3-反向传播算法的计算流程"><a href="#3-反向传播算法的计算流程" class="headerlink" title="3. 反向传播算法的计算流程"></a>3. 反向传播算法的计算流程</h2><ol>
+<li>输入$x$，令$a^1=z^1=x$;</li>
+<li>前向传播： 对于每层$l=2,3,…,L$计算$z^l$和$a^l$；</li>
+<li>根据公式<strong>E1</strong>计算输出误差：$\delta^L = \nabla_a J \odot \sigma’(z^L)$ ;</li>
+<li>反向传播：对于每层$l=L-1,L-2,…,2$ 利用公式<strong>E2</strong>计算误差：$\delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma’(z^l)$ ；</li>
+<li>利用公式<strong>E3</strong>和<strong>E4</strong>计算参数梯度；</li>
+<li>更新权重</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://cs231n.github.io/optimization-2/" target="_blank" rel="noopener">CS231n讲义：Backpropagation, Intuitions</a></li>
+<li><a href="http://neuralnetworksanddeeplearning.com/chap2.html" target="_blank" rel="noopener">Neural Networks and Deep Learning</a></li>
+<li><a href="http://deeplearning.stanford.edu/wiki/index.php/Backpropagation_Algorithm" target="_blank" rel="noopener">Machine Learning Cousera Course</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/04/20/Backpropagation-in-Neural-Network/" target="_blank" title="Backpropagation in Neural Network">http://blog.a-stack.com/2018/04/20/Backpropagation-in-Neural-Network/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/21/机器学习三要素-模型-策略与算法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          机器学习三要素：模型,策略与算法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/14/TensorFlow-Object-Detection-API/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">使用TensorFlow Object Detection API识别仪表表盘</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-表达式的定义"><span class="nav-number">1.</span> <span class="nav-text">1. 表达式的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-反向传播的直观理解"><span class="nav-number">2.</span> <span class="nav-text">2. 反向传播的直观理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#另一种求解方式"><span class="nav-number">2.1.</span> <span class="nav-text">另一种求解方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-反向传播算法的计算流程"><span class="nav-number">3.</span> <span class="nav-text">3. 反向传播算法的计算流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

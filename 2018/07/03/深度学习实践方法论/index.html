@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>深度学习实践方法论 | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能,深度学习,技术,算法">
+  
+  
+  
+  
+  <meta name="description" content="摘要： 深度学习实践的方法论是一套靠经验而非算法总结的行之有效的指导，后续随着研究深入将不断更新补充相关内容。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习实践方法论">
+<meta property="og:url" content="http://blog.a-stack.com/2018/07/03/深度学习实践方法论/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 深度学习实践的方法论是一套靠经验而非算法总结的行之有效的指导，后续随着研究深入将不断更新补充相关内容。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg">
+<meta property="og:updated_time" content="2018-07-20T15:53:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习实践方法论">
+<meta name="twitter:description" content="摘要： 深度学习实践的方法论是一套靠经验而非算法总结的行之有效的指导，后续随着研究深入将不断更新补充相关内容。">
+<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-深度学习实践方法论" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg" rel="gallery_ck7c22odc0035g8u46ym5ie96">
+        <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/18.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习实践方法论
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/03/深度学习实践方法论/" class="article-date">
+	  <time datetime="2018-07-03T09:34:48.000Z" itemprop="datePublished">2018-07-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/04.jpg" alt="Test Picture"></p>
+<p><strong>摘要：</strong> 深度学习实践的方法论是一套靠经验而非算法总结的行之有效的指导，后续随着研究深入将不断更新补充相关内容。</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>从Cousera学习吴恩达的机器学习、深度学习系列课程便开始希望能够根据课程学习内容，逐步总结深度学习算法在项目实践中应该如何应用，是否能够总结一份最佳实践手册，并通过不断的更新维护，方便日后查阅和指导深度学习工程师的项目开发。最近在看Goodfellow的深度学习圣经——《Deep Learning》，第十一章再次讲到了这个问题，于是便以书中内容为基础，总结这篇深度学习实践的博客。</p>
+<p>正如书中所说要成功地使用深度学习技术，仅仅知道存在哪些算法和解释他们为何有效的原理是不够的。一个优秀的机器学习实践者还需要知道如何针对具体应用挑选一个合适的算法以及如何监控，并根据实验反馈改进机器学习系统。书中建议参考如下几个实践设计流程：</p>
+<ul>
+<li>确定目标——使用什么样的误差度量，并为此误差度量指定目标值。这些目标 和误差度量取决于该应用旨在解决的问题。</li>
+<li>尽快建立一个端到端的工作流程，包括估计合适的性能度量。 </li>
+<li>搭建系统，并确定性能瓶颈。检查哪个部分的性能差于预期，以及是否是因 为过拟合、欠拟合，或者数据或软件缺陷造成的。</li>
+<li>根据具体观察反复地进行增量式的改动，如收集新数据、调整超参数或改进算 法。</li>
+</ul>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/deeplearning_workflow.png" alt="我们项目实践中使用的流程图"></p>
+<h2 id="问题的定义和描述"><a href="#问题的定义和描述" class="headerlink" title="问题的定义和描述"></a>问题的定义和描述</h2><ul>
+<li>选定误差度量标准；</li>
+</ul>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/bayes_error.PNG" alt="bayes_error"></p>
+<ul>
+<li>科研中，目标通常是在某个确定基准下探讨哪个算法更好，一般会固定训练集，不允许收集更多的数据。</li>
+<li>性能期望的设计</li>
+<li>度量： 准确率、错误率，召回率，精确率，F1分数，mAP …<ul>
+<li>覆盖（coverage）： 机器学习系统能够产生响应的样本所占的比率；</li>
+</ul>
+</li>
+</ul>
+<h2 id="基准模型"><a href="#基准模型" class="headerlink" title="基准模型"></a>基准模型</h2><ul>
+<li>明确任务的度量和目标之后，需要快速的迭代第一个端到端的系统。</li>
+<li>项目开始时，可能无需使用深度学习，构建一个简单的统计模型可以快速实现原型开发，当然如果问题本身属于“AI-完全”的，如对象识别、语音识别、机器翻译，那么可以根据数据的结构选择从一个基本的CNN/RNN/DNN模型开始。</li>
+<li>优化算法方面，具有衰减学习率以及动量的SGD是优化算法一个合理的选择（流行的衰减方法有，衰减到固定最低学习率的线性衰减、指数衰减，或每次发生验证错误停滞时 将学习率降低 2 − 10 倍，这些衰减方法在不同问题上好坏不一）。<ul>
+<li>也可以直接使用Adam算法</li>
+</ul>
+</li>
+<li>批标准化可以视情况逐步采用；</li>
+<li>如果项目内容和别人已经完成的模型任务很相像，复制现成的网络结构或利用迁移学习fine-tune也是这阶段应该考虑的；</li>
+</ul>
+<h2 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h2><ul>
+<li>收集更多数据对于深度学习来说是最直接改观性能的方式，但何时收集，是否应该收集需要评估投入-产出比；</li>
+<li>也许正则化可以弥补模型的误差期望差距，没有必要投入代价更好的数据收集工作；</li>
+</ul>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/data_split.PNG" alt="data_split"></p>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/data_split2.PNG" alt="data_split2"></p>
+<ul>
+<li><p>如果收集数据，应该收集多少数据？</p>
+<ul>
+<li><p>如图所示，绘制曲线显示训练集规模和泛化误差之间的关系是很有帮助的。根据走势延伸曲线，可以预测还需要多少训练数据来达到一定的性能。</p>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/number_of_training_examples.PNG" alt="训练集大小对训练误差的影响"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="超参选择"><a href="#超参选择" class="headerlink" title="超参选择"></a>超参选择</h2><p>大部分深度学习算法都有许多超参数来控制不同方面的算法表现。有些超参数会影响算法运行的时间和存储成本。有些超参数会影响学习到的模型质量，以及 在新输入上推断正确结果的能力。 有两种选择超参数的基本方法：手动选择和自动选择。</p>
+<h3 id="手动调节超参"><a href="#手动调节超参" class="headerlink" title="手动调节超参"></a>手动调节超参</h3><p>手动搜索超参数的目标通常是最小化受限于运行时间和内存预算的泛化误差。通过调整模型的有效容量以匹配任务的复杂性。有效容量受限于三个因素：</p>
+<ul>
+<li>模型的表示容量</li>
+<li>学习算法成功最小化训练模型代价函数的能力</li>
+<li>代价函数和训练过程正则化模型的程度</li>
+</ul>
+<p>学习率可能是最重要的超参数，如果你只有时间调整一个超参，那就调整学习率。相比其他超参数，它以一种更复杂的方式控制模型的有效容量——当学习率适合优化问题时，模型的有效容量最高，此时学习率是正确的，既不是特别大也不是特别小。学习率关于训练误差具有 U 形曲线，如图所示。当学习率过大时，梯度下降可能会不经意地增加而非减少训练误差。在理想化的二次情况下，如果学习率是最佳值的两倍大时，会发生这种情况 (LeCun et al., 1998b)。当学习率太小，训练不仅慢，还有可能永久停留在一个很高的训练误差。</p>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/learning_rate.PNG" alt="learning_rate"></p>
+<blockquote>
+<p>实践中能够确保学习有效的暴力方法就是不断提高模型容量和训练 集的大小，直到解决问题。</p>
+</blockquote>
+<h3 id="自动超参优化"><a href="#自动超参优化" class="headerlink" title="自动超参优化"></a>自动超参优化</h3><p>如果我们仔细想想使用者搜索学习算法合适超参数的方式，我们会意识到这其实是一种优化：我们在试图寻找超参数来优化目标函数，例如验证误差，有时还会有一些约束（如训练时间，内存或识别时间的预算）。</p>
+<p><strong>网格搜索（grid search）</strong>是超参选择的常用方法，利用几个小的有限集训练参数模型，从中挑选验证集误差最小的超参。超参范围的设定一般采用对数尺度小挑选合适的值。</p>
+<p>随机搜索： 为每个超参数定义一个边缘分布，或者对数尺度上的均匀分布。与网格搜索不懂，不需要离散化超参数的值。实践证明，随机搜索效率比网格搜索更高。</p>
+<h2 id="调整策略"><a href="#调整策略" class="headerlink" title="调整策略"></a>调整策略</h2><p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/adjust_error.PNG" alt="adjust_error"></p>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/adjust_error_2.PNG" alt="adjust_error_2"></p>
+<p><img src="/2018/07/03/深度学习实践方法论/../../qnsource/images/2018-07-03-深度学习实践方法论/adjust_error_3.PNG" alt="adjust_error_3"></p>
+<h2 id="调试策略"><a href="#调试策略" class="headerlink" title="调试策略"></a>调试策略</h2><ol>
+<li>可视化计算中模型的行为：当训练模型检测图像中的对象时，查看一些模型检测到部分重叠的图像。在训练语音生成模型时，试听一些生成的语音样本。这似乎是显而易见的，但在实际中很容易只注意量化性能度量，如准确率或对数似然。直接观察机器学习模型运行其任务，有助于确定其达到的量化性能数据是否看上去合 理。错误评估模型性能可能是最具破坏性的错误之一，因为它们会使你在系统出问题时误以为系统运行良好。 </li>
+<li>可视化最严重的错误：大多数模型能够输出运行任务时的某种置信度量。例如，基于softmax 函数输出层的分类器给每个类分配一个概率。因此，分配给最有可能的类的概率给出了模型在其分类决定上的置信估计值。通常，相比于正确预测的概率最大似然训练会略有高估。但是由于实际上模型的较小概率不太可能对应着正确 的标签，因此它们在一定意义上还是有些用的。通过查看训练集中很难正确建模的样本，通常可以发现该数据预处理或者标记方式的问题。</li>
+<li>根据训练和测试误差检测软件：我们往往很难确定底层软件是否是正确实现。训练和测试误差能够提供一些线索。如果训练误差较低，但是测试误差较高，那么很有可能训练过程是在正常运行，但模型由于算法原因过拟合了。另一种可能是，测试误差没有被正确地度量，可能是由于训练后保存模型再重载去度量测试集时出现 问题，或者是因为测试数据和训练数据预处理的方式不同。如果训练和测试误差都很高，那么很难确定是软件错误，还是由于算法原因模型欠拟合。这种情况需要进一步的测试。</li>
+<li>拟合极小的数据集：当训练集上有很大的误差时，我们需要确定问题是真正的欠拟合，还是软件错误。通常，即使是小模型也可以保证很好地拟合一个足够小的数据集。例如，只有一个样本的分类数据可以通过正确设置输出层的偏置来拟合。通常，如果不能训练一个分类器来正确标注一个单独的样本，或不能训练一个自编码 器来成功地精准再现一个单独的样本，或不能训练一个生成模型来一致地生成一个单独的样本，那么很有可能是由于软件错误阻止训练集上的成功优化。此测试可以扩展到只有少量样本的小数据集上。 </li>
+<li>比较反向传播导数和数值导数：如果读者正在使用一个需要实现梯度计算的软件框架，或者在添加一个新操作到求导库中，必须定义它的 bprop 方法，那么常见的错误原因是没能正确地实现梯度表达。验证这些求导正确性的一种方法是比较实现的自动求导和通过有限差分（finite difference）计算的导数。</li>
+<li>监控激活函数值和梯度的直方图：可视化神经网络在大量训练迭代后（也许是一个轮）收集到的激活函数值和梯度的统计量往往是有用的。隐藏单元的预激活值可以告诉我们该单元是否饱和，或者它们饱和的频率如何。例如，对于整流器，它们多久关一次？是否有单元一直关闭？对于双曲正切单元而言，预激活绝对值的平均值可以告诉我们该单元的饱和程度。在深度网络中，传播梯度的快速增长或快速消失，可能会阻碍优化过程。最后，比较参数梯度和参数的量级也是有帮助的。正如 (Bottou, 2015) 所建议的，我们希望参数在一个小批量更新中变化的幅度是参数量值 1% 这样的级别，而不是50% 或者0.001%（这会导致参数移动得太慢）。也有可能是某些参数以良好的步长移动，而另一些停滞。如果数据是稀疏的（比如自然语言），有些参数可能很少更新，检测它们变化时应该记住这一点。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://www.deeplearningbook.org/" target="_blank" rel="noopener">《Deep Learning》Book</a></li>
+<li>Ng, A. (2015). Advice for applying machine <a href="https://see.stanford.edu/materials/aimlcs229/ML-advice.pdf" target="_blank" rel="noopener">https://see.stanford.edu/materials/aimlcs229/ML-advice.pdf</a>. </li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/07/03/深度学习实践方法论/" target="_blank" title="深度学习实践方法论">http://blog.a-stack.com/2018/07/03/深度学习实践方法论/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/实践/">实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/06/ImageNet-DataSet/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ImageNet-DataSet
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/20/thinking-stats/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Thinking Stats</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题的定义和描述"><span class="nav-number">2.</span> <span class="nav-text">问题的定义和描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基准模型"><span class="nav-number">3.</span> <span class="nav-text">基准模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据收集"><span class="nav-number">4.</span> <span class="nav-text">数据收集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#超参选择"><span class="nav-number">5.</span> <span class="nav-text">超参选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手动调节超参"><span class="nav-number">5.1.</span> <span class="nav-text">手动调节超参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动超参优化"><span class="nav-number">5.2.</span> <span class="nav-text">自动超参优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调整策略"><span class="nav-number">6.</span> <span class="nav-text">调整策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试策略"><span class="nav-number">7.</span> <span class="nav-text">调试策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

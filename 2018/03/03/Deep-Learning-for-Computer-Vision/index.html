@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>deep learning for computer vision | Ebby&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="人工智能, AI, 神经网络, 算法">
+  
+  
+  
+  
+  <meta name="description" content="本文记录深度学习书籍《Deep Learning for Computer Vision with Python》的读书笔记。   @toc 背景 深度学习拥有60多年历史，虽然曾经采用过不同的名称和不同的主导技术：“deep learning” has existed since the 1940s undergoing various name changes, including cybe">
+<meta name="keywords" content="读书笔记,AI,人工智能,机器视觉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep Learning for Computer Vision">
+<meta property="og:url" content="http://blog.a-stack.com/2018/03/03/Deep-Learning-for-Computer-Vision/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="本文记录深度学习书籍《Deep Learning for Computer Vision with Python》的读书笔记。   @toc 背景 深度学习拥有60多年历史，虽然曾经采用过不同的名称和不同的主导技术：“deep learning” has existed since the 1940s undergoing various name changes, including cybe">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Challenge%20for%20Image%20Classification.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/MNIST.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Fashion-MNIST.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Smile%20Datasets.png">
+<meta property="og:image" content="https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/static/img/pipeline.png">
+<meta property="og:updated_time" content="2018-05-23T12:44:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Deep Learning for Computer Vision">
+<meta name="twitter:description" content="本文记录深度学习书籍《Deep Learning for Computer Vision with Python》的读书笔记。   @toc 背景 深度学习拥有60多年历史，虽然曾经采用过不同的名称和不同的主导技术：“deep learning” has existed since the 1940s undergoing various name changes, including cybe">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Challenge%20for%20Image%20Classification.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
+  
+  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
+  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 border-width: 0px;  margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">首页</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(无标题)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Deep-Learning-for-Computer-Vision" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Deep Learning for Computer Vision
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/03/Deep-Learning-for-Computer-Vision/" class="article-date">
+	  <time datetime="2018-03-03T14:12:49.000Z" itemprop="datePublished">2018-03-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/读书笔记/">读书笔记</a><a class="article-category-link" href="/categories/读书笔记/机器视觉/">机器视觉</a>
+
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文记录深度学习书籍《Deep Learning for Computer Vision with Python》的读书笔记。</p>
+</blockquote>
+<!-- excerpt -->
+<p>@toc</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ul>
+<li>深度学习拥有60多年历史，虽然曾经采用过不同的名称和不同的主导技术：“deep learning” has existed since the 1940s undergoing various name changes, including cybernetics, connectionism, and the most familiar, Artificial Neural Networks (ANNs).</li>
+<li>神经网络的普适定律：Further research demonstrated that neural networks are universal approximators , capable of approximating any continuous function (but placing <strong>no guarantee</strong> on whether or not the network can actually learn the parameters required to represent a function).</li>
+<li>Classic machine learning algorithms for <strong>unsupervised learning</strong> include Principle Component Analysis (PCA) and k-means clustering. Specific to neural networks, we see Autoencoders, Self-Organizing Maps (SOMs), and Adaptive Resonance Theory applied to unsupervised learning. </li>
+<li>Popular choices for <strong>semisupervised learning</strong> include label spreading, label propagation, ladder networks, and co-learning/co-training.</li>
+</ul>
+<h2 id="Image-and-Pixels"><a href="#Image-and-Pixels" class="headerlink" title="Image and Pixels"></a>Image and Pixels</h2><ul>
+<li>Pixels are represented in two ways:<ul>
+<li>Grayscale: Each pixel is a scalar value between 0 and 255.（0 for “Black” and 255 for “White”），0—&gt;255 dark —&gt; light</li>
+<li>Color: RGB color space, (R,G,B), Each Red, Green, and Blue channel can have values defined in the range [0,255] for a total of 256 “shades”, where 0 indicates no representation and 255 demonstrates full representation.</li>
+</ul>
+</li>
+<li>Given that the pixel value only needs to be in the range [0,255], we normally use 8-bit unsigned integers to represent the intensity.</li>
+</ul>
+<h3 id="Images-as-Numpy-Arrays"><a href="#Images-as-Numpy-Arrays" class="headerlink" title="Images as Numpy Arrays"></a>Images as Numpy Arrays</h3><ul>
+<li>(height, width, depth) 表示</li>
+</ul>
+<blockquote>
+<p>height 排第一的主要原因是由于矩阵表示形式中，一般把行放在前面，而图像中height大小表征了行的数目。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">image = cv2.imread(<span class="string">"example.png"</span>) print(image.shape)</span><br><span class="line">cv2.imshow(<span class="string">"Image"</span>, image)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"><span class="comment">## Access an individual pixel value</span></span><br><span class="line">(b, g, r) = image[<span class="number">20</span>, <span class="number">100</span>] <span class="comment"># accesses pixel at x=100, y=20</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>取像素y在x前面，还是由于矩阵的表示形式；</li>
+<li>RGB顺序反的，这是由于OpenCV历史原因导致的表示形式差异: Because the BGR ordering was popular among camera manufacturers and other software developers at the time.</li>
+</ol>
+</blockquote>
+<h3 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h3><p><strong>aspect ratio</strong>: the ratio of the width to the height of the image.</p>
+<p>神经网络模型一般都是固定输入，比如32×32, 64×64, 224×224, 227×227, 256×256, and 299×299. 需要对不同大小的图像进行reshape操作，For some datasets you can simply ignore the aspect ratio and squish, distort, and compress your images prior to feeding them through your network. On other datasets, it’s advantageous to preprocess them further by resizing along the shortest dimension and then cropping the center.</p>
+<h2 id="Image-Classification"><a href="#Image-Classification" class="headerlink" title="Image Classification"></a>Image Classification</h2><p>图像分类和图像理解是当今技术视觉领域最火的课题。</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p><strong>图像分类：</strong> the task of assigning a label to an image from a predefined set ofcategories.</p>
+<blockquote>
+<p>图像分类的过程是学习图片中的“underlying patterns”</p>
+</blockquote>
+<p><strong>Semantic Gap：</strong> the difference between how a human perceives the contents of an image versus how an image can be represented in a way a computer can understand the process.</p>
+<h3 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h3><p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Challenge for Image Classification.png" alt="Challenge for Image Classification"></p>
+<h3 id="数据集-TODO"><a href="#数据集-TODO" class="headerlink" title="数据集(TODO)"></a>数据集(TODO)</h3><ol>
+<li><p>MNIST</p>
+<ul>
+<li><p><strong>目标：</strong> 完成0-9手写字符的识别</p>
+</li>
+<li><p><strong>说明：</strong></p>
+<ul>
+<li><code>NIST</code>代表<code>National Institute ofStandards and Technology</code>， <code>M</code>代表<code>Modified</code></li>
+<li>深度学习的<code>Hello World</code></li>
+<li>包含60,000训练样本，10,000测试样本，每个样本为28x28的灰度图像</li>
+</ul>
+</li>
+<li><p><strong>目前准确度：</strong> &gt;99%</p>
+</li>
+<li><p><strong>获取地址：</strong> <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a></p>
+<p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/MNIST.jpg" alt="MNIST"></p>
+</li>
+</ul>
+</li>
+<li><p>Fashion-MNIST</p>
+<ul>
+<li><p><strong>目标：</strong> 完成10种不同衣服的识别</p>
+</li>
+<li><p><strong>说明：</strong></p>
+<ul>
+<li>根据MNIST设计的新的数据集，难度比MNIST略高</li>
+<li>包含60,000训练样本，10,000测试样本，每个样本为28x28的灰度图像</li>
+</ul>
+</li>
+<li><p><strong>目前准确度：</strong> &gt;95%</p>
+</li>
+<li><p><strong>获取地址：</strong> <a href="https://github.com/zalandoresearch/fashion-mnist" target="_blank" rel="noopener">https://github.com/zalandoresearch/fashion-mnist</a></p>
+<p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Fashion-MNIST.png" alt="Fashion-MNIST"></p>
+</li>
+</ul>
+</li>
+<li><p>CIFAR-10</p>
+</li>
+<li><p>Animals： Dogs，Cat， Pandas</p>
+</li>
+<li><p>Flowers-17</p>
+</li>
+<li><p>CALtECH-101</p>
+</li>
+<li><p>Tiny ImageNet 200</p>
+</li>
+<li><p>Adience</p>
+</li>
+<li><p>ImageNet</p>
+</li>
+<li><p>表情识别(是否笑脸)</p>
+<ul>
+<li><strong>说明：</strong></li>
+<li>共计13165张灰度图片，每张图片大小为64x64</li>
+<li>分为笑脸和非笑脸两类，其中笑脸3690张，非笑脸9475张（数据不平衡）</li>
+<li><strong>获取地址：</strong><a href="https://github.com/hromi/SMILEsmileD" target="_blank" rel="noopener">https://github.com/hromi/SMILEsmileD</a></li>
+<li>另外<a href="https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data" target="_blank" rel="noopener">fer2013</a>提供了更多表情的训练用数据集</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Smile Datasets.png" alt="Smile Datasets"></p>
+<ol>
+<li>性别和年龄数据集</li>
+</ol>
+<ul>
+<li><p>IMDB-WIKI – 500k+ face images with age and gender labels</p>
+<ul>
+<li><p>获取地址： <a href="https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/" target="_blank" rel="noopener">https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/</a></p>
+<p><img src="https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/static/img/pipeline.png" alt="img"></p>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><p>Indoor CVPR</p>
+</li>
+<li><p>Stanford Cars</p>
+</li>
+<li><p>…</p>
+</li>
+</ol>
+<h2 id="神经网络基础"><a href="#神经网络基础" class="headerlink" title="神经网络基础"></a>神经网络基础</h2><h3 id="优化算法（TODO，整合到单独Note）"><a href="#优化算法（TODO，整合到单独Note）" class="headerlink" title="优化算法（TODO，整合到单独Note）"></a>优化算法（TODO，整合到单独Note）</h3><ul>
+<li>Chapter 8</li>
+</ul>
+<h3 id="Regularization-TODO-整合到单独Note"><a href="#Regularization-TODO-整合到单独Note" class="headerlink" title="Regularization (TODO, 整合到单独Note)"></a>Regularization (TODO, 整合到单独Note)</h3><ul>
+<li>Chapter 9</li>
+<li>chapter 10,激活函数，perception</li>
+</ul>
+<h3 id="为什么验证损失函数值有时候小于训练损失函数"><a href="#为什么验证损失函数值有时候小于训练损失函数" class="headerlink" title="为什么验证损失函数值有时候小于训练损失函数"></a>为什么验证损失函数值有时候小于训练损失函数</h3><p>这可能是有几方面原因导致的，或多方面原因综合作用的结果，主要的原因包括：</p>
+<ol>
+<li>训练集和验证集分布不均，导致训练集数据难度大，验证集简单数据分布比例大；</li>
+<li>数据放大本身形成了一种规则化，降低了训练集的训练结果；（这本身是规则化的目标，降低在训练集的表现，提升泛化性能）</li>
+<li>训练时间或轮数不够；</li>
+</ol>
+<h3 id="关于学习率"><a href="#关于学习率" class="headerlink" title="关于学习率"></a>关于学习率</h3><ul>
+<li><p>keras中提供了<code>decay</code>参数来调节学习率的变化情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opt = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">0.01</span> / <span class="number">40</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>使用公式：</p>
+<script type="math/tex; mode=display">
+\alpha_{e+1} = \alpha_e \times 1 /(1+\gamma * e)</script></li>
+<li><p>另一种学习率为阶梯学习率：<code>ctrl + c</code></p>
+<p>Keras提供一个类：<code>LearningrateScheduler</code>来配置自定义的学习率函数</p>
+<p>比如：</p>
+<script type="math/tex; mode=display">
+\alpha_{E+1} = \alpha_1 \times F^{(1+E)/D}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step_decay</span><span class="params">(epoch)</span>:</span></span><br><span class="line">    <span class="comment"># initialize the base initial learning rate, drop factor, and epochs to drop every</span></span><br><span class="line">    initAlpha = <span class="number">0.01</span></span><br><span class="line">    factor = <span class="number">0.25</span></span><br><span class="line">    dropEvery = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># compute learning rate for the current epoch</span></span><br><span class="line">    alpha = initAlpha * (factor ** np.floor((<span class="number">1</span> + epoch) / dropEvery))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># return the learning rate</span></span><br><span class="line">    <span class="keyword">return</span> float(alpha)</span><br><span class="line">  </span><br><span class="line"><span class="comment">##定义callback</span></span><br><span class="line">callbacks = [LearningRateScheduler(step_decay)]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>当定义了学习率之后，SGD中声明的配置信息将被忽略</p>
+</blockquote>
+<h2 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h2><h3 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h3><ul>
+<li>所有的卷积层使用同一种卷积核：3X3</li>
+<li>堆积多个<code>CONV=&gt;RELU</code>层再进行一次<code>POOL</code>操作</li>
+</ul>
+<h3 id="MNIST"><a href="#MNIST" class="headerlink" title="MNIST"></a>MNIST</h3><p>Researchers tend to use the MNIST dataset as a benchmark to evaluate new classification algorithms. If their methods cannot obtain &gt; 95% classification accuracy, then there is either a flaw in (1) the logic of the algorithm or (2) the implementation itself.</p>
+<h2 id="Case-Study"><a href="#Case-Study" class="headerlink" title="Case Study"></a>Case Study</h2><blockquote>
+<p>使用OpenCV的Haar cascade 算法进行人脸检测，提取人脸的ROI(Region of intrest), 通过一个卷积神经网络进行表情识别；</p>
+<p>可以结合Github开源的表情识别代码一起研究</p>
+</blockquote>
+<ul>
+<li>路径处理 <code>os.path.sep</code>： 提取路径分隔符</li>
+<li>数据不平衡的处理，可以考虑不同分类的权重，在训练时通过赋权调整平衡性，代码如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Handle data imbalance</span></span><br><span class="line"><span class="comment"># account for skew in the labeled data</span></span><br><span class="line">classTotals = labels.sum(axis=<span class="number">0</span>)</span><br><span class="line">classWeight = classTotals.max() / classTotals</span><br><span class="line"></span><br><span class="line"><span class="comment">## When training</span></span><br><span class="line">H = model.fit(trainX, trainY, validation_data=(testX, testY),</span><br><span class="line">    class_weight=classWeight, batch_size=<span class="number">64</span>, epochs=<span class="number">15</span>, verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="手写字的预处理"><a href="#手写字的预处理" class="headerlink" title="手写字的预处理"></a>手写字的预处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(image, width, height)</span>:</span></span><br><span class="line">    <span class="comment">#grap the dimensions of the image, then initialize the padding values</span></span><br><span class="line">    (h, w) = image.shape[:<span class="number">2</span>]</span><br><span class="line">    <span class="comment">#if width greater than height, resize along the width</span></span><br><span class="line">    <span class="keyword">if</span> w &gt; h:</span><br><span class="line">        image = imutils.resize(iamge, width=width)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        image = imutils.resize(image, height=height)</span><br><span class="line">    <span class="comment">#padding values for w and h to obtain the target dimensions</span></span><br><span class="line">    padW = int((width - image.shape[<span class="number">1</span>])/<span class="number">2.0</span>)</span><br><span class="line">    padH = int((height - image.shape[<span class="number">0</span>])/<span class="number">2.0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#pad the image then apply one more resizing to handle any rounding issues</span></span><br><span class="line">    image = cv2.copyMakeBorder(image, padH, padH, padW, padW, cv2.BORDER_REPLICATE)</span><br><span class="line">    iamge = cv2.resize(image, (width, height))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> image</span><br><span class="line"></span><br><span class="line">image = cv2.imread(img)</span><br><span class="line">gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">gray = cv2.copyMakeBorder(gray, <span class="number">20</span>,<span class="number">20</span>,<span class="number">20</span>,<span class="number">20</span>, cv2.BORDER_REPLICATE)</span><br><span class="line"><span class="comment"># threshold the image to reveal the digits</span></span><br><span class="line">thresh = cv2.threshold(gray, <span class="number">0</span>, <span class="number">255</span>, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[<span class="number">1</span>]</span><br><span class="line"><span class="comment">#find contours in the image, keeping only the four largest ones</span></span><br><span class="line">cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">cnts = cnts[<span class="number">0</span>] <span class="keyword">if</span> imutils.is_cv2() <span class="keyword">else</span> cnts[<span class="number">1</span>]</span><br><span class="line">cnts = sorted(cnts, key=cv2.contourArea, reverse=<span class="keyword">True</span>)[:<span class="number">4</span>]</span><br><span class="line">cnts = contours.sort_contours(cnts)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the output image as a "grayscale" image with 3</span></span><br><span class="line"><span class="comment"># channels along with the output predictions</span></span><br><span class="line">output = cv2.merge([gray] * <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> cnts:</span><br><span class="line">    <span class="comment"># compute the bounding box for the contour then extract the</span></span><br><span class="line">    <span class="comment"># digit</span></span><br><span class="line">    (x, y, w, h) = cv2.boundingRect(c)</span><br><span class="line">    roi = gray[y - <span class="number">5</span>:y + h + <span class="number">5</span>, x - <span class="number">5</span>:x + w + <span class="number">5</span>] </span><br><span class="line">    roi = preprocess(roi, <span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">    roi = np.expand_dims(img_to_array(roi), axis=<span class="number">0</span>) / <span class="number">255.0</span></span><br><span class="line">    <span class="comment">#pred = model.predict(roi).argmax(axis=1)[0] + 1</span></span><br><span class="line">    <span class="comment">#predictions.append(str(pred))</span></span><br><span class="line">    <span class="comment"># draw the prediction on the output image</span></span><br><span class="line">    cv2.rectangle(output, (x - <span class="number">2</span>, y - <span class="number">2</span>),(x + w + <span class="number">4</span>, y + h + <span class="number">4</span>), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">1</span>)</span><br><span class="line">    <span class="comment">#cv2.putText(output, str(pred), (x - 5, y - 5),cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 0), 2)</span></span><br><span class="line"><span class="comment"># show the output image</span></span><br><span class="line"><span class="comment">#print("[INFO] captcha: &#123;&#125;".format("".join(predictions)))</span></span><br><span class="line"></span><br><span class="line">plt.imshow(output)</span><br><span class="line"><span class="comment">#cv2.waitKey()</span></span><br></pre></td></tr></table></figure>
+<h2 id="Useful-Functions"><a href="#Useful-Functions" class="headerlink" title="Useful Functions"></a>Useful Functions</h2><h3 id="图像预处理及加载模板"><a href="#图像预处理及加载模板" class="headerlink" title="图像预处理及加载模板"></a>图像预处理及加载模板</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">File1: Preprocessor</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimplePreporcessor</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height, inter=cv2.INTER_AREA)</span>：</span></span><br><span class="line">        # store the target image width, height, and interpolation method used when resizing</span><br><span class="line">        self.width = width</span><br><span class="line">        self.height = height</span><br><span class="line">        self.inter = inter</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, image)</span>:</span></span><br><span class="line">        <span class="comment"># resize the image to a fixed size, ignoring the aspect ratio</span></span><br><span class="line">        <span class="keyword">return</span> cv2.resize(image, (self.width, self.height), interpolation = self.inter)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Data Loader</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># import the necessary packages </span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"><span class="keyword">import</span> cv2 </span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleDatasetLoader</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, preprocessors=None)</span>:</span></span><br><span class="line">        self.preprocessors = preprocessors</span><br><span class="line">        <span class="comment"># if the preprocessors are None, initialize them as an empty list</span></span><br><span class="line">        <span class="keyword">if</span> self.preprocessors <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            self.preprocessors = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(self, imagePaths, verbose =<span class="number">-1</span>)</span>:</span></span><br><span class="line">        data = []</span><br><span class="line">        labels = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i, imagePath) <span class="keyword">in</span> enumerate(imagePaths):</span><br><span class="line">           <span class="comment"># load the image and extract the class label assuming </span></span><br><span class="line">           <span class="comment"># # that our path has the following format: </span></span><br><span class="line">           <span class="comment"># # /path/to/dataset/&#123;class&#125;/&#123;image&#125;.jpg   </span></span><br><span class="line">           image = cv2.imread(imagePath)</span><br><span class="line">           label = imagePath.split(os.path.sep)[<span class="number">-2</span>]</span><br><span class="line"></span><br><span class="line">           <span class="comment"># check to see if our preprocessors are not None</span></span><br><span class="line">           <span class="keyword">if</span> self.preprocessors <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">               <span class="keyword">for</span> p <span class="keyword">in</span> self.preprocessors:</span><br><span class="line">                   image = p.preprocess(image)</span><br><span class="line">            </span><br><span class="line">            data.append(image)</span><br><span class="line">            labels.append(label)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># show an update every ‘verbose‘ images</span></span><br><span class="line">            <span class="keyword">if</span> verbose &gt;<span class="number">0</span> <span class="keyword">and</span> i &gt;<span class="number">0</span> <span class="keyword">and</span> (i+<span class="number">1</span>)%verbose == <span class="number">0</span>:</span><br><span class="line">                print(<span class="string">"[INFON] process &#123;&#125;/&#123;&#125;"</span>).format(i+<span class="number">1</span>,len(imagePaths))</span><br><span class="line">        <span class="comment"># return a tuple of the data and labels</span></span><br><span class="line">        <span class="keyword">return</span> (np.array(data), np.array(labels))</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Main</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># import the necessary packages</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier </span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder </span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split </span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"><span class="keyword">from</span> imutils <span class="keyword">import</span> paths </span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the argument parse and parse the arguments ap = argparse.ArgumentParser()</span></span><br><span class="line">ap.add_argument(<span class="string">"-d"</span>, <span class="string">"--dataset"</span>, required=<span class="keyword">True</span>, help=<span class="string">"path to input dataset"</span>)</span><br><span class="line">ap.add_argument(<span class="string">"-k"</span>, <span class="string">"--neighbors"</span>, type=int, default=<span class="number">1</span>, help=<span class="string">"# of nearest neighbors for classification"</span>)</span><br><span class="line"> ap.add_argument(<span class="string">"-j"</span>, <span class="string">"--jobs"</span>, type=int, default=<span class="number">-1</span>, help=<span class="string">"# of jobs for k-NN distance (-1 uses all available cores)"</span>)</span><br><span class="line">args = vars(ap.parse_args())</span><br><span class="line"></span><br><span class="line">print(<span class="string">"[INFO] loading images ..."</span>)</span><br><span class="line">imagePaths = list(paths.list_images(args[<span class="string">"dataset"</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the image preprocessor, load the dataset from disk,</span></span><br><span class="line"><span class="comment"># and reshape the data matrix</span></span><br><span class="line">sp = SimplePreporcessor(<span class="number">32</span>, <span class="number">32</span>)</span><br><span class="line">sdl = SimpleDatasetLoader(preprocessors=[sp])</span><br><span class="line"></span><br><span class="line">(data, labels) = sdl.load(imagePaths, verbose=<span class="number">500</span>)</span><br><span class="line"><span class="comment">#flatten for use in KNN</span></span><br><span class="line">data = data.reshape((data.shape[<span class="number">0</span>],<span class="number">32</span>*<span class="number">32</span>*<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">print(<span class="string">"[INFO] feature matrix: &#123;:.1f&#125;MB"</span>).format(data.nbytes/(<span class="number">1024</span>*<span class="number">1000.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># encode the labels as integers</span></span><br><span class="line">le = LabelEncoder()</span><br><span class="line">labels = le.fit_transform(labels)</span><br><span class="line"></span><br><span class="line">(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=<span class="number">0.25</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># train and evaluate a kNN classifier on raw pixel intensities</span></span><br><span class="line">print(<span class="string">"[INFO] evaluate kNN classifier ..."</span>)</span><br><span class="line">model = KNeighborsClassifier(n_neighbors=args[<span class="string">"neighbors"</span>]), n_jobs=args[<span class="string">"jobs"</span>])</span><br><span class="line">model.fit(trainX, trainY)</span><br><span class="line">print(classification_report(testY, model.predict(testX),target_names==le.classes_))</span><br></pre></td></tr></table></figure>
+<h3 id="sklearn-metrics-classification-report"><a href="#sklearn-metrics-classification-report" class="headerlink" title="sklearn.metrics.classification_report"></a><code>sklearn.metrics.classification_report</code></h3><p>sklearn中的classification_report函数用于显示主要分类指标的文本报告．在报告中显示每个类的精确度，召回率，F1值等信息。<br><strong>主要参数:</strong> </p>
+<ul>
+<li>y_true：1维数组，或标签指示器数组/稀疏矩阵，目标值。 </li>
+<li>y_pred：1维数组，或标签指示器数组/稀疏矩阵，分类器返回的估计值。 </li>
+<li>labels：array，shape = [n_labels]，报表中包含的标签索引的可选列表。 </li>
+<li>target_names：字符串列表，与标签匹配的可选显示名称（相同顺序）。 </li>
+<li>sample_weight：类似于shape = [n_samples]的数组，可选项，样本权重。 </li>
+<li>digits：int，输出浮点值的位数．</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line">y_true = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]</span><br><span class="line">y_pred = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">target_names = [<span class="string">'class 0'</span>, <span class="string">'class 1'</span>, <span class="string">'class 2'</span>]</span><br><span class="line">print(classification_report(y_true, y_pred, target_names=target_names))</span><br></pre></td></tr></table></figure>
+<h3 id="opencv-给图像添加描述"><a href="#opencv-给图像添加描述" class="headerlink" title="opencv 给图像添加描述"></a>opencv 给图像添加描述</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="comment"># draw the label with the highest score on the image as our # prediction</span></span><br><span class="line">cv2.putText(orig, <span class="string">"Label: &#123;&#125;"</span>.format(labels[np.argmax(scores)]), (<span class="number">10</span>, <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.9</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Keras中的Checkpoint机制"><a href="#Keras中的Checkpoint机制" class="headerlink" title="Keras中的Checkpoint机制"></a>Keras中的Checkpoint机制</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.callbacks <span class="keyword">import</span> ModelCheckpoint</span><br><span class="line"></span><br><span class="line"><span class="comment"># construct the callback to save only the *best* model to disk</span></span><br><span class="line"><span class="comment"># based on the validation loss</span></span><br><span class="line">fname = os.path.sep.join([args[<span class="string">"weights"</span>],</span><br><span class="line">	<span class="string">"weights-&#123;epoch:03d&#125;-&#123;val_loss:.4f&#125;.hdf5"</span>])</span><br><span class="line">checkpoint = ModelCheckpoint(fname, monitor=<span class="string">"val_loss"</span>, mode=<span class="string">"min"</span>,</span><br><span class="line">	save_best_only=<span class="keyword">True</span>, verbose=<span class="number">1</span>)</span><br><span class="line">callbacks = [checkpoint]</span><br><span class="line"></span><br><span class="line">print(<span class="string">"[INFO] training network..."</span>)</span><br><span class="line">H = model.fit(trainX, trainY, validation_data=(testX, testY),</span><br><span class="line">	batch_size=<span class="number">64</span>, epochs=<span class="number">40</span>, callbacks=callbacks, verbose=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>参数：</strong></p>
+<ul>
+<li>filename：字符串，保存模型的路径</li>
+<li>monitor：需要监视的值</li>
+<li>verbose：信息展示模式，0或1</li>
+<li>save_best_only：当设置为<code>True</code>时，将只保存在验证集上性能最好的模型</li>
+<li>mode：‘auto’，‘min’，‘max’之一，在<code>save_best_only=True</code>时决定性能最佳模型的评判准则，例如，当监测值为<code>val_acc</code>时，模式应为<code>max</code>，当检测值为<code>val_loss</code>时，模式应为<code>min</code>。在<code>auto</code>模式下，评价准则由被监测值的名字自动推断。</li>
+<li>save_weights_only：若设置为True，则只保存模型权重，否则将保存整个模型（包括模型结构，配置信息等）</li>
+<li>period：CheckPoint之间的间隔的epoch数</li>
+</ul>
+<blockquote>
+<ol>
+<li>可以monitor loss值也可以是val_acc，train_loss, train_acc;</li>
+<li>更多内容参见：<a href="http://keras-cn.readthedocs.io/en/latest/other/callbacks/" target="_blank" rel="noopener">http://keras-cn.readthedocs.io/en/latest/other/callbacks/</a></li>
+</ol>
+</blockquote>
+<h3 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keras.callbacks.EarlyStopping(monitor=<span class="string">'val_loss'</span>, patience=<span class="number">0</span>, verbose=<span class="number">0</span>, mode=<span class="string">'auto'</span>)</span><br></pre></td></tr></table></figure>
+<p>当监测值不再改善时，该回调函数将中止训练</p>
+<p><strong>参数</strong></p>
+<ul>
+<li>monitor：需要监视的量</li>
+<li>patience：当early stop被激活（如发现loss相比上一个epoch训练没有下降），则经过<code>patience</code>个epoch后停止训练。</li>
+<li>verbose：信息展示模式</li>
+<li>mode：‘auto’，‘min’，‘max’之一，在<code>min</code>模式下，如果检测值停止下降则中止训练。在<code>max</code>模式下，当检测值不再上升则停止训练。</li>
+</ul>
+<h3 id="基于keras-callback实现训练过程监控"><a href="#基于keras-callback实现训练过程监控" class="headerlink" title="基于keras callback实现训练过程监控"></a>基于keras callback实现训练过程监控</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import the necessary packages</span></span><br><span class="line"><span class="keyword">from</span> keras.callbacks <span class="keyword">import</span> BaseLogger</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TrainingMonitor</span><span class="params">(BaseLogger)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, figPath, jsonPath=None, startAt=<span class="number">0</span>)</span>:</span></span><br><span class="line">        <span class="comment"># store the output path for the figure, the path to the JSON serialized file, and the starting epoch</span></span><br><span class="line">        super(TrainingMonitor, self).__init__()</span><br><span class="line">        self.figPath = figPath</span><br><span class="line">        self.jsonPath = jsonPath</span><br><span class="line">        self.startAt = startAt</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_train_begin</span><span class="params">(self, logs=&#123;&#125;)</span>:</span></span><br><span class="line">        <span class="comment"># initialize the history dictionary</span></span><br><span class="line">        self.H = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># if the JSON history path exists, load the training history</span></span><br><span class="line">        <span class="keyword">if</span> self.jsonPath <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">if</span> os.path.exists(self.jsonPath):</span><br><span class="line">                self.H = json.loads(open(self.jsonPath).read())</span><br><span class="line"></span><br><span class="line">                <span class="comment"># check to see if a starting epoch was supplied</span></span><br><span class="line">                <span class="keyword">if</span> self.startAt &gt; <span class="number">0</span>:</span><br><span class="line">                    <span class="comment"># loop over the entries in the history log and</span></span><br><span class="line">                    <span class="comment"># trim any entries that are past the starting</span></span><br><span class="line">                    <span class="comment"># epoch</span></span><br><span class="line">                    <span class="keyword">for</span> k <span class="keyword">in</span> self.H.keys():</span><br><span class="line">                        self.H[k] = self.H[k][:self.startAt]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_epoch_end</span><span class="params">(self, epoch, logs=&#123;&#125;)</span>:</span></span><br><span class="line">        <span class="comment"># loop over the logs and update the loss, accuracy, etc.</span></span><br><span class="line">        <span class="comment"># for the entire training process</span></span><br><span class="line">        <span class="keyword">for</span> (k, v) <span class="keyword">in</span> logs.items():</span><br><span class="line">            l = self.H.get(k, [])</span><br><span class="line">            l.append(v)</span><br><span class="line">            self.H[k] = l</span><br><span class="line">        <span class="comment"># check to see if the training history should be serialized</span></span><br><span class="line">        <span class="comment"># to file</span></span><br><span class="line">        <span class="keyword">if</span> self.jsonPath <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            f = open(self.jsonPath, <span class="string">"w"</span>)</span><br><span class="line">            f.write(json.dumps(self.H))</span><br><span class="line">            f.close()</span><br><span class="line">        <span class="comment"># ensure at least two epochs have passed before plotting</span></span><br><span class="line">        <span class="comment"># (epoch starts at zero)</span></span><br><span class="line">        <span class="keyword">if</span> len(self.H[<span class="string">"loss"</span>]) &gt; <span class="number">1</span>:</span><br><span class="line">            <span class="comment">#plot the training loss and accuracy</span></span><br><span class="line">            N = np.arange(<span class="number">0</span>, len(self.H[<span class="string">"loss"</span>]))</span><br><span class="line">            plt.style.use(<span class="string">"ggplot"</span>)</span><br><span class="line">            plt.figure()</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"loss"</span>], label=<span class="string">"train_loss"</span>)</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"val_loss"</span>], label=<span class="string">"val_loss"</span>)</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"acc"</span>], label=<span class="string">"train_acc"</span>)</span><br><span class="line">            plt.plot(N, self.H[<span class="string">"val_acc"</span>], label=<span class="string">"val_acc"</span>)</span><br><span class="line">            plt.title(<span class="string">"Training Loss and Accuracy [Epoch &#123;&#125;]"</span>.format(len(self.H[<span class="string">"loss"</span>])))</span><br><span class="line">            plt.xlabel(<span class="string">"Epoch #"</span>)</span><br><span class="line">            plt.ylabel(<span class="string">"Loss/Accuracy"</span>)</span><br><span class="line">            plt.legend()</span><br><span class="line"></span><br><span class="line">            <span class="comment">#save the figure</span></span><br><span class="line">            plt.savefig(self.figPath)</span><br><span class="line">            plt.close()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>figPath: The path to the output plot that we can use to visualize loss and accuracy over time.</li>
+<li>jsonPath: An optional path used to serialize the loss and accuracy values as a JSON file. This path is useful if you want to use the training history to create custom plots of your own.</li>
+<li>startAt: This is the starting epoch that training is resumed at when using ctrl + c training.</li>
+</ul>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>
+      
+    </div>
+    <footer class="article-footer">
+
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '/qnsource/site/weixin.png',
+  alipayImage: '/qnsource/site/alipay.jpg'
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>本文作者:  </strong>Ebby DD</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>本文链接:  </strong>
+          <a href="/2018/03/03/Deep-Learning-for-Computer-Vision/" target="_blank" title="Deep Learning for Computer Vision">http://blog.a-stack.com/2018/03/03/Deep-Learning-for-Computer-Vision/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处
+          </li>
+         
+        </ul>
+<div>
+
+      
+
+      
+        
+ <!-- valine @ebby -->
+ <section id="comments" class="comments">
+	<style>
+		.comments{margin:30px;padding:10px;background:#fff}
+		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+	</style>
+	<div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
+            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
+            placeholder: "Say Something ...",
+            avatar: "wavatar",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/",
+            pageSize: "15"
+    });
+</script>
+		
+</section>
+
+
+
+      
+      <!--  -->
+
+      <!--  -->
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器视觉/">机器视觉</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/04/深度学习基础之正则化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深度学习基础之正则化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/02/深度学习基础之目标及评估/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度学习基础之目标及评估</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-and-Pixels"><span class="nav-number">2.</span> <span class="nav-text">Image and Pixels</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Images-as-Numpy-Arrays"><span class="nav-number">2.1.</span> <span class="nav-text">Images as Numpy Arrays</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Others"><span class="nav-number">2.2.</span> <span class="nav-text">Others</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-Classification"><span class="nav-number">3.</span> <span class="nav-text">Image Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挑战"><span class="nav-number">3.2.</span> <span class="nav-text">挑战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集-TODO"><span class="nav-number">3.3.</span> <span class="nav-text">数据集(TODO)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络基础"><span class="nav-number">4.</span> <span class="nav-text">神经网络基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化算法（TODO，整合到单独Note）"><span class="nav-number">4.1.</span> <span class="nav-text">优化算法（TODO，整合到单独Note）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Regularization-TODO-整合到单独Note"><span class="nav-number">4.2.</span> <span class="nav-text">Regularization (TODO, 整合到单独Note)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么验证损失函数值有时候小于训练损失函数"><span class="nav-number">4.3.</span> <span class="nav-text">为什么验证损失函数值有时候小于训练损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于学习率"><span class="nav-number">4.4.</span> <span class="nav-text">关于学习率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络模型"><span class="nav-number">5.</span> <span class="nav-text">网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VGG"><span class="nav-number">5.1.</span> <span class="nav-text">VGG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MNIST"><span class="nav-number">5.2.</span> <span class="nav-text">MNIST</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Case-Study"><span class="nav-number">6.</span> <span class="nav-text">Case Study</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手写字的预处理"><span class="nav-number">6.1.</span> <span class="nav-text">手写字的预处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Useful-Functions"><span class="nav-number">7.</span> <span class="nav-text">Useful Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像预处理及加载模板"><span class="nav-number">7.1.</span> <span class="nav-text">图像预处理及加载模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sklearn-metrics-classification-report"><span class="nav-number">7.2.</span> <span class="nav-text">sklearn.metrics.classification_report</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#opencv-给图像添加描述"><span class="nav-number">7.3.</span> <span class="nav-text">opencv 给图像添加描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras中的Checkpoint机制"><span class="nav-number">7.4.</span> <span class="nav-text">Keras中的Checkpoint机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EarlyStopping"><span class="nav-number">7.5.</span> <span class="nav-text">EarlyStopping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于keras-callback实现训练过程监控"><span class="nav-number">7.6.</span> <span class="nav-text">基于keras callback实现训练过程监控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>      
+        
+      </div>
+      <!--  -->
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
+	      
+	      
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>    
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/reading" class="mobile-nav-link">Reading</a>
+  
+    <a href="/resources" class="mobile-nav-link">Resources</a>
+  
+    <a href="/notebooks" class="mobile-nav-link">📝</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Ebby&#39;s Notes
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Ebby DD All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
