@@ -19,17 +19,17 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/12/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png">
 <meta property="og:updated_time" content="2019-02-26T05:19:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典网络复现之ResNet">
 <meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/07/12/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -199,7 +199,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/07/12/经典网络复现之ResNet/../qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG" alt="Residual Module"></p>
+        <p><img src="/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG" alt="Residual Module"></p>
 <p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络ResNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
 <a id="more"></a>
 <p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
@@ -230,7 +230,7 @@
 <h2 id="重头训练一个ResNet"><a href="#重头训练一个ResNet" class="headerlink" title="重头训练一个ResNet"></a>重头训练一个ResNet</h2><p>我们训练的标的是ResNet50，即50层的残差网络，50代表了整个网络中所有含参数层的数目：</p>
 <p>1 + （3x3） + (4x3) + (6x3) + (3x3) + 1 = 50</p>
 <p>第一个卷积层使用7x7的卷积核，用于快速降低网络尺寸，配合紧接着的池化层，将输入224x224的尺寸降低到56x56。</p>
-<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png" alt="ResNet—Architecture"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/ResNet—Architecture.png" alt="ResNet—Architecture"></p>
 <ol>
 <li>使用MxNet构建ResNet代码</li>
 </ol>
@@ -294,11 +294,11 @@
 </blockquote>
 <ol>
 <li><p>第一遍训练采用1e-1的学习率训练16轮，发现饱和现象，而且训练误差和测试误差约拉越大；</p>
-<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png" alt="1-16"></p>
-<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png" alt="1-16-loss"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16.png" alt="1-16"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-16-loss.png" alt="1-16-loss"></p>
 </li>
 <li><p>在第10个迭代调整学习率到1e-2，验证集准确率有大幅提升，代表调整有效，之后在16轮迭代之后再次降低学习率到1e-3,25轮调整学习率到1e-4，最终top-5的准确率为0.884073，top-1准确率为0.68338：</p>
-<p><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png" alt="1-31-accuracy"><img src="/2018/07/12/经典网络复现之ResNet/../../qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png" alt="1-31-loss"></p>
+<p><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-accuracy.png" alt="1-31-accuracy"><img src="/qnsource/images/2018-07-10-经典网络复现之ResNet/1-31-loss.png" alt="1-31-loss"></p>
 </li>
 </ol>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>

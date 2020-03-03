@@ -19,16 +19,16 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。  @[toc]  最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-25-machine-learning-notes/Learning2.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-25-machine-learning-notes/Learning1.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-25-machine-learning-notes/BILDt.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Learning2.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Learning1.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/BILDt.png">
 <meta property="og:updated_time" content="2018-05-15T09:14:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Machine Learning Notes">
 <meta name="twitter:description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。  @[toc]  最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -300,13 +300,13 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 <li>高偏差==欠拟合</li>
 <li>高方差==过拟合</li>
 </ul>
-<p><img src="/2018/04/26/machinelearning-notes/../../qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png" alt="Features-and-polynom-degree"></p>
+<p><img src="/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png" alt="Features-and-polynom-degree"></p>
 <p>正则化与偏差/方差：</p>
 <ul>
 <li>大的$\lambda$ :高偏差（欠拟合）；</li>
 <li>小的$\lambda$ :高方差（过拟合）；</li>
 </ul>
-<p><img src="/2018/04/26/machinelearning-notes/../../qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png" alt="Features-and-polynom-degree-fix"></p>
+<p><img src="/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png" alt="Features-and-polynom-degree-fix"></p>
 <blockquote>
 <p>选择合适的正则化参数</p>
 </blockquote>
@@ -314,8 +314,8 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 <p>错误率随样本数目变化的曲线；</p>
 <p>如果算法过拟合，增大样本数有助于提升算法性能</p>
 </blockquote>
-<p><img src="/2018/04/26/machinelearning-notes/../../qnsource/images/2018-04-25-machine-learning-notes/Learning2.png" alt="Learning2"></p>
-<p><img src="/2018/04/26/machinelearning-notes/../../qnsource/images/2018-04-25-machine-learning-notes/Learning1.png" alt="Learning1"></p>
+<p><img src="/qnsource/images/2018-04-25-machine-learning-notes/Learning2.png" alt="Learning2"></p>
+<p><img src="/qnsource/images/2018-04-25-machine-learning-notes/Learning1.png" alt="Learning1"></p>
 <h2 id="Lecture-7：-SVM"><a href="#Lecture-7：-SVM" class="headerlink" title="Lecture 7： SVM"></a>Lecture 7： SVM</h2><script type="math/tex; mode=display">
 z = \theta^Tx</script><script type="math/tex; mode=display">
 \text{cost}_0(z) = \max(0, k(1+z))</script><script type="math/tex; mode=display">
@@ -340,7 +340,7 @@ f_i = similarity(x, l^{(i)}) = \exp(-\dfrac{\sum^n_{j=1}(x_j-l_j^{(i)})^2}{2\sig
 <p>如果$\sigma^2$ 过小，特征分布更集中，导致高方差，低偏差；</p>
 </li>
 </ol>
-<h2 id="Lecture-8-K-Means-和-PCA"><a href="#Lecture-8-K-Means-和-PCA" class="headerlink" title="Lecture 8: K-Means 和 PCA"></a>Lecture 8: K-Means 和 PCA</h2><h3 id="K-Means"><a href="#K-Means" class="headerlink" title="K-Means"></a>K-Means</h3><p><img src="/2018/04/26/machinelearning-notes/../../qnsource/images/2018-04-25-machine-learning-notes/BILDt.png" alt="BILDt"></p>
+<h2 id="Lecture-8-K-Means-和-PCA"><a href="#Lecture-8-K-Means-和-PCA" class="headerlink" title="Lecture 8: K-Means 和 PCA"></a>Lecture 8: K-Means 和 PCA</h2><h3 id="K-Means"><a href="#K-Means" class="headerlink" title="K-Means"></a>K-Means</h3><p><img src="/qnsource/images/2018-04-25-machine-learning-notes/BILDt.png" alt="BILDt"></p>
 <p>算法实现(<code>Cluster Assignment</code>+<code>Move Centroid</code>)：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Randomly initialize K cluster centroids mu(1), mu(2), ..., mu(K)</span><br><span class="line">Repeat:</span><br><span class="line">   <span class="keyword">for</span> i = 1 to m:</span><br><span class="line">      c(i):= index (from 1 to K) of cluster centroid closest to x(i)</span><br><span class="line">   <span class="keyword">for</span> k = 1 to K:</span><br><span class="line">      mu(k):= average (mean) of points assigned to cluster k</span><br></pre></td></tr></table></figure>
 <script type="math/tex; mode=display">

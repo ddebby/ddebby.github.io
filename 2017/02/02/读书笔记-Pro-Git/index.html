@@ -19,12 +19,12 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2017/02/02/qnsource/blog/lifecycleForGit.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/lifecycleForGit.jpg">
 <meta property="og:updated_time" content="2019-06-10T08:40:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git使用总结">
 <meta name="twitter:description" content="一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2017/02/02/qnsource/blog/lifecycleForGit.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/blog/lifecycleForGit.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -236,7 +236,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 别名配置</span></span><br><span class="line"></span><br><span class="line">[<span class="built_in">alias</span>]</span><br><span class="line">  co = checkout</span><br><span class="line">  ci = commit</span><br><span class="line">  st = status</span><br><span class="line">  sh = stash</span><br><span class="line">  sa = stash apply</span><br><span class="line">  sp = stash pop</span><br><span class="line">  ap = add -p</span><br><span class="line">  br = branch</span><br><span class="line">  cp = checkout -p</span><br><span class="line">  cv = commit -v</span><br><span class="line">  dc = diff --cached</span><br><span class="line">  d = diff</span><br><span class="line">  pr = pull --rebase</span><br><span class="line">  ps = push</span><br><span class="line">  l = <span class="built_in">log</span> --graph --pretty=format:<span class="string">'%C(yellow)%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset'</span> --abbrev-commit --date=short --all</span><br><span class="line">  lg = <span class="built_in">log</span> --color --graph --pretty=format:<span class="string">'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset'</span> --abbrev-commit --all</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="1-Git基础"><a href="#1-Git基础" class="headerlink" title="1. Git基础"></a>1. Git基础</h3><p>​    下图描述了git处理文件的生命周期<br><img src="/2017/02/02/读书笔记-Pro-Git/../qnsource/blog/lifecycleForGit.jpg" alt="lifecycleForGit"></p>
+<h3 id="1-Git基础"><a href="#1-Git基础" class="headerlink" title="1. Git基础"></a>1. Git基础</h3><p>​    下图描述了git处理文件的生命周期<br><img src="/qnsource/blog/lifecycleForGit.jpg" alt="lifecycleForGit"></p>
 <h4 id="关于-gitignore文件"><a href="#关于-gitignore文件" class="headerlink" title="关于.gitignore文件"></a>关于<code>.gitignore</code>文件</h4><p>​    文件 <code>.gitignore</code> 的格式规范如下：</p>
 <ul>
 <li>所有空行或者以 <code>＃</code> 开头的行都会被 Git 忽略。</li>

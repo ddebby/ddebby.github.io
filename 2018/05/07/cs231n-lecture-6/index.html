@@ -19,23 +19,23 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Lecture 6 Thursday April 19 Training">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/architecture_input.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/architecture_output.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/architecture_input.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/architecture_output.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png">
 <meta property="og:updated_time" content="2018-05-16T14:00:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n课程笔记:（Lecture 6-7）Training Neural Networks">
 <meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Lecture 6 Thursday April 19 Training">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -248,7 +248,7 @@ y_i = \lambda \hat x_i + \beta
 \end{align}</script><p>由于BN会受到batch size大小的影响，如果batch size太小，算出的均值和方差就会不准确，太大存储可能不够用。所以衍生出了几种优化表达。</p>
 </li>
 <li><p>其它归一化方法与BN的区别</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png" alt="normalization_methods"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png" alt="normalization_methods"></p>
 </li>
 </ol>
 <ul>
@@ -299,40 +299,40 @@ y_i = \lambda \hat x_i + \beta
 </li>
 <li>输入适配</li>
 </ul>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/architecture_input.png" alt="architecture_input"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_input.png" alt="architecture_input"></p>
 <ul>
 <li>数据集适配</li>
 </ul>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png" alt="architecture_dataset"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png" alt="architecture_dataset"></p>
 <ul>
 <li>输出任务适配</li>
 </ul>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/architecture_output.png" alt="architecture_output"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_output.png" alt="architecture_output"></p>
 <h3 id="输出结果分析"><a href="#输出结果分析" class="headerlink" title="输出结果分析"></a>输出结果分析</h3><ol>
 <li>Loss不变化，网络没有学到任何信息：梯度没有应用到权重上，或者不匹配</li>
 </ol>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png" alt="tuning_tricks_not_learning"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png" alt="tuning_tricks_not_learning"></p>
 <ol>
 <li><p>过拟合</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png" alt="tuning_tricks_overfitting_1"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png" alt="tuning_tricks_overfitting_1"></p>
 </li>
 <li><p>不收敛：训练时间不足/学习率过低</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png" alt="tuning_tricks_not_converged"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png" alt="tuning_tricks_not_converged"></p>
 </li>
 <li><p>慢启动</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png" alt="tuning_tricks_slow_start"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png" alt="tuning_tricks_slow_start"></p>
 </li>
 <li><p>梯度更新方向错误</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png" alt="tuning_tricks_wrong_gradients"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png" alt="tuning_tricks_wrong_gradients"></p>
 </li>
 <li><p>数据未打乱</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png" alt="tuning_tricks_not_shuffling_data"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png" alt="tuning_tricks_not_shuffling_data"></p>
 </li>
 <li><p>损失函数出现<code>nans</code>值：模型中数据不稳定/较高的学习率</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png" alt="tuning_tricks_nans_loss"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png" alt="tuning_tricks_nans_loss"></p>
 </li>
 <li><p>验证集效果优于训练集：验证集太小或分布异常</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png" alt="tuning_tricks_val_samll"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png" alt="tuning_tricks_val_samll"></p>
 </li>
 </ol>
 <h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><ol>

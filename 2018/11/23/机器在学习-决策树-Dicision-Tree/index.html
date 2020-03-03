@@ -19,16 +19,16 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/qnsource/banner/15.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/credit_scoring_toy_tree_english.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/topic3_credit_scoring_entropy.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/Criteria%20of%20quality%20as%20a%20function%20of%20binary%20classification.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/tree1.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/15.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/credit_scoring_toy_tree_english.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/topic3_credit_scoring_entropy.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/Criteria%20of%20quality%20as%20a%20function%20of%20binary%20classification.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/tree1.png">
 <meta property="og:updated_time" content="2018-11-25T07:22:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器在学习-决策树(Dicision Tree)">
 <meta name="twitter:description" content="摘要：">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/11/23/qnsource/banner/15.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/15.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -198,7 +198,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/../qnsource/banner/15.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/banner/15.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong></p>
 <a id="more"></a>
 <h2 id="决策树的算法"><a href="#决策树的算法" class="headerlink" title="决策树的算法"></a>决策树的算法</h2><blockquote>
@@ -210,7 +210,7 @@
 <p>scikit-learn 使用 CART 算法的优化版本。</p>
 </blockquote>
 <p><strong>Decision Trees (DTs)</strong> 是一种用来 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree-classification" target="_blank" rel="noopener">classification</a> 和 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree-regression" target="_blank" rel="noopener">regression</a> 的无参监督学习方法。其目的是创建一种模型从数据特征中学习简单的决策规则来预测一个目标变量的值。 </p>
-<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/credit_scoring_toy_tree_english.png" alt="credit_scoring_toy_tree_english"></p>
+<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/credit_scoring_toy_tree_english.png" alt="credit_scoring_toy_tree_english"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(L)</span>:</span></span><br><span class="line">    create node t</span><br><span class="line">    <span class="keyword">if</span> the stopping criterion <span class="keyword">is</span> <span class="keyword">True</span>:</span><br><span class="line">        assign a predictive model to t</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        Find the best binary split L = L_left + L_right</span><br><span class="line">        t.left = build(L_left)</span><br><span class="line">        t.right = build(L_right)</span><br><span class="line">    <span class="keyword">return</span> t</span><br></pre></td></tr></table></figure>
 <h3 id="决策树的递归返回"><a href="#决策树的递归返回" class="headerlink" title="决策树的递归返回"></a>决策树的递归返回</h3><ul>
 <li>(1) 当前结点包含的样本全属于同一类别，无需划分; </li>
@@ -221,7 +221,7 @@
 <li><p>信息熵（香农）： $E(D) = -\sum_k p_klog_2p_k$</p>
 </li>
 <li><p>增益： $IG(D,a) = E(D) - \sum_v \frac{|D^v|}{|D|}E(D^v)$</p>
-<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/topic3_credit_scoring_entropy.png" alt="scoring_entropy"></p>
+<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/topic3_credit_scoring_entropy.png" alt="scoring_entropy"></p>
 <blockquote>
 <ol>
 <li>信息增益可以衡量使用某个属性划分的好坏；</li>
@@ -237,7 +237,7 @@ IV(a) =\sum_v \frac{|D^v|}{|D|}log_2\frac{|D^v|}{|D|}</script></li>
 Gini(D)=1-\sum_k p^2_k</script><blockquote>
 <p>CART决策树使用的算法,Gini数值约小，数据集D的纯度越高。</p>
 </blockquote>
-<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/Criteria of quality as a function of binary classification.png" alt="Criteria of quality as a function of binary classification"></p>
+<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/Criteria of quality as a function of binary classification.png" alt="Criteria of quality as a function of binary classification"></p>
 <h3 id="剪枝（pruning）"><a href="#剪枝（pruning）" class="headerlink" title="剪枝（pruning）"></a>剪枝（pruning）</h3><ul>
 <li><strong>预剪枝：</strong> （自顶向下） 预剪枝是指在决策树生成过程中，对每个结点在划 分前先进行估计，若当前结点的划分不能带来决策树泛化性能提升，则停止划分并将当前结点标记为叶结点;</li>
 <li><strong>后剪枝：</strong>（自底向上）后剪枝则是先从训练集生成一棵完整的决策树， 然后自底向上地对非叶结点进行考察，若将该结点对应的子树替换为叶结点能带来决策树泛化性能提升，则将该子树替换为叶结点.</li>
@@ -292,7 +292,7 @@ Gini(D)=1-\sum_k p^2_k</script><blockquote>
 <p>conda install python-graphviz</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pydotplus <span class="comment">#pip install pydotplus</span></span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> export_graphviz</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_graph_to_png</span><span class="params">(tree, feature_names, png_file_to_save)</span>:</span></span><br><span class="line">    tree_str = export_graphviz(tree, feature_names=feature_names, </span><br><span class="line">                                     filled=<span class="keyword">True</span>, out_file=<span class="keyword">None</span>)</span><br><span class="line">    graph = pydotplus.graph_from_dot_data(tree_str)  </span><br><span class="line">    graph.write_png(png_file_to_save)</span><br><span class="line">    </span><br><span class="line">  tree_graph_to_png(tree=clf_tree, feature_names=[<span class="string">'x1'</span>, <span class="string">'x2'</span>], </span><br><span class="line">                  png_file_to_save=<span class="string">'../../img/topic3_tree1.png'</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/2018-11-23-机器在学习-决策树-Dicision-Tree/tree1.png" alt="tree1"></p>
+<p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/tree1.png" alt="tree1"></p>
 <h3 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h3><blockquote>
 <ul>
 <li>对于拥有大量特征的数据决策树会出现过拟合的现象。获得一个合适的样本比例和特征数量十分重要，因为在高维空间中只有少量的样本的树是十分容易过拟合的。</li>

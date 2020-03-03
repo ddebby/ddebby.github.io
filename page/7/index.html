@@ -314,7 +314,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/05/22/Feature-Visualization-in-NN/../../qnsource/images/2018-05-22-Feature-Visualization-in-NN/features.png" alt="features"></p>
+        <p><img src="/qnsource/images/2018-05-22-Feature-Visualization-in-NN/features.png" alt="features"></p>
 <p><strong>摘要：</strong></p>
       
     </div>
@@ -519,7 +519,7 @@ y_i = \lambda \hat x_i + \beta
 \end{align}</script><p>由于BN会受到batch size大小的影响，如果batch size太小，算出的均值和方差就会不准确，太大存储可能不够用。所以衍生出了几种优化表达。</p>
 </li>
 <li><p>其它归一化方法与BN的区别</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png" alt="normalization_methods"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png" alt="normalization_methods"></p>
 </li>
 </ol>
 <ul>
@@ -570,40 +570,40 @@ y_i = \lambda \hat x_i + \beta
 </li>
 <li>输入适配</li>
 </ul>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/architecture_input.png" alt="architecture_input"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_input.png" alt="architecture_input"></p>
 <ul>
 <li>数据集适配</li>
 </ul>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png" alt="architecture_dataset"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png" alt="architecture_dataset"></p>
 <ul>
 <li>输出任务适配</li>
 </ul>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/architecture_output.png" alt="architecture_output"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_output.png" alt="architecture_output"></p>
 <h3 id="输出结果分析"><a href="#输出结果分析" class="headerlink" title="输出结果分析"></a>输出结果分析</h3><ol>
 <li>Loss不变化，网络没有学到任何信息：梯度没有应用到权重上，或者不匹配</li>
 </ol>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png" alt="tuning_tricks_not_learning"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png" alt="tuning_tricks_not_learning"></p>
 <ol>
 <li><p>过拟合</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png" alt="tuning_tricks_overfitting_1"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png" alt="tuning_tricks_overfitting_1"></p>
 </li>
 <li><p>不收敛：训练时间不足/学习率过低</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png" alt="tuning_tricks_not_converged"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png" alt="tuning_tricks_not_converged"></p>
 </li>
 <li><p>慢启动</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png" alt="tuning_tricks_slow_start"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png" alt="tuning_tricks_slow_start"></p>
 </li>
 <li><p>梯度更新方向错误</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png" alt="tuning_tricks_wrong_gradients"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png" alt="tuning_tricks_wrong_gradients"></p>
 </li>
 <li><p>数据未打乱</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png" alt="tuning_tricks_not_shuffling_data"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png" alt="tuning_tricks_not_shuffling_data"></p>
 </li>
 <li><p>损失函数出现<code>nans</code>值：模型中数据不稳定/较高的学习率</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png" alt="tuning_tricks_nans_loss"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png" alt="tuning_tricks_nans_loss"></p>
 </li>
 <li><p>验证集效果优于训练集：验证集太小或分布异常</p>
-<p><img src="/2018/05/07/cs231n-lecture-6/../../qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png" alt="tuning_tricks_val_samll"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png" alt="tuning_tricks_val_samll"></p>
 </li>
 </ol>
 <h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><ol>
@@ -699,12 +699,12 @@ y_i = \lambda \hat x_i + \beta
 <p>更多内容参见<sup><a href="#fn_4" id="reffn_4">4</a></sup></p>
 </blockquote>
 <p><strong>FCN vs CNN</strong> </p>
-<p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/FCN_CNN.png" alt="FCN_CNN"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/FCN_CNN.png" alt="FCN_CNN"></p>
 <p><strong>CNN的层次结构</strong></p>
-<p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/convnet.jpeg" alt="convnet"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/convnet.jpeg" alt="convnet"></p>
 <p><strong>The brain view</strong>. If you’re a fan of the brain/neuron analogies, every entry in the 3D output volume can also be interpreted as an output of a neuron that looks at only a small region in the input and shares parameters with all neurons to the left and right spatially (since these numbers all result from applying the same filter). </p>
 <p><strong>Local Connectivity.</strong> filter 大小的区域内容，卷积层的每个神经元只与前一层filter中的神经元保持连接，深度为上一层网络的深度。</p>
-<p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/depthcol.jpeg" alt="depthcol"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/depthcol.jpeg" alt="depthcol"></p>
 <p><strong>卷积层的输出：</strong></p>
 <script type="math/tex; mode=display">
 \frac{W - F + 2P}{S} + 1</script><p>其中，</p>
@@ -723,7 +723,7 @@ y_i = \lambda \hat x_i + \beta
 <blockquote>
 <p>直观解释，在一个图像一个filter区域学到的特征（比如纹理），在图像其它地方用来匹配纹理特征也奏效</p>
 </blockquote>
-<h4 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h4><p><img src="/2018/05/03/cs231n-lecture-5/../qnsource/images/2018-04-28-cs231n-notes/max-pooling.png" alt="max-pooling"></p>
+<h4 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h4><p><img src="/qnsource/images/2018-04-28-cs231n-notes/max-pooling.png" alt="max-pooling"></p>
 <ul>
 <li>一般max pooling常采用的参数为$F=3,S=2$ (Overlapping pooling),$F=2, S=2$ (Max Pooling);</li>
 <li>反向传播时，对于$max(x,y)$ 形式，梯度传递最大的激活值；</li>

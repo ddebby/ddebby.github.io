@@ -19,22 +19,22 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要: 2015年提出的Faster R-CNN架构在基于机器视觉的物体识别领域占据重要的地位，从R-CNN到fast R-CNN再到faster R-CNN,乃至后续的Mask-R-CNN形成了一条完整的两步识别的物体识别技术生态。  概述物体识别技术一直是机器视觉中业务场景最丰富，关注度最高的一个类别。将花几期来分别对主流的物体识别技术如Faster RCNN，SSD，YOLO，Mask-RC">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png">
 <meta property="og:updated_time" content="2018-05-23T12:43:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="物体识别技术之Faster R-CNN">
 <meta name="twitter:description" content="摘要: 2015年提出的Faster R-CNN架构在基于机器视觉的物体识别领域占据重要的地位，从R-CNN到fast R-CNN再到faster R-CNN,乃至后续的Mask-R-CNN形成了一条完整的两步识别的物体识别技术生态。  概述物体识别技术一直是机器视觉中业务场景最丰富，关注度最高的一个类别。将花几期来分别对主流的物体识别技术如Faster RCNN，SSD，YOLO，Mask-RC">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -217,7 +217,7 @@
 <h3 id="物体识别精度的衡量指标"><a href="#物体识别精度的衡量指标" class="headerlink" title="物体识别精度的衡量指标"></a>物体识别精度的衡量指标</h3><ul>
 <li><p>IoU(Intersection over Union)</p>
 <script type="math/tex; mode=display">
-IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png" alt="IoU"></p>
+IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png" alt="IoU"></p>
 </li>
 <li><p>mAP(Mean Average Precision)</p>
 <ul>
@@ -240,7 +240,7 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <li>对每个候选区域利用预训练的CNN进行特征抽取（迁移学习）；</li>
 <li>对每个特征抽取区域利用线性SVM进行分类</li>
 </ol>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png" alt="R-CNN"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png" alt="R-CNN"></p>
 <p>论文的主要贡献：</p>
 <ol>
 <li>使用Selective Search替代了特征金字塔和滑动窗口实现的兴趣区域选择，提升了效率；</li>
@@ -267,9 +267,9 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <li>利用ROI pooling获取ROI特征向量；</li>
 <li>利用两个全联通层进行分类和回归预测</li>
 </ol>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png" alt="Fast RCNN"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png" alt="Fast RCNN"></p>
 <p>端到端的训练过程源于提出了多任务损失函数，将分类问题和回归问题整合在一起，打通了梯度的更新路径，下图描述了Fast R-CNN的训练和测试过程：</p>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png" alt="fast R-CNN 训练与测试"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png" alt="fast R-CNN 训练与测试"></p>
 <blockquote>
 <p>缺点：仍然没有摆脱Selective Search算法在推理阶段进行候选区域生成。</p>
 </blockquote>
@@ -285,7 +285,7 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <li>RoIP：兴趣区域特征提取</li>
 <li>R-CNN：分类预测和候选框回归</li>
 </ul>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png" alt="fasterrcnn-architecture.b9035cba"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png" alt="fasterrcnn-architecture.b9035cba"></p>
 <blockquote>
 <p>使用一块GPU，性能大概在7-10 FPS</p>
 </blockquote>
@@ -295,25 +295,25 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <p>目前ResNet在很多情况下已经替代了VGG16作为特征提取网络；</p>
 <p>为了保证网络是全卷积神经网络架构，需要把全连接层剔除，保证可以输入任意维度的输入图像</p>
 </blockquote>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png" alt="base-network"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png" alt="base-network"></p>
 <h3 id="Anchor-Box"><a href="#Anchor-Box" class="headerlink" title="Anchor Box"></a>Anchor Box</h3><blockquote>
 <p>替代传统算法的特征金字塔或filter金字塔</p>
 </blockquote>
 <p>一张图像中被识别目标形状大小各异，这也是在原始算法中加入特征金子塔来对原始图像进行多个维度特征变换的原因。</p>
 <p><strong>Anchor Box</strong>也是为了解决上述问题，我们可以不改变图像的形状，通过改变预测每个区域物体的“窗口”来框出不同大小的物体。首先在原始图像中均匀的选取一些Anchor Box中心点，然后在每个中心点上预制多个Anchor Box。</p>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png" alt="anchors-centers.141181d6"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png" alt="anchors-centers.141181d6"></p>
 <p>在Faster R-CNN是使用3个不同形状（1:1, 1:2,2:1）和3个不同大小(128x128,256x256,512x512，按照原图尺寸生成)进行组合共计3x3=9种不同的Anchor box。</p>
 <blockquote>
 <p>使用VGG16做特征提取的情况下，一张输入图片总共可以刻画为512个窗口区域，生成512x(4+2)x9个输出参数。</p>
 </blockquote>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png" alt="anchors-progress.119e1e92"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png" alt="anchors-progress.119e1e92"></p>
 <p>由于直接预测bouding box难以实现，作者将问题转变为预测预测值与真实值之间的偏移，将问题转变为四个偏移值的预测问题。</p>
 <h3 id="Region-Proposal-Network-RPN"><a href="#Region-Proposal-Network-RPN" class="headerlink" title="Region Proposal Network(RPN)"></a>Region Proposal Network(RPN)</h3><p>RPN的主要目的是对每个区域是否可能有物体进行打分，基于打分值决定是否进行下一步的分类任务。在基础网络抽取的特征图上使用一个3x3的滑动窗口（512个卷积核），每个滑动窗口的中心点位置为上述Achor Box的中心点区域，在每个滑动窗口区域，将得到两个1x1卷积网络输出，分别为2k的前景/背景预测（该区域是否存在可被预测物体，分类问题）以及4k的位置信息预测（回归问题），四个值分别是 $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$。</p>
 <blockquote>
 <p>k是Anchor Box的数目</p>
 <p>我们将从候选区域中选择打分较高的前N个进行下一轮分析，如果物体打分足够高，下一步将进行非极大抑制和区域选择，如果打分值很低将抛弃这些区域</p>
 </blockquote>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png" alt="rpn-conv-layers.63c5bf86"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png" alt="rpn-conv-layers.63c5bf86"></p>
 <h4 id="目标和损失函数"><a href="#目标和损失函数" class="headerlink" title="目标和损失函数"></a>目标和损失函数</h4><p>The RPN does two different type of predictions: the binary classification and the bounding box regression adjustment.</p>
 <p>For training, we take all the anchors and put them into two different categories. Those that overlap a ground-truth object with an <a href="https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/" target="_blank" rel="noopener">Intersection over Union</a> (IoU) bigger than 0.5 are considered “foreground” and those that don’t overlap any ground truth object or have less than 0.1 IoU with ground-truth objects are considered “background”.</p>
 <script type="math/tex; mode=display">
@@ -338,13 +338,13 @@ smooth_{L_1}(x)=\left\{
 <li>论文中关于候选区域选择了N=2000,但一般而言比这个小的数目也能取得不错的效果，比如50，100 …</li>
 </ul>
 <h3 id="Region-of-Interest（ROI）Pooling"><a href="#Region-of-Interest（ROI）Pooling" class="headerlink" title="Region of Interest（ROI）Pooling"></a>Region of Interest（ROI）Pooling</h3><p>ROI阶段的主要作用为使用矩阵操作（Array Slicing）从特征图中捕获N个兴趣区域，并降采样到7x7xD的尺寸，服务于接下来的全联同网络。</p>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png" alt="roi"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png" alt="roi"></p>
 <h3 id="Region-based-CNN"><a href="#Region-based-CNN" class="headerlink" title="Region-based CNN"></a>Region-based CNN</h3><p>使用两个不同的全联通网络（Fully-Connected Network，FC）：</p>
 <ul>
 <li>A fully-connected layer with N+1units where N is the total number of classes and that extra one is for the background class.</li>
 <li>A fully-connected layer with 4N units. We want to have a regression prediction, thus we need $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$ for each of the N possible classes.</li>
 </ul>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png" alt="rcnn-architecture.6732b9bd"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png" alt="rcnn-architecture.6732b9bd"></p>
 <p>在这个步骤中同样由两个损失函数构成：Categorical cross-entropy分类损失和Smooth L1回归损失</p>
 <h3 id="网络训练"><a href="#网络训练" class="headerlink" title="网络训练"></a>网络训练</h3><ul>
 <li>实验表明：联合训练（使用weighted sum）优于单独训练两个网络；<ul>

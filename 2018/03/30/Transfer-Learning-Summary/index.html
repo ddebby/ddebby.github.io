@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …  @toc Feature Extraction在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。  VGG16倒数第二层(参数层)的输出维">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png">
 <meta property="og:updated_time" content="2018-05-15T09:14:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transfer Learning Summary">
 <meta name="twitter:description" content="本文对迁移学习在机器视觉中的实践技巧进行汇总整理 … …  @toc Feature Extraction在这种迁移学习模式中，预训练模型将被当作特征提取器（feature extractor）,获得图像的特征表示(feature vactor)。获得特征向量之后，我们只需一个简单的分类器模型，如SVM、逻辑回归分类器、随机森林就可以完成目标分类器的设计。  VGG16倒数第二层(参数层)的输出维">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/03/qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -204,11 +204,11 @@
 </blockquote>
 <h3 id="HDF5"><a href="#HDF5" class="headerlink" title="HDF5"></a>HDF5</h3><p>抽取特征的高效存储可以选用<code>HDF5</code>。Hierarchical Data Format(HDF)是一种针对大量数据进行组织和存储的文件格式。经历了20多年的发展，HDF格式的最新版本是HDF5，它包含了数据模型，库，和文件格式标准。以其便捷有效，移植性强，灵活可扩展的特点受到了广泛的关注和应用。很多大型机构的数据存储格式都采用了HDF5，比如NASA的地球观测系统，MATLAB的.m文件，流体细算软件CDF，都将HDF5作为标准数据格式。HDF5本身用C实现，可以使用python的库<code>h5py</code>对HDF5文件进行操作。可以像操作Numpy数组一样对大型数据进行操作，比如切片，按行读取</p>
 <p>数据在HDF5中采取分层存储方式，很像文件系统管理方式，第一级叫做组，类似于container，每个组中可以创建新的组或数据集，每一个dataset包含两部分的数据，Metadata和Data。其中Metadata包含Data相关的信息，而Data则包含数据本身。 </p>
-<p><img src="/2018/03/30/Transfer-Learning-Summary/../../qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg" alt="HDF5文件存储方式"></p>
+<p><img src="/qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg" alt="HDF5文件存储方式"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> h5py</span><br><span class="line">p = <span class="string">"./datasets/hdf5/features.hdf5"</span></span><br><span class="line"></span><br><span class="line">db = h5py.File(p)</span><br><span class="line">list(db.keys())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[u’features’, u’label_names’, u’labels’]</span><br><span class="line">db[<span class="string">"features"</span>].shape</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">3000</span>, <span class="number">25088</span>)</span><br><span class="line">list(db[<span class="string">"label_name"</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="string">'cat'</span>, <span class="string">'dogs'</span>, <span class="string">'panda'</span>]</span><br></pre></td></tr></table></figure>
 <h2 id="Fine-Tune"><a href="#Fine-Tune" class="headerlink" title="Fine-Tune"></a>Fine-Tune</h2><ul>
 <li><p>一般而言，fine-tune在样本数据足够的情况下训练效果优于特征抽取；</p>
-<p><img src="/2018/03/30/Transfer-Learning-Summary/../../qnsource/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png" alt="fine_tune"></p>
+<p><img src="/qnsource/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png" alt="fine_tune"></p>
 </li>
 </ul>
 <blockquote>

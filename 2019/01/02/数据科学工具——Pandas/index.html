@@ -19,19 +19,19 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要：工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/pandas.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_1.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_weekly.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_daily.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_daily2.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/data_in_one_day.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/data_in_one_week.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/week+OneDay.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/pandas.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/timeseries_1.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/timeseries_weekly.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/timeseries_daily.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/timeseries_daily2.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/data_in_one_day.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/data_in_one_week.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/week+OneDay.png">
 <meta property="og:updated_time" content="2019-02-25T06:24:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据科学工具——Pandas">
 <meta name="twitter:description" content="摘要：工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/pandas.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/2019/01/02/数据科学工具——Pandas/pandas.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -201,7 +201,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/pandas.jpg" alt="pandas"></p>
+        <p><img src="/2019/01/02/数据科学工具——Pandas/pandas.jpg" alt="pandas"></p>
 <p><strong>摘要：</strong>工欲善其事必先利其器，数据科学工具的整理是个循序渐进的过程，开个头立个Flag🏁，慢慢积累工具的使用方法，便于以后速查。主要涉及工具包括：Ipython，Numpy，Pandas，Scikit-Learn等。</p>
 <a id="more"></a>
 <h2 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h2><p><strong>Index + Values</strong></p>
@@ -327,27 +327,27 @@
 </table>
 </div>
 <p>由于数据每小时记录一个数值，直接画图，数据点过密：</p>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_1.png" alt="timeseries_1"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/timeseries_1.png" alt="timeseries_1"></p>
 <ol>
 <li><p>通过降采样，方便显示：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">weekly = data.resample(<span class="string">'W'</span>).sum()</span><br><span class="line">weekly.plot(style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>])</span><br><span class="line">plt.ylabel(<span class="string">'Weekly bicycle count'</span>);</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_weekly.png" alt="timeseries_weekly"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/timeseries_weekly.png" alt="timeseries_weekly"></p>
 </li>
 <li><p>通过滑动平均处理每天为单位的数据</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">daily = data.resample(<span class="string">'D'</span>).sum()</span><br><span class="line">daily.rolling(<span class="number">30</span>, center=<span class="keyword">True</span>).sum().plot(style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>])</span><br><span class="line">plt.ylabel(<span class="string">'mean hourly count'</span>);</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_daily.png" alt="timeseries_daily"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/timeseries_daily.png" alt="timeseries_daily"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">daily.rolling(<span class="number">50</span>, center=<span class="keyword">True</span>,</span><br><span class="line">              win_type=<span class="string">'gaussian'</span>).sum(std=<span class="number">10</span>).plot(style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/timeseries_daily2.png" alt="timeseries_daily2"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/timeseries_daily2.png" alt="timeseries_daily2"></p>
 </li>
 <li><p>通过数据分组查看每年、每周或每天的数据规律</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">by_time = data.groupby(data.index.time).mean()</span><br><span class="line">hourly_ticks = <span class="number">4</span> * <span class="number">60</span> * <span class="number">60</span> * np.arange(<span class="number">6</span>)</span><br><span class="line">by_time.plot(xticks=hourly_ticks, style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/data_in_one_day.png" alt="data_in_one_day"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/data_in_one_day.png" alt="data_in_one_day"></p>
 </li>
 <li><p>进一步查看周末与周中数据区别</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">by_weekday = data.groupby(data.index.dayofweek).mean()</span><br><span class="line">by_weekday.index = [<span class="string">'Mon'</span>, <span class="string">'Tues'</span>, <span class="string">'Wed'</span>, <span class="string">'Thurs'</span>, <span class="string">'Fri'</span>, <span class="string">'Sat'</span>, <span class="string">'Sun'</span>]</span><br><span class="line">by_weekday.plot(style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/data_in_one_week.png" alt="data_in_one_week"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/data_in_one_week.png" alt="data_in_one_week"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">weekend = np.where(data.index.weekday &lt; <span class="number">5</span>, <span class="string">'Weekday'</span>, <span class="string">'Weekend'</span>)</span><br><span class="line">by_time = data.groupby([weekend, data.index.time]).mean()</span><br><span class="line">fig, ax = plt.subplots(<span class="number">1</span>, <span class="number">2</span>, figsize=(<span class="number">14</span>, <span class="number">5</span>))</span><br><span class="line">by_time.ix[<span class="string">'Weekday'</span>].plot(ax=ax[<span class="number">0</span>], title=<span class="string">'Weekdays'</span>,</span><br><span class="line">                           xticks=hourly_ticks, style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>])</span><br><span class="line">by_time.ix[<span class="string">'Weekend'</span>].plot(ax=ax[<span class="number">1</span>], title=<span class="string">'Weekends'</span>,</span><br><span class="line">                           xticks=hourly_ticks, style=[<span class="string">':'</span>, <span class="string">'--'</span>, <span class="string">'-'</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/02/数据科学工具——Pandas/2018-12-30-数据科学工具——Pandas/week+OneDay.png" alt="week+OneDay"></p>
+<p><img src="/2019/01/02/数据科学工具——Pandas/week+OneDay.png" alt="week+OneDay"></p>
 </li>
 </ol>
 <h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><div class="table-container">

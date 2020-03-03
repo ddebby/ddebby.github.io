@@ -17,11 +17,11 @@
 <meta property="og:url" content="http://blog.a-stack.com/2018/08/19/CRUSH-in-Ceph/index.html">
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/08/19/qnsource/banner/22.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/22.jpg">
 <meta property="og:updated_time" content="2018-08-19T15:32:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CRUSH in Ceph">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/08/19/qnsource/banner/22.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/22.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -191,7 +191,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/08/19/CRUSH-in-Ceph/../qnsource/banner/22.jpg" alt="聊聊Ceph中的核心数据分布选择算法——CRUSH"></p>
+        <p><img src="/qnsource/banner/22.jpg" alt="聊聊Ceph中的核心数据分布选择算法——CRUSH"></p>
 <a id="more"></a>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>CRUSH算法构建了Ceph存储体系的核心，解决了计算效率和计算性能的同步优化，解放了元数据节点，让ceph的客户端侧完成数据目标位置的计算任务，保障了系统的可扩展性和鲁棒性。具备计算寻址、高并发能力、动态数据再平衡、可定制的副本策略等优秀特性。</p>
 <p><strong>CRUSH</strong>：Controlled Replication Under Scalable Hashing ，基于可扩展哈希的受控副本分布策略。CRUSH本质上是一种基于hash的数据分布式算法，主要解决两个问题：</p>

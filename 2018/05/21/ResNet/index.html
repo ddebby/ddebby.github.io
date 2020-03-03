@@ -20,11 +20,11 @@
 <meta property="og:description" content="摘要： 作为深度卷积神经网络的里程碑式的作品，ResNet为卷积网络往更深层次扩展指明了方向，本文结合相关论文总结一下ResNet中创造性的想法。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/cover/04.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-05-21-ResNet/residual-Module.PNG">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-05-21-ResNet/network-architect.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-05-21-ResNet/new_restnet_block.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-05-21-ResNet/other-resnet-shortcut.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/residual-Module.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/network-architect.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/new_restnet_block.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-05-21-ResNet/other-resnet-shortcut.PNG">
 <meta property="og:updated_time" content="2018-05-22T01:35:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典网络归纳： ResNet">
@@ -205,7 +205,7 @@
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>随着网络深度增加，人们发现出现了Degradation问题，这不是过拟合导致的，因为在训练数据集上发现了同样的问题。ResNet解决了深层神经网络难训练的问题，在此之前要训练一个层次较深的网络需要在参数初始化上下功夫，当然还需要一定的运气。</p>
 <p>ResNet网络获得了2015年所有的主流比赛冠军，相关内容被发表在论文《Deep Residual Learning for Image Recognition》中。除了残差网络的引入，在ResNet我们也看到逐渐摒弃了全连接层、池化层。全部网络中只在最开始使用了一个max pooling层，在最后使用了average pooling层。</p>
 <p>2016年，在上述论文的基础上，He发表了第二篇改进的论文 <sup><a href="#fn_2" id="reffn_2">2</a></sup> </p>
-<h2 id="残差网络"><a href="#残差网络" class="headerlink" title="残差网络"></a>残差网络</h2><p><img src="/2018/05/21/ResNet/../../qnsource/images/2018-05-21-ResNet/residual-Module.PNG" alt="residual-Module"></p>
+<h2 id="残差网络"><a href="#残差网络" class="headerlink" title="残差网络"></a>残差网络</h2><p><img src="/qnsource/images/2018-05-21-ResNet/residual-Module.PNG" alt="residual-Module"></p>
 <script type="math/tex; mode=display">
 y = F(x, {W_i}) + x</script><blockquote>
 <p>“F是求和前网络映射，H是从输入到求和后的网络映射。比如把5映射到5.1，那么引入残差前是F’(5)=5.1，引入残差后是H(5)=5.1, H(5)=F(5)+5, F(5)=0.1。这里的F’和F都表示网络参数映射，<strong>引入残差后的映射对输出的变化更敏感</strong>。比如s输出从5.1变到5.2，映射F’的输出增加了1/51=2%，而对于残差结构输出从5.1到5.2，映射F是从0.1到0.2，增加了100%。明显后者输出变化对权重的调整作用更大，所以效果更好。残差的思想都是去掉相同的主体部分，从而突出微小的变化，看到残差网络我第一反应就是差分放大器”</p>
@@ -213,15 +213,15 @@ y = F(x, {W_i}) + x</script><blockquote>
 <p>在ResNet中，残差使得网络学习更快，可以使用更高的学习率，比如常用的起始学习率为0.1。</p>
 <p>Boottleneck残差网络中，一般最后一个1x1卷积的filter数目是另外两个的4倍；</p>
 <p>残差网络可以从另一个角度理解，如下图所示，残差网络可以看成是由多种路径组合的一个网络，即，残差网络其实是很多并行子网络的组合。</p>
-<p><img src="/2018/05/21/ResNet/../../qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG" alt="residual-Module-2"></p>
-<h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p><img src="/2018/05/21/ResNet/../../qnsource/images/2018-05-21-ResNet/network-architect.png" alt="network-architect"></p>
+<p><img src="/qnsource/images/2018-05-21-ResNet/residual-Module-2.PNG" alt="residual-Module-2"></p>
+<h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p><img src="/qnsource/images/2018-05-21-ResNet/network-architect.png" alt="network-architect"></p>
 <h2 id="Highway-Networks"><a href="#Highway-Networks" class="headerlink" title="Highway Networks"></a>Highway Networks</h2><h2 id="ResNet的改进及优化"><a href="#ResNet的改进及优化" class="headerlink" title="ResNet的改进及优化"></a>ResNet的改进及优化</h2><blockquote>
 <p>He在2016年发布论文《Identity Mappings in Deep Residual Networks》，对ResNet中的一些内容进行了进一步的优化及完善，并证明了“identity Mapping” 的最优配置：$h(x_l) = x_l$。</p>
 </blockquote>
-<p><img src="/2018/05/21/ResNet/../../qnsource/images/2018-05-21-ResNet/new_restnet_block.png" alt="new_restnet_block"></p>
+<p><img src="/qnsource/images/2018-05-21-ResNet/new_restnet_block.png" alt="new_restnet_block"></p>
 <p>论文中提出了在ResNet单元中采取“预激活”的方式，参考图（b）中方案，在权重更新之前先进行BN层和ReLU层操作。实践证明，采用这种方式更容易训练深层网络,同时具备更好的泛化性能。采用（b）的误差为6.36%小于(a)的6.61%<resnet-110></resnet-110></p>
 <p>作者使用如下图所示的多种不同的残差单元比较性能，结果表明直连的方式效果最佳。</p>
-<p><img src="/2018/05/21/ResNet/../../qnsource/images/2018-05-21-ResNet/other-resnet-shortcut.PNG" alt="other-resnet-shortcut"></p>
+<p><img src="/qnsource/images/2018-05-21-ResNet/other-resnet-shortcut.PNG" alt="other-resnet-shortcut"></p>
 <blockquote>
 <p>网络训练时间： 在CIFAR数据集，ResNet-1001，使用2GPU训练27小时； 在ImageNet数据集，ResNet-200使用8块GPU训练3周</p>
 </blockquote>

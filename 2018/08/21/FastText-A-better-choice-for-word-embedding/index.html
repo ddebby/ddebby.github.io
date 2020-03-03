@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/08/21/qnsource/banner/10.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/08/21/FastText-A-better-choice-for-word-embedding/2018-08-21-FastText-A-better-choice-for-word-embedding.assets/fasttextVSword2vec.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/10.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/21/FastText-A-better-choice-for-word-embedding/fasttextVSword2vec.png">
 <meta property="og:updated_time" content="2018-08-28T14:08:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FastText-A better choice for word embedding?">
 <meta name="twitter:description" content="摘要：">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/08/21/qnsource/banner/10.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/10.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -195,12 +195,12 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/08/21/FastText-A-better-choice-for-word-embedding/../qnsource/banner/10.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/banner/10.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong></p>
 <a id="more"></a>
 <h2 id="FastText-vs-Word2vec"><a href="#FastText-vs-Word2vec" class="headerlink" title="FastText vs Word2vec"></a>FastText vs Word2vec</h2><p>fastText的架构和word2vec中的CBOW的架构类似，因为它们的作者都是Facebook的科学家Tomas Mikolov，而且确实fastText也算是words2vec所衍生出来的。 </p>
 <p>According to a detailed comparison of Word2Vec and FastText in <a href="https://render.githubusercontent.com/view/Word2Vec_FastText_Comparison.ipynb" target="_blank" rel="noopener">this notebook</a>, fastText does significantly better on syntactic tasks as compared to the original Word2Vec, especially when the size of the training corpus is small. Word2Vec slightly outperforms FastText on semantic tasks though. The differences grow smaller as the size of training corpus increases. Training time for fastText is significantly higher than the Gensim version of Word2Vec (<code>15min 42s</code> vs <code>6min 42s</code> on text8, 17 mil tokens, 5 epochs, and a vector size of 100). </p>
-<p><img src="/2018/08/21/FastText-A-better-choice-for-word-embedding/2018-08-21-FastText-A-better-choice-for-word-embedding.assets/fasttextVSword2vec.png" alt="fasttextVSword2vec"></p>
+<p><img src="/2018/08/21/FastText-A-better-choice-for-word-embedding/fasttextVSword2vec.png" alt="fasttextVSword2vec"></p>
 <blockquote>
 <p><strong>重要：</strong></p>
 <p>fastText can be used to obtain vectors for <strong>out-of-vocabulary (OOV)</strong> words, by summing up vectors for its component char-ngrams, provided at least one of the char-ngrams was present in the training data. </p>

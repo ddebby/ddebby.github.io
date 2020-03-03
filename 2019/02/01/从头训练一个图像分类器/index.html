@@ -19,18 +19,18 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/qnsource/banner/08.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/check%20data.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/similar%20data.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/data_show.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/lr_find.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/confusion_matrix.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/top%20losses.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/check%20data.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/similar%20data.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/data_show.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/lr_find.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/confusion_matrix.png">
+<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/top%20losses.png">
 <meta property="og:updated_time" content="2019-02-01T07:06:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从头训练一个图像分类器">
 <meta name="twitter:description" content="摘要： 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2019/02/01/qnsource/banner/08.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -200,7 +200,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2019/02/01/从头训练一个图像分类器/../qnsource/banner/08.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/banner/08.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong> 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。</p>
 <a id="more"></a>
 <p>Fast.ai是一个基于Pytorch的深度学习计算框架，就像keras基于tensorflow，目的在于简化深度学习网络设计、训练过程中的复杂逻辑，简化设计时间。2019年第三个版的课程配合pytorch 1.0版本进行了全面更新，相关链接见文末参考。</p>
@@ -235,10 +235,10 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastai.widgets <span class="keyword">import</span> *</span><br><span class="line">ds, idxs = DatasetFormatter().from_toplosses(learn, ds_type=DatasetType.Valid)</span><br><span class="line">ImageCleaner(ds, idxs,path=path)</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p><img src="/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/check data.png" alt="check data"></p>
+<p><img src="/2019/02/01/从头训练一个图像分类器/check data.png" alt="check data"></p>
 <p>查找并删除重复图片</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ds, idxs = DatasetFormatter().from_similars(learn, ds_type=DatasetType.Valid)</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/similar data.png" alt="similar data"></p>
+<p><img src="/2019/02/01/从头训练一个图像分类器/similar data.png" alt="similar data"></p>
 <h3 id="查看数据"><a href="#查看数据" class="headerlink" title="查看数据"></a>查看数据</h3><p>fast.ai通过类<code>ImageDataBunch</code>进行数据的组织，</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="number">42</span>)</span><br><span class="line">data = ImageDataBunch.from_folder(path, train=<span class="string">"."</span>, valid_pct=<span class="number">0.2</span>,</span><br><span class="line">        ds_tfms=get_transforms(), size=<span class="number">224</span>, num_workers=<span class="number">4</span>).normalize(imagenet_stats)</span><br></pre></td></tr></table></figure>
 <p>如果从清理过的图像中导入数据，执行如下命令</p>
@@ -247,7 +247,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.classes, data.c, len(data.train_ds), len(data.valid_ds)</span><br></pre></td></tr></table></figure>
 <p>可以随机查看一组数据</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.show_batch(rows=<span class="number">3</span>, figsize=(<span class="number">7</span>,<span class="number">8</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/data_show.png" alt="data_show"></p>
+<p><img src="/2019/02/01/从头训练一个图像分类器/data_show.png" alt="data_show"></p>
 <h2 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h2><ol>
 <li><p>使用预训练模型resnet34进行迁移学习：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">learn = create_cnn(data,arch=models.resnet34, metrics=error_rate)</span><br><span class="line">learn.fit_one_cycle(<span class="number">4</span>)</span><br><span class="line">learn.save(<span class="string">'stage-1'</span>)</span><br></pre></td></tr></table></figure>
@@ -256,7 +256,7 @@
 </li>
 <li><p>解冻模型，修改学习率，再训练几轮：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">learn.unfreeze()</span><br><span class="line">learn.lr_find()</span><br><span class="line">learn.recorder.plot()</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/lr_find.png" alt="lr_find"></p>
+<p><img src="/2019/02/01/从头训练一个图像分类器/lr_find.png" alt="lr_find"></p>
 </li>
 <li><p>调整学习率继续学习</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">learn.fit_one_cycle(<span class="number">2</span>,max_lr=slice(<span class="number">1e-4</span>,<span class="number">3e-4</span>))</span><br><span class="line">learn.save(<span class="string">'stage-2'</span>)</span><br></pre></td></tr></table></figure>
@@ -269,9 +269,9 @@
 </ol>
 <h2 id="模型结果分析"><a href="#模型结果分析" class="headerlink" title="模型结果分析"></a>模型结果分析</h2><p>fast.ai提供了<code>ClassificationInterpretation</code>能够从结果中高效的进行分析</p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">interp = ClassificationInterpretation.from_learner(learn)</span><br><span class="line">interp.plot_confusion_matrix()</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/confusion_matrix.png" alt="confusion_matrix"></p>
+<p><img src="/2019/02/01/从头训练一个图像分类器/confusion_matrix.png" alt="confusion_matrix"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interp.plot_top_losses(<span class="number">9</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/02/01/从头训练一个图像分类器/2019-02-01-从头训练一个图像分类器/top losses.png" alt="top losses"></p>
+<p><img src="/2019/02/01/从头训练一个图像分类器/top losses.png" alt="top losses"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">interp.most_confused(<span class="number">1</span>)</span><br><span class="line">&gt; [(<span class="string">'battery'</span>, <span class="string">'motorcycle'</span>, <span class="number">4</span>), (<span class="string">'battery'</span>, <span class="string">'bike'</span>, <span class="number">2</span>)]</span><br></pre></td></tr></table></figure>
 <p>可以看处模型容易搞混电动车和摩托车。</p>
 <h2 id="Next"><a href="#Next" class="headerlink" title="Next"></a>Next</h2><p>手动修正数据之后，再重复训练，错误率会降低至1%</p>

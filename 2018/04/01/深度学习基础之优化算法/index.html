@@ -19,18 +19,18 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-28-cs231n-notes/nesterov.jpeg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/learning_rate.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif">
-<meta property="og:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/nesterov.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/learning_rate.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif">
 <meta property="og:updated_time" content="2019-01-09T13:11:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习基础之优化算法">
 <meta name="twitter:description" content="合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/04/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -253,7 +253,7 @@ W = W-lr * dW</script><p>其中，</p>
 <blockquote>
 <p>其中mini-batch的大小一般设置为2的幂指数，比如64，128，256，…,需要根据CPU/GPU内存大小进行设置</p>
 </blockquote>
-<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png" alt="mini-batch"></p>
+<p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/mini-batch.png" alt="mini-batch"></p>
 <h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><blockquote>
 <p> 目的：使用指数移动平均平滑梯度下降的抖动,一般$\beta=0.9$, 适用于处理高曲率、小但一致的梯度或带有噪声的梯度；</p>
 <p> 可取的参数有[0.5, 0.9, 0.95, 0.99]</p>
@@ -266,7 +266,7 @@ W_t = W_{t-1}  + v_{t}</script><h3 id="Nesterov型动量随机下降法"><a href
 <script type="math/tex; mode=display">
 w_{ahead} = w_{t-1} +\beta v_{t-1}</script><script type="math/tex; mode=display">
 v_{t} = \beta v_{t-1}  - \alpha dw_{ahead}</script><script type="math/tex; mode=display">
-W += v_{t}</script><p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-28-cs231n-notes/nesterov.jpeg" alt="nesterov"></p>
+W += v_{t}</script><p><img src="/qnsource/images/2018-04-28-cs231n-notes/nesterov.jpeg" alt="nesterov"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v_prev = v <span class="comment"># back this up</span></span><br><span class="line">v = mu * v - learning_rate * dx <span class="comment"># velocity update stays the same</span></span><br><span class="line">x += -mu * v_prev + (<span class="number">1</span> + mu) * v <span class="comment"># position update changes form</span></span><br></pre></td></tr></table></figure>
 <h2 id="高级优化算法（自适应学习率算法）"><a href="#高级优化算法（自适应学习率算法）" class="headerlink" title="高级优化算法（自适应学习率算法）"></a>高级优化算法（自适应学习率算法）</h2><blockquote>
 <p> 自适应学习率的设计</p>
@@ -286,7 +286,7 @@ W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adadelta"><a href="#
 <p>RMSprop性能比Adagrad和Adaelta都优秀，收敛速度也优于SGD，是目前用的比较多的优化算法。使用频次仅次于SGD。</p>
 <p>如下图，RMSpror的效果：减缓垂直方向的大小，增大水平方向的大小</p>
 </blockquote>
-<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png" alt="RMSprop"></p>
+<p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/RMSprop.png" alt="RMSprop"></p>
 <script type="math/tex; mode=display">
 cache = \rho * cache + (1-\rho) * {(dW)}^2</script><script type="math/tex; mode=display">
 W += -\frac{lr}{\sqrt{cache}+\epsilon} * dW</script><h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><blockquote>
@@ -309,7 +309,7 @@ lr = \frac{1}{1+decay\_rate*epoch\_num}*lr_0</script><blockquote>
 <li>学习率衰减可以采用：1）上式中随训练轮数衰减；2）指数衰减；3）分数衰减 $lr=\frac{lr_0}{1+kt}$</li>
 </ol>
 </blockquote>
-<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/learning_rate.png" alt="learning_rate"></p>
+<p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/learning_rate.png" alt="learning_rate"></p>
 <ul>
 <li><p>keras中提供了<code>decay</code>参数来调节学习率的变化情况：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opt = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">0.01</span> / <span class="number">40</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
@@ -338,15 +338,15 @@ lr = \frac{1}{1+decay\_rate*epoch\_num}*lr_0</script><blockquote>
 <ol>
 <li>Long Valley</li>
 </ol>
-<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif" alt="blog-long_valley-resize"></p>
+<p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-long_valley-resize.gif" alt="blog-long_valley-resize"></p>
 <ol>
 <li>Beale‘s Function</li>
 </ol>
-<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif" alt="blog-beale-resize"></p>
+<p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-beale-resize.gif" alt="blog-beale-resize"></p>
 <ol>
 <li>Saddle Point</li>
 </ol>
-<p><img src="/2018/04/01/深度学习基础之优化算法/../../qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif" alt="blog-saddle_point-resize"></p>
+<p><img src="/qnsource/images/2018-04-01-深度学习基础之优化算法/blog-saddle_point-resize.gif" alt="blog-saddle_point-resize"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a href="https://keras.io/" target="_blank" rel="noopener">Keras文档</a></li>
 <li><a href="">Deep Learning for Computer Vision with Python</a></li>

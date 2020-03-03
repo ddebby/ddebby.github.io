@@ -327,7 +327,7 @@
 <h3 id="物体识别精度的衡量指标"><a href="#物体识别精度的衡量指标" class="headerlink" title="物体识别精度的衡量指标"></a>物体识别精度的衡量指标</h3><ul>
 <li><p>IoU(Intersection over Union)</p>
 <script type="math/tex; mode=display">
-IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png" alt="IoU"></p>
+IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/IoU.png" alt="IoU"></p>
 </li>
 <li><p>mAP(Mean Average Precision)</p>
 <ul>
@@ -350,7 +350,7 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <li>对每个候选区域利用预训练的CNN进行特征抽取（迁移学习）；</li>
 <li>对每个特征抽取区域利用线性SVM进行分类</li>
 </ol>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png" alt="R-CNN"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/R-CNN.png" alt="R-CNN"></p>
 <p>论文的主要贡献：</p>
 <ol>
 <li>使用Selective Search替代了特征金字塔和滑动窗口实现的兴趣区域选择，提升了效率；</li>
@@ -377,9 +377,9 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <li>利用ROI pooling获取ROI特征向量；</li>
 <li>利用两个全联通层进行分类和回归预测</li>
 </ol>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png" alt="Fast RCNN"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/Fast-RCNN.png" alt="Fast RCNN"></p>
 <p>端到端的训练过程源于提出了多任务损失函数，将分类问题和回归问题整合在一起，打通了梯度的更新路径，下图描述了Fast R-CNN的训练和测试过程：</p>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png" alt="fast R-CNN 训练与测试"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fast-R-CNN-训练与测试.png" alt="fast R-CNN 训练与测试"></p>
 <blockquote>
 <p>缺点：仍然没有摆脱Selective Search算法在推理阶段进行候选区域生成。</p>
 </blockquote>
@@ -395,7 +395,7 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <li>RoIP：兴趣区域特征提取</li>
 <li>R-CNN：分类预测和候选框回归</li>
 </ul>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png" alt="fasterrcnn-architecture.b9035cba"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/fasterrcnn-architecture.b9035cba.png" alt="fasterrcnn-architecture.b9035cba"></p>
 <blockquote>
 <p>使用一块GPU，性能大概在7-10 FPS</p>
 </blockquote>
@@ -405,25 +405,25 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/2018/04/13
 <p>目前ResNet在很多情况下已经替代了VGG16作为特征提取网络；</p>
 <p>为了保证网络是全卷积神经网络架构，需要把全连接层剔除，保证可以输入任意维度的输入图像</p>
 </blockquote>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png" alt="base-network"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/base-network.png" alt="base-network"></p>
 <h3 id="Anchor-Box"><a href="#Anchor-Box" class="headerlink" title="Anchor Box"></a>Anchor Box</h3><blockquote>
 <p>替代传统算法的特征金字塔或filter金字塔</p>
 </blockquote>
 <p>一张图像中被识别目标形状大小各异，这也是在原始算法中加入特征金子塔来对原始图像进行多个维度特征变换的原因。</p>
 <p><strong>Anchor Box</strong>也是为了解决上述问题，我们可以不改变图像的形状，通过改变预测每个区域物体的“窗口”来框出不同大小的物体。首先在原始图像中均匀的选取一些Anchor Box中心点，然后在每个中心点上预制多个Anchor Box。</p>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png" alt="anchors-centers.141181d6"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-centers.141181d6.png" alt="anchors-centers.141181d6"></p>
 <p>在Faster R-CNN是使用3个不同形状（1:1, 1:2,2:1）和3个不同大小(128x128,256x256,512x512，按照原图尺寸生成)进行组合共计3x3=9种不同的Anchor box。</p>
 <blockquote>
 <p>使用VGG16做特征提取的情况下，一张输入图片总共可以刻画为512个窗口区域，生成512x(4+2)x9个输出参数。</p>
 </blockquote>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png" alt="anchors-progress.119e1e92"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png" alt="anchors-progress.119e1e92"></p>
 <p>由于直接预测bouding box难以实现，作者将问题转变为预测预测值与真实值之间的偏移，将问题转变为四个偏移值的预测问题。</p>
 <h3 id="Region-Proposal-Network-RPN"><a href="#Region-Proposal-Network-RPN" class="headerlink" title="Region Proposal Network(RPN)"></a>Region Proposal Network(RPN)</h3><p>RPN的主要目的是对每个区域是否可能有物体进行打分，基于打分值决定是否进行下一步的分类任务。在基础网络抽取的特征图上使用一个3x3的滑动窗口（512个卷积核），每个滑动窗口的中心点位置为上述Achor Box的中心点区域，在每个滑动窗口区域，将得到两个1x1卷积网络输出，分别为2k的前景/背景预测（该区域是否存在可被预测物体，分类问题）以及4k的位置信息预测（回归问题），四个值分别是 $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$。</p>
 <blockquote>
 <p>k是Anchor Box的数目</p>
 <p>我们将从候选区域中选择打分较高的前N个进行下一轮分析，如果物体打分足够高，下一步将进行非极大抑制和区域选择，如果打分值很低将抛弃这些区域</p>
 </blockquote>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png" alt="rpn-conv-layers.63c5bf86"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rpn-conv-layers.63c5bf86.png" alt="rpn-conv-layers.63c5bf86"></p>
 <h4 id="目标和损失函数"><a href="#目标和损失函数" class="headerlink" title="目标和损失函数"></a>目标和损失函数</h4><p>The RPN does two different type of predictions: the binary classification and the bounding box regression adjustment.</p>
 <p>For training, we take all the anchors and put them into two different categories. Those that overlap a ground-truth object with an <a href="https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/" target="_blank" rel="noopener">Intersection over Union</a> (IoU) bigger than 0.5 are considered “foreground” and those that don’t overlap any ground truth object or have less than 0.1 IoU with ground-truth objects are considered “background”.</p>
 <script type="math/tex; mode=display">
@@ -448,13 +448,13 @@ smooth_{L_1}(x)=\left\{
 <li>论文中关于候选区域选择了N=2000,但一般而言比这个小的数目也能取得不错的效果，比如50，100 …</li>
 </ul>
 <h3 id="Region-of-Interest（ROI）Pooling"><a href="#Region-of-Interest（ROI）Pooling" class="headerlink" title="Region of Interest（ROI）Pooling"></a>Region of Interest（ROI）Pooling</h3><p>ROI阶段的主要作用为使用矩阵操作（Array Slicing）从特征图中捕获N个兴趣区域，并降采样到7x7xD的尺寸，服务于接下来的全联同网络。</p>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png" alt="roi"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/roi.png" alt="roi"></p>
 <h3 id="Region-based-CNN"><a href="#Region-based-CNN" class="headerlink" title="Region-based CNN"></a>Region-based CNN</h3><p>使用两个不同的全联通网络（Fully-Connected Network，FC）：</p>
 <ul>
 <li>A fully-connected layer with N+1units where N is the total number of classes and that extra one is for the background class.</li>
 <li>A fully-connected layer with 4N units. We want to have a regression prediction, thus we need $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$ for each of the N possible classes.</li>
 </ul>
-<p><img src="/2018/04/13/Object-Detection-Faster-RCNN/../../qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png" alt="rcnn-architecture.6732b9bd"></p>
+<p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/rcnn-architecture.6732b9bd.png" alt="rcnn-architecture.6732b9bd"></p>
 <p>在这个步骤中同样由两个损失函数构成：Categorical cross-entropy分类损失和Smooth L1回归损失</p>
 <h3 id="网络训练"><a href="#网络训练" class="headerlink" title="网络训练"></a>网络训练</h3><ul>
 <li>实验表明：联合训练（使用weighted sum）优于单独训练两个网络；<ul>
@@ -547,7 +547,7 @@ smooth_{L_1}(x)=\left\{
 <li>下载地址：<a href="https://ai.stanford.edu/~jkrause/cars/car_dataset.html；" target="_blank" rel="noopener">https://ai.stanford.edu/~jkrause/cars/car_dataset.html；</a></li>
 <li>相关论文：<a href="https://ai.stanford.edu/~jkrause/papers/3drr13.pdf" target="_blank" rel="noopener"><strong>3D Object Representations for Fine-Grained Categorization</strong></a>，Jonathan Krause, Michael Stark, Jia Deng, Li Fei-Fei</li>
 </ul>
-<p><img src="/2018/04/11/Vechicle-identification-by-stanford-car-dataset/../../qnsource/images/2018-04-11-vechicle-identification-by-stanford-car-dataset/car.jpg" alt="car"></p>
+<p><img src="/qnsource/images/2018-04-11-vechicle-identification-by-stanford-car-dataset/car.jpg" alt="car"></p>
 <blockquote>
 <p><strong>数据集特点：</strong></p>
 <ol>
@@ -790,7 +790,7 @@ smooth_{L_1}(x)=\left\{
 <!-- excerpt -->
 <p>@[toc]</p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>最近在做一个利用机器视觉技术进行超市物品检点的项目调研分析，需要先寻找一个可行的技术方案验证可行性，Flickr提供的LOGO数据集是一个很好的品牌LOGO识别例子，本文记录利用Flickr LOGO数据集训练一个物体识别的深度神经网络过程。</p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/b.gif" alt="b"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/b.gif" alt="b"></p>
 <h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>Flickr LOGO数据集提供了三种不同类型的LOGO数据集集合，分别为<a href="http://image.ntua.gr/iva/datasets/flickr_logos/" target="_blank" rel="noopener">Flickr Logos 27 dataset</a>，<a href="http://www.multimedia-computing.de/flickrlogos/#flickrlogos47" target="_blank" rel="noopener">Datasets: FlickrLogos-32</a>以及<a href="http://www.multimedia-computing.de/flickrlogos/#flickrlogos47" target="_blank" rel="noopener">Datasets: FlickrLogos-47</a>。我们先来看一下每种数据集的组成及数据结构：</p>
 <ol>
 <li><p><a href="http://image.ntua.gr/iva/datasets/flickr_logos/" target="_blank" rel="noopener">Flickr Logos 27 dataset</a></p>
@@ -807,7 +807,7 @@ smooth_{L_1}(x)=\left\{
 </li>
 <li><p>数据格式：下载文件夹中提供一个<code>txt</code>文件用于描述每个文件中LOGO的分类和位置信息</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  FileName ClassName subset   Coordinates（x1 y1 x2 y2）</span></span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">91</span> <span class="number">288</span> <span class="number">125</span> <span class="number">306</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">182</span> <span class="number">63</span> <span class="number">229</span> <span class="number">94</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">192</span> <span class="number">291</span> <span class="number">225</span> <span class="number">306</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">285</span> <span class="number">61</span> <span class="number">317</span> <span class="number">79</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">285</span> <span class="number">298</span> <span class="number">324</span> <span class="number">329</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">377</span> <span class="number">292</span> <span class="number">421</span> <span class="number">324</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">383</span> <span class="number">55</span> <span class="number">416</span> <span class="number">76</span> </span><br><span class="line"><span class="number">1230939811.j</span>pg Adidas 	<span class="number">2</span> 		<span class="number">129</span> <span class="number">326</span> <span class="number">257</span> <span class="number">423</span> </span><br><span class="line"><span class="number">1230939811.j</span>pg Adidas 	<span class="number">2</span> 		<span class="number">137</span> <span class="number">336</span> <span class="number">243</span> <span class="number">395</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/dataset1_bboxes.jpg" alt="dataset1_bboxes"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/dataset1_bboxes.jpg" alt="dataset1_bboxes"></p>
 </li>
 </ul>
 </li>
@@ -898,7 +898,7 @@ smooth_{L_1}(x)=\left\{
 </blockquote>
 <p>随机查看一个标记在图像中的显示效果</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">id = random.randint(<span class="number">0</span>,len(df))</span><br><span class="line">show_image(id)</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/BMW_sample.png" alt="BMW_sample"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/BMW_sample.png" alt="BMW_sample"></p>
 <p>下面需要写一个抠图程序，把所有LOGO从原始图像中扣取出来，形成训练用数据集，在保存图像之前进行图像简单的预处理和调整形状：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crop_img</span><span class="params">(id)</span>:</span></span><br><span class="line">    image = os.path.join(<span class="string">"./flickr_logos_27_dataset/flickr_logos_27_dataset_images/"</span>,df.loc[id][<span class="string">"Name"</span>])</span><br><span class="line">    image = cv2.imread(image)</span><br><span class="line">    crop_image = image[df[<span class="string">"y1"</span>].iloc[id]:df[<span class="string">"y2"</span>].iloc[id],df[<span class="string">"x1"</span>].iloc[id]:df[<span class="string">"x2"</span>].iloc[id]]</span><br><span class="line">    <span class="keyword">return</span> crop_image</span><br><span class="line">  </span><br><span class="line">WIDTH = <span class="number">64</span></span><br><span class="line">HEIGHT = <span class="number">64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> id, name <span class="keyword">in</span> enumerate(df[<span class="string">"Name"</span>]):</span><br><span class="line">    cropped_image = crop_img(id)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        resized_image = cv2.resize(cropped_image, 	     </span><br><span class="line">                                   (WIDTH,HEIGHT),interpolation=cv2.INTER_CUBIC)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        print(id)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    image_name = str(id)+<span class="string">"_"</span>+df.iloc[id][<span class="string">"labels"</span>]+<span class="string">".jpg"</span></span><br><span class="line">    cv2.imwrite(os.path.join(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>,image_name),resized_image)</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -910,7 +910,7 @@ smooth_{L_1}(x)=\left\{
 </blockquote>
 <p>处理完成之后，扣取图像将在<code>cropped</code>文件夹中以<code>{id}_{label}.jpg</code>的文件名存储。</p>
 <p>图像扣取之后，通过人工核对，我们发现仍然存在一些明显有问题的图像，比如多张puma的图像，其实存在明显的标记问题，需要从数据集中剔除：</p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/puma_error_img.png" alt="puma_error_img"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/puma_error_img.png" alt="puma_error_img"></p>
 <h3 id="数据集切分"><a href="#数据集切分" class="headerlink" title="数据集切分"></a>数据集切分</h3><p>我们将扣取数据读入进行简单预处理和数据切分：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data = []</span><br><span class="line">labels = []</span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> os.listdir(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>):</span><br><span class="line">    img_file = cv2.imread(os.path.join(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>,img))</span><br><span class="line">    data.append(img_file)</span><br><span class="line">    labels.append(img.split(<span class="string">"_"</span>)[<span class="number">1</span>].split(<span class="string">"."</span>)[<span class="number">0</span>])</span><br><span class="line">data = np.stack(data)</span><br><span class="line">labels = np.stack(labels)</span><br><span class="line"></span><br><span class="line">data = data/<span class="number">255</span></span><br></pre></td></tr></table></figure>
 <p>将标签数据转变成OneHot矩阵：</p>
@@ -925,7 +925,7 @@ smooth_{L_1}(x)=\left\{
 <p>当然实际过程中，问题要远比这复杂，很难选择合适的滑动窗口大小适用现实图像的需求，所以在主流的物体识别模型中一般都采用多种不同大小的Anchor box来回归图像的位置。</p>
 </blockquote>
 <p>由于LOGO每张图像包含特征有限，我们在本次实验中利用<strong>LeNet</strong>的架构，设计了一个简单的卷积网络模型如下图所示：</p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/model.png" alt="model"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/model.png" alt="model"></p>
 <p>模型主体利用三个<code>CONV =&gt; RELU =&gt; POOL</code>结构来抽取图像特征，最后利用全联通网络+Softmax分类器来获得最终27类分类结果。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers.convolutional <span class="keyword">import</span> Conv2D</span><br><span class="line"><span class="keyword">from</span> keras.layers.convolutional <span class="keyword">import</span> MaxPooling2D</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Activation</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Flatten</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Dense</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">inputShape = (HEIGHT, WIDTH, <span class="number">3</span>)</span><br><span class="line">        <span class="comment"># first set of CONV =&gt; RELU =&gt; POOL layers</span></span><br><span class="line">model.add(Conv2D(<span class="number">16</span>, (<span class="number">3</span>, <span class="number">3</span>), padding=<span class="string">"same"</span>,input_shape=inputShape))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># second set of CONV =&gt; RELU =&gt; POOL layers</span></span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>, <span class="number">3</span>), padding=<span class="string">"same"</span>))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># third set of CONV =&gt; RELU =&gt; POOL layers</span></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), padding=<span class="string">"same"</span>))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># first (and only) set of FC =&gt; RELU layers</span></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">500</span>))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"><span class="comment"># softmax classifier</span></span><br><span class="line">model.add(Dense(len(CLASSNAME)))</span><br><span class="line">model.add(Activation(<span class="string">"softmax"</span>))</span><br></pre></td></tr></table></figure>
 <p>定义目标优化函数：</p>
@@ -933,10 +933,10 @@ smooth_{L_1}(x)=\left\{
 <p>迭代训练100个epoch:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history=model.fit_generator(</span><br><span class="line">	gen_flow,</span><br><span class="line">	steps_per_epoch=len(X) // <span class="number">32</span>,</span><br><span class="line">	validation_data=aug.flow(testX,testy,batch_size=<span class="number">32</span>,seed=<span class="number">0</span>),</span><br><span class="line">	validation_steps=len(testX) // <span class="number">32</span>,</span><br><span class="line">	epochs=<span class="number">100</span>,</span><br><span class="line">	verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 <p>100轮之后，验证集达到了99.89%的准确率，基本满足了要求，训练过程中训练数据和验证数据的准确率及Loss变化详见下图：</p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/accuracy_curve.png" alt="accuracy_curve"></p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/loss_curve.png" alt="loss_curve"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/accuracy_curve.png" alt="accuracy_curve"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/loss_curve.png" alt="loss_curve"></p>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize = (<span class="number">15</span>,<span class="number">40</span>))</span><br><span class="line"><span class="keyword">for</span> i,test_img <span class="keyword">in</span> enumerate(os.listdir(<span class="string">"./test"</span>)):</span><br><span class="line">    img = cv2.imread(os.path.join(<span class="string">"./test"</span>,test_img))</span><br><span class="line">    img = cv2.resize(img, (WIDTH,HEIGHT),interpolation=cv2.INTER_CUBIC)</span><br><span class="line">    img = np.expand_dims(img,axis=<span class="number">0</span>)</span><br><span class="line">    result = model.predict(img)</span><br><span class="line">    result = le.inverse_transform(result)</span><br><span class="line">    plt.subplot(<span class="number">8</span>,<span class="number">4</span>, i+<span class="number">1</span>)</span><br><span class="line">    img = cv2.cvtColor(img[<span class="number">0</span>],  cv2.COLOR_BGR2RGB)</span><br><span class="line">    plt.imshow(img)</span><br><span class="line">    plt.title(<span class="string">'pred:'</span> + str(result[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/test_result.png" alt="test_result"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/test_result.png" alt="test_result"></p>
 <h3 id="设计滑动窗口和特征金字塔"><a href="#设计滑动窗口和特征金字塔" class="headerlink" title="设计滑动窗口和特征金字塔"></a>设计滑动窗口和特征金字塔</h3><p>其中滑动窗口用来遍历图像，特征金字塔用于实现图像的多尺度变换，保证多种不同大小的LOGO都可以被准确识别。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sliding_window</span><span class="params">(image, step, ws)</span>:</span></span><br><span class="line">	<span class="comment"># slide a window across the image</span></span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">0</span>, image.shape[<span class="number">0</span>] - ws[<span class="number">1</span>], step):</span><br><span class="line">		<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, image.shape[<span class="number">1</span>] - ws[<span class="number">0</span>], step):</span><br><span class="line">			<span class="comment"># yield the current window</span></span><br><span class="line">			<span class="keyword">yield</span> (x, y, image[y:y + ws[<span class="number">1</span>], x:x + ws[<span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">image_pyramid</span><span class="params">(image, scale=<span class="number">1.5</span>, minSize=<span class="params">(<span class="number">64</span>, <span class="number">64</span>)</span>)</span>:</span></span><br><span class="line">	<span class="comment"># yield the original image</span></span><br><span class="line">	<span class="keyword">yield</span> image</span><br><span class="line"></span><br><span class="line">	<span class="comment"># keep looping over the image pyramid</span></span><br><span class="line">	<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">		<span class="comment"># compute the dimensions of the next image in the pyramid</span></span><br><span class="line">		w = int(image.shape[<span class="number">1</span>] / scale)</span><br><span class="line">		image = imutils.resize(image, width=w)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># if the resized image does not meet the supplied minimum</span></span><br><span class="line">		<span class="comment"># size, then stop constructing the pyramid</span></span><br><span class="line">		<span class="keyword">if</span> image.shape[<span class="number">0</span>] &lt; minSize[<span class="number">1</span>] <span class="keyword">or</span> image.shape[<span class="number">1</span>] &lt; minSize[<span class="number">0</span>]:</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">		<span class="comment"># yield the next image in the pyramid</span></span><br><span class="line">		<span class="keyword">yield</span> image</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -982,9 +982,9 @@ smooth_{L_1}(x)=\left\{
 </ol>
 <h2 id="Logo检测的应用及分析"><a href="#Logo检测的应用及分析" class="headerlink" title="Logo检测的应用及分析"></a>Logo检测的应用及分析</h2><p><a href="https://blog.deepsense.ai/logo-detection-and-brand-visibility-analytics/" target="_blank" rel="noopener">DeepSense.ai</a>给出了一种Logo检测的分析方法，通过分析视频中不同品牌的logo呈现，统计了不同品牌在同一个视频中Logo出现的时间、出现的方式、呈现的效果等，最终提供给客户一个<strong>Logo Visubility Report</strong>。</p>
 <p>方案的主要流程如下图所示：</p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/logo_detection_overview.jpg" alt="logo_detection_overview"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/logo_detection_overview.jpg" alt="logo_detection_overview"></p>
 <p>生成的分析报告参见下图：</p>
-<p><img src="/2018/04/09/Deep-Learning-Lab-Logo-Detection/../../qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/logo_detection_report.png" alt="logo_detection_report"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/logo_detection_report.png" alt="logo_detection_report"></p>
 <p>针对的分析视频如下：</p>
 <div class="video-container"><iframe src="//www.youtube.com/embed/ekaHlWga5yA" frameborder="0" allowfullscreen></iframe></div>
 <hr>
@@ -1108,11 +1108,11 @@ smooth_{L_1}(x)=\left\{
 </blockquote>
 <h3 id="HDF5"><a href="#HDF5" class="headerlink" title="HDF5"></a>HDF5</h3><p>抽取特征的高效存储可以选用<code>HDF5</code>。Hierarchical Data Format(HDF)是一种针对大量数据进行组织和存储的文件格式。经历了20多年的发展，HDF格式的最新版本是HDF5，它包含了数据模型，库，和文件格式标准。以其便捷有效，移植性强，灵活可扩展的特点受到了广泛的关注和应用。很多大型机构的数据存储格式都采用了HDF5，比如NASA的地球观测系统，MATLAB的.m文件，流体细算软件CDF，都将HDF5作为标准数据格式。HDF5本身用C实现，可以使用python的库<code>h5py</code>对HDF5文件进行操作。可以像操作Numpy数组一样对大型数据进行操作，比如切片，按行读取</p>
 <p>数据在HDF5中采取分层存储方式，很像文件系统管理方式，第一级叫做组，类似于container，每个组中可以创建新的组或数据集，每一个dataset包含两部分的数据，Metadata和Data。其中Metadata包含Data相关的信息，而Data则包含数据本身。 </p>
-<p><img src="/2018/03/30/Transfer-Learning-Summary/../../qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg" alt="HDF5文件存储方式"></p>
+<p><img src="/qnsource/images/2018-03-30-Transfer-Learning-Summary/HDF5文件存储方式.jpg" alt="HDF5文件存储方式"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> h5py</span><br><span class="line">p = <span class="string">"./datasets/hdf5/features.hdf5"</span></span><br><span class="line"></span><br><span class="line">db = h5py.File(p)</span><br><span class="line">list(db.keys())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[u’features’, u’label_names’, u’labels’]</span><br><span class="line">db[<span class="string">"features"</span>].shape</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">3000</span>, <span class="number">25088</span>)</span><br><span class="line">list(db[<span class="string">"label_name"</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="string">'cat'</span>, <span class="string">'dogs'</span>, <span class="string">'panda'</span>]</span><br></pre></td></tr></table></figure>
 <h2 id="Fine-Tune"><a href="#Fine-Tune" class="headerlink" title="Fine-Tune"></a>Fine-Tune</h2><ul>
 <li><p>一般而言，fine-tune在样本数据足够的情况下训练效果优于特征抽取；</p>
-<p><img src="/2018/03/30/Transfer-Learning-Summary/../../qnsource/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png" alt="fine_tune"></p>
+<p><img src="/qnsource/images/2018-03-30-Transfer-Learning-Summary/fine_tune.png" alt="fine_tune"></p>
 </li>
 </ul>
 <blockquote>

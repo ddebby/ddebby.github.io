@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/08/28/qnsource/banner/13.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/08/28/HMM与Veterbi算法/2018-08-28-HMM与Veterbi算法/Viterbi_animated_demo.gif">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/13.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/2018/08/28/HMM与Veterbi算法/Viterbi_animated_demo.gif">
 <meta property="og:updated_time" content="2018-08-28T09:26:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HMM与Veterbi算法">
 <meta name="twitter:description" content="摘要：">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/08/28/qnsource/banner/13.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/13.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -195,7 +195,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/08/28/HMM与Veterbi算法/../qnsource/banner/13.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/banner/13.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong></p>
 <a id="more"></a>
 <h2 id="从概率图模型谈起"><a href="#从概率图模型谈起" class="headerlink" title="从概率图模型谈起"></a>从概率图模型谈起</h2><p>概率模型(probabilistic model)提供了一种描述框架，将学习任务归结于计算变量的概率分布。在概 率模型中，利用已知变量推测未知变量的分布称为”推断” (inference)，其 核心是如何基于可观测变量推测出未知变量的条件分布具体来说，假定所关心的变量集合为Y,可观测变量集合为 O，其他变量的集合为 R，”生成式” (generative)模型考虑联合分布 P(Y，R，O) ， “判别式” (discriminative)模 型考虑条件分布 P(Y，R I O)。给定一组观测变量值，推断就是要由 P(Y ,R,O) 或 P(Y, R |O) 得到条件概率分布 P(Y I O)。</p>
@@ -210,7 +210,7 @@ P(x_1,y_1,...,x_n,y_n)=P(y_1)P(x_1|y_1)</script></li>
 <li>预测/解码问题： 给定模型和观测序列$x$，如何找到于此观测序列最匹配的状态序列$y$, $P(y|0)$；</li>
 <li>学习问题： 给定观测序列$x$，如何调整模型参数，使得该序列出现的概率$P(x|\lambda)$ 最大，即如何训练模型使其能更好的描述观测数据；</li>
 </ol>
-<h2 id="Viterbi算法"><a href="#Viterbi算法" class="headerlink" title="Viterbi算法"></a>Viterbi算法</h2><p><img src="/2018/08/28/HMM与Veterbi算法/2018-08-28-HMM与Veterbi算法/Viterbi_animated_demo.gif" alt="Viterbi_animated_demo"></p>
+<h2 id="Viterbi算法"><a href="#Viterbi算法" class="headerlink" title="Viterbi算法"></a>Viterbi算法</h2><p><img src="/2018/08/28/HMM与Veterbi算法/Viterbi_animated_demo.gif" alt="Viterbi_animated_demo"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li>《统计学习方法》—李航</li>
 <li>《机器学习》—周志华</li>

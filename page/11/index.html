@@ -379,15 +379,15 @@
 </li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Initialize our canvas as a 300x300 with 3 channels,</span></span><br><span class="line"><span class="comment"># Red, Green, and Blue, with a black background</span></span><br><span class="line">canvas = np.zeros((<span class="number">300</span>, <span class="number">300</span>, <span class="number">3</span>), dtype = <span class="string">"uint8"</span>)</span><br><span class="line"><span class="comment"># Draw a green line from the top-left corner of our canvas</span></span><br><span class="line"><span class="comment"># to the bottom-right</span></span><br><span class="line">green = (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>)</span><br><span class="line">cv2.line(canvas, (<span class="number">0</span>, <span class="number">0</span>), (<span class="number">300</span>, <span class="number">300</span>), green)</span><br><span class="line"><span class="comment"># Now, draw a 3 pixel thick red line from the top-right</span></span><br><span class="line"><span class="comment"># corner to the bottom-left</span></span><br><span class="line">red = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">cv2.line(canvas, (<span class="number">300</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">300</span>), red, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># Draw a green 50x50 pixel square, starting at 10x10 and</span></span><br><span class="line"><span class="comment"># ending at 60x60</span></span><br><span class="line">cv2.rectangle(canvas, (<span class="number">10</span>, <span class="number">10</span>), (<span class="number">60</span>, <span class="number">60</span>), green)</span><br><span class="line"><span class="comment"># Draw another rectangle, this time we'll make it red and</span></span><br><span class="line"><span class="comment"># 5 pixels thick</span></span><br><span class="line">cv2.rectangle(canvas, (<span class="number">50</span>, <span class="number">200</span>), (<span class="number">200</span>, <span class="number">225</span>), red, <span class="number">5</span>)</span><br><span class="line"><span class="comment"># Let's draw one last rectangle: blue and filled in</span></span><br><span class="line">blue = (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">cv2.rectangle(canvas, (<span class="number">200</span>, <span class="number">50</span>), (<span class="number">225</span>, <span class="number">125</span>), blue, <span class="number">-1</span>)</span><br><span class="line">cv2.imshow(<span class="string">"Canvas"</span>, canvas)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/../../qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/Line and Rectangle.png" alt="Line and Rectangle"></p>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/Line and Rectangle.png" alt="Line and Rectangle"></p>
 <p><strong>添加圆形</strong></p>
 <ul>
 <li><code>cv2.circle(image, (centerX, centerY), r, color,thickness)</code></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Reset our canvas and draw a white circle at the center</span></span><br><span class="line"><span class="comment"># of the canvas with increasing radii - from 25 pixels to</span></span><br><span class="line"><span class="comment"># 150 pixels</span></span><br><span class="line">canvas = np.zeros((<span class="number">300</span>, <span class="number">300</span>, <span class="number">3</span>), dtype = <span class="string">"uint8"</span>)</span><br><span class="line">(centerX, centerY) = (canvas.shape[<span class="number">1</span>] // <span class="number">2</span>, canvas.shape[<span class="number">0</span>] // <span class="number">2</span>)</span><br><span class="line">white = (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</span><br><span class="line"><span class="keyword">for</span> r <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">175</span>, <span class="number">25</span>):</span><br><span class="line">	cv2.circle(canvas, (centerX, centerY), r, white)</span><br><span class="line">cv2.imshow(<span class="string">"Canvas"</span>, canvas)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/../../qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/Circles.png" alt="Circles"></p>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/Circles.png" alt="Circles"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Let's go crazy and draw 25 random circles</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">25</span>):</span><br><span class="line">	<span class="comment"># randomly generate a radius size between 5 and 200,</span></span><br><span class="line">	<span class="comment"># generate a random color, and then pick a random</span></span><br><span class="line">	<span class="comment"># point on our canvas where the circle will be drawn</span></span><br><span class="line">	radius = np.random.randint(<span class="number">5</span>, high = <span class="number">200</span>)</span><br><span class="line">	color = np.random.randint(<span class="number">0</span>, high = <span class="number">256</span>, size = (<span class="number">3</span>,)).tolist()</span><br><span class="line">	pt = np.random.randint(<span class="number">0</span>, high = <span class="number">300</span>, size = (<span class="number">2</span>,))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># draw our random circle</span></span><br><span class="line">	cv2.circle(canvas, tuple(pt), radius, color, <span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Show our masterpiece</span></span><br><span class="line">cv2.imshow(<span class="string">"Canvas"</span>, canvas)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/../../qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/RandomCircles.png" alt="RandomCircles"></p>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/RandomCircles.png" alt="RandomCircles"></p>
 <h2 id="3-Image-Processing"><a href="#3-Image-Processing" class="headerlink" title="3. Image Processing"></a>3. Image Processing</h2><ol>
 <li><p>平移</p>
 <ul>
@@ -438,11 +438,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">image = cv2.imread(img)</span><br><span class="line">image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">image = cv2.GaussianBlur(image, (<span class="number">5</span>,<span class="number">5</span>), <span class="number">0</span>)</span><br><span class="line">canny = cv2.Canny(image, <span class="number">30</span> ,<span class="number">150</span>)</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p><img src="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/../../qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/canny.jpg" alt="canny"></p>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/canny.jpg" alt="canny"></p>
 <ol>
 <li><p>轮廓检测</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">image = cv2.imread(img)</span><br><span class="line">image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">image = cv2.GaussianBlur(image, (<span class="number">11</span>,<span class="number">11</span>), <span class="number">0</span>)</span><br><span class="line">canny = cv2.Canny(image, <span class="number">30</span> ,<span class="number">150</span>)</span><br><span class="line">(_, cnts, _) = cv2.findContours(canny.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">print(<span class="string">"I count &#123;&#125; coins in this image"</span>.format(len(cnts)))</span><br><span class="line">coins = image.copy()</span><br><span class="line">cv2.drawContours(coins, cnts, <span class="number">-1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/03/05/读书笔记：《Practical-Python-and-OpenCV》/../../qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/countours.jpg" alt="countours"></p>
+<p><img src="/qnsource/images/2018-03-05-读书笔记：《Practical-Python-and-OpenCV》/countours.jpg" alt="countours"></p>
 <ul>
 <li>从图像中将对象扣取</li>
 </ul>
@@ -657,7 +657,7 @@
 <p>图像分类的过程是学习图片中的“underlying patterns”</p>
 </blockquote>
 <p><strong>Semantic Gap：</strong> the difference between how a human perceives the contents of an image versus how an image can be represented in a way a computer can understand the process.</p>
-<h3 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h3><p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Challenge for Image Classification.png" alt="Challenge for Image Classification"></p>
+<h3 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h3><p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Challenge for Image Classification.png" alt="Challenge for Image Classification"></p>
 <h3 id="数据集-TODO"><a href="#数据集-TODO" class="headerlink" title="数据集(TODO)"></a>数据集(TODO)</h3><ol>
 <li><p>MNIST</p>
 <ul>
@@ -673,7 +673,7 @@
 <li><p><strong>目前准确度：</strong> &gt;99%</p>
 </li>
 <li><p><strong>获取地址：</strong> <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a></p>
-<p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/MNIST.jpg" alt="MNIST"></p>
+<p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/MNIST.jpg" alt="MNIST"></p>
 </li>
 </ul>
 </li>
@@ -690,7 +690,7 @@
 <li><p><strong>目前准确度：</strong> &gt;95%</p>
 </li>
 <li><p><strong>获取地址：</strong> <a href="https://github.com/zalandoresearch/fashion-mnist" target="_blank" rel="noopener">https://github.com/zalandoresearch/fashion-mnist</a></p>
-<p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Fashion-MNIST.png" alt="Fashion-MNIST"></p>
+<p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Fashion-MNIST.png" alt="Fashion-MNIST"></p>
 </li>
 </ul>
 </li>
@@ -718,7 +718,7 @@
 </ul>
 </li>
 </ol>
-<p><img src="/2018/03/03/Deep-Learning-for-Computer-Vision/../../qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Smile Datasets.png" alt="Smile Datasets"></p>
+<p><img src="/qnsource/images/2018-03-03-Deep-Learning-for-Computer-Vision/Smile Datasets.png" alt="Smile Datasets"></p>
 <ol>
 <li>性别和年龄数据集</li>
 </ol>

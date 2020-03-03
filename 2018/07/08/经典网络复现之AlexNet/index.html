@@ -19,21 +19,21 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/cover/12.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/GPUs.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet-Details.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_accuracy.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_loss.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch-accuracy.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-accuracy.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/07/08/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/cover/12.jpg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/GPUs.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet-Details.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-accuracy.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-loss.png">
 <meta property="og:updated_time" content="2019-02-26T05:20:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典网络复现之AlexNet">
 <meta name="twitter:description" content="摘要： 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/07/08/qnsource/cover/12.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/cover/12.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -203,7 +203,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/cover/12.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/cover/12.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong> 本文记录利用ImageNet数据集复现经典网络AlexNet的过程，并记录在大型数据集训练过程中需要考虑的问题。</p>
 <a id="more"></a>
 <p>为了增强对state of the art深度神经网络模型的认知，准备进行一系列模型的复现工作，使用ImageNet的大规模图像分类数据集，从头训练各个经典的神经网络模型，同时结合作者论文对训练过程中的技巧进行归纳总结，主要安排如下几部分内容：</p>
@@ -222,9 +222,9 @@
 <li>计算框架： MxNet</li>
 <li>算力资源：AWS云主机p2.8xlarge：8个Tesla K80 GPU ($7.20/hour)</li>
 </ul>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/GPUs.png" alt="GPUs"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/GPUs.png" alt="GPUs"></p>
 <h2 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h2><p>AlexNet在2012年ImageNet ILSVRC比赛中top-5的错误率未15.3%，领先第二名10.9%个百分点，整个网络架构总共有8层参数网络层，其中5层卷积网络+3层全连接网络。本节将按照AlexNet论文描述的内容，整理AlexNet的特点，和极具借鉴性的创新成果。</p>
-<h3 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h3><p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet.png" alt="AlexNet"></p>
+<h3 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h3><p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet.png" alt="AlexNet"></p>
 <p>AlexNet的网络架构如图所示，输入图像尺寸为（224，224，3），经过5个CNN层，3个FC层输出1000个分类结果，为了便于使网络训练采用GPU，所以整个网络分为上下两部分，分别在两个GPU上进行训练，其中第一层CNN和3个FC层在两个GPU上进行了参数共享。</p>
 <p>AlexNet网络中拥有600万个参数，650 000个神经元。</p>
 <h3 id="GPU的第一次使用"><a href="#GPU的第一次使用" class="headerlink" title="GPU的第一次使用"></a>GPU的第一次使用</h3><p>AlexNet是第一个使用GPU进行训练的深度神经网络，受当时硬件条件限制，使用了2块3GB内存的GTX 580 GPU，同时由于全部的网络参数超过了3GB的显存空间，所以将网络分成了两部分。训练时间上实际比单块GPU没有提升太多，但将错误率降低了1.2个百分点。</p>
@@ -256,7 +256,7 @@
 <li><p>ImageNet数据准备参见前序博文</p>
 </li>
 <li><p>由于现在GPU硬件和深度学习计算框架的发展，我们不需要将网络拆成两个部分，单独训练了，所以网络架构进行了微调，详见下图；</p>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet-Details.png" alt="AlexNet-Details"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/AlexNet-Details.png" alt="AlexNet-Details"></p>
 <ol>
 <li>使用MxNet训练网络比Keras + TensroFlow要快；</li>
 </ol>
@@ -322,8 +322,8 @@
 <p>INFO:root:Saved checkpoint to “checkpoints/1//alexnet01-0080.params”</p>
 </li>
 </ul>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_accuracy.png" alt="1st_try_accuracy"></p>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_loss.png" alt="1st_try_loss"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_accuracy.png" alt="1st_try_accuracy"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/1st_try_loss.png" alt="1st_try_loss"></p>
 </li>
 <li><p>将学习率调整到1e-3之后，验证集准确率有大幅提升，代表调整有效，100轮之后再度饱和，降低学习率到1e-4;105轮验证集结果如下：</p>
 <ul>
@@ -332,14 +332,14 @@
 <p>INFO:root:Epoch[105] Validation-cross-entropy=1.880376</p>
 </li>
 </ul>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch-accuracy.png" alt="105epoch-accuracy"></p>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch.png" alt="105epoch"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch-accuracy.png" alt="105epoch-accuracy"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/105epoch.png" alt="105epoch"></p>
 </li>
 <li><p>保持1e-4学习率，训练到125轮，进一步降低学习率到1e-5，发现整个网络没有性能提升，结束该批次参数训练过程。</p>
 </li>
 </ol>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-accuracy.png" alt="130epoch-accuracy"></p>
-<p><img src="/2018/07/08/经典网络复现之AlexNet/../qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-loss.png" alt="130epoch-loss"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-accuracy.png" alt="130epoch-accuracy"></p>
+<p><img src="/qnsource/images/2018-07-08-经典网络复现之AlexNet/130epoch-loss.png" alt="130epoch-loss"></p>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
 <li><p>BN放在激活之前还是之后？</p>
 <p>调整BN位置，准确率从77.9%—&gt; 79.6%</p>

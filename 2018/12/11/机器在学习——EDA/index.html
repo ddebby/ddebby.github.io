@@ -17,18 +17,18 @@
 <meta property="og:url" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/index.html">
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/pairplot.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/kernel-density-plots.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/sns.distplot.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/barplot.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/lmplot.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/scatter.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/pairplot.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/count-plot-hue.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/pairplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/kernel-density-plots.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/sns.distplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/barplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/lmplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/scatter.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/pairplot.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/count-plot-hue.png">
 <meta property="og:updated_time" content="2018-12-12T12:38:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器在学习——EDA">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/2018-12-11-机器在学习——EDA/pairplot.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/11/机器在学习——EDA/pairplot.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -198,7 +198,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/pairplot.png" alt="EDA"></p>
+        <p><img src="/2018/12/11/机器在学习——EDA/pairplot.png" alt="EDA"></p>
 <a id="more"></a>
 <hr>
 <h1 id="Topic-1：-EDA-with-pandas"><a href="#Topic-1：-EDA-with-pandas" class="headerlink" title="Topic 1： EDA with pandas"></a>Topic 1： EDA with pandas</h1><ol>
@@ -257,9 +257,9 @@
 <p>看作为直方图的平滑版本</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[features].plot(kind=<span class="string">'density'</span>, subplots=<span class="keyword">True</span>, layout=(<span class="number">1</span>, <span class="number">2</span>), </span><br><span class="line">                  sharex=<span class="keyword">False</span>, figsize=(<span class="number">10</span>, <span class="number">4</span>));</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/kernel-density-plots.png" alt="kernel-density-plots"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/kernel-density-plots.png" alt="kernel-density-plots"></p>
 <h3 id="Seaborn的displot方法"><a href="#Seaborn的displot方法" class="headerlink" title="Seaborn的displot方法"></a>Seaborn的<code>displot</code>方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.distplot(df[<span class="string">'Total intl calls'</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/sns.distplot.png" alt="sns.distplot"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/sns.distplot.png" alt="sns.distplot"></p>
 <h3 id="pandas的describe-方法"><a href="#pandas的describe-方法" class="headerlink" title="pandas的describe()方法"></a><code>pandas</code>的<code>describe()</code>方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[features].describe()</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>也可以通过seaborn的box方法</p>
@@ -269,21 +269,21 @@
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'feature_name'</span>].value_counts(normalize=Fase)</span><br></pre></td></tr></table></figure>
 <h3 id="seaborn的countplot"><a href="#seaborn的countplot" class="headerlink" title="seaborn的countplot"></a><code>seaborn</code>的<code>countplot</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_, axes = plt.subplots(nrows=<span class="number">1</span>, ncols=<span class="number">2</span>, figsize=(<span class="number">12</span>, <span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">sns.countplot(x=<span class="string">'Churn'</span>, data=df, ax=axes[<span class="number">0</span>]);</span><br><span class="line">sns.countplot(x=<span class="string">'Customer service calls'</span>, data=df, ax=axes[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/barplot.png" alt="barplot"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/barplot.png" alt="barplot"></p>
 <h3 id="lmplot"><a href="#lmplot" class="headerlink" title="lmplot"></a><code>lmplot</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.lmplot(<span class="string">'Total day minutes'</span>, <span class="string">'Total night minutes'</span>, data=df, hue=<span class="string">'Churn'</span>, fit_reg=<span class="keyword">False</span>);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/lmplot.png" alt="lmplot"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/lmplot.png" alt="lmplot"></p>
 <h2 id="3-关联分析"><a href="#3-关联分析" class="headerlink" title="3. 关联分析"></a>3. 关联分析</h2><h3 id="相关性分析"><a href="#相关性分析" class="headerlink" title="相关性分析"></a>相关性分析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Drop non-numerical variables</span></span><br><span class="line">numerical = list(set(df.columns) - </span><br><span class="line">                 set([<span class="string">'State'</span>, <span class="string">'International plan'</span>, <span class="string">'Voice mail plan'</span>, </span><br><span class="line">                      <span class="string">'Area code'</span>, <span class="string">'Churn'</span>, <span class="string">'Customer service calls'</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate and plot</span></span><br><span class="line">corr_matrix = df[numerical].corr()</span><br><span class="line">sns.heatmap(corr_matrix);</span><br></pre></td></tr></table></figure>
 <h3 id="散点图"><a href="#散点图" class="headerlink" title="散点图"></a>散点图</h3><blockquote>
 <p><a href="https://seaborn.pydata.org/generated/seaborn.jointplot.html" target="_blank" rel="noopener"><code>jointplot()</code></a> </p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sns.jointplot(x=<span class="string">'Total day minutes'</span>, y=<span class="string">'Total night minutes'</span>, </span><br><span class="line">              data=df, kind=<span class="string">'scatter'</span>);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/scatter.png" alt="scatter"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/scatter.png" alt="scatter"></p>
 <h4 id="散点图的相关性矩阵：-pairplot"><a href="#散点图的相关性矩阵：-pairplot" class="headerlink" title="散点图的相关性矩阵： pairplot"></a>散点图的相关性矩阵： <code>pairplot</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># `pairplot()` may become very slow with the SVG format</span></span><br><span class="line">%config InlineBackend.figure_format = <span class="string">'png'</span></span><br><span class="line">sns.pairplot(df[numerical]);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/pairplot.png" alt="pairplot"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/pairplot.png" alt="pairplot"></p>
 <h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><h2 id="技巧总结"><a href="#技巧总结" class="headerlink" title="技巧总结"></a>技巧总结</h2><ol>
 <li><p><code>seaborn</code>的<code>hue</code>属性是一个可视化很直接，比较有用的配置属性；</p>
 <p>比如通过下图来看某个特征对于结果的不同分布：</p>
-<p><img src="/2018/12/11/机器在学习——EDA/./2018-12-11-机器在学习——EDA/count-plot-hue.png" alt="count-plot-hue"></p>
+<p><img src="/2018/12/11/机器在学习——EDA/count-plot-hue.png" alt="count-plot-hue"></p>
 </li>
 <li><p>在量化离散变量之前，将数值变量和类别变量分别进行分析</p>
 </li>

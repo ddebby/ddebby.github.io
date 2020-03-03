@@ -19,19 +19,19 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/neuron_model.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/activation_functions.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/prepro1.jpeg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/prepro2.jpeg">
-<meta property="og:image" content="http://blog.a-stack.com/OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/cifar10pca.jpeg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/learningrates.jpeg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/accuracies.jpeg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/gridsearchbad.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/neuron_model.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/activation_functions.png">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/prepro1.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/prepro2.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/cifar10pca.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/learningrates.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/accuracies.jpeg">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/gridsearchbad.jpeg">
 <meta property="og:updated_time" content="2018-05-16T13:59:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n课程笔记：（Lecture 4）神经网络基础">
 <meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Event Type Date Description Course Ma">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/05/qnsource/images/2018-04-28-cs231n-notes/neuron_model.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/neuron_model.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -241,13 +241,13 @@
 <ul>
 <li>一个人的神经系统大概有860亿个神经元，形成$10^{14}-10^{15}$ 个神经元链接；</li>
 </ul>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/neuron_model.png" alt="neuron_model"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/neuron_model.png" alt="neuron_model"></p>
 <blockquote>
 <p><strong>Coarse model.</strong> It’s important to stress that this model of a biological neuron is very coarse: For example, there are many different types of neurons, each with different properties. The dendrites in biological neurons perform complex nonlinear computations. The synapses are not just a single weight, they’re a complex non-linear dynamical system. The exact timing of the output spikes in many systems is known to be important, suggesting that the rate code approximation may not hold. Due to all these and many other simplifications, be prepared to hear groaning sounds from anyone with some neuroscience background if you draw analogies between Neural Networks and real brains. See this <a href="https://physics.ucsd.edu/neurophysics/courses/physics_171/annurev.neuro.28.061604.135703.pdf" target="_blank" rel="noopener">review</a> (pdf), or more recently this <a href="http://www.sciencedirect.com/science/article/pii/S0959438814000130" target="_blank" rel="noopener">review</a> if you are interested.</p>
 </blockquote>
 <ul>
 <li><p><strong>激活函数</strong></p>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/activation_functions.png" alt="activation_functions"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/activation_functions.png" alt="activation_functions"></p>
 <ul>
 <li>Sigmoid： $\sigma(x) = 1 / (1 + e^{-x})$<ul>
 <li>1)梯度饱和；2)函数形式不是中心对称的（这个特性会导致后面网络层的输入也不是零中心的，进而影响梯度下降的运作）；</li>
@@ -286,7 +286,7 @@
 <blockquote>
 <p>使用归一化需要注意： 只有在不同变量的大小对于输出同等重要的情况下采用归一化；图像中由于所有变量都已经在区间[0,255]范围之中，所以没有必要采用归一化</p>
 </blockquote>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/prepro1.jpeg" alt="prepro1"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/prepro1.jpeg" alt="prepro1"></p>
 <ol>
 <li>PCA和白化</li>
 </ol>
@@ -296,9 +296,9 @@
 <p>PCA： 下图所示，数据中心对齐，以特征向量方向旋转对齐；</p>
 <p>白化操作：如果输入数据为多元高斯分布，白化结果为高斯零均值独立协方差矩阵</p>
 </blockquote>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/prepro2.jpeg" alt="prepro2"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/prepro2.jpeg" alt="prepro2"></p>
 <p>以CIFAR-10为例，处理之后效果见下图，第2张为取3072个特征中前144个特征：</p>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../../../../OneDrive%20-%20%E5%BE%90%E6%B1%87%E5%8C%BA%E4%BA%BA%E6%B0%91%E6%94%BF%E5%BA%9C%E6%BC%95%E6%B2%B3%E6%B3%BE%E5%BC%80%E5%8F%91%E5%8C%BA%E5%90%88%E4%BD%9C%E7%BB%BC%E5%90%88%E5%8D%8F%E8%B0%83%E5%8A%9E%E5%85%AC%E5%AE%A4/Ebby/blog/qnsource/images/2018-04-28-cs231n-notes/cifar10pca.jpeg" alt="cifar10pca"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/cifar10pca.jpeg" alt="cifar10pca"></p>
 <blockquote>
 <p>所有预处理过程仅作用到训练数据中，并记录相关参数，验证数据和测试数据采用训练数据的结果进行预处理</p>
 </blockquote>
@@ -395,11 +395,11 @@ L_i = \sum_j y_{ij} \log(\sigma(f_j)) + (1 - y_{ij}) \log(1 - \sigma(f_j))</scri
 <h4 id="训练过程监测"><a href="#训练过程监测" class="headerlink" title="训练过程监测"></a>训练过程监测</h4><ol>
 <li>代价函数</li>
 </ol>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/learningrates.jpeg" alt="learningrates"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/learningrates.jpeg" alt="learningrates"></p>
 <ol>
 <li>训练/验证集准确率</li>
 </ol>
-<p><img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/accuracies.jpeg" alt="accuracies"></p>
+<p><img src="/qnsource/images/2018-04-28-cs231n-notes/accuracies.jpeg" alt="accuracies"></p>
 <ol>
 <li>更新参数比例</li>
 </ol>
@@ -410,7 +410,7 @@ L_i = \sum_j y_{ij} \log(\sigma(f_j)) + (1 - y_{ij}) \log(1 - \sigma(f_j))</scri
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># assume parameter vector W and its gradient vector dW</span></span><br><span class="line">param_scale = np.linalg.norm(W.ravel())</span><br><span class="line">update = -learning_rate*dW <span class="comment"># simple SGD update</span></span><br><span class="line">update_scale = np.linalg.norm(update.ravel())</span><br><span class="line">W += update <span class="comment"># the actual update</span></span><br><span class="line"><span class="keyword">print</span> update_scale / param_scale <span class="comment"># want ~1e-3</span></span><br></pre></td></tr></table></figure>
 <h4 id="超参优化"><a href="#超参优化" class="headerlink" title="超参优化"></a>超参优化</h4><ul>
 <li><code>learning_rate = 10 ** uniform(-6, 1)</code></li>
-<li>random serach &gt; grid search<img src="/2018/05/03/cs231n-lecture-4/../../qnsource/images/2018-04-28-cs231n-notes/gridsearchbad.jpeg" alt="gridsearchbad"></li>
+<li>random serach &gt; grid search<img src="/qnsource/images/2018-04-28-cs231n-notes/gridsearchbad.jpeg" alt="gridsearchbad"></li>
 </ul>
 <h4 id="模型组合"><a href="#模型组合" class="headerlink" title="模型组合"></a>模型组合</h4><ul>
 <li><strong>Same model, different initializations</strong>. Use cross-validation to determine the best hyperparameters, then train multiple models with the best set of hyperparameters but with different random initialization. The danger with this approach is that the variety is only due to initialization.</li>

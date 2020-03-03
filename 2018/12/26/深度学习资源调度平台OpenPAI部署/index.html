@@ -17,13 +17,13 @@
 <meta property="og:url" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/index.html">
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/sysarch.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/k8s-management.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/watchdog-error.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/k8s-management.png">
+<meta property="og:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/watchdog-error.png">
 <meta property="og:updated_time" content="2019-03-14T04:53:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习资源调度平台OpenPAI部署">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/sysarch.png">
+<meta name="twitter:image" content="http://blog.a-stack.com/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -193,7 +193,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/sysarch.png" alt="OpenPAI"></p>
+        <p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/sysarch.png" alt="OpenPAI"></p>
 <a id="more"></a>
 <blockquote>
 <p>date: 2018-12-26</p>
@@ -272,9 +272,9 @@
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/pai</span><br><span class="line">python paictl.py service start</span><br></pre></td></tr></table></figure>
 <p>此时可以通过kebernetes的管理界面查看服务所在容器的部署情况：<code>http://127.0.0.1:9090/#!/job?namespace=default</code></p>
-<p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/k8s-management.png" alt="k8s-management"></p>
+<p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/k8s-management.png" alt="k8s-management"></p>
 <p>在此步骤中遇到了<code>watchdog</code>无法部署成功的问题，指定的配置文件版本无法找到对应0.8.3的watchdog：</p>
-<p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/2018-12-26-深度学习资源调度平台OpenPAI部署/watchdog-error.png" alt="watchdog-error"></p>
+<p><img src="/2018/12/26/深度学习资源调度平台OpenPAI部署/watchdog-error.png" alt="watchdog-error"></p>
 <ul>
 <li><p>解决办法</p>
 <ul>
