@@ -11,13 +11,13 @@
   
   
   
-  <meta name="description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Lecture 6 Thursday April 19 Training">
+  <meta name="description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
 <meta name="keywords" content="人工智能,深度学习,技术,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cs231n课程笔记:（Lecture 6-7）Training Neural Networks">
 <meta property="og:url" content="http://blog.a-stack.com/2018/05/07/cs231n-lecture-6/index.html">
 <meta property="og:site_name" content="Ebby&#39;s Notes">
-<meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Lecture 6 Thursday April 19 Training">
+<meta property="og:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/architecture_input.png">
@@ -31,10 +31,10 @@
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png">
-<meta property="og:updated_time" content="2018-05-16T14:00:03.000Z">
+<meta property="og:updated_time" content="2020-03-04T12:17:07.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n课程笔记:（Lecture 6-7）Training Neural Networks">
-<meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。  概述cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：  课程主页： http://cs231n.stanford.edu/ 课程Notes：http://cs231n.github.io/      Lecture 6 Thursday April 19 Training">
+<meta name="twitter:description" content="摘要： 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。">
 <meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
@@ -206,7 +206,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>摘要：</strong> 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。</p>
-<!-- excerpt -->
+<a id="more"></a>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：</p>
 <ul>
 <li>课程主页： <a href="http://cs231n.stanford.edu/" target="_blank" rel="noopener">http://cs231n.stanford.edu/</a></li>
@@ -338,7 +338,6 @@ y_i = \lambda \hat x_i + \beta
 <h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><ol>
 <li><p>DropOut本质上也是一种模型组合学习</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># train</span></span><br><span class="line">H = np.maximum(<span class="number">0</span>, np.dot(W,X) + b)</span><br><span class="line">U = (np.random.rand(*H.shape) &lt; p) / p</span><br><span class="line">H *= U</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 </ol>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
@@ -474,7 +473,7 @@ var a = new Donate({
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
   		   
 		</div>
 

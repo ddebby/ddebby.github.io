@@ -368,7 +368,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/04.jpg" alt="Test Picture"></p>
+        <p><img src="/qnsource/cover/04.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong> 作为深度卷积神经网络的里程碑式的作品，ResNet为卷积网络往更深层次扩展指明了方向，本文结合相关论文总结一下ResNet中创造性的想法。</p>
       
     </div>
@@ -422,7 +422,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/03.jpg" alt="Ice and Sunshine"></p>
+        <p><img src="/qnsource/cover/03.jpg" alt="Ice and Sunshine"></p>
 <p><strong>摘要：</strong> 本文整理了常用的OpenCV图像处理操作的python代码，便于后续使用过程中的速查。</p>
       
     </div>
@@ -477,145 +477,6 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>摘要：</strong> 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。</p>
-<!-- excerpt -->
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：</p>
-<ul>
-<li>课程主页： <a href="http://cs231n.stanford.edu/" target="_blank" rel="noopener">http://cs231n.stanford.edu/</a></li>
-<li>课程Notes：<a href="http://cs231n.github.io/" target="_blank" rel="noopener">http://cs231n.github.io/</a></li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Lecture 6</th>
-<th>Thursday April 19</th>
-<th><strong>Training Neural Networks, part I</strong> Activation functions, initialization, dropout, batch normalization</th>
-<th><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_lecture06.pdf" target="_blank" rel="noopener">[slides]</a> <a href="http://cs231n.github.io/neural-networks-1/" target="_blank" rel="noopener">Neural Nets notes 1</a><a href="http://cs231n.github.io/neural-networks-2/" target="_blank" rel="noopener">Neural Nets notes 2</a><a href="http://cs231n.github.io/neural-networks-3/" target="_blank" rel="noopener">Neural Nets notes 3</a>tips/tricks: <a href="http://research.microsoft.com/pubs/192769/tricks-2012.pdf" target="_blank" rel="noopener">[1]</a>, <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf" target="_blank" rel="noopener">[2]</a>, <a href="http://arxiv.org/pdf/1206.5533v2.pdf" target="_blank" rel="noopener">[3]</a> (optional) <a href="http://www.nature.com/nature/journal/v521/n7553/full/nature14539.html" target="_blank" rel="noopener">Deep Learning [Nature]</a> (optional)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Discussion Section</td>
-<td>Friday April 20</td>
-<td><strong>Tips and tricks for tuning NNs</strong></td>
-<td><a href="https://docs.google.com/presentation/d/183aCHcSq-YsaokZrqI3khuy_zPbehG-XgkyA6L5W4t4/edit?usp=sharing" target="_blank" rel="noopener">[slides]</a></td>
-</tr>
-<tr>
-<td>Lecture 7</td>
-<td>Tuesday April 24</td>
-<td><strong>Training Neural Networks, part II</strong> Update rules, ensembles, data augmentation, transfer learning</td>
-<td><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_lecture07.pdf" target="_blank" rel="noopener">[slides]</a> <a href="http://cs231n.github.io/neural-networks-3/" target="_blank" rel="noopener">Neural Nets notes 3</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h2><ol>
-<li><p>Batch Normalization的计算</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\mu_i = \frac{1}{m} \sum_{k \in S_i} x_k\\
-\sigma_i = \sqrt{\frac{1}{m}\sum_{k\in S_i} (x_k-\mu_i)^2 + \epsilon}\\
-y_i = \lambda \hat x_i + \beta
-\end{align}</script><p>由于BN会受到batch size大小的影响，如果batch size太小，算出的均值和方差就会不准确，太大存储可能不够用。所以衍生出了几种优化表达。</p>
-</li>
-<li><p>其它归一化方法与BN的区别</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/normalization_methods.png" alt="normalization_methods"></p>
-</li>
-</ol>
-<ul>
-<li>BatchNorm： batch方向做归一化，计算 <code>N*H*W</code> 的均值；</li>
-<li>LayerNorm： channel方向做归一化，计算<code>C*H*W</code> 的均值；</li>
-<li>InstanceNorm： 一个channel内做归一化，计算<code>H*W</code>的均值；</li>
-<li>GroupNorm： 将Channel方向分为Group，然后每个Group内做归一化，计算<code>(C//G)*H*W</code>的均值</li>
-</ul>
-<blockquote>
-<p>当G=C时，GroupNorm为LayerNorm，当G=1时，GroupNorm为InstanceNorm</p>
-</blockquote>
-<h2 id="训练过程的网络优化技巧"><a href="#训练过程的网络优化技巧" class="headerlink" title="训练过程的网络优化技巧"></a>训练过程的网络优化技巧</h2><blockquote>
-<p>Parammeter tuning is more of an art.</p>
-</blockquote>
-<h3 id="网络优化-提升网络性能方法"><a href="#网络优化-提升网络性能方法" class="headerlink" title="网络优化/提升网络性能方法"></a>网络优化/提升网络性能方法</h3><ul>
-<li>获取更多训练数据</li>
-<li>增加网络复杂度</li>
-<li>选择更多优化算法</li>
-<li>训练更长时间</li>
-<li>修改批大小</li>
-<li>尝试正则化</li>
-<li>权衡过拟合/欠拟合</li>
-<li>…</li>
-</ul>
-<h3 id="参数调优"><a href="#参数调优" class="headerlink" title="参数调优"></a>参数调优</h3><p><strong>输入（超参）：</strong></p>
-<ul>
-<li>系统架构</li>
-<li>学习率、优化算法</li>
-<li>正则化（Dropout）</li>
-<li>批处理/批量归一化（BN）</li>
-</ul>
-<p><strong>输出（分析图表）：</strong></p>
-<ul>
-<li>损失曲线</li>
-<li>梯度基准</li>
-<li>准确率</li>
-<li>训练/验证数据集性能</li>
-<li>其它</li>
-</ul>
-<h3 id="架构选择与设计"><a href="#架构选择与设计" class="headerlink" title="架构选择与设计"></a>架构选择与设计</h3><ul>
-<li>架构选择<ul>
-<li>分类问题：AlexNet,VGG, ResNet,DenseNet, …</li>
-<li>语义分割：FCN, Dilated Convolution, Mask RCNN</li>
-<li>识别： Faster-RCNN, YOLO, SSD</li>
-<li>图像生成： UNet, Dilated Convolution, DCGAN, WGAN</li>
-<li>…</li>
-</ul>
-</li>
-<li>输入适配</li>
-</ul>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_input.png" alt="architecture_input"></p>
-<ul>
-<li>数据集适配</li>
-</ul>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_dataset.png" alt="architecture_dataset"></p>
-<ul>
-<li>输出任务适配</li>
-</ul>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/architecture_output.png" alt="architecture_output"></p>
-<h3 id="输出结果分析"><a href="#输出结果分析" class="headerlink" title="输出结果分析"></a>输出结果分析</h3><ol>
-<li>Loss不变化，网络没有学到任何信息：梯度没有应用到权重上，或者不匹配</li>
-</ol>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_learning.png" alt="tuning_tricks_not_learning"></p>
-<ol>
-<li><p>过拟合</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_overfitting_1.png" alt="tuning_tricks_overfitting_1"></p>
-</li>
-<li><p>不收敛：训练时间不足/学习率过低</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_converged.png" alt="tuning_tricks_not_converged"></p>
-</li>
-<li><p>慢启动</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_slow_start.png" alt="tuning_tricks_slow_start"></p>
-</li>
-<li><p>梯度更新方向错误</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_wrong_gradients.png" alt="tuning_tricks_wrong_gradients"></p>
-</li>
-<li><p>数据未打乱</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_not_shuffling_data.png" alt="tuning_tricks_not_shuffling_data"></p>
-</li>
-<li><p>损失函数出现<code>nans</code>值：模型中数据不稳定/较高的学习率</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_nans_loss.png" alt="tuning_tricks_nans_loss"></p>
-</li>
-<li><p>验证集效果优于训练集：验证集太小或分布异常</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/tuning_tricks_val_samll.png" alt="tuning_tricks_val_samll"></p>
-</li>
-</ol>
-<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><ol>
-<li><p>DropOut本质上也是一种模型组合学习</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># train</span></span><br><span class="line">H = np.maximum(<span class="number">0</span>, np.dot(W,X) + b)</span><br><span class="line">U = (np.random.rand(*H.shape) &lt; p) / p</span><br><span class="line">H *= U</span><br></pre></td></tr></table></figure>
-<p>​</p>
-</li>
-</ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li>Fei,Nish, Tips and tricks for tuning NNs</li>
-</ol>
-
       
     </div>
     <footer class="article-footer">
@@ -669,89 +530,6 @@ y_i = \lambda \hat x_i + \beta
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>摘要：</strong> 计划花一个月的时间刷一遍斯坦福的机器视觉课程cs231n，并做笔记记录每天学习到的内容。</p>
-<!-- excerpt -->
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>cs231n是斯坦福在深度学习和机器视觉领域的入门经典课程，相关资源如下：</p>
-<ul>
-<li>课程主页： <a href="http://cs231n.stanford.edu/" target="_blank" rel="noopener">http://cs231n.stanford.edu/</a></li>
-<li>课程Notes：<a href="http://cs231n.github.io/" target="_blank" rel="noopener">http://cs231n.github.io/</a></li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Event Type</th>
-<th>Date</th>
-<th>Description</th>
-<th>Course Materials</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Lecture 5</td>
-<td>Tuesday April 17</td>
-<td><strong>Convolutional Neural Networks</strong> History Convolution and pooling ConvNets outside vision</td>
-<td><a href="http://cs231n.stanford.edu/slides/2018/cs231n_2018_lecture05.pdf" target="_blank" rel="noopener">[slides]</a> <a href="http://cs231n.github.io/convolutional-networks/" target="_blank" rel="noopener">ConvNet notes</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Convolutional-Neural-Network-CNN-ConvNet"><a href="#Convolutional-Neural-Network-CNN-ConvNet" class="headerlink" title="Convolutional Neural Network(CNN/ConvNet)"></a>Convolutional Neural Network(CNN/ConvNet)</h2><blockquote>
-<p>更多内容参见<sup><a href="#fn_4" id="reffn_4">4</a></sup></p>
-</blockquote>
-<p><strong>FCN vs CNN</strong> </p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/FCN_CNN.png" alt="FCN_CNN"></p>
-<p><strong>CNN的层次结构</strong></p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/convnet.jpeg" alt="convnet"></p>
-<p><strong>The brain view</strong>. If you’re a fan of the brain/neuron analogies, every entry in the 3D output volume can also be interpreted as an output of a neuron that looks at only a small region in the input and shares parameters with all neurons to the left and right spatially (since these numbers all result from applying the same filter). </p>
-<p><strong>Local Connectivity.</strong> filter 大小的区域内容，卷积层的每个神经元只与前一层filter中的神经元保持连接，深度为上一层网络的深度。</p>
-<p><img src="/qnsource/images/2018-04-28-cs231n-notes/depthcol.jpeg" alt="depthcol"></p>
-<p><strong>卷积层的输出：</strong></p>
-<script type="math/tex; mode=display">
-\frac{W - F + 2P}{S} + 1</script><p>其中，</p>
-<ul>
-<li>$W$ 代表输入层大小；</li>
-<li>$F$ filter的大小；</li>
-<li>$P$ Zero-Padding的大小；</li>
-<li>$S$ 滑动窗口滑动步长</li>
-</ul>
-<p>当$S=1$, $P=(F-1)/2$ 时，输入输出网络具有相同的大小。</p>
-<p><strong>参数共享：</strong></p>
-<ul>
-<li>卷积神经网络<strong>每一层</strong>共享同一套权重参数（W，b），降低参数总量。</li>
-<li>全部参数数目为：$(F\cdot F \cdot D_1 +1)* K$,其中 $D_1$ 为上一层的深度，$K$ 为filter个数。</li>
-</ul>
-<blockquote>
-<p>直观解释，在一个图像一个filter区域学到的特征（比如纹理），在图像其它地方用来匹配纹理特征也奏效</p>
-</blockquote>
-<h4 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h4><p><img src="/qnsource/images/2018-04-28-cs231n-notes/max-pooling.png" alt="max-pooling"></p>
-<ul>
-<li>一般max pooling常采用的参数为$F=3,S=2$ (Overlapping pooling),$F=2, S=2$ (Max Pooling);</li>
-<li>反向传播时，对于$max(x,y)$ 形式，梯度传递最大的激活值；</li>
-<li>一般很少使用$F \gt 3$ 的filter</li>
-<li>目前很多新的论文中已经尽量避免使用池化操作，构建全卷积的神经网络架构，除了最后一层采用全局池化层。</li>
-</ul>
-<h4 id="FC和CNN可以相互转换"><a href="#FC和CNN可以相互转换" class="headerlink" title="FC和CNN可以相互转换"></a>FC和CNN可以相互转换</h4><ul>
-<li>FC表示CNN： 使用一个很大的参数矩阵，矩阵中多数单元为0少数表征本地连接的地方为非0，同时很多单元的权重相同（参数共享的描述）；</li>
-<li>CNN表示FC： 使用K层的1x1卷积网络可以描述K个节点的FC。</li>
-</ul>
-<h3 id="堆叠小size卷积核的好处"><a href="#堆叠小size卷积核的好处" class="headerlink" title="堆叠小size卷积核的好处"></a>堆叠小size卷积核的好处</h3><ul>
-<li>比大的卷积核有更多的非线性，可以获得更复杂的特征提取能力</li>
-<li>更少的权重数目</li>
-</ul>
-<h4 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">INPUT: [<span class="number">224</span>x224x3]        memory:  <span class="number">224</span>*<span class="number">224</span>*<span class="number">3</span>=<span class="number">150</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-64</span>: [<span class="number">224</span>x224x64]  memory:  <span class="number">224</span>*<span class="number">224</span>*<span class="number">64</span>=<span class="number">3.2</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">3</span>)*<span class="number">64</span> = <span class="number">1</span>,<span class="number">728</span></span><br><span class="line">CONV3<span class="number">-64</span>: [<span class="number">224</span>x224x64]  memory:  <span class="number">224</span>*<span class="number">224</span>*<span class="number">64</span>=<span class="number">3.2</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">64</span>)*<span class="number">64</span> = <span class="number">36</span>,<span class="number">864</span></span><br><span class="line">POOL2: [<span class="number">112</span>x112x64]  memory:  <span class="number">112</span>*<span class="number">112</span>*<span class="number">64</span>=<span class="number">800</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-128</span>: [<span class="number">112</span>x112x128]  memory:  <span class="number">112</span>*<span class="number">112</span>*<span class="number">128</span>=<span class="number">1.6</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">64</span>)*<span class="number">128</span> = <span class="number">73</span>,<span class="number">728</span></span><br><span class="line">CONV3<span class="number">-128</span>: [<span class="number">112</span>x112x128]  memory:  <span class="number">112</span>*<span class="number">112</span>*<span class="number">128</span>=<span class="number">1.6</span>M   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">128</span>)*<span class="number">128</span> = <span class="number">147</span>,<span class="number">456</span></span><br><span class="line">POOL2: [<span class="number">56</span>x56x128]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">128</span>=<span class="number">400</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-256</span>: [<span class="number">56</span>x56x256]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">256</span>=<span class="number">800</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">128</span>)*<span class="number">256</span> = <span class="number">294</span>,<span class="number">912</span></span><br><span class="line">CONV3<span class="number">-256</span>: [<span class="number">56</span>x56x256]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">256</span>=<span class="number">800</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">256</span>)*<span class="number">256</span> = <span class="number">589</span>,<span class="number">824</span></span><br><span class="line">CONV3<span class="number">-256</span>: [<span class="number">56</span>x56x256]  memory:  <span class="number">56</span>*<span class="number">56</span>*<span class="number">256</span>=<span class="number">800</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">256</span>)*<span class="number">256</span> = <span class="number">589</span>,<span class="number">824</span></span><br><span class="line">POOL2: [<span class="number">28</span>x28x256]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">256</span>=<span class="number">200</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">28</span>x28x512]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">512</span>=<span class="number">400</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">256</span>)*<span class="number">512</span> = <span class="number">1</span>,<span class="number">179</span>,<span class="number">648</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">28</span>x28x512]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">512</span>=<span class="number">400</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">28</span>x28x512]  memory:  <span class="number">28</span>*<span class="number">28</span>*<span class="number">512</span>=<span class="number">400</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">POOL2: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: <span class="number">0</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">CONV3<span class="number">-512</span>: [<span class="number">14</span>x14x512]  memory:  <span class="number">14</span>*<span class="number">14</span>*<span class="number">512</span>=<span class="number">100</span>K   weights: (<span class="number">3</span>*<span class="number">3</span>*<span class="number">512</span>)*<span class="number">512</span> = <span class="number">2</span>,<span class="number">359</span>,<span class="number">296</span></span><br><span class="line">POOL2: [<span class="number">7</span>x7x512]  memory:  <span class="number">7</span>*<span class="number">7</span>*<span class="number">512</span>=<span class="number">25</span>K  weights: <span class="number">0</span></span><br><span class="line">FC: [<span class="number">1</span>x1x4096]  memory:  <span class="number">4096</span>  weights: <span class="number">7</span>*<span class="number">7</span>*<span class="number">512</span>*<span class="number">4096</span> = <span class="number">102</span>,<span class="number">760</span>,<span class="number">448</span></span><br><span class="line">FC: [<span class="number">1</span>x1x4096]  memory:  <span class="number">4096</span>  weights: <span class="number">4096</span>*<span class="number">4096</span> = <span class="number">16</span>,<span class="number">777</span>,<span class="number">216</span></span><br><span class="line">FC: [<span class="number">1</span>x1x1000]  memory:  <span class="number">1000</span> weights: <span class="number">4096</span>*<span class="number">1000</span> = <span class="number">4</span>,<span class="number">096</span>,<span class="number">000</span></span><br><span class="line"></span><br><span class="line">TOTAL memory: <span class="number">24</span>M * <span class="number">4</span> bytes ~= <span class="number">93</span>MB / image (only forward! ~*<span class="number">2</span> <span class="keyword">for</span> bwd)</span><br><span class="line">TOTAL params: <span class="number">138</span>M parameters</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>存储空间的使用主要是前面几层中间变量的存储；权重数目主要集中在后面几个全联通网络中。</p>
-</blockquote>
-<ul>
-<li>存储空间的计算：数据个数 x 4(bytes)</li>
-</ul>
-<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ul>
-<li>输入图像尺寸：2的幂次方，Common numbers include 32 (e.g. CIFAR-10), 64, 96 (e.g. STL-10), or 224 (e.g. common ImageNet ConvNets), 384, and 512.</li>
-</ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_4">
-<sup>4</sup>. <a href="http://cs231n.github.io/convolutional-networks/" target="_blank" rel="noopener">cs231n notes: CNN</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
-</blockquote>
-
       
     </div>
     <footer class="article-footer">
@@ -1202,7 +980,7 @@ y_i = \lambda \hat x_i + \beta
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
   		   
 		</div>
 

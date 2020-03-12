@@ -20,7 +20,7 @@
 <meta property="og:description" content="摘要：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/banner/19.jpg">
-<meta property="og:updated_time" content="2018-07-20T15:52:52.000Z">
+<meta property="og:updated_time" content="2020-03-04T12:08:40.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ImageNet-DataSet">
 <meta name="twitter:description" content="摘要：">
@@ -171,7 +171,7 @@
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/19.jpg" rel="gallery_ck7c3knht00329ou4bg312q3l">
+      <a class="article-gallery-img fancybox" href="http://p4ygzcmtw.bkt.clouddn.com/banner/19.jpg" rel="gallery_ck7o7fam50037uou46cevlmb3">
         <img src="http://p4ygzcmtw.bkt.clouddn.com/banner/19.jpg" itemprop="image">
       </a>
     
@@ -204,7 +204,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/09.jpg" alt="ImageNET"></p>
+        <p><img src="/qnsource/cover/09.jpg" alt="ImageNET"></p>
 <p><strong>摘要：</strong></p>
 <a id="more"></a>
 <h2 id="ImageNet数据集"><a href="#ImageNet数据集" class="headerlink" title="ImageNet数据集"></a>ImageNet数据集</h2><p>ImageNet数据集是伴随着CNN和机器视觉乃至人工智能发展的里程碑式的数据集，虽然利用该数据集大规模机器视觉比赛2017年以后停止举办，但该数据集对整个人工智能产业革命的影响必将持续下去。</p>
@@ -271,7 +271,7 @@
 <li>下载数据集中每个文件采用WordNetID的方式命名，比如<code>n01440764</code>；</li>
 <li>每个分类有732~1300张图片</li>
 <li>使用MXNET的<code>.rec</code>格式文件存储数据；</li>
-<li>​</li>
+<li></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dir=./</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> `ls *.tar`</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">    filename=`basename <span class="variable">$x</span> .tar`</span><br><span class="line">    mkdir <span class="variable">$filename</span></span><br><span class="line">    tar -xvf <span class="variable">$x</span> -C ./<span class="variable">$filename</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 <h3 id="关键文件"><a href="#关键文件" class="headerlink" title="关键文件"></a>关键文件</h3><p><code>map_clsloc.txt</code>: 记录了WordNet ID到分类名称的映射关系，格式如下：</p>
@@ -279,8 +279,9 @@
 <ul>
 <li><p>构建一个<code>.lst</code>文件，包括： [图像ID， 标签， 图像存储的完整地址]</p>
 <figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wc -l /raid/datasets/imagenet/lists/*.lst </span><br><span class="line"><span class="symbol">50000 </span>/raid/datasets/imagenet/lists/test.lst </span><br><span class="line"><span class="symbol">1231167 </span>/raid/datasets/imagenet/lists/train.lst </span><br><span class="line"><span class="symbol">48238 </span>/raid/datasets/imagenet/lists/<span class="keyword">val</span>.lst </span><br><span class="line"><span class="symbol">1329405 </span>total</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
+</ul>
+<ul>
 <li><p>去除黑名单数据</p>
 </li>
 <li><p>创建<code>.rec</code> 文件</p>
@@ -443,7 +444,7 @@ var a = new Donate({
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
   		   
 		</div>
 

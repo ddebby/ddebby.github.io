@@ -19,12 +19,12 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 本文整理了常用的OpenCV图像处理操作的python代码，便于后续使用过程中的速查。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://p4ygzcmtw.bkt.clouddn.com/cover/03.jpg">
-<meta property="og:updated_time" content="2018-05-22T07:07:39.000Z">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/cover/03.jpg">
+<meta property="og:updated_time" content="2020-03-04T12:16:46.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenCV and Python">
 <meta name="twitter:description" content="摘要： 本文整理了常用的OpenCV图像处理操作的python代码，便于后续使用过程中的速查。">
-<meta name="twitter:image" content="http://p4ygzcmtw.bkt.clouddn.com/cover/03.jpg">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/cover/03.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
   
@@ -194,7 +194,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://p4ygzcmtw.bkt.clouddn.com/cover/03.jpg" alt="Ice and Sunshine"></p>
+        <p><img src="/qnsource/cover/03.jpg" alt="Ice and Sunshine"></p>
 <p><strong>摘要：</strong> 本文整理了常用的OpenCV图像处理操作的python代码，便于后续使用过程中的速查。</p>
 <a id="more"></a>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>OpenCV：</strong> is an image and video processing library with bindings in C++, C, Python, and Java. OpenCV is used for all sorts of image and video analysis, like facial recognition and detection, license plate reading, photo editing, advanced robotic vision, optical character recognition, and a whole lot more.</p>
@@ -205,8 +205,9 @@
 <h2 id="图像-视频读写"><a href="#图像-视频读写" class="headerlink" title="图像/视频读写"></a>图像/视频读写</h2><ol>
 <li><p>图像读写</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#IMREAD_GRAYSCALE（0），IMREAD_COLOR（1），IMREAD_UNCHANGED（-1）</span></span><br><span class="line">img = cv2.imread(<span class="string">'test.jpg'</span>,cv2.IMREAD_GRAYSCALE)</span><br><span class="line">cv2.imshow(<span class="string">'image'</span>,img)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line">cv2.destroyAllWindows()</span><br><span class="line"></span><br><span class="line">plt.imshow(img, cmap = <span class="string">'gray'</span>, interpolation = <span class="string">'bicubic'</span>)</span><br><span class="line"><span class="comment"># write an image</span></span><br><span class="line">cv2.imwrite(<span class="string">'watchgray.png'</span>,img)</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
+</ol>
+<ol>
 <li><p>视频操作</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line">cap = cv2.VideoCapture(<span class="number">0</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</span><br><span class="line">    ret, frame = cap.read()</span><br><span class="line">    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</span><br><span class="line"> </span><br><span class="line">    cv2.imshow(<span class="string">'frame'</span>,gray)</span><br><span class="line">    <span class="keyword">if</span> cv2.waitKey(<span class="number">1</span>) &amp; <span class="number">0xFF</span> == ord(<span class="string">'q'</span>):</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">cap.release()</span><br><span class="line">cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure>
 <p>保存视频录像：</p>
@@ -372,7 +373,7 @@ var a = new Donate({
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
   		   
 		</div>
 

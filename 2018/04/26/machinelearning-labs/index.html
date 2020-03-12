@@ -11,13 +11,13 @@
   
   
   
-  <meta name="description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。  概要 可以使用Matlab Online进行代码测试，地址; 相关代码已经传输至Github： https://github.com/ddebby/machine_learning_cousera.git  Lab1: 线性回归1. 简单线性">
+  <meta name="description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。">
 <meta name="keywords" content="人工智能,深度学习,技术,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《机器学习》课程实验回顾">
 <meta property="og:url" content="http://blog.a-stack.com/2018/04/26/machinelearning-labs/index.html">
 <meta property="og:site_name" content="Ebby&#39;s Notes">
-<meta property="og:description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。  概要 可以使用Matlab Online进行代码测试，地址; 相关代码已经传输至Github： https://github.com/ddebby/machine_learning_cousera.git  Lab1: 线性回归1. 简单线性">
+<meta property="og:description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_01.jpg">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_02.jpg">
@@ -33,10 +33,10 @@
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-26-machinelearning-labs/lab8_01.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-26-machinelearning-labs/lab8_02.png">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-26-machinelearning-labs/lab8_03.png">
-<meta property="og:updated_time" content="2018-05-15T09:14:33.000Z">
+<meta property="og:updated_time" content="2020-03-04T12:18:36.548Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《机器学习》课程实验回顾">
-<meta name="twitter:description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。  概要 可以使用Matlab Online进行代码测试，地址; 相关代码已经传输至Github： https://github.com/ddebby/machine_learning_cousera.git  Lab1: 线性回归1. 简单线性">
+<meta name="twitter:description" content="摘要： Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。">
 <meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/linear_regression_01.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
@@ -208,7 +208,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>摘要：</strong> Cousera上机器学习课程提供了八个实验作业，使用MATLAB进行动手实验，熟悉相关技术，本文对实验中的关键内容进行总结归纳，方便以后及时查找。</p>
-<!-- excerpt -->
+<a id="more"></a>
 <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ul>
 <li>可以使用Matlab Online进行代码测试，<a href="https://matlab.mathworks.com/" target="_blank" rel="noopener">地址</a>;</li>
 <li>相关代码已经传输至Github： <a href="https://github.com/ddebby/machine_learning_cousera.git" target="_blank" rel="noopener">https://github.com/ddebby/machine_learning_cousera.git</a></li>
@@ -313,7 +313,6 @@ p(x;\mu,\Sigma) = \dfrac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} exp(-1/2(x-\mu)^T\Sigma
 <li>在更复杂场景下的应用，示例提供了个输入为11维特征的数据，对其异常数据进行预测，代码片段如下：</li>
 </ol>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%  Apply the same steps to the larger dataset</span></span><br><span class="line">[mu sigma2] = estimateGaussian(X);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Training set </span></span><br><span class="line">p = multivariateGaussian(X, mu, sigma2);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Cross-validation set</span></span><br><span class="line">pval = multivariateGaussian(Xval, mu, sigma2);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Find the best threshold</span></span><br><span class="line">[epsilon F1] = selectThreshold(yval, pval);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Best epsilon found using cross-validation: %e\n'</span>, epsilon);</span><br><span class="line">fprintf(<span class="string">'Best F1 on Cross Validation Set:  %f\n'</span>, F1);</span><br><span class="line">fprintf(<span class="string">'# Outliers found: %d\n\n'</span>, sum(p &lt; epsilon));</span><br></pre></td></tr></table></figure>
-<p>​</p>
 <h2 id="Lab-8-2：推荐系统"><a href="#Lab-8-2：推荐系统" class="headerlink" title="Lab 8.2：推荐系统"></a>Lab 8.2：推荐系统</h2><p>本实验将实现协同过滤算法，并应用到电影推荐之中。数据集来自943个用户的1682部电影的评分数据，每个评分范围为1-5，可以存在多个未评分数据。</p>
 <ul>
 <li>$X$ 为num_movies x num_features，是电影的特征矩阵</li>
@@ -342,9 +341,7 @@ J(x,\theta) = \dfrac{1}{2} \displaystyle \sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% ================== Part 8: Recommendation for you ====================</span></span><br><span class="line"><span class="comment">%  After training the model, you can now make recommendations by computing</span></span><br><span class="line"><span class="comment">%  the predictions matrix.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line">p = X * Theta';</span><br><span class="line">my_predictions = p(:,<span class="number">1</span>) + Ymean;</span><br><span class="line"></span><br><span class="line">movieList = loadMovieList();</span><br><span class="line"></span><br><span class="line">[r, ix] = sort(my_predictions, <span class="string">'descend'</span>);</span><br><span class="line">fprintf(<span class="string">'\nTop recommendations for you:\n'</span>);</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">10</span></span><br><span class="line">    <span class="built_in">j</span> = ix(<span class="built_in">i</span>);</span><br><span class="line">    fprintf(<span class="string">'Predicting rating %.1f for movie %s\n'</span>, my_predictions(<span class="built_in">j</span>), ...</span><br><span class="line">            movieList&#123;j&#125;);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>输出结果：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Top recommendations <span class="keyword">for</span> you:</span><br><span class="line">Predicting rating 5.0 <span class="keyword">for</span> movie Someone Else<span class="string">'s America (1995)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Aiqing wansui (1994)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Great Day in Harlem, A (1994)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Prefontaine (1997)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie They Made Me a Criminal (1939)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Entertaining Angels: The Dorothy Day Story (1996)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Saint of Fort Washington, The (1993)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Santa with Muscles (1996)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Star Kid (1997)</span></span><br><span class="line"><span class="string">Predicting rating 5.0 for movie Marlene Dietrich: Shadow and Light (1996)</span></span><br></pre></td></tr></table></figure>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li>​</li>
-</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>1. </p>
 
       
     </div>
@@ -442,7 +439,7 @@ var a = new Donate({
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
 	      
 	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利</p>
+  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
   		   
 		</div>
 
