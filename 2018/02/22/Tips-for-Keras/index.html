@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  <title>tips for keras | Ebby&#39;s Notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-    <meta name="keywords" content="人工智能, AI, 神经网络, 算法">
-  
-  
-  
-  
-  <meta name="description" content="撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。">
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Tips for Keras - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。">
 <meta name="keywords" content="技巧,AI,人工智能,Keras">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tips for Keras">
@@ -19,182 +18,167 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/2018/02/22/Tips-for-Keras/acc&loss.png">
+<meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
 <meta property="og:updated_time" content="2018-11-20T15:12:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips for Keras">
 <meta name="twitter:description" content="撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。">
-<meta name="twitter:image" content="http://blog.a-stack.com/2018/02/22/Tips-for-Keras/acc&loss.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
-  
-
-  
-
-  <link rel="icon" href="/css/images/logo.png">
-  <link rel="apple-touch-icon" href="/css/images/logo.png">
-  
-    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
-  
-  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css">
-
-  
-    <link rel="stylesheet" href="/css/dialog.css">
-  
-
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css">
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css">
-  
-
-</head>
-</html>
+<meta name="twitter:image" content="http://blog.a-stack.com/images/og_image.png">
 
 
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
 
-            
-              <a class="brand" style="
-                 border-width: 0px;  margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="/">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
-                
-                  <li><div id="search-form-wrap">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
-<script src="/js/insight.js"></script>
-
-</div></li>
-            </div>
-          </div>
-                
-      </div>
-    </div>
-
-</header>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 
 
-
-      
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
             
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-Tips-for-Keras" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      Tips for Keras
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/02/22/Tips-for-Keras/" class="article-date">
-	  <time datetime="2018-02-22T05:20:28.000Z" itemprop="datePublished">2018-02-22</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/工具/">工具</a><a class="article-category-link" href="/categories/工具/Keras/">Keras</a>
-
-      
-      
-
+                <img src="/images/logo02.png" alt="Tips for Keras" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。</p>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-02-22T05:20:28.000Z">2018-02-22</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/工具/">工具</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/工具/Keras/">Keras</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分钟 读完 (大约 1882 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Tips for Keras
+            
+        </h1>
+        <div class="content">
+            <p>撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。</p>
 <a id="more"></a>
 <h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><h3 id="失衡数据处理"><a href="#失衡数据处理" class="headerlink" title="失衡数据处理"></a>失衡数据处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.utils <span class="keyword">import</span> class_weight</span><br><span class="line"></span><br><span class="line">list_classes = [<span class="string">"toxic"</span>, <span class="string">"severe_toxic"</span>, <span class="string">"obscene"</span>, <span class="string">"threat"</span>, <span class="string">"insult"</span>, <span class="string">"identity_hate"</span>]</span><br><span class="line">y = train[list_classes].values</span><br><span class="line">sample_weights = class_weight.compute_sample_weight(<span class="string">'balanced'</span>, y)</span><br><span class="line"></span><br><span class="line">model.fit(X_t, y, batch_size=batch_size,epochs=epochs,validation_split=<span class="number">0.1</span>,</span><br><span class="line">          sample_weight=sample_weights, callbacks=callbacks_list)</span><br></pre></td></tr></table></figure>
 <h3 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator, array_to_img, img_to_array, load_img</span><br><span class="line"><span class="keyword">from</span> random_eraser <span class="keyword">import</span> get_random_eraser</span><br><span class="line"></span><br><span class="line">datagen = ImageDataGenerator(</span><br><span class="line">        rotation_range=<span class="number">20</span>,            <span class="comment">#旋转</span></span><br><span class="line">        width_shift_range=<span class="number">0.1</span>,       <span class="comment">#水平位置平移</span></span><br><span class="line">        height_shift_range=<span class="number">0.2</span>,      <span class="comment">#上下位置平移</span></span><br><span class="line">        shear_range=<span class="number">0.5</span>,             <span class="comment">#错切变换，让所有点的x坐标(或者y坐标)保持不变，而对应的y坐标(或者x坐标)则按比例发生平移</span></span><br><span class="line">        zoom_range=[<span class="number">0.9</span>,<span class="number">0.9</span>],        <span class="comment"># 单方向缩放，当一个数值时两个方向等比例缩放，参数为list时长宽不同程度缩放。参数大于0小于1时，执行的是放大操作，当参数大于1时，执行的是缩小操作。</span></span><br><span class="line">        channel_shift_range = <span class="number">40</span>,   <span class="comment">#偏移通道数值，改变图片颜色，越大颜色越深</span></span><br><span class="line">        horizontal_flip=<span class="keyword">True</span>,       <span class="comment">#水平翻转，垂直翻转vertical_flip</span></span><br><span class="line">        fill_mode=<span class="string">'nearest'</span>,         <span class="comment">#操作导致图像缺失时填充方式。“constant”、“nearest”（默认）、“reflect”和“wrap”</span></span><br><span class="line">        preprocessing_function = get_random_eraser(p=<span class="number">0.7</span>,v_l=<span class="number">0</span>,v_h=<span class="number">255</span>,s_l=<span class="number">0.01</span>,s_h=<span class="number">0.03</span>,r_1=<span class="number">1</span>,r_2=<span class="number">1.5</span>,pixel_level=<span class="keyword">True</span>)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
@@ -221,8 +205,8 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(layers.GRU(<span class="number">32</span>,</span><br><span class="line">                     dropout=<span class="number">0.1</span>,</span><br><span class="line">                     recurrent_dropout=<span class="number">0.5</span>,</span><br><span class="line">                     return_sequences=<span class="keyword">True</span>,</span><br><span class="line">                     input_shape=(<span class="keyword">None</span>, float_data.shape[<span class="number">-1</span>])))</span><br><span class="line">                     input_shape=(<span class="keyword">None</span>, float_data.shape[<span class="number">-1</span>])))</span><br><span class="line">model.add(layers.GRU(<span class="number">64</span>, activation=<span class="string">'relu'</span>,</span><br><span class="line">                     dropout=<span class="number">0.1</span>, </span><br><span class="line">                     recurrent_dropout=<span class="number">0.5</span>))</span><br></pre></td></tr></table></figure>
 <h2 id="超参选择"><a href="#超参选择" class="headerlink" title="超参选择"></a>超参选择</h2><ul>
-<li><a href="https://github.com/maxpumperla/hyperas?utm_medium=hao.caibaojian.com&amp;utm_source=hao.caibaojian.com" target="_blank" rel="noopener">Hyperas</a></li>
-<li>Documents: <a href="http://maxpumperla.com/hyperas/" target="_blank" rel="noopener">http://maxpumperla.com/hyperas/</a></li>
+<li><a href="https://github.com/maxpumperla/hyperas?utm_medium=hao.caibaojian.com&amp;utm_source=hao.caibaojian.com">Hyperas</a></li>
+<li>Documents: <a href="http://maxpumperla.com/hyperas/">http://maxpumperla.com/hyperas/</a></li>
 <li><code>pip install hyperas</code></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> hyperopt <span class="keyword">import</span> Trials, STATUS_OK, tpe</span><br><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Dense, Dropout, Activation</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> np_utils</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> hyperas <span class="keyword">import</span> optim</span><br><span class="line"><span class="keyword">from</span> hyperas.distributions <span class="keyword">import</span> choice, uniform</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Data providing function:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This function is separated from create_model() so that hyperopt</span></span><br><span class="line"><span class="string">    won't reload data for each evaluation run.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    (x_train, y_train), (x_test, y_test) = mnist.load_data()</span><br><span class="line">    x_train = x_train.reshape(<span class="number">60000</span>, <span class="number">784</span>)</span><br><span class="line">    x_test = x_test.reshape(<span class="number">10000</span>, <span class="number">784</span>)</span><br><span class="line">    x_train = x_train.astype(<span class="string">'float32'</span>)</span><br><span class="line">    x_test = x_test.astype(<span class="string">'float32'</span>)</span><br><span class="line">    x_train /= <span class="number">255</span></span><br><span class="line">    x_test /= <span class="number">255</span></span><br><span class="line">    nb_classes = <span class="number">10</span></span><br><span class="line">    y_train = np_utils.to_categorical(y_train, nb_classes)</span><br><span class="line">    y_test = np_utils.to_categorical(y_test, nb_classes)</span><br><span class="line">    <span class="keyword">return</span> x_train, y_train, x_test, y_test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_model</span><span class="params">(x_train, y_train, x_test, y_test)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Model providing function:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Create Keras model with double curly brackets dropped-in as needed.</span></span><br><span class="line"><span class="string">    Return value has to be a valid python dictionary with two customary keys:</span></span><br><span class="line"><span class="string">        - loss: Specify a numeric evaluation metric to be minimized</span></span><br><span class="line"><span class="string">        - status: Just use STATUS_OK and see hyperopt documentation if not feasible</span></span><br><span class="line"><span class="string">    The last one is optional, though recommended, namely:</span></span><br><span class="line"><span class="string">        - model: specify the model just created so that we can later use it again.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    model = Sequential()</span><br><span class="line">    model.add(Dense(<span class="number">512</span>, input_shape=(<span class="number">784</span>,)))</span><br><span class="line">    model.add(Activation(<span class="string">'relu'</span>))</span><br><span class="line">    model.add(Dropout(&#123;&#123;uniform(<span class="number">0</span>, <span class="number">1</span>)&#125;&#125;))</span><br><span class="line">    model.add(Dense(&#123;&#123;choice([<span class="number">256</span>, <span class="number">512</span>, <span class="number">1024</span>])&#125;&#125;))</span><br><span class="line">    model.add(Activation(&#123;&#123;choice([<span class="string">'relu'</span>, <span class="string">'sigmoid'</span>])&#125;&#125;))</span><br><span class="line">    model.add(Dropout(&#123;&#123;uniform(<span class="number">0</span>, <span class="number">1</span>)&#125;&#125;))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># If we choose 'four', add an additional fourth layer</span></span><br><span class="line">    <span class="keyword">if</span> &#123;&#123;choice([<span class="string">'three'</span>, <span class="string">'four'</span>])&#125;&#125; == <span class="string">'four'</span>:</span><br><span class="line">        model.add(Dense(<span class="number">100</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># We can also choose between complete sets of layers</span></span><br><span class="line"></span><br><span class="line">        model.add(&#123;&#123;choice([Dropout(<span class="number">0.5</span>), Activation(<span class="string">'linear'</span>)])&#125;&#125;)</span><br><span class="line">        model.add(Activation(<span class="string">'relu'</span>))</span><br><span class="line"></span><br><span class="line">    model.add(Dense(<span class="number">10</span>))</span><br><span class="line">    model.add(Activation(<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">    model.compile(loss=<span class="string">'categorical_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>],</span><br><span class="line">                  optimizer=&#123;&#123;choice([<span class="string">'rmsprop'</span>, <span class="string">'adam'</span>, <span class="string">'sgd'</span>])&#125;&#125;)</span><br><span class="line"></span><br><span class="line">    result = model.fit(x_train, y_train,</span><br><span class="line">              batch_size=&#123;&#123;choice([<span class="number">64</span>, <span class="number">128</span>])&#125;&#125;,</span><br><span class="line">              epochs=<span class="number">2</span>,</span><br><span class="line">              verbose=<span class="number">2</span>,</span><br><span class="line">              validation_split=<span class="number">0.1</span>)</span><br><span class="line">    <span class="comment">#get the highest validation accuracy of the training epochs</span></span><br><span class="line">    validation_acc = np.amax(result.history[<span class="string">'val_acc'</span>]) </span><br><span class="line">    print(<span class="string">'Best validation acc of epoch:'</span>, validation_acc)</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">'loss'</span>: -validation_acc, <span class="string">'status'</span>: STATUS_OK, <span class="string">'model'</span>: model&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    best_run, best_model = optim.minimize(model=create_model,</span><br><span class="line">                                          data=data,</span><br><span class="line">                                          algo=tpe.suggest,</span><br><span class="line">                                          max_evals=<span class="number">5</span>,</span><br><span class="line">                                          trials=Trials())</span><br><span class="line">    X_train, Y_train, X_test, Y_test = data()</span><br><span class="line">    print(<span class="string">"Evalutation of best performing model:"</span>)</span><br><span class="line">    print(best_model.evaluate(X_test, Y_test))</span><br><span class="line">    print(<span class="string">"Best performing model chosen hyper-parameters:"</span>)</span><br><span class="line">    print(best_run)</span><br></pre></td></tr></table></figure>
@@ -231,226 +215,424 @@
 <h3 id="3-用来实时跟踪训练过程"><a href="#3-用来实时跟踪训练过程" class="headerlink" title="3. 用来实时跟踪训练过程"></a>3. 用来实时跟踪训练过程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hiddenlayer <span class="keyword">as</span> hl</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create output directory in project root</span></span><br><span class="line">ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))</span><br><span class="line">OUTPUT_DIR = os.path.join(ROOT_DIR, <span class="string">"output"</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(OUTPUT_DIR):</span><br><span class="line">    os.makedirs(OUTPUT_DIR)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义回调函数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MatrixCallback</span><span class="params">(Callback)</span>:</span></span><br><span class="line">    <span class="string">"""Extending Keras' Callback to compute accuracy and loss matrix."""</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Use a HiddenLayer History object to store metrics</span></span><br><span class="line">        self.history = hl.History()</span><br><span class="line">        self.history2 = hl.History() </span><br><span class="line">        <span class="comment"># Use our custom HiddenLayer Canvas object to draw the metrics</span></span><br><span class="line">        self.canvas = hl.Canvas()       </span><br><span class="line">         </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_train_begin</span><span class="params">(self, logs=&#123;&#125;)</span>:</span></span><br><span class="line">        self.epoch = <span class="number">0</span></span><br><span class="line">              </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_epoch_end</span><span class="params">(self, batch, logs=&#123;&#125;)</span>:</span>           </span><br><span class="line">        <span class="comment"># Store the metrics in the history object</span></span><br><span class="line">        self.history.log(self.epoch, acc=logs.get(<span class="string">'acc'</span>), val_acc=logs.get(<span class="string">'val_acc'</span>))</span><br><span class="line">        self.history2.log(self.epoch, loss=logs.get(<span class="string">'loss'</span>), val_loss=logs.get(<span class="string">'val_loss'</span>))</span><br><span class="line">        <span class="comment"># Plot the metrics</span></span><br><span class="line">        <span class="keyword">with</span> self.canvas:</span><br><span class="line">            self.canvas.draw_plot([self.history[<span class="string">"acc"</span>], self.history[<span class="string">"val_acc"</span>]])</span><br><span class="line">            self.canvas.draw_plot([self.history2[<span class="string">"loss"</span>], self.history2[<span class="string">"val_loss"</span>]])</span><br><span class="line">        <span class="comment"># save everything</span></span><br><span class="line">        <span class="comment"># Save the canvas</span></span><br><span class="line">        self.canvas.save(os.path.join(OUTPUT_DIR, <span class="string">"training_progress.png"</span>))</span><br><span class="line">        <span class="comment"># You can also save the history to a file to load and inspect layer</span></span><br><span class="line">        self.history.save(os.path.join(OUTPUT_DIR, <span class="string">"training_acc.pkl"</span>)) </span><br><span class="line">        self.history.save(os.path.join(OUTPUT_DIR, <span class="string">"training_loss.pkl"</span>))</span><br><span class="line">        <span class="comment"># Onto the next epoch...</span></span><br><span class="line">        self.epoch += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">callbacks = [MatrixCallback()]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compile the model using the Adam optimizer</span></span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=Adam(<span class="number">1e-3</span>), metrics=[<span class="string">'acc'</span>])</span><br><span class="line"><span class="comment"># Train the model</span></span><br><span class="line">model.fit(x_train, y_train, validation_split=<span class="number">0.2</span>,batch_size=<span class="number">128</span>, epochs=<span class="number">20</span>, verbose=<span class="number">0</span>, callbacks=callbacks);</span><br></pre></td></tr></table></figure>
 <p><img src="/2018/02/22/Tips-for-Keras/acc&amp;loss.png" alt="acc&amp;loss"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_1">
-<sup>1</sup>. <a href="http://keras-cn.readthedocs.io/en/latest/other/visualization/" target="_blank" rel="noopener">http://keras-cn.readthedocs.io/en/latest/other/visualization/</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+<sup>1</sup>. <a href="http://keras-cn.readthedocs.io/en/latest/other/visualization/">http://keras-cn.readthedocs.io/en/latest/other/visualization/</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
 
-      
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/AI/">AI</a>, <a class="has-link-grey -link" href="/tags/Keras/">Keras</a>, <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>, <a class="has-link-grey -link" href="/tags/技巧/">技巧</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
     </div>
-    <footer class="article-footer">
-
-      
-        <div id="donation_div"></div>
-
-<script src="/js/vdonate.js"></script>
-<script>
-var a = new Donate({
-  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
-  btnText: '打赏支持', // 可选参数，打赏按钮文字
-  el: document.getElementById('donation_div'),
-  wechatImage: '/qnsource/site/weixin.png',
-  alipayImage: '/qnsource/site/alipay.jpg'
-});
-</script>
-      
-      
-      <div>
-        <ul class="post-copyright">
-          <li class="post-copyright-author">
-          <strong>本文作者:  </strong>Ebby DD</a>
-          </li>
-          <li class="post-copyright-link">
-          <strong>本文链接:  </strong>
-          <a href="/2018/02/22/Tips-for-Keras/" target="_blank" title="Tips for Keras">http://blog.a-stack.com/2018/02/22/Tips-for-Keras/</a>
-          </li>
-          <li class="post-copyright-license">
-            <strong>版权声明:   </strong>
-            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-            许可协议。转载请注明出处
-          </li>
-         
-        </ul>
-<div>
-
-      
-
-      
-        
- <!-- valine @ebby -->
- <section id="comments" class="comments">
-	<style>
-		.comments{margin:30px;padding:10px;background:#fff}
-		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
-	</style>
-	<div id="vcomment" class="comment"></div>
-<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
-<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
-<script>
-   var notify = 'false' == true ? true : false;
-   var verify = 'false' == true ? true : false;
-   new Valine({
-            av: AV,
-            el: '#vcomment',
-            notify: notify,
-            verify: verify,
-            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
-            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
-            placeholder: "Say Something ...",
-            avatar: "wavatar",
-            avatar_cdn: "https://sdn.geekzu.org/avatar/",
-            pageSize: "15"
-    });
-</script>
-		
-</section>
+</div>
 
 
 
-      
-      <!--  -->
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
 
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技巧/">技巧</a></li></ul>
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
 
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/03/01/深度学习基础之数据预处理/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          深度学习基础之数据准备与预处理
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/02/20/hexo_config/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">博客相关配置</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-<!-- Table of Contents -->
-
-  <aside id="toc-sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据预处理"><span class="nav-number">1.</span> <span class="nav-text">数据预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#失衡数据处理"><span class="nav-number">1.1.</span> <span class="nav-text">失衡数据处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据增强"><span class="nav-number">1.2.</span> <span class="nav-text">数据增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多输入多输出的数据增强实现"><span class="nav-number">1.3.</span> <span class="nav-text">多输入多输出的数据增强实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型可视化1"><span class="nav-number">2.</span> <span class="nav-text">模型可视化1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#K-fold-Validation"><span class="nav-number">3.</span> <span class="nav-text">K-fold Validation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recurrent-Dropout"><span class="nav-number">4.</span> <span class="nav-text">Recurrent Dropout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#超参选择"><span class="nav-number">5.</span> <span class="nav-text">超参选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具：-HiddenLayer"><span class="nav-number">6.</span> <span class="nav-text">工具： HiddenLayer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装"><span class="nav-number">6.1.</span> <span class="nav-text">1. 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用来绘制模型架构图"><span class="nav-number">6.2.</span> <span class="nav-text">2. 用来绘制模型架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-用来实时跟踪训练过程"><span class="nav-number">6.3.</span> <span class="nav-text">3. 用来实时跟踪训练过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol>
-    
+                
+        </div>
     </div>
-  </aside>
+</div>
 
-</section>      
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
         
-      </div>
-      <!--  -->
-      <footer id="footer">
-  
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/03/01/深度学习基础之数据预处理/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">深度学习基础之数据准备与预处理</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/02/20/hexo_config/">
+                <span class="level-item">博客相关配置</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
-	      
-	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
-  		   
-		</div>
 
-		
-  </div>
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://blog.a-stack.com/2018/02/22/Tips-for-Keras/';
+        this.page.identifier = '2018/02/22/Tips-for-Keras/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'EbbyNotes' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#数据预处理">
+        <span class="has-mr-6">1</span>
+        <span>数据预处理</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#失衡数据处理">
+        <span class="has-mr-6">1.1</span>
+        <span>失衡数据处理</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据增强">
+        <span class="has-mr-6">1.2</span>
+        <span>数据增强</span>
+        </a></li><li>
+        <a class="is-flex" href="#多输入多输出的数据增强实现">
+        <span class="has-mr-6">1.3</span>
+        <span>多输入多输出的数据增强实现</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#模型可视化1">
+        <span class="has-mr-6">2</span>
+        <span>模型可视化1</span>
+        </a></li><li>
+        <a class="is-flex" href="#K-fold-Validation">
+        <span class="has-mr-6">3</span>
+        <span>K-fold Validation</span>
+        </a></li><li>
+        <a class="is-flex" href="#Recurrent-Dropout">
+        <span class="has-mr-6">4</span>
+        <span>Recurrent Dropout</span>
+        </a></li><li>
+        <a class="is-flex" href="#超参选择">
+        <span class="has-mr-6">5</span>
+        <span>超参选择</span>
+        </a></li><li>
+        <a class="is-flex" href="#工具：-HiddenLayer">
+        <span class="has-mr-6">6</span>
+        <span>工具： HiddenLayer</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#1-安装">
+        <span class="has-mr-6">6.1</span>
+        <span>1. 安装</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-用来绘制模型架构图">
+        <span class="has-mr-6">6.2</span>
+        <span>2. 用来绘制模型架构图</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-用来实时跟踪训练过程">
+        <span class="has-mr-6">6.3</span>
+        <span>3. 用来实时跟踪训练过程</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">7</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time></div>
+                    <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="title has-link-black-ter is-size-6 has-text-weight-normal">图像数据标注工具推荐-CVAT</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/16.jpg" alt="Pathlib--Python的路径管理库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-07T08:53:05.000Z">2019-05-07</time></div>
+                    <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工具/">工具</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
+                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
+                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
+                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="Tips for Keras" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
 </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
 
-
-<!-- min height -->
 
 <script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
-</script>
-    </div>    
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-    <a href="/reading" class="mobile-nav-link">Reading</a>
-  
-    <a href="/resources" class="mobile-nav-link">Resources</a>
-  
-    <a href="/notebooks" class="mobile-nav-link">📝</a>
-  
-</nav> -->
-    
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+};
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
     });
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
         }
     });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-
+});
 </script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-
-
-  <script src="/js/dialog.js"></script>
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
@@ -462,83 +644,41 @@ var a = new Donate({
 
 
 
-	<script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
+<script src="/js/main.js" defer></script>
 
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
         </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            Ebby&#39;s Notes
-          </div>
-          <div class="panel-body">
-            Copyright © 2020 Ebby DD All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
     </div>
-  </div>
 </div>
-  
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
-  
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
 </html>

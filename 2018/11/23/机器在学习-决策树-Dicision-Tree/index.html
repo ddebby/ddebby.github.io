@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  <title>机器在学习-决策树(dicision tree) | Ebby&#39;s Notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-    <meta name="keywords" content="人工智能,深度学习,技术,算法">
-  
-  
-  
-  
-  <meta name="description" content="摘要：">
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>机器在学习-决策树(Dicision Tree) - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="摘要：">
 <meta name="keywords" content="人工智能,深度学习,技术,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器在学习-决策树(Dicision Tree)">
@@ -19,186 +18,167 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/15.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/credit_scoring_toy_tree_english.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/topic3_credit_scoring_entropy.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/Criteria%20of%20quality%20as%20a%20function%20of%20binary%20classification.png">
-<meta property="og:image" content="http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/tree1.png">
+<meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
 <meta property="og:updated_time" content="2018-11-25T07:22:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器在学习-决策树(Dicision Tree)">
 <meta name="twitter:description" content="摘要：">
-<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/15.jpg">
-  
-    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
-  
-
-  
-
-  <link rel="icon" href="/css/images/logo.png">
-  <link rel="apple-touch-icon" href="/css/images/logo.png">
-  
-    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
-  
-  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css">
-
-  
-    <link rel="stylesheet" href="/css/dialog.css">
-  
-
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css">
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css">
-  
-
-</head>
-</html>
+<meta name="twitter:image" content="http://blog.a-stack.com/images/og_image.png">
 
 
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
 
-            
-              <a class="brand" style="
-                 border-width: 0px;  margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="/">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
-                
-                  <li><div id="search-form-wrap">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
-<script src="/js/insight.js"></script>
-
-</div></li>
-            </div>
-          </div>
-                
-      </div>
-    </div>
-
-</header>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 
 
-
-      
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
             
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-机器在学习-决策树-Dicision-Tree" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      机器在学习-决策树(Dicision Tree)
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/11/23/机器在学习-决策树-Dicision-Tree/" class="article-date">
-	  <time datetime="2018-11-23T08:50:11.000Z" itemprop="datePublished">2018-11-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-      
-
+                <img src="/images/logo02.png" alt="机器在学习-决策树(Dicision Tree)" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/qnsource/banner/15.jpg" alt="Test Picture"></p>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-11-23T08:50:11.000Z">2018-11-23</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    20 分钟 读完 (大约 2961 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                机器在学习-决策树(Dicision Tree)
+            
+        </h1>
+        <div class="content">
+            <p><img src="/qnsource/banner/15.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong></p>
 <a id="more"></a>
 <h2 id="决策树的算法"><a href="#决策树的算法" class="headerlink" title="决策树的算法"></a>决策树的算法</h2><blockquote>
@@ -209,7 +189,7 @@
 <p>CART（Classification and Regression Trees （分类和回归树））与 C4.5 非常相似，但它不同之处在于它支持数值目标变量（回归），并且不计算规则集。CART 使用在每个节点产生最大信息增益的特征和阈值来构造二叉树。</p>
 <p>scikit-learn 使用 CART 算法的优化版本。</p>
 </blockquote>
-<p><strong>Decision Trees (DTs)</strong> 是一种用来 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree-classification" target="_blank" rel="noopener">classification</a> 和 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree-regression" target="_blank" rel="noopener">regression</a> 的无参监督学习方法。其目的是创建一种模型从数据特征中学习简单的决策规则来预测一个目标变量的值。 </p>
+<p><strong>Decision Trees (DTs)</strong> 是一种用来 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree-classification">classification</a> 和 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree-regression">regression</a> 的无参监督学习方法。其目的是创建一种模型从数据特征中学习简单的决策规则来预测一个目标变量的值。 </p>
 <p><img src="/2018/11/23/机器在学习-决策树-Dicision-Tree/credit_scoring_toy_tree_english.png" alt="credit_scoring_toy_tree_english"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(L)</span>:</span></span><br><span class="line">    create node t</span><br><span class="line">    <span class="keyword">if</span> the stopping criterion <span class="keyword">is</span> <span class="keyword">True</span>:</span><br><span class="line">        assign a predictive model to t</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        Find the best binary split L = L_left + L_right</span><br><span class="line">        t.left = build(L_left)</span><br><span class="line">        t.right = build(L_right)</span><br><span class="line">    <span class="keyword">return</span> t</span><br></pre></td></tr></table></figure>
 <h3 id="决策树的递归返回"><a href="#决策树的递归返回" class="headerlink" title="决策树的递归返回"></a>决策树的递归返回</h3><ul>
@@ -278,16 +258,16 @@ Gini(D)=1-\sum_k p^2_k</script><blockquote>
 <li>有些概念很难被决策树学习到,因为决策树很难清楚的表述这些概念。例如XOR，奇偶或者复用器的问题。</li>
 </ol>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><blockquote>
-<p><a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html" target="_blank" rel="noopener"><code>sklearn.tree.DecisionTreeClassifier</code></a></p>
+<p><a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html"><code>sklearn.tree.DecisionTreeClassifier</code></a></p>
 <ul>
 <li><code>max_depth</code> – the maximum depth of the tree;</li>
 <li><code>max_features</code> - the maximum number of features with which to search for the best partition (this is necessary with a large number of features because it would be “expensive” to search for partitions for <em>all</em> features);</li>
 <li><code>min_samples_leaf</code> – the minimum number of samples in a leaf. This parameter prevents creating trees where any leaf would have only a few members.</li>
 </ul>
-<p><a href="http://sklearn.apachecn.org/cn/0.19.0/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" target="_blank" rel="noopener"><code>DecisionTreeRegressor</code></a> </p>
+<p><a href="http://sklearn.apachecn.org/cn/0.19.0/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor"><code>DecisionTreeRegressor</code></a> </p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sklearn</span></span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">clf_tree = DecisionTreeClassifier(criterion=<span class="string">'entropy'</span>, max_depth=<span class="number">3</span>, </span><br><span class="line">                                  random_state=<span class="number">17</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># training the tree</span></span><br><span class="line">clf_tree.fit(train_data, train_labels)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"></span><br><span class="line">tree_pred = tree.predict(X_holdout)</span><br><span class="line">accuracy_score(y_holdout, tree_pred) <span class="comment"># 0.94</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 超参</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV, cross_val_score</span><br><span class="line"></span><br><span class="line">tree_params = &#123;<span class="string">'max_depth'</span>: range(<span class="number">1</span>,<span class="number">11</span>),</span><br><span class="line">               <span class="string">'max_features'</span>: range(<span class="number">4</span>,<span class="number">19</span>)&#125;</span><br><span class="line"></span><br><span class="line">tree_grid = GridSearchCV(tree, tree_params,</span><br><span class="line">                         cv=<span class="number">5</span>, n_jobs=<span class="number">-1</span>, verbose=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">tree_grid.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">accuracy_score(y_holdout, tree_grid.predict(X_holdout)) <span class="comment">#0.946</span></span><br></pre></td></tr></table></figure>
-<h3 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h3><p>经过训练，我们可以使用 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/generated/sklearn.tree.export_graphviz.html#sklearn.tree.export_graphviz" target="_blank" rel="noopener"><code>export_graphviz</code></a> 导出器以 <a href="http://www.graphviz.org/" target="_blank" rel="noopener">Graphviz</a> 格式导出决策树. 如果你是用 <a href="http://conda.io/" target="_blank" rel="noopener">conda</a> 来管理包，那么安装 graphviz 二进制文件和 python 包可以用以下指令安装</p>
+<h3 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h3><p>经过训练，我们可以使用 <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/generated/sklearn.tree.export_graphviz.html#sklearn.tree.export_graphviz"><code>export_graphviz</code></a> 导出器以 <a href="http://www.graphviz.org/">Graphviz</a> 格式导出决策树. 如果你是用 <a href="http://conda.io/">conda</a> 来管理包，那么安装 graphviz 二进制文件和 python 包可以用以下指令安装</p>
 <blockquote>
 <p>conda install python-graphviz</p>
 </blockquote>
@@ -296,7 +276,7 @@ Gini(D)=1-\sum_k p^2_k</script><blockquote>
 <h3 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h3><blockquote>
 <ul>
 <li>对于拥有大量特征的数据决策树会出现过拟合的现象。获得一个合适的样本比例和特征数量十分重要，因为在高维空间中只有少量的样本的树是十分容易过拟合的。</li>
-<li>考虑事先进行降维( <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/decomposition.html#pca" target="_blank" rel="noopener">PCA</a> , <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/decomposition.html#ica" target="_blank" rel="noopener">ICA</a> ，使您的树更好地找到具有分辨性的特征。</li>
+<li>考虑事先进行降维( <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/decomposition.html#pca">PCA</a> , <a href="http://sklearn.apachecn.org/cn/0.19.0/modules/decomposition.html#ica">ICA</a> ，使您的树更好地找到具有分辨性的特征。</li>
 <li>通过 <code>export</code> 功能可以可视化您的决策树。使用 <code>max_depth=3</code> 作为初始树深度，让决策树知道如何适应您的数据，然后再增加树的深度。</li>
 <li>请记住，填充树的样本数量会增加树的每个附加级别。使用 <code>max_depth</code> 来控制输的大小防止过拟合。</li>
 <li>通过使用 <code>min_samples_split</code> 和 <code>min_samples_leaf</code> 来控制叶节点上的样本数量。当这个值很小时意味着生成的决策树将会过拟合，然而当这个值很大时将会不利于决策树的对样本的学习。所以尝试 <code>min_samples_leaf=5</code> 作为初始值。如果样本的变化量很大，可以使用浮点数作为这两个参数中的百分比。两者之间的主要区别在于 <code>min_samples_leaf</code> 保证叶结点中最少的采样数，而 <code>min_samples_split</code> 可以创建任意小的叶子，尽管在文献中 <code>min_samples_split</code> 更常见。</li>
@@ -311,228 +291,442 @@ Gini(D)=1-\sum_k p^2_k</script><blockquote>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><p>《机器学习》——周志华</p>
 </li>
-<li><p><a href="https://mlcourse.ai/" target="_blank" rel="noopener">mlcourse.ai</a> – Open Machine Learning Course</p>
+<li><p><a href="https://mlcourse.ai/">mlcourse.ai</a> – Open Machine Learning Course</p>
 </li>
 </ol>
-<p>3.<a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree" target="_blank" rel="noopener">Sklearn 决策树</a></p>
+<p>3.<a href="http://sklearn.apachecn.org/cn/0.19.0/modules/tree.html#tree">Sklearn 决策树</a></p>
 
-      
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>, <a class="has-link-grey -link" href="/tags/文献/">文献</a>, <a class="has-link-grey -link" href="/tags/算法/">算法</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
     </div>
-    <footer class="article-footer">
-
-      
-        <div id="donation_div"></div>
-
-<script src="/js/vdonate.js"></script>
-<script>
-var a = new Donate({
-  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
-  btnText: '打赏支持', // 可选参数，打赏按钮文字
-  el: document.getElementById('donation_div'),
-  wechatImage: '/qnsource/site/weixin.png',
-  alipayImage: '/qnsource/site/alipay.jpg'
-});
-</script>
-      
-      
-      <div>
-        <ul class="post-copyright">
-          <li class="post-copyright-author">
-          <strong>本文作者:  </strong>Ebby DD</a>
-          </li>
-          <li class="post-copyright-link">
-          <strong>本文链接:  </strong>
-          <a href="/2018/11/23/机器在学习-决策树-Dicision-Tree/" target="_blank" title="机器在学习-决策树(Dicision Tree)">http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/</a>
-          </li>
-          <li class="post-copyright-license">
-            <strong>版权声明:   </strong>
-            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-            许可协议。转载请注明出处
-          </li>
-         
-        </ul>
-<div>
-
-      
-
-      
-        
- <!-- valine @ebby -->
- <section id="comments" class="comments">
-	<style>
-		.comments{margin:30px;padding:10px;background:#fff}
-		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
-	</style>
-	<div id="vcomment" class="comment"></div>
-<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
-<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
-<script>
-   var notify = 'false' == true ? true : false;
-   var verify = 'false' == true ? true : false;
-   new Valine({
-            av: AV,
-            el: '#vcomment',
-            notify: notify,
-            verify: verify,
-            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
-            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
-            placeholder: "Say Something ...",
-            avatar: "wavatar",
-            avatar_cdn: "https://sdn.geekzu.org/avatar/",
-            pageSize: "15"
-    });
-</script>
-		
-</section>
+</div>
 
 
 
-      
-      <!--  -->
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
 
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文献/">文献</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
 
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/11/23/机器在学习—-KNN/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          机器在学习-KNN
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/11/23/机器在学习-线性回归/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">机器在学习-线性回归与分类</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-<!-- Table of Contents -->
-
-  <aside id="toc-sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的算法"><span class="nav-number">1.</span> <span class="nav-text">决策树的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树的递归返回"><span class="nav-number">1.1.</span> <span class="nav-text">决策树的递归返回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信息增益"><span class="nav-number">1.2.</span> <span class="nav-text">信息增益</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gini"><span class="nav-number">1.3.</span> <span class="nav-text">Gini</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#剪枝（pruning）"><span class="nav-number">1.4.</span> <span class="nav-text">剪枝（pruning）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些处理技巧"><span class="nav-number">1.5.</span> <span class="nav-text">一些处理技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理连续值"><span class="nav-number">1.5.1.</span> <span class="nav-text">处理连续值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理缺失值"><span class="nav-number">1.5.2.</span> <span class="nav-text">处理缺失值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多变量决策树"><span class="nav-number">1.5.3.</span> <span class="nav-text">多变量决策树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回归树"><span class="nav-number">1.5.4.</span> <span class="nav-text">回归树</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树算法的优缺点"><span class="nav-number">2.</span> <span class="nav-text">决策树算法的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#画图"><span class="nav-number">3.1.</span> <span class="nav-text">画图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧"><span class="nav-number">3.2.</span> <span class="nav-text">技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
-    
+                
+        </div>
     </div>
-  </aside>
+</div>
 
-</section>      
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
         
-      </div>
-      <!--  -->
-      <footer id="footer">
-  
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/11/23/机器在学习—-KNN/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">机器在学习-KNN</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/11/23/机器在学习-线性回归/">
+                <span class="level-item">机器在学习-线性回归与分类</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
-	      
-	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
-  		   
-		</div>
 
-		
-  </div>
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://blog.a-stack.com/2018/11/23/机器在学习-决策树-Dicision-Tree/';
+        this.page.identifier = '2018/11/23/机器在学习-决策树-Dicision-Tree/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'EbbyNotes' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#决策树的算法">
+        <span class="has-mr-6">1</span>
+        <span>决策树的算法</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#决策树的递归返回">
+        <span class="has-mr-6">1.1</span>
+        <span>决策树的递归返回</span>
+        </a></li><li>
+        <a class="is-flex" href="#信息增益">
+        <span class="has-mr-6">1.2</span>
+        <span>信息增益</span>
+        </a></li><li>
+        <a class="is-flex" href="#Gini">
+        <span class="has-mr-6">1.3</span>
+        <span>Gini</span>
+        </a></li><li>
+        <a class="is-flex" href="#剪枝（pruning）">
+        <span class="has-mr-6">1.4</span>
+        <span>剪枝（pruning）</span>
+        </a></li><li>
+        <a class="is-flex" href="#一些处理技巧">
+        <span class="has-mr-6">1.5</span>
+        <span>一些处理技巧</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#处理连续值">
+        <span class="has-mr-6">1.5.1</span>
+        <span>处理连续值</span>
+        </a></li><li>
+        <a class="is-flex" href="#处理缺失值">
+        <span class="has-mr-6">1.5.2</span>
+        <span>处理缺失值</span>
+        </a></li><li>
+        <a class="is-flex" href="#多变量决策树">
+        <span class="has-mr-6">1.5.3</span>
+        <span>多变量决策树</span>
+        </a></li><li>
+        <a class="is-flex" href="#回归树">
+        <span class="has-mr-6">1.5.4</span>
+        <span>回归树</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#决策树算法的优缺点">
+        <span class="has-mr-6">2</span>
+        <span>决策树算法的优缺点</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#优点">
+        <span class="has-mr-6">2.1</span>
+        <span>优点</span>
+        </a></li><li>
+        <a class="is-flex" href="#缺点">
+        <span class="has-mr-6">2.2</span>
+        <span>缺点</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#实现">
+        <span class="has-mr-6">3</span>
+        <span>实现</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#画图">
+        <span class="has-mr-6">3.1</span>
+        <span>画图</span>
+        </a></li><li>
+        <a class="is-flex" href="#技巧">
+        <span class="has-mr-6">3.2</span>
+        <span>技巧</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">4</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time></div>
+                    <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="title has-link-black-ter is-size-6 has-text-weight-normal">图像数据标注工具推荐-CVAT</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/16.jpg" alt="Pathlib--Python的路径管理库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-07T08:53:05.000Z">2019-05-07</time></div>
+                    <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工具/">工具</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
+                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
+                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
+                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="机器在学习-决策树(Dicision Tree)" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
 </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
 
-
-<!-- min height -->
 
 <script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
-</script>
-    </div>    
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-    <a href="/reading" class="mobile-nav-link">Reading</a>
-  
-    <a href="/resources" class="mobile-nav-link">Resources</a>
-  
-    <a href="/notebooks" class="mobile-nav-link">📝</a>
-  
-</nav> -->
-    
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+};
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
     });
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
         }
     });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-
+});
 </script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-
-
-  <script src="/js/dialog.js"></script>
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
@@ -544,83 +738,41 @@ var a = new Donate({
 
 
 
-	<script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
+<script src="/js/main.js" defer></script>
 
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
         </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            Ebby&#39;s Notes
-          </div>
-          <div class="panel-body">
-            Copyright © 2020 Ebby DD All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
     </div>
-  </div>
 </div>
-  
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
-  
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
 </html>

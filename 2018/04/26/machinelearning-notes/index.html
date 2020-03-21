@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  <title>machine learning notes | Ebby&#39;s Notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-    <meta name="keywords" content="人工智能,深度学习,技术,算法">
-  
-  
-  
-  
-  <meta name="description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。">
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>Machine Learning Notes - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。">
 <meta name="keywords" content="人工智能,深度学习,技术,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Machine Learning Notes">
@@ -19,190 +18,171 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree-fix.png">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Learning2.png">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Learning1.png">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/BILDt.png">
+<meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
 <meta property="og:updated_time" content="2020-03-04T12:18:52.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Machine Learning Notes">
 <meta name="twitter:description" content="摘要： 最近花了两周时间刷完了吴恩达在Cousera上关于机器学习的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。">
-<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/images/2018-04-25-machine-learning-notes/Features-and-polynom-degree.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
-  
-
-  
-
-  <link rel="icon" href="/css/images/logo.png">
-  <link rel="apple-touch-icon" href="/css/images/logo.png">
-  
-    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
-  
-  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css">
-
-  
-    <link rel="stylesheet" href="/css/dialog.css">
-  
-
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css">
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css">
-  
-
-</head>
-</html>
+<meta name="twitter:image" content="http://blog.a-stack.com/images/og_image.png">
 
 
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
 
-            
-              <a class="brand" style="
-                 border-width: 0px;  margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="/">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
-                
-                  <li><div id="search-form-wrap">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
-<script src="/js/insight.js"></script>
-
-</div></li>
-            </div>
-          </div>
-                
-      </div>
-    </div>
-
-</header>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 
 
-
-      
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
             
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-machinelearning-notes" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      Machine Learning Notes
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/04/26/machinelearning-notes/" class="article-date">
-	  <time datetime="2018-04-26T05:56:13.000Z" itemprop="datePublished">2018-04-26</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-      
-
+                <img src="/images/logo02.png" alt="Machine Learning Notes" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>摘要：</strong> 最近花了两周时间刷完了吴恩达在Cousera上关于<a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">机器学习</a>的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。</p>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-04-26T05:56:13.000Z">2018-04-26</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    19 分钟 读完 (大约 2873 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Machine Learning Notes
+            
+        </h1>
+        <div class="content">
+            <p><strong>摘要：</strong> 最近花了两周时间刷完了吴恩达在Cousera上关于<a href="https://www.coursera.org/learn/machine-learning">机器学习</a>的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。</p>
 <a id="more"></a>
 <p>@[toc]</p>
 <blockquote>
-<p>最近花了两周时间刷完了吴恩达在Cousera上关于<a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">机器学习</a>的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。为了巩固对课程内容和课后实验的理解，将在未来一周实践写几篇总结性笔记，作为对课程内容的回顾和总结。</p>
+<p>最近花了两周时间刷完了吴恩达在Cousera上关于<a href="https://www.coursera.org/learn/machine-learning">机器学习</a>的经典课程, 这已经是近两个月来刷完的第十个Cousera课程了。虽然课程是多年前开设的，但相关机器学习理论和方法内容介绍仍然具备很强的时效性，是机器学习入门的必选课程。为了巩固对课程内容和课后实验的理解，将在未来一周实践写几篇总结性笔记，作为对课程内容的回顾和总结。</p>
 </blockquote>
 <h2 id="Lecture-1：-机器学习的定义"><a href="#Lecture-1：-机器学习的定义" class="headerlink" title="Lecture 1： 机器学习的定义"></a>Lecture 1： 机器学习的定义</h2><blockquote>
 <p>Tom Mitchell provides a modern definition: “A computer program is said to learn from experience <strong>E</strong> with respect to some class of tasks <strong>T</strong> and performance measure <strong>P</strong>, if its performance at tasks in <strong>T</strong>, as measured by <strong>P</strong>, improves with experience <strong>E</strong>.”</p>
@@ -212,7 +192,7 @@
 <li>监督学习可以分为分类问题和回归问题；</li>
 </ul>
 </li>
-<li>鸡尾酒会问题及鸡尾酒会算法：<a href="https://en.wikipedia.org/wiki/Cocktail_party_effect" target="_blank" rel="noopener">Wiki</a>, 属于非聚类的非监督问题</li>
+<li>鸡尾酒会问题及鸡尾酒会算法：<a href="https://en.wikipedia.org/wiki/Cocktail_party_effect">Wiki</a>, 属于非聚类的非监督问题</li>
 </ol>
 <h2 id="Lecture-2：-线性回归（多属性）"><a href="#Lecture-2：-线性回归（多属性）" class="headerlink" title="Lecture 2： 线性回归（多属性）"></a>Lecture 2： 线性回归（多属性）</h2><h3 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h3><p>$x_j^{(i)}$ : 第$i^{th}$训练样本的第$j$个特征向量；</p>
 <p>$x^{(i)}$ : 第$i^{th}$训练样本的特征向量；</p>
@@ -320,7 +300,7 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 z = \theta^Tx</script><script type="math/tex; mode=display">
 \text{cost}_0(z) = \max(0, k(1+z))</script><script type="math/tex; mode=display">
 \text{cost}_1(z) = \max(0, k(1-z))</script><blockquote>
-<p>更多内容查看WiKi： <a href="https://en.wikipedia.org/wiki/Hinge_loss" target="_blank" rel="noopener">Hingle loss</a></p>
+<p>更多内容查看WiKi： <a href="https://en.wikipedia.org/wiki/Hinge_loss">Hingle loss</a></p>
 </blockquote>
 <h3 id="代价函数-3"><a href="#代价函数-3" class="headerlink" title="代价函数"></a>代价函数</h3><script type="math/tex; mode=display">
 J(\theta) = C\sum_{i=1}^m y^{(i)} \ \text{cost}_1(\theta^Tx^{(i)}) + (1 - y^{(i)}) \ \text{cost}_0(\theta^Tx^{(i)}) + \dfrac{1}{2}\sum_{j=1}^n \Theta^2_j</script><script type="math/tex; mode=display">
@@ -424,194 +404,565 @@ min_{\theta^{(1)},\dots,\theta^{(n_u)}} = \dfrac{1}{2}\displaystyle \sum_{j=1}^{
 </blockquote>
 <script type="math/tex; mode=display">
 J(x,\theta) = \dfrac{1}{2} \displaystyle \sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2}\sum_{i=1}^{n_m} \sum_{k=1}^{n} (x_k^{(i)})^2 + \dfrac{\lambda}{2}\sum_{j=1}^{n_u} \sum_{k=1}^{n} (\theta_k^{(j)})^2</script><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li>SVM：<a href="http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf" target="_blank" rel="noopener">http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf</a></li>
+<li>SVM：<a href="http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf">http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf</a></li>
 <li></li>
 </ol>
 
-      
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/机器学习/">机器学习</a>, <a class="has-link-grey -link" href="/tags/神经网络/">神经网络</a>, <a class="has-link-grey -link" href="/tags/笔记/">笔记</a>, <a class="has-link-grey -link" href="/tags/算法/">算法</a>, <a class="has-link-grey -link" href="/tags/线性回归/">线性回归</a>, <a class="has-link-grey -link" href="/tags/逻辑回归/">逻辑回归</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
     </div>
-    <footer class="article-footer">
+</div>
 
-      
-        <div id="donation_div"></div>
 
-<script src="/js/vdonate.js"></script>
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/04/26/machinelearning-labs/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">《机器学习》课程实验回顾</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/04/21/机器学习三要素-模型-策略与算法/">
+                <span class="level-item">机器学习三要素：模型,策略与算法</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
 <script>
-var a = new Donate({
-  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
-  btnText: '打赏支持', // 可选参数，打赏按钮文字
-  el: document.getElementById('donation_div'),
-  wechatImage: '/qnsource/site/weixin.png',
-  alipayImage: '/qnsource/site/alipay.jpg'
-});
+    var disqus_config = function () {
+        this.page.url = 'http://blog.a-stack.com/2018/04/26/machinelearning-notes/';
+        this.page.identifier = '2018/04/26/machinelearning-notes/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'EbbyNotes' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
 </script>
-      
-      
-      <div>
-        <ul class="post-copyright">
-          <li class="post-copyright-author">
-          <strong>本文作者:  </strong>Ebby DD</a>
-          </li>
-          <li class="post-copyright-link">
-          <strong>本文链接:  </strong>
-          <a href="/2018/04/26/machinelearning-notes/" target="_blank" title="Machine Learning Notes">http://blog.a-stack.com/2018/04/26/machinelearning-notes/</a>
-          </li>
-          <li class="post-copyright-license">
-            <strong>版权声明:   </strong>
-            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-            许可协议。转载请注明出处
-          </li>
-         
-        </ul>
-<div>
 
-      
-
-      
-      <!--  -->
-
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/神经网络/">神经网络</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线性回归/">线性回归</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/逻辑回归/">逻辑回归</a></li></ul>
-
-    </footer>
-  </div>
-  
+<div id="disqus_thread">
     
-<nav id="article-nav">
-  
-    <a href="/2018/04/26/machinelearning-labs/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          《机器学习》课程实验回顾
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/04/21/机器学习三要素-模型-策略与算法/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">机器学习三要素：模型,策略与算法</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-<!-- Table of Contents -->
-
-  <aside id="toc-sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-1：-机器学习的定义"><span class="nav-number">1.</span> <span class="nav-text">Lecture 1： 机器学习的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-2：-线性回归（多属性）"><span class="nav-number">2.</span> <span class="nav-text">Lecture 2： 线性回归（多属性）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变量定义"><span class="nav-number">2.1.</span> <span class="nav-text">变量定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多元线性规划模型"><span class="nav-number">2.2.</span> <span class="nav-text">多元线性规划模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#假设函数"><span class="nav-number">2.2.1.</span> <span class="nav-text">假设函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代价函数"><span class="nav-number">2.2.2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度"><span class="nav-number">2.2.3.</span> <span class="nav-text">梯度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征正则化"><span class="nav-number">2.3.</span> <span class="nav-text">特征正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数分析"><span class="nav-number">2.4.</span> <span class="nav-text">参数分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-3：逻辑回归"><span class="nav-number">3.</span> <span class="nav-text">Lecture 3：逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#假设函数-1"><span class="nav-number">3.1.</span> <span class="nav-text">假设函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数-1"><span class="nav-number">3.2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度-1"><span class="nav-number">3.3.</span> <span class="nav-text">梯度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多分类：-One-vs-all"><span class="nav-number">3.4.</span> <span class="nav-text">多分类： One-vs-all</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化"><span class="nav-number">3.5.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化的线性回归"><span class="nav-number">3.6.</span> <span class="nav-text">正则化的线性回归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加正则化的数值解"><span class="nav-number">3.6.1.</span> <span class="nav-text">添加正则化的数值解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化的逻辑回归"><span class="nav-number">3.7.</span> <span class="nav-text">正则化的逻辑回归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-4-5-神经网络"><span class="nav-number">4.</span> <span class="nav-text">Lecture 4-5: 神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多分类"><span class="nav-number">4.1.</span> <span class="nav-text">多分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数-2"><span class="nav-number">4.2.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播"><span class="nav-number">4.3.</span> <span class="nav-text">反向传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度校验"><span class="nav-number">4.4.</span> <span class="nav-text">梯度校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-6：采用机器学习的建议"><span class="nav-number">5.</span> <span class="nav-text">Lecture 6：采用机器学习的建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-与-variance"><span class="nav-number">5.1.</span> <span class="nav-text">bias 与 variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习曲线（Learning-Curves）"><span class="nav-number">5.2.</span> <span class="nav-text">学习曲线（Learning Curves）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-7：-SVM"><span class="nav-number">6.</span> <span class="nav-text">Lecture 7： SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数-3"><span class="nav-number">6.1.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核函数"><span class="nav-number">6.2.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-number">6.3.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-8-K-Means-和-PCA"><span class="nav-number">7.</span> <span class="nav-text">Lecture 8: K-Means 和 PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#K-Means"><span class="nav-number">7.1.</span> <span class="nav-text">K-Means</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优化目标"><span class="nav-number">7.1.1.</span> <span class="nav-text">优化目标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">7.1.2.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA"><span class="nav-number">7.2.</span> <span class="nav-text">PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程"><span class="nav-number">7.2.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#恢复"><span class="nav-number">7.2.2.</span> <span class="nav-text">恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#k值的选择"><span class="nav-number">7.2.3.</span> <span class="nav-text">k值的选择</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-9：-应用1-异常检测"><span class="nav-number">8.</span> <span class="nav-text">Lecture 9： 应用1-异常检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#高斯分布"><span class="nav-number">8.0.1.</span> <span class="nav-text">高斯分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程-1"><span class="nav-number">8.0.2.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据预处理"><span class="nav-number">8.0.3.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多元高斯分布"><span class="nav-number">8.0.4.</span> <span class="nav-text">多元高斯分布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lecture-10-应用2-推荐系统"><span class="nav-number">9.</span> <span class="nav-text">Lecture 10: 应用2-推荐系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题抽象"><span class="nav-number">9.1.</span> <span class="nav-text">问题抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于内容的推荐"><span class="nav-number">9.2.</span> <span class="nav-text">基于内容的推荐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协同过滤"><span class="nav-number">9.3.</span> <span class="nav-text">协同过滤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">10.</span> <span class="nav-text">参考</span></a></li></ol>
-    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
     </div>
-  </aside>
+</div>
+</div>
+                
+                
 
-</section>      
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
         
-      </div>
-      <!--  -->
-      <footer id="footer">
-  
 
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
-	      
-	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
-  		   
-		</div>
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#Lecture-1：-机器学习的定义">
+        <span class="has-mr-6">1</span>
+        <span>Lecture 1： 机器学习的定义</span>
+        </a></li><li>
+        <a class="is-flex" href="#Lecture-2：-线性回归（多属性）">
+        <span class="has-mr-6">2</span>
+        <span>Lecture 2： 线性回归（多属性）</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#变量定义">
+        <span class="has-mr-6">2.1</span>
+        <span>变量定义</span>
+        </a></li><li>
+        <a class="is-flex" href="#多元线性规划模型">
+        <span class="has-mr-6">2.2</span>
+        <span>多元线性规划模型</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#假设函数">
+        <span class="has-mr-6">2.2.1</span>
+        <span>假设函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#代价函数">
+        <span class="has-mr-6">2.2.2</span>
+        <span>代价函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#梯度">
+        <span class="has-mr-6">2.2.3</span>
+        <span>梯度</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#特征正则化">
+        <span class="has-mr-6">2.3</span>
+        <span>特征正则化</span>
+        </a></li><li>
+        <a class="is-flex" href="#参数分析">
+        <span class="has-mr-6">2.4</span>
+        <span>参数分析</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Lecture-3：逻辑回归">
+        <span class="has-mr-6">3</span>
+        <span>Lecture 3：逻辑回归</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#假设函数-1">
+        <span class="has-mr-6">3.1</span>
+        <span>假设函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#代价函数-1">
+        <span class="has-mr-6">3.2</span>
+        <span>代价函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#梯度-1">
+        <span class="has-mr-6">3.3</span>
+        <span>梯度</span>
+        </a></li><li>
+        <a class="is-flex" href="#多分类：-One-vs-all">
+        <span class="has-mr-6">3.4</span>
+        <span>多分类： One-vs-all</span>
+        </a></li><li>
+        <a class="is-flex" href="#正则化">
+        <span class="has-mr-6">3.5</span>
+        <span>正则化</span>
+        </a></li><li>
+        <a class="is-flex" href="#正则化的线性回归">
+        <span class="has-mr-6">3.6</span>
+        <span>正则化的线性回归</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#添加正则化的数值解">
+        <span class="has-mr-6">3.6.1</span>
+        <span>添加正则化的数值解</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#正则化的逻辑回归">
+        <span class="has-mr-6">3.7</span>
+        <span>正则化的逻辑回归</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Lecture-4-5-神经网络">
+        <span class="has-mr-6">4</span>
+        <span>Lecture 4-5: 神经网络</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#多分类">
+        <span class="has-mr-6">4.1</span>
+        <span>多分类</span>
+        </a></li><li>
+        <a class="is-flex" href="#代价函数-2">
+        <span class="has-mr-6">4.2</span>
+        <span>代价函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#反向传播">
+        <span class="has-mr-6">4.3</span>
+        <span>反向传播</span>
+        </a></li><li>
+        <a class="is-flex" href="#梯度校验">
+        <span class="has-mr-6">4.4</span>
+        <span>梯度校验</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Lecture-6：采用机器学习的建议">
+        <span class="has-mr-6">5</span>
+        <span>Lecture 6：采用机器学习的建议</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#bias-与-variance">
+        <span class="has-mr-6">5.1</span>
+        <span>bias 与 variance</span>
+        </a></li><li>
+        <a class="is-flex" href="#学习曲线（Learning-Curves）">
+        <span class="has-mr-6">5.2</span>
+        <span>学习曲线（Learning Curves）</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Lecture-7：-SVM">
+        <span class="has-mr-6">6</span>
+        <span>Lecture 7： SVM</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#代价函数-3">
+        <span class="has-mr-6">6.1</span>
+        <span>代价函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#核函数">
+        <span class="has-mr-6">6.2</span>
+        <span>核函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#参数">
+        <span class="has-mr-6">6.3</span>
+        <span>参数</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Lecture-8-K-Means-和-PCA">
+        <span class="has-mr-6">7</span>
+        <span>Lecture 8: K-Means 和 PCA</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#K-Means">
+        <span class="has-mr-6">7.1</span>
+        <span>K-Means</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#优化目标">
+        <span class="has-mr-6">7.1.1</span>
+        <span>优化目标</span>
+        </a></li><li>
+        <a class="is-flex" href="#注意事项">
+        <span class="has-mr-6">7.1.2</span>
+        <span>注意事项</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#PCA">
+        <span class="has-mr-6">7.2</span>
+        <span>PCA</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#算法流程">
+        <span class="has-mr-6">7.2.1</span>
+        <span>算法流程</span>
+        </a></li><li>
+        <a class="is-flex" href="#恢复">
+        <span class="has-mr-6">7.2.2</span>
+        <span>恢复</span>
+        </a></li><li>
+        <a class="is-flex" href="#k值的选择">
+        <span class="has-mr-6">7.2.3</span>
+        <span>k值的选择</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#Lecture-9：-应用1-异常检测">
+        <span class="has-mr-6">8</span>
+        <span>Lecture 9： 应用1-异常检测</span>
+        </a><ul class="menu-list"><ul class="menu-list"><li>
+        <a class="is-flex" href="#高斯分布">
+        <span class="has-mr-6">8.1.1</span>
+        <span>高斯分布</span>
+        </a></li><li>
+        <a class="is-flex" href="#算法流程-1">
+        <span class="has-mr-6">8.1.2</span>
+        <span>算法流程</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据预处理">
+        <span class="has-mr-6">8.1.3</span>
+        <span>数据预处理</span>
+        </a></li><li>
+        <a class="is-flex" href="#多元高斯分布">
+        <span class="has-mr-6">8.1.4</span>
+        <span>多元高斯分布</span>
+        </a></li></ul></ul></li><li>
+        <a class="is-flex" href="#Lecture-10-应用2-推荐系统">
+        <span class="has-mr-6">9</span>
+        <span>Lecture 10: 应用2-推荐系统</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#问题抽象">
+        <span class="has-mr-6">9.1</span>
+        <span>问题抽象</span>
+        </a></li><li>
+        <a class="is-flex" href="#基于内容的推荐">
+        <span class="has-mr-6">9.2</span>
+        <span>基于内容的推荐</span>
+        </a></li><li>
+        <a class="is-flex" href="#协同过滤">
+        <span class="has-mr-6">9.3</span>
+        <span>协同过滤</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">10</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
 
-		
-  </div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time></div>
+                    <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="title has-link-black-ter is-size-6 has-text-weight-normal">图像数据标注工具推荐-CVAT</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/16.jpg" alt="Pathlib--Python的路径管理库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-07T08:53:05.000Z">2019-05-07</time></div>
+                    <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工具/">工具</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
+                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
+                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
+                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="Machine Learning Notes" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
 </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
 
-
-<!-- min height -->
 
 <script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
-</script>
-    </div>    
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-    <a href="/reading" class="mobile-nav-link">Reading</a>
-  
-    <a href="/resources" class="mobile-nav-link">Resources</a>
-  
-    <a href="/notebooks" class="mobile-nav-link">📝</a>
-  
-</nav> -->
-    
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+};
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
     });
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
         }
     });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-
+});
 </script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-
-
-  <script src="/js/dialog.js"></script>
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
@@ -623,83 +974,41 @@ var a = new Donate({
 
 
 
-	<script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
+<script src="/js/main.js" defer></script>
 
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
         </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            Ebby&#39;s Notes
-          </div>
-          <div class="panel-body">
-            Copyright © 2020 Ebby DD All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
     </div>
-  </div>
 </div>
-  
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
-  
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
 </html>

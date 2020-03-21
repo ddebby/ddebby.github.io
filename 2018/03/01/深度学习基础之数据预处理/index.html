@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  <title>深度学习基础之数据准备与预处理 | Ebby&#39;s Notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-    <meta name="keywords" content="人工智能, AI, 神经网络, 算法">
-  
-  
-  
-  
-  <meta name="description" content="由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。   深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳">
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>深度学习基础之数据准备与预处理 - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。   深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳">
 <meta name="keywords" content="AI,人工智能,预处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习基础之数据准备与预处理">
@@ -19,180 +18,167 @@
 <meta property="og:site_name" content="Ebby&#39;s Notes">
 <meta property="og:description" content="由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。   深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
 <meta property="og:updated_time" content="2018-05-15T09:14:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习基础之数据准备与预处理">
 <meta name="twitter:description" content="由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。   深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳">
-  
-    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
-  
-
-  
-
-  <link rel="icon" href="/css/images/logo.png">
-  <link rel="apple-touch-icon" href="/css/images/logo.png">
-  
-    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
-  
-  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css">
-
-  
-    <link rel="stylesheet" href="/css/dialog.css">
-  
-
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css">
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css">
-  
-
-</head>
-</html>
+<meta name="twitter:image" content="http://blog.a-stack.com/images/og_image.png">
 
 
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
 
-            
-              <a class="brand" style="
-                 border-width: 0px;  margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="/">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
-                
-                  <li><div id="search-form-wrap">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
-<script src="/js/insight.js"></script>
-
-</div></li>
-            </div>
-          </div>
-                
-      </div>
-    </div>
-
-</header>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 
 
-
-      
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
             
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-深度学习基础之数据预处理" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      深度学习基础之数据准备与预处理
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/01/深度学习基础之数据预处理/" class="article-date">
-	  <time datetime="2018-03-01T06:35:01.000Z" itemprop="datePublished">2018-03-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a><a class="article-category-link" href="/categories/深度学习/基础知识/">基础知识</a>
-
-      
-      
-
+                <img src="/images/logo02.png" alt="深度学习基础之数据准备与预处理" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。</p>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-03-01T06:35:01.000Z">2018-03-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/深度学习/基础知识/">基础知识</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    17 分钟 读完 (大约 2595 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                深度学习基础之数据准备与预处理
+            
+        </h1>
+        <div class="content">
+            <p>由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。</p>
 <!-- excerpt -->
 <blockquote>
 <p>深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳汇总：</p>
@@ -221,7 +207,7 @@
 <h3 id="逐样本均值消减"><a href="#逐样本均值消减" class="headerlink" title="逐样本均值消减"></a>逐样本均值消减</h3><p>如果你的数据是<em>平稳</em>的（即数据每一个维度的统计都服从相同分布），那么你可以考虑在每个样本上减去数据的统计平均值(逐样本计算)。</p>
 <p><strong>例子：</strong>对于图像，这种归一化可以移除图像的平均亮度值 (intensity)。很多情况下我们对图像的照度并不感兴趣，而更多地关注其内容，这时对每个数据点移除像素的均值是有意义的。<strong>注意：</strong>虽然该方法广泛地应用于图像，但在处理彩色图像时需要格外小心，具体来说，是因为不同色彩通道中的像素并不都存在平稳特性。</p>
 <h3 id="特征标准化"><a href="#特征标准化" class="headerlink" title="特征标准化"></a>特征标准化</h3><p>特征标准化指的是（独立地）使得数据的每一个维度具有零均值和单位方差。这是归一化中最常见的方法并被广泛地使用（例如，在使用支持向量机（SVM）时，特征标准化常被建议用作预处理的一部分）。在实际应用中，特征标准化的具体做法是：首先计算每一个维度上数据的均值（使用全体数据计算），之后在每一个维度上都减去该均值。下一步便是在数据的每一维度上除以该维度上数据的标准差。</p>
-<p><strong>例子</strong>:处理音频数据时，常用 Mel 倒频系数 <a href="http://en.wikipedia.org/wiki/Mel-frequency_cepstrum" target="_blank" rel="noopener">MFCCs</a> 来表征数据。然而MFCC特征的第一个分量（表示直流分量）数值太大，常常会掩盖其他分量。这种情况下，为了平衡各个分量的影响，通常对特征的每个分量独立地使用标准化处理。</p>
+<p><strong>例子</strong>:处理音频数据时，常用 Mel 倒频系数 <a href="http://en.wikipedia.org/wiki/Mel-frequency_cepstrum">MFCCs</a> 来表征数据。然而MFCC特征的第一个分量（表示直流分量）数值太大，常常会掩盖其他分量。这种情况下，为了平衡各个分量的影响，通常对特征的每个分量独立地使用标准化处理。</p>
 <p><strong>原理：</strong> 在每个样本中减去数据的统计平均值，可以移除数据的共同部分，凸显个体差异。</p>
 <blockquote>
 <p><strong>注意：</strong></p>
@@ -250,7 +236,7 @@ B = B - \mu _B</script><figure class="highlight python"><table><tr><td class="gu
 <p>使用扣取方法可以从原始图像的四个角+中心位置进行扣取，实验证明该方法可以提升1-2个百分比的分类精度；</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CropPreprocessor</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height, horiz=True, inter=cv2.INTER_AREA)</span>:</span></span><br><span class="line">		<span class="comment"># store the target image width, height, whether or not</span></span><br><span class="line">		<span class="comment"># horizontal flips should be included, along with the</span></span><br><span class="line">		<span class="comment"># interpolation method used when resizing</span></span><br><span class="line">		self.width = width</span><br><span class="line">		self.height = height</span><br><span class="line">		self.horiz = horiz</span><br><span class="line">		self.inter = inter</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, image)</span>:</span></span><br><span class="line">		<span class="comment"># initialize the list of crops</span></span><br><span class="line">		crops = []</span><br><span class="line"></span><br><span class="line">		<span class="comment"># grab the width and height of the image then use these</span></span><br><span class="line">		<span class="comment"># dimensions to define the corners of the image based</span></span><br><span class="line">		(h, w) = image.shape[:<span class="number">2</span>]</span><br><span class="line">		coords = [</span><br><span class="line">			[<span class="number">0</span>, <span class="number">0</span>, self.width, self.height],</span><br><span class="line">			[w - self.width, <span class="number">0</span>, w, self.height],</span><br><span class="line">			[w - self.width, h - self.height, w, h],</span><br><span class="line">			[<span class="number">0</span>, h - self.height, self.width, h]]</span><br><span class="line"></span><br><span class="line">		<span class="comment"># compute the center crop of the image as well</span></span><br><span class="line">		dW = int(<span class="number">0.5</span> * (w - self.width))</span><br><span class="line">		dH = int(<span class="number">0.5</span> * (h - self.height))</span><br><span class="line">		coords.append([dW, dH, w - dW, h - dH])</span><br><span class="line"></span><br><span class="line">		<span class="comment"># loop over the coordinates, extract each of the crops,</span></span><br><span class="line">		<span class="comment"># and resize each of them to a fixed size</span></span><br><span class="line">		<span class="keyword">for</span> (startX, startY, endX, endY) <span class="keyword">in</span> coords:</span><br><span class="line">			crop = image[startY:endY, startX:endX]</span><br><span class="line">			crop = cv2.resize(crop, (self.width, self.height),</span><br><span class="line">				interpolation=self.inter)</span><br><span class="line">			crops.append(crop)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># check to see if the horizontal flips should be taken</span></span><br><span class="line">		<span class="keyword">if</span> self.horiz:</span><br><span class="line">			<span class="comment"># compute the horizontal mirror flips for each crop</span></span><br><span class="line">			mirrors = [cv2.flip(c, <span class="number">1</span>) <span class="keyword">for</span> c <span class="keyword">in</span> crops]</span><br><span class="line">			crops.extend(mirrors)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># return the set of crops</span></span><br><span class="line">		<span class="keyword">return</span> np.array(crops)</span><br></pre></td></tr></table></figure>
-<h2 id="Keras中的数据预处理功能"><a href="#Keras中的数据预处理功能" class="headerlink" title="Keras中的数据预处理功能"></a>Keras中的数据预处理功能</h2><p><a href="http://keras-cn.readthedocs.io/en/latest/preprocessing/sequence/" target="_blank" rel="noopener">http://keras-cn.readthedocs.io/en/latest/preprocessing/sequence/</a></p>
+<h2 id="Keras中的数据预处理功能"><a href="#Keras中的数据预处理功能" class="headerlink" title="Keras中的数据预处理功能"></a>Keras中的数据预处理功能</h2><p><a href="http://keras-cn.readthedocs.io/en/latest/preprocessing/sequence/">http://keras-cn.readthedocs.io/en/latest/preprocessing/sequence/</a></p>
 <p>A. 设置随机种子 </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="number">1337</span>)  <span class="comment"># for reproducibility</span></span><br></pre></td></tr></table></figure>
 <p>B. 输入数据维度规格化，这里每个样本只是size为784的一维数组。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_train = X_train.reshape(<span class="number">60000</span>, <span class="number">784</span>)</span><br></pre></td></tr></table></figure></p>
@@ -258,240 +244,466 @@ B = B - \mu _B</script><figure class="highlight python"><table><tr><td class="gu
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">one_hot_labels  = keras.utils.np_utils.to_categorical(labels, num_classes=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
 <p>C. 输入数据类型转换，数值归一化</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X_train = X_train.astype(<span class="string">'float32'</span>)</span><br><span class="line">X_train /= <span class="number">255</span></span><br></pre></td></tr></table></figure>
-<h3 id="序列预处理"><a href="#序列预处理" class="headerlink" title="序列预处理"></a>序列预处理</h3><todo>
+<h3 id="序列预处理"><a href="#序列预处理" class="headerlink" title="序列预处理"></a>序列预处理</h3><TODO>
 
-<h3 id="文本预处理"><a href="#文本预处理" class="headerlink" title="文本预处理"></a>文本预处理</h3><todo>
+<h3 id="文本预处理"><a href="#文本预处理" class="headerlink" title="文本预处理"></a>文本预处理</h3><TODO>
 
-<h3 id="图片预处理"><a href="#图片预处理" class="headerlink" title="图片预处理"></a>图片预处理</h3><todo>
+<h3 id="图片预处理"><a href="#图片预处理" class="headerlink" title="图片预处理"></a>图片预处理</h3><TODO>
 
-<h2 id="样本数据序列化为HDF5文件"><a href="#样本数据序列化为HDF5文件" class="headerlink" title="样本数据序列化为HDF5文件"></a>样本数据序列化为HDF5文件</h2><todo> 
+<h2 id="样本数据序列化为HDF5文件"><a href="#样本数据序列化为HDF5文件" class="headerlink" title="样本数据序列化为HDF5文件"></a>样本数据序列化为HDF5文件</h2><TODO> 
 
 <blockquote>
 <p>目的：减少多次IO读取的延时</p>
 </blockquote>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li><a href="http://lamda.nju.edu.cn/weixs/book/CNN_book.html" target="_blank" rel="noopener">《解析卷积神经网络—深度学习实践手册》</a></li>
-<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras文档</a></li>
-<li><a href="http://deeplearning.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86" target="_blank" rel="noopener">http://deeplearning.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86</a></li>
+<li><a href="http://lamda.nju.edu.cn/weixs/book/CNN_book.html">《解析卷积神经网络—深度学习实践手册》</a></li>
+<li><a href="https://keras.io/">Keras文档</a></li>
+<li><a href="http://deeplearning.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86">http://deeplearning.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86</a></li>
 </ol>
-</todo></todo></todo></todo>
-      
+</TODO></TODO></TODO></TODO>
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/AI/">AI</a>, <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>, <a class="has-link-grey -link" href="/tags/预处理/">预处理</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
     </div>
-    <footer class="article-footer">
-
-      
-        <div id="donation_div"></div>
-
-<script src="/js/vdonate.js"></script>
-<script>
-var a = new Donate({
-  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
-  btnText: '打赏支持', // 可选参数，打赏按钮文字
-  el: document.getElementById('donation_div'),
-  wechatImage: '/qnsource/site/weixin.png',
-  alipayImage: '/qnsource/site/alipay.jpg'
-});
-</script>
-      
-      
-      <div>
-        <ul class="post-copyright">
-          <li class="post-copyright-author">
-          <strong>本文作者:  </strong>Ebby DD</a>
-          </li>
-          <li class="post-copyright-link">
-          <strong>本文链接:  </strong>
-          <a href="/2018/03/01/深度学习基础之数据预处理/" target="_blank" title="深度学习基础之数据准备与预处理">http://blog.a-stack.com/2018/03/01/深度学习基础之数据预处理/</a>
-          </li>
-          <li class="post-copyright-license">
-            <strong>版权声明:   </strong>
-            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-            许可协议。转载请注明出处
-          </li>
-         
-        </ul>
-<div>
-
-      
-
-      
-        
- <!-- valine @ebby -->
- <section id="comments" class="comments">
-	<style>
-		.comments{margin:30px;padding:10px;background:#fff}
-		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
-	</style>
-	<div id="vcomment" class="comment"></div>
-<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
-<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
-<script>
-   var notify = 'false' == true ? true : false;
-   var verify = 'false' == true ? true : false;
-   new Valine({
-            av: AV,
-            el: '#vcomment',
-            notify: notify,
-            verify: verify,
-            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
-            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
-            placeholder: "Say Something ...",
-            avatar: "wavatar",
-            avatar_cdn: "https://sdn.geekzu.org/avatar/",
-            pageSize: "15"
-    });
-</script>
-		
-</section>
+</div>
 
 
 
-      
-      <!--  -->
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
 
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/预处理/">预处理</a></li></ul>
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
 
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/03/01/深度学习基础之模型压缩/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          深度学习基础之模型压缩
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/02/22/Tips-for-Keras/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">Tips for Keras</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-<!-- Table of Contents -->
-
-  <aside id="toc-sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数值化"><span class="nav-number">1.</span> <span class="nav-text">数值化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据归一化"><span class="nav-number">2.</span> <span class="nav-text">数据归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单缩放"><span class="nav-number">2.1.</span> <span class="nav-text">简单缩放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逐样本均值消减"><span class="nav-number">2.2.</span> <span class="nav-text">逐样本均值消减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征标准化"><span class="nav-number">2.3.</span> <span class="nav-text">特征标准化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准流程"><span class="nav-number">3.</span> <span class="nav-text">标准流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自然灰度图像"><span class="nav-number">3.1.</span> <span class="nav-text">自然灰度图像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#彩色图像"><span class="nav-number">3.2.</span> <span class="nav-text">彩色图像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#音频-MFCC-频谱图"><span class="nav-number">3.3.</span> <span class="nav-text">音频 (MFCC/频谱图)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MNIST-手写数字"><span class="nav-number">3.4.</span> <span class="nav-text">MNIST 手写数字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图像预处理"><span class="nav-number">4.</span> <span class="nav-text">图像预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mean-Subtraction"><span class="nav-number">4.1.</span> <span class="nav-text">Mean Subtraction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Patch-Extraction"><span class="nav-number">4.2.</span> <span class="nav-text">Patch Extraction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cropping-Over-Sampling"><span class="nav-number">4.3.</span> <span class="nav-text">Cropping(Over-Sampling)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keras中的数据预处理功能"><span class="nav-number">5.</span> <span class="nav-text">Keras中的数据预处理功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序列预处理"><span class="nav-number">5.1.</span> <span class="nav-text">序列预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本预处理"><span class="nav-number">5.2.</span> <span class="nav-text">文本预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片预处理"><span class="nav-number">5.3.</span> <span class="nav-text">图片预处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样本数据序列化为HDF5文件"><span class="nav-number">6.</span> <span class="nav-text">样本数据序列化为HDF5文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol>
-    
+                
+        </div>
     </div>
-  </aside>
+</div>
 
-</section>      
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
         
-      </div>
-      <!--  -->
-      <footer id="footer">
-  
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/03/01/深度学习基础之模型压缩/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">深度学习基础之模型压缩</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/02/22/Tips-for-Keras/">
+                <span class="level-item">Tips for Keras</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
-	      
-	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
-  		   
-		</div>
 
-		
-  </div>
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://blog.a-stack.com/2018/03/01/深度学习基础之数据预处理/';
+        this.page.identifier = '2018/03/01/深度学习基础之数据预处理/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'EbbyNotes' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#数值化">
+        <span class="has-mr-6">1</span>
+        <span>数值化</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据归一化">
+        <span class="has-mr-6">2</span>
+        <span>数据归一化</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#简单缩放">
+        <span class="has-mr-6">2.1</span>
+        <span>简单缩放</span>
+        </a></li><li>
+        <a class="is-flex" href="#逐样本均值消减">
+        <span class="has-mr-6">2.2</span>
+        <span>逐样本均值消减</span>
+        </a></li><li>
+        <a class="is-flex" href="#特征标准化">
+        <span class="has-mr-6">2.3</span>
+        <span>特征标准化</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#标准流程">
+        <span class="has-mr-6">3</span>
+        <span>标准流程</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#自然灰度图像">
+        <span class="has-mr-6">3.1</span>
+        <span>自然灰度图像</span>
+        </a></li><li>
+        <a class="is-flex" href="#彩色图像">
+        <span class="has-mr-6">3.2</span>
+        <span>彩色图像</span>
+        </a></li><li>
+        <a class="is-flex" href="#音频-MFCC-频谱图">
+        <span class="has-mr-6">3.3</span>
+        <span>音频 (MFCC/频谱图)</span>
+        </a></li><li>
+        <a class="is-flex" href="#MNIST-手写数字">
+        <span class="has-mr-6">3.4</span>
+        <span>MNIST 手写数字</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#图像预处理">
+        <span class="has-mr-6">4</span>
+        <span>图像预处理</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Mean-Subtraction">
+        <span class="has-mr-6">4.1</span>
+        <span>Mean Subtraction</span>
+        </a></li><li>
+        <a class="is-flex" href="#Patch-Extraction">
+        <span class="has-mr-6">4.2</span>
+        <span>Patch Extraction</span>
+        </a></li><li>
+        <a class="is-flex" href="#Cropping-Over-Sampling">
+        <span class="has-mr-6">4.3</span>
+        <span>Cropping(Over-Sampling)</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Keras中的数据预处理功能">
+        <span class="has-mr-6">5</span>
+        <span>Keras中的数据预处理功能</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#序列预处理">
+        <span class="has-mr-6">5.1</span>
+        <span>序列预处理</span>
+        </a></li><li>
+        <a class="is-flex" href="#文本预处理">
+        <span class="has-mr-6">5.2</span>
+        <span>文本预处理</span>
+        </a></li><li>
+        <a class="is-flex" href="#图片预处理">
+        <span class="has-mr-6">5.3</span>
+        <span>图片预处理</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#样本数据序列化为HDF5文件">
+        <span class="has-mr-6">6</span>
+        <span>样本数据序列化为HDF5文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">7</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time></div>
+                    <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="title has-link-black-ter is-size-6 has-text-weight-normal">图像数据标注工具推荐-CVAT</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/16.jpg" alt="Pathlib--Python的路径管理库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-07T08:53:05.000Z">2019-05-07</time></div>
+                    <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工具/">工具</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
+                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
+                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
+                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="深度学习基础之数据准备与预处理" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
 </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
 
-
-<!-- min height -->
 
 <script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
-</script>
-    </div>    
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-    <a href="/reading" class="mobile-nav-link">Reading</a>
-  
-    <a href="/resources" class="mobile-nav-link">Resources</a>
-  
-    <a href="/notebooks" class="mobile-nav-link">📝</a>
-  
-</nav> -->
-    
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+};
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
     });
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
         }
     });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-
+});
 </script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-
-
-  <script src="/js/dialog.js"></script>
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
@@ -503,83 +715,41 @@ var a = new Donate({
 
 
 
-	<script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
+<script src="/js/main.js" defer></script>
 
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
         </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            Ebby&#39;s Notes
-          </div>
-          <div class="panel-body">
-            Copyright © 2020 Ebby DD All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
     </div>
-  </div>
 </div>
-  
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
-  
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
 </html>

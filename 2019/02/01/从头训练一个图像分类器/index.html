@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  <title>从头训练一个图像分类器 | Ebby&#39;s Notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-    <meta name="keywords" content="人工智能,深度学习,技术,算法">
-  
-  
-  
-  
-  <meta name="description" content="摘要： 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。">
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>从头训练一个图像分类器 - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="摘要： 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。">
 <meta name="keywords" content="人工智能,深度学习,技术,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从头训练一个图像分类器">
@@ -20,195 +19,180 @@
 <meta property="og:description" content="摘要： 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/check%20data.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/similar%20data.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/data_show.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/lr_find.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/confusion_matrix.png">
-<meta property="og:image" content="http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/top%20losses.png">
-<meta property="og:updated_time" content="2019-02-01T07:06:54.000Z">
+<meta property="og:updated_time" content="2020-03-21T06:07:35.476Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从头训练一个图像分类器">
 <meta name="twitter:description" content="摘要： 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。">
 <meta name="twitter:image" content="http://blog.a-stack.com/qnsource/banner/08.jpg">
-  
-    <link rel="alternate" href="/atom.xml" title="Ebby&#39;s Notes" type="application/atom+xml">
-  
-
-  
-
-  <link rel="icon" href="/css/images/logo.png">
-  <link rel="apple-touch-icon" href="/css/images/logo.png">
-  
-    <link href="/qnsource/css/Source+Code+Pro.css" rel="stylesheet" type="text/css">
-  
-  <link href="/qnsource/css/Open+Sans-Montserrat-700.css" rel="stylesheet" type="text/css">
-  <link href="/qnsource/css/Roboto-400-300.css" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css">
-
-  
-    <link rel="stylesheet" href="/css/dialog.css">
-  
-
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css">
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css">
-  
-
-</head>
-</html>
 
 
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
-  
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
 
-            
-              <a class="brand" style="
-                 border-width: 0px;  margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="200px" height="100px" alt="Hike News" src="/css/images/logo.png">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="/">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/reading">读书</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/resources">资源</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/notebooks">📝</a> </li>
-                
-                  <li><div id="search-form-wrap">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
-<script src="/js/insight.js"></script>
-
-</div></li>
-            </div>
-          </div>
-                
-      </div>
-    </div>
-
-</header>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 
 
-
-      
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
             
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-从头训练一个图像分类器" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      从头训练一个图像分类器
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/02/01/从头训练一个图像分类器/" class="article-date">
-	  <time datetime="2019-02-01T02:16:46.000Z" itemprop="datePublished">2019-02-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
-
-      
-      
-
+                <img src="/images/logo02.png" alt="从头训练一个图像分类器" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/qnsource/banner/08.jpg" alt="Test Picture"></p>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分钟 读完 (大约 1950 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                从头训练一个图像分类器
+            
+        </h1>
+        <div class="content">
+            <p><img src="/qnsource/banner/08.jpg" alt="Test Picture"></p>
 <p><strong>摘要：</strong> 本文记录了利用fast.ai快速构建一个图像识别（图像分类器）的方法。</p>
 <a id="more"></a>
 <p>Fast.ai是一个基于Pytorch的深度学习计算框架，就像keras基于tensorflow，目的在于简化深度学习网络设计、训练过程中的复杂逻辑，简化设计时间。2019年第三个版的课程配合pytorch 1.0版本进行了全面更新，相关链接见文末参考。</p>
-<h2 id="基本的环境配置"><a href="#基本的环境配置" class="headerlink" title="基本的环境配置"></a>基本的环境配置</h2><p>我是使用一台Azure的GPU云主机进行的实验，Azure的DSVM云主机提供了扩展包来迅速部署fast.ai所需的相关库，也可以参见 <a href="https://course.fast.ai/start_azure.html" target="_blank" rel="noopener">https://course.fast.ai/start_azure.html</a> 进行环境安装。安装的bash脚本如下：</p>
+<h2 id="基本的环境配置"><a href="#基本的环境配置" class="headerlink" title="基本的环境配置"></a>基本的环境配置</h2><p>我是使用一台Azure的GPU云主机进行的实验，Azure的DSVM云主机提供了扩展包来迅速部署fast.ai所需的相关库，也可以参见 <a href="https://course.fast.ai/start_azure.html">https://course.fast.ai/start_azure.html</a> 进行环境安装。安装的bash脚本如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#安装相关基本软件包</span></span></span><br><span class="line">/anaconda/bin/conda create -y -n fastai python=3.6</span><br><span class="line">source /anaconda/bin/activate fastai</span><br><span class="line">pip install dataclasses</span><br><span class="line">/anaconda/bin/conda install  -y -c pytorch pytorch torchvision</span><br><span class="line">/anaconda/bin/conda install  -y -c fastai fastai</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 在JupyterNotebook中增加fast.ai的kernel</span></span></span><br><span class="line">/anaconda/bin/conda install  -y ipykernel</span><br><span class="line">python -m ipykernel install --name 'fastai' --display-name 'Python (fastai)'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Script to update Notbook metadata</span></span><br><span class="line">cat &lt;&lt; EOF &gt; /tmp/changenbmeta.py</span><br><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/python</span></span><br><span class="line">import json,sys</span><br><span class="line"></span><br><span class="line">if len(sys.argv) &lt; 2 :</span><br><span class="line">        print "Usage: python changenbmeta.py &lt;filename&gt;"</span><br><span class="line">        exit()</span><br><span class="line">with open(sys.argv[1], "r") as jsonFile:</span><br><span class="line">    data = json.load(jsonFile)</span><br><span class="line"></span><br><span class="line">data["metadata"]["kernelspec"]["display_name"] = "Python (fastai)"</span><br><span class="line">data["metadata"]["kernelspec"]["name"] = "fastai"</span><br><span class="line"></span><br><span class="line">with open(sys.argv[1], "w") as jsonFile:</span><br><span class="line">    json.dump(data, jsonFile)</span><br><span class="line"></span><br><span class="line">EOF</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 下载课程</span></span></span><br><span class="line">cd ~/home/courses</span><br><span class="line">git clone https://github.com/fastai/course-v3</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Change metadata on notebook to match kernel name <span class="keyword">in</span> the fast.ai notebooks</span></span><br><span class="line">find . -name \*.ipynb -exec /usr/bin/python /tmp/changenbmeta.py &#123;&#125; \;</span><br></pre></td></tr></table></figure>
 <h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><p>Fast.ai课程给出了一种可以利用Google Image快速收集图片的流程，值得借鉴。在本例中，我想了半天该识别点啥呢？ 做个自行车、电瓶车、摩托车的识别分类器吧！</p>
 <h3 id="准备图片"><a href="#准备图片" class="headerlink" title="准备图片"></a>准备图片</h3><ol>
-<li><p>打开<a href="https://images.google.com/?gws_rd=ssl" target="_blank" rel="noopener">Google Image</a>,搜索并浏览需要的图片，往下滚动，直到有差不多数目的图像被加载（搜索越多，无关照片越多，尽量控制搜索条件，保证搜索质量）；</p>
+<li><p>打开<a href="https://images.google.com/?gws_rd=ssl">Google Image</a>,搜索并浏览需要的图片，往下滚动，直到有差不多数目的图像被加载（搜索越多，无关照片越多，尽量控制搜索条件，保证搜索质量）；</p>
 </li>
 <li><p>使用命令<code>Ctrl+Shift+J</code>打开控制台，填入如下命令并敲回车，将所有图片保持为<code>urls_xxx.txt</code></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">urls = <span class="built_in">Array</span>.from(<span class="built_in">document</span>.querySelectorAll(<span class="string">'.rg_di .rg_meta'</span>)).map(<span class="function"><span class="params">el</span>=&gt;</span><span class="built_in">JSON</span>.parse(el.textContent).ou);</span><br><span class="line"><span class="built_in">window</span>.open(<span class="string">'data:text/csv;charset=utf-8,'</span> + <span class="built_in">escape</span>(urls.join(<span class="string">'\n'</span>)));</span><br></pre></td></tr></table></figure>
@@ -219,7 +203,7 @@
 <li><p>下载图片</p>
 <p>将存储的<code>urls_xxx.txt</code>文件放于<code>path</code>目录下，执行如下命令：</p>
 <blockquote>
-<p>其中使用了fast.ai.vision.data的<a href="https://docs.fast.ai/vision.data.html#download_images" target="_blank" rel="noopener"><code>download_images</code></a>,指定url文件的位置，存放图片的目的文件夹，最大的图片数目，最大处理线程数目</p>
+<p>其中使用了fast.ai.vision.data的<a href="https://docs.fast.ai/vision.data.html#download_images"><code>download_images</code></a>,指定url文件的位置，存放图片的目的文件夹，最大的图片数目，最大处理线程数目</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">download_images(path/file1, dest1, max_pics=<span class="number">200</span>)</span><br><span class="line">download_images(path/file2, dest2, max_pics=<span class="number">200</span>)</span><br><span class="line">download_images(path/file3, dest3, max_pics=<span class="number">200</span>)</span><br></pre></td></tr></table></figure>
 </li>
@@ -227,7 +211,7 @@
 <h3 id="数据清理"><a href="#数据清理" class="headerlink" title="数据清理"></a>数据清理</h3><ol>
 <li><p>下载下来的图片，格式（jpeg、png、gift等）、大小都不一致，需要进行一波清理，fast.ai提供了一个<code>verify_images</code>的工具，可以对图像进行基本的清理操作：</p>
 <blockquote>
-<p><a href="https://docs.fast.ai/vision.data.html#verify_images" target="_blank" rel="noopener">verify_images</a> 是一个很有用的函数，会查看该图片是否损坏、是否使用合适的channel数目，是否需要调整到指定大小或超过了限定大小</p>
+<p><a href="https://docs.fast.ai/vision.data.html#verify_images">verify_images</a> 是一个很有用的函数，会查看该图片是否损坏、是否使用合适的channel数目，是否需要调整到指定大小或超过了限定大小</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">classes = [<span class="string">'bike'</span>,<span class="string">'battery'</span>,<span class="string">'motorcycle'</span>]</span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> classes:</span><br><span class="line">    print(c)</span><br><span class="line">    verify_images(path/c, delete=<span class="keyword">True</span>, max_size=<span class="number">500</span>)</span><br></pre></td></tr></table></figure>
 </li>
@@ -276,238 +260,436 @@
 <p>可以看处模型容易搞混电动车和摩托车。</p>
 <h2 id="Next"><a href="#Next" class="headerlink" title="Next"></a>Next</h2><p>手动修正数据之后，再重复训练，错误率会降低至1%</p>
 <h2 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 执行如下命令，生成1个84M的export.pkl文件</span></span><br><span class="line">learn.export()</span><br><span class="line">learn = load_learner(path)</span><br><span class="line">pred_class,pred_idx,outputs = learn.predict(img)</span><br></pre></td></tr></table></figure>
-<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="关于Google-Image的图像下载"><a href="#关于Google-Image的图像下载" class="headerlink" title="关于Google Image的图像下载"></a>关于Google Image的图像下载</h3><p>GitHub项目 <a href="https://github.com/toffebjorkskog/ml-tools/blob/master/gi2ds.md" target="_blank" rel="noopener"><strong>ml-tools</strong></a> 提供了一种更加便捷的下载方案, 可以在搜索的时候选择是否存储相关照片，只需要把如下代码粘贴在控制台中：</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="关于Google-Image的图像下载"><a href="#关于Google-Image的图像下载" class="headerlink" title="关于Google Image的图像下载"></a>关于Google Image的图像下载</h3><p>GitHub项目 <a href="https://github.com/toffebjorkskog/ml-tools/blob/master/gi2ds.md"><strong>ml-tools</strong></a> 提供了一种更加便捷的下载方案, 可以在搜索的时候选择是否存储相关照片，只需要把如下代码粘贴在控制台中：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">e, s</span>) </span>&#123;</span><br><span class="line">    e.src = s;</span><br><span class="line">    e.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        jQuery.noConflict();</span><br><span class="line">        jQuery(<span class="string">'&lt;style type="text/css"&gt; .remove &#123; opacity:0.3;&#125;\n .urlmodal &#123;padding: 10px; background-color: #eee; position: fixed; bottom: 0; right: 0; height: 100px; width: 300px; z-index: 1000;&#125; .urlmodal textarea &#123;width: 100%; height: 250px;&#125;&lt;/style&gt;'</span>).appendTo(<span class="string">'head'</span>);</span><br><span class="line">        jQuery(<span class="string">'&lt;div class="urlmodal"&gt;&lt;h3&gt;Let\'s create a dataset&lt;/h3&gt;&lt;textarea&gt;Scoll all the way down\nClick "Show more images"\nScroll more\nClick on the images you want to remove from the dataset\nThe urls will appear in this box for you to copy.&lt;/textarea&gt;&lt;/div&gt;'</span>).appendTo(<span class="string">'body'</span>);</span><br><span class="line"></span><br><span class="line">        jQuery(<span class="string">'#rg'</span>).on(<span class="string">'click'</span>, <span class="string">'.rg_di'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            jQuery(<span class="keyword">this</span>).toggleClass(<span class="string">'remove'</span>);</span><br><span class="line">            updateUrls();</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">        jQuery(<span class="built_in">window</span>).scroll(updateUrls);</span><br><span class="line">        jQuery(<span class="string">'.urlmodal textarea'</span>).focus(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;updateUrls(); setTimeout(selectText, <span class="number">100</span>)&#125;).mouseup(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="literal">false</span>;&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">updateUrls</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> urls = <span class="built_in">Array</span>.from(<span class="built_in">document</span>.querySelectorAll(<span class="string">'.rg_di:not(.remove) .rg_meta'</span>)).map(<span class="function"><span class="params">el</span>=&gt;</span><span class="built_in">JSON</span>.parse(el.textContent).ou);</span><br><span class="line">            <span class="keyword">var</span> search_term = jQuery(<span class="string">'.gsfi'</span>).val();</span><br><span class="line">            jQuery(<span class="string">'.urlmodal textarea'</span>).val(urls.join(<span class="string">"\n"</span>));</span><br><span class="line">            jQuery(<span class="string">'.urlmodal h3'</span>).html(search_term + <span class="string">": "</span> + urls.length);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">selectText</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            jQuery(<span class="string">'.urlmodal textarea'</span>).select();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">document</span>.head.appendChild(e);</span><br><span class="line">&#125;)(<span class="built_in">document</span>.createElement(<span class="string">'script'</span>), <span class="string">'//code.jquery.com/jquery-latest.min.js'</span>);</span><br></pre></td></tr></table></figure>
 <h3 id="数据清理工具-fastclass"><a href="#数据清理工具-fastclass" class="headerlink" title="数据清理工具 fastclass"></a>数据清理工具 fastclass</h3><blockquote>
-<p><a href="https://github.com/cwerner/fastclass" target="_blank" rel="noopener">https://github.com/cwerner/fastclass</a></p>
-<p><a href="https://www.christianwerner.net/tech/Build-your-image-dataset-faster/#" target="_blank" rel="noopener">https://www.christianwerner.net/tech/Build-your-image-dataset-faster/#</a></p>
+<p><a href="https://github.com/cwerner/fastclass">https://github.com/cwerner/fastclass</a></p>
+<p><a href="https://www.christianwerner.net/tech/Build-your-image-dataset-faster/#">https://www.christianwerner.net/tech/Build-your-image-dataset-faster/#</a></p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install git+https://github.com/cwerner/fastclass.git<span class="comment">#egg=fastclass</span></span><br></pre></td></tr></table></figure>
 <p>使用方法：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 创建一个csv文件用于声明要下载的图片的关键字，比如：</span><br><span class="line">head -n 3 example/guitars.csv</span><br><span class="line">searchterm,exclude</span><br><span class="line">guitar gibson les paul,guitar</span><br><span class="line">guitar gibson SG,guitar</span><br><span class="line"></span><br><span class="line">2. 下载（ALL=Google+Bing+Baidu）</span><br><span class="line">fcd -c ALL -k -o guitars example/guitars.csv </span><br><span class="line"></span><br><span class="line">3. 清理（使用[1]-[9]分类，D删除，X退出）</span><br><span class="line">fcc guitars/gibson_les_paul</span><br></pre></td></tr></table></figure>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li><a href="https://course.fast.ai/" target="_blank" rel="noopener">Fast.ai课程v3</a></li>
-<li><a href="https://docs.fast.ai/" target="_blank" rel="noopener">Fast.ai文档</a></li>
-<li><a href="https://40.73.66.75:8000/user/gaoc/notebooks/1.Courses/3.fastai/course-v3/nbs/dl-ebby/lesson2-download.ipynb" target="_blank" rel="noopener">JupyterNotebook</a></li>
+<li><a href="https://course.fast.ai/">Fast.ai课程v3</a></li>
+<li><a href="https://docs.fast.ai/">Fast.ai文档</a></li>
+<li><a href="https://40.73.66.75:8000/user/gaoc/notebooks/1.Courses/3.fastai/course-v3/nbs/dl-ebby/lesson2-download.ipynb">JupyterNotebook</a></li>
 </ol>
 
-      
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Fast-ai/">Fast.ai</a>, <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>, <a class="has-link-grey -link" href="/tags/算法/">算法</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
     </div>
-    <footer class="article-footer">
-
-      
-        <div id="donation_div"></div>
-
-<script src="/js/vdonate.js"></script>
-<script>
-var a = new Donate({
-  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
-  btnText: '打赏支持', // 可选参数，打赏按钮文字
-  el: document.getElementById('donation_div'),
-  wechatImage: '/qnsource/site/weixin.png',
-  alipayImage: '/qnsource/site/alipay.jpg'
-});
-</script>
-      
-      
-      <div>
-        <ul class="post-copyright">
-          <li class="post-copyright-author">
-          <strong>本文作者:  </strong>Ebby DD</a>
-          </li>
-          <li class="post-copyright-link">
-          <strong>本文链接:  </strong>
-          <a href="/2019/02/01/从头训练一个图像分类器/" target="_blank" title="从头训练一个图像分类器">http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/</a>
-          </li>
-          <li class="post-copyright-license">
-            <strong>版权声明:   </strong>
-            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-            许可协议。转载请注明出处
-          </li>
-         
-        </ul>
-<div>
-
-      
-
-      
-        
- <!-- valine @ebby -->
- <section id="comments" class="comments">
-	<style>
-		.comments{margin:30px;padding:10px;background:#fff}
-		@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
-	</style>
-	<div id="vcomment" class="comment"></div>
-<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
-<script src='//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js'></script>
-<script>
-   var notify = 'false' == true ? true : false;
-   var verify = 'false' == true ? true : false;
-   new Valine({
-            av: AV,
-            el: '#vcomment',
-            notify: notify,
-            verify: verify,
-            app_id: "JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz",
-            app_key: "m5FMVedFNxGutQCnMsVMAaXM",
-            placeholder: "Say Something ...",
-            avatar: "wavatar",
-            avatar_cdn: "https://sdn.geekzu.org/avatar/",
-            pageSize: "15"
-    });
-</script>
-		
-</section>
+</div>
 
 
 
-      
-      <!--  -->
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
 
-      <!--  -->
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fast-ai/">Fast.ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
 
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2019/05/07/Pathlib-Python的路径管理库/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          Pathlib--Python的路径管理库
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">2018年总结：来自18年的工作感悟</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-<!-- Table of Contents -->
-
-  <aside id="toc-sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的环境配置"><span class="nav-number">1.</span> <span class="nav-text">基本的环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据准备"><span class="nav-number">2.</span> <span class="nav-text">数据准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备图片"><span class="nav-number">2.1.</span> <span class="nav-text">准备图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据清理"><span class="nav-number">2.2.</span> <span class="nav-text">数据清理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看数据"><span class="nav-number">2.3.</span> <span class="nav-text">查看数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练模型"><span class="nav-number">3.</span> <span class="nav-text">训练模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型结果分析"><span class="nav-number">4.</span> <span class="nav-text">模型结果分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Next"><span class="nav-number">5.</span> <span class="nav-text">Next</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预测"><span class="nav-number">6.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它"><span class="nav-number">7.</span> <span class="nav-text">其它</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于Google-Image的图像下载"><span class="nav-number">7.1.</span> <span class="nav-text">关于Google Image的图像下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据清理工具-fastclass"><span class="nav-number">7.2.</span> <span class="nav-text">数据清理工具 fastclass</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol>
-    
+                
+        </div>
     </div>
-  </aside>
+</div>
 
-</section>      
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
         
-      </div>
-      <!--  -->
-      <footer id="footer">
-  
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/07/Pathlib-Python的路径管理库/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Pathlib--Python的路径管理库</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/01/24/2018年总结：来自18年的工作感悟/">
+                <span class="level-item">2018年总结：来自18年的工作感悟</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2020 Ebby&#39;s Notes All Rights Reserved.</p>
-	      
-	      
-  		   	<p id="copyRightCn">Ebby DD 保留所有权利 沪ICP备20005404号</p>
-  		   
-		</div>
 
-		
-  </div>
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'http://blog.a-stack.com/2019/02/01/从头训练一个图像分类器/';
+        this.page.identifier = '2019/02/01/从头训练一个图像分类器/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'EbbyNotes' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#基本的环境配置">
+        <span class="has-mr-6">1</span>
+        <span>基本的环境配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据准备">
+        <span class="has-mr-6">2</span>
+        <span>数据准备</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#准备图片">
+        <span class="has-mr-6">2.1</span>
+        <span>准备图片</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据清理">
+        <span class="has-mr-6">2.2</span>
+        <span>数据清理</span>
+        </a></li><li>
+        <a class="is-flex" href="#查看数据">
+        <span class="has-mr-6">2.3</span>
+        <span>查看数据</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#训练模型">
+        <span class="has-mr-6">3</span>
+        <span>训练模型</span>
+        </a></li><li>
+        <a class="is-flex" href="#模型结果分析">
+        <span class="has-mr-6">4</span>
+        <span>模型结果分析</span>
+        </a></li><li>
+        <a class="is-flex" href="#Next">
+        <span class="has-mr-6">5</span>
+        <span>Next</span>
+        </a></li><li>
+        <a class="is-flex" href="#预测">
+        <span class="has-mr-6">6</span>
+        <span>预测</span>
+        </a></li><li>
+        <a class="is-flex" href="#其它">
+        <span class="has-mr-6">7</span>
+        <span>其它</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#关于Google-Image的图像下载">
+        <span class="has-mr-6">7.1</span>
+        <span>关于Google Image的图像下载</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据清理工具-fastclass">
+        <span class="has-mr-6">7.2</span>
+        <span>数据清理工具 fastclass</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">8</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time></div>
+                    <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="title has-link-black-ter is-size-6 has-text-weight-normal">图像数据标注工具推荐-CVAT</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/16.jpg" alt="Pathlib--Python的路径管理库">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-07T08:53:05.000Z">2019-05-07</time></div>
+                    <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工具/">工具</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
+                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
+                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
+                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="从头训练一个图像分类器" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
 </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
 
-
-<!-- min height -->
 
 <script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
     }
-</script>
-    </div>    
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-    <a href="/reading" class="mobile-nav-link">Reading</a>
-  
-    <a href="/resources" class="mobile-nav-link">Resources</a>
-  
-    <a href="/notebooks" class="mobile-nav-link">📝</a>
-  
-</nav> -->
-    
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
+};
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
     });
 </script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
         }
     });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-
+});
 </script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-
-
-  <script src="/js/dialog.js"></script>
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
 
 
 
@@ -519,83 +701,41 @@ var a = new Donate({
 
 
 
-	<script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
+<script src="/js/main.js" defer></script>
 
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
         </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            Ebby&#39;s Notes
-          </div>
-          <div class="panel-body">
-            Copyright © 2020 Ebby DD All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
     </div>
-  </div>
 </div>
-  
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
-    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
-  
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
 </html>
