@@ -347,6 +347,7 @@ img.thumbnail {
 }
 .has-link-grey {
   color: #7a7a7a !important;
+  text-decoration: underline;
 }
 .has-link-black-ter {
   color: #242424 !important;

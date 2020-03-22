@@ -19,7 +19,7 @@
 <meta property="og:description" content="摘要： 从事深度学习研究开始，尝试过很多不同类型，不同功能的数据标注工具，尤其是图像标注工具，包括自己写的简单工具，都不能很好的满足任务的需求，近期突然使用了CVAT，感觉似乎可能成为未来工具包中的常备系列，写此一文，记录使用过程。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/cvat.jpg">
-<meta property="og:updated_time" content="2020-03-21T15:44:50.132Z">
+<meta property="og:updated_time" content="2020-03-22T07:52:45.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像数据标注工具推荐-CVAT">
 <meta name="twitter:description" content="摘要： 从事深度学习研究开始，尝试过很多不同类型，不同功能的数据标注工具，尤其是图像标注工具，包括自己写的简单工具，都不能很好的满足任务的需求，近期突然使用了CVAT，感觉似乎可能成为未来工具包中的常备系列，写此一文，记录使用过程。">
@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css">
 
 
     
@@ -156,6 +156,8 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time>
                 
                 <div class="level-item">
@@ -166,7 +168,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    7 分钟 读完 (大约 1015 个字)
+                    7 分钟 读完 (大约 1017 个字)
                 </span>
                 
                 
@@ -175,7 +177,7 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                图像数据标注工具推荐-CVAT
+                <i class="fas fa-angle-double-right"></i>图像数据标注工具推荐-CVAT
             
         </h1>
         <div class="content">
@@ -184,7 +186,7 @@ var _hmt = _hmt || [];
 <h2 id="安装部署与配置"><a href="#安装部署与配置" class="headerlink" title="安装部署与配置"></a>安装部署与配置</h2><p>部署过程参考官方文档：<a href="https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/installation.md">CVAT 部署文档</a>，写的极为详细，基本没有太多坑🕳。</p>
 <p>由于本身的需求，需要使用一些特定功能，具体如下：</p>
 <h3 id="1-配置外网访问"><a href="#1-配置外网访问" class="headerlink" title="1. 配置外网访问"></a>1. 配置外网访问</h3><p>构建YAML文件：<code>docker-compose.add-on.yml</code>:</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2.3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  cvat_proxy:</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="attr">      CVAT_HOST:</span> <span class="string">.example.com</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><figcaption><span>&gt;folded</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2.3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  cvat_proxy:</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="attr">      CVAT_HOST:</span> <span class="string">.example.com</span></span><br></pre></td></tr></table></figure>
 <h3 id="2-配置挂载图像存储目录"><a href="#2-配置挂载图像存储目录" class="headerlink" title="2. 配置挂载图像存储目录"></a>2. 配置挂载图像存储目录</h3><blockquote>
 <p>替换{}中目录位置</p>
 </blockquote>
@@ -493,11 +495,12 @@ var _hmt = _hmt || [];
 
         </div>
         
+        <hr style="height:1px;margin:1rem 0"/>
         <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>, <a class="has-link-grey -link" href="/tags/数据/">数据</a>, <a class="has-link-grey -link" href="/tags/数据标注/">数据标注</a>
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/数据/">数据</a>,&nbsp;<a class="has-link-grey -link" href="/tags/数据标注/">数据标注</a>
                 </div>
             </div>
         </div>
@@ -547,6 +550,13 @@ var _hmt = _hmt || [];
 
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/22/2019年总结：来自19年的工作感悟/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">2019年总结：来自19年的工作感悟</span>
+            </a>
+        </div>
         
         
         <div class="level-end">
@@ -652,6 +662,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-22T07:31:47.000Z">2020-03-22</time></div>
+                    <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2019年总结：来自19年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
@@ -711,7 +740,7 @@ var _hmt = _hmt || [];
             
             <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
                 </p>
             </a>
             
@@ -721,25 +750,6 @@ var _hmt = _hmt || [];
                     <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
-                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
                 </div>
             </div>

@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/tomorrow.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css">
 
 
     
@@ -146,6 +146,124 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                
+
+                <time class="level-item has-text-grey" datetime="2018-04-20T01:09:14.000Z">2018-04-20</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/深度学习/基础知识/">基础知识</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 分钟 读完 (大约 1486 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2018/04/20/Backpropagation-in-Neural-Network/">Backpropagation in Neural Network</a>
+            
+        </h1>
+        <div class="content">
+            <p><strong>摘要：</strong> 反向传播毋庸置疑是整个神经网络的精髓，正是由于它的提出标志着深度神经网络的训练在有限算力基础上成为可能，但反向传播本身的原理同样值得品读和思考。<br><!-- excerpt --></p>
+<p>本文主要总结神经网络中反向传播算法的推导流程并挖掘一些深层次的原理。反向传播算法在1970年就已经提出，直到1986年 <a href="http://en.wikipedia.org/wiki/David_Rumelhart">David Rumelhart</a>, <a href="http://www.cs.toronto.edu/~hinton/">Geoffrey Hinton</a>, and <a href="http://en.wikipedia.org/wiki/Ronald_J._Williams">Ronald Williams</a>在一篇<a href="https://www.nature.com/articles/323533a0">论文</a>中对其实现的分析才得以普及。</p>
+<h2 id="1-表达式的定义"><a href="#1-表达式的定义" class="headerlink" title="1. 表达式的定义"></a>1. 表达式的定义</h2><ul>
+<li>$w_{jk}^l$ 代表第l−1层第k个神经元，与第l层第j个神经元之间的权重（注意j与k的顺序）；</li>
+<li>$b_j^l$  代表第l层中第j个神经元的偏移；</li>
+<li>$a_j^l$  代表第l层中第j个神经元的激活函数值；</li>
+<li>$L$  代表神经网络的总层数；</li>
+<li>$J(W,b)$ 简写为$J$ 代表神经网络的代价函数；</li>
+</ul>
+<p>假设我们有$m$ 个训练样本${(x^{(1)},y^{(1)}),…, (x^{(m)},y^{(m)})}$ ,对于每个训练样本$(x,y)$ 定义代价函数为：</p>
+<script type="math/tex; mode=display">
+J(W,b;x,y) = \frac{1}{2} ||h_{W,b}(x) - y||^2</script><p>对于$m$个训练样本，总的代价函数为：</p>
+<script type="math/tex; mode=display">
+J(W,b) = [\frac{1}{m} \sum_{i=1}^m J(W,b;x^{(i)},y^{(i)}] + \frac{\lambda}{2} \sum_{l=1}^{n_l -1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}}(W_{ji}^{(l)})^2</script><p>根据神经网络层与层之间关系的定义，我们有如下表达式（<strong>向量形式</strong>）：</p>
+<script type="math/tex; mode=display">
+z^l = w^l a^{l-1} + b^l,   l=2,3,...,L</script><script type="math/tex; mode=display">
+a^l = \sigma (z^l), l=2,3,...,L</script><script type="math/tex; mode=display">
+a^1=z^1=X</script><p>其中</p>
+<script type="math/tex; mode=display">
+z_j^l = \sum_k w_{jk}^l a_k^{l-1} + b_j^l</script><p>利用梯度下降法进行目标优化使用的主要梯度更新公式：</p>
+<script type="math/tex; mode=display">
+w^l := w^l - \alpha \frac{\partial J}{\partial w^l}</script><script type="math/tex; mode=display">
+b^l := b^l - \alpha \frac{\partial J}{\partial b^l}</script><p>因为神经网络的复杂性导致$\frac{\partial J}{\partial w^l}$ 无法直接计算或者计算代价太大（每个权重的计算都需要进行一次前向传播），反向传播的目的在于提供一种更加高效的手段，完成上述梯度的更新操作。</p>
+<h2 id="2-反向传播的直观理解"><a href="#2-反向传播的直观理解" class="headerlink" title="2. 反向传播的直观理解"></a>2. 反向传播的直观理解</h2><p>反向传播是用于理解改变网络中的任一权重如何影响网络代价函数的过程。假设神经网络中某个权重$w_{jk}^l$ </p>
+<p>产生了轻微的扰动误差 $\Delta w_{jk}^l$ ,扰动误差导致该神经元的输出产生误差 $\Delta z_j^l$ ,这个扰动将使对应的神经元$a_j^l$ 产生一个扰动误差 $\Delta a_j^l$ ，该误差将逐步向后层传递，直至达到输出层，并最终影响代价函数，生成一个代价误差 $\Delta J = \frac{\partial J}{\partial z_j^l}\Delta z_j^l$ 。我们可以给出如下式子来为通过误差近似计算梯度提供方向：</p>
+<script type="math/tex; mode=display">
+\Delta J \approx \frac{\partial J}{\partial a^L_m} 
+  \frac{\partial a^L_m}{\partial a^{L-1}_n}
+  \frac{\partial a^{L-1}_n}{\partial a^{L-2}_p} \ldots
+  \frac{\partial a^{l+1}_q}{\partial a^l_j}
+  \frac{\partial a^l_j}{\partial w^l_{jk}} \Delta w^l_{jk}</script><script type="math/tex; mode=display">
+ \frac{\Delta J}{\Delta z_{j}^l}=\delta_j^l=\frac{\partial J}{\partial z_j^l}</script><p>其中，$\delta_j^l$  可以定义为$l$层第$j$个神经元上的误差。</p>
+<p>我们先从计算最后一层误差$\delta_j^L$ 开始，</p>
+<script type="math/tex; mode=display">
+\delta^L_j = \frac{\partial J}{\partial a^L_j} \sigma'(z^L_j)</script><p><strong>公式E1</strong>（向量形式）：</p>
+<script type="math/tex; mode=display">
+\delta^L = \nabla_a J \odot \sigma'(z^L)</script><p><strong>证明</strong>：</p>
+<script type="math/tex; mode=display">
+\delta^L_j =\frac{\partial J}{\partial z_j^L}=\frac{\partial J}{\partial a_j^L}.\frac{\partial a_j^L}{\partial z_j^L}= \frac{\partial J}{\partial a^L_j} \sigma'(z^L_j).</script><p>现在把问题转变为如何利用反向传播由后往前逐步计算误差$\delta_j^l$ ，为计算不同层之间误差之间的关系，利用链式法则给出如下推理过程：</p>
+<script type="math/tex; mode=display">
+\delta^l =\frac{\partial J}{\partial z^l} = \frac{\partial J}{\partial z^{l+1}}.\frac{\partial z^{l+1}}{\partial z^l}=\delta^{l+1}.(\frac{\partial z^{l+1}}{\partial a^l}.\frac{\partial a^l}{\partial z^l})= ((w^{l+1})^T\delta^{l+1})\odot \sigma'(z^l)</script><p>即<strong>公式E2</strong>：</p>
+<script type="math/tex; mode=display">
+\delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma'(z^l)</script><p>有了以上误差的反向传播计算方法，我们可以利用计算的误差计算权重的梯度如下：</p>
+<p><strong>公式E3</strong>：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial b^l_j} =\delta^l_j</script><p><strong>公式E4</strong>：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j</script><p>其中公式（4）也可以写成：</p>
+<script type="math/tex; mode=display">
+\frac{\partial
+    J}{\partial w} = a_{\rm in} \delta_{\rm out}</script><p><strong>证明：</strong></p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial b^l_j} =\frac{\partial J}{\partial z^l_j}.\frac{\partial z^l_j}{\partial b^l_j}=  
+  \delta^l_j</script><script type="math/tex; mode=display">
+\frac{\partial J}{\partial w^l_{jk}} = \frac{\partial J}{\partial z^l_{jk}}.\frac{\partial z_{jk}^l}{\partial w^l_{jk}}=a^{l-1}_k \delta^l_j</script><h3 id="另一种求解方式"><a href="#另一种求解方式" class="headerlink" title="另一种求解方式"></a>另一种求解方式</h3><script type="math/tex; mode=display">
+\dfrac{\partial J}{\partial w_{ij}^l} =\frac{\partial J}{\partial a_j^l}.\frac{\partial a_j^l}{\partial z_j^l}.\frac{\partial z_j^l}{w_{ij}^l}=\frac{\partial J}{\partial a_j^l}.\sigma^{'}(z_j^l)a_i^{l-1}</script><p>如何我们令$\delta_j^l =\frac{\partial J}{\partial a_j^l}$ 也可以按照上述过程类似的方法推到出相关公式</p>
+<h2 id="3-反向传播算法的计算流程"><a href="#3-反向传播算法的计算流程" class="headerlink" title="3. 反向传播算法的计算流程"></a>3. 反向传播算法的计算流程</h2><ol>
+<li>输入$x$，令$a^1=z^1=x$;</li>
+<li>前向传播： 对于每层$l=2,3,…,L$计算$z^l$和$a^l$；</li>
+<li>根据公式<strong>E1</strong>计算输出误差：$\delta^L = \nabla_a J \odot \sigma’(z^L)$ ;</li>
+<li>反向传播：对于每层$l=L-1,L-2,…,2$ 利用公式<strong>E2</strong>计算误差：$\delta^l = ((w^{l+1})^T \delta^{l+1}) \odot \sigma’(z^l)$ ；</li>
+<li>利用公式<strong>E3</strong>和<strong>E4</strong>计算参数梯度；</li>
+<li>更新权重</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://cs231n.github.io/optimization-2/">CS231n讲义：Backpropagation, Intuitions</a></li>
+<li><a href="http://neuralnetworksanddeeplearning.com/chap2.html">Neural Networks and Deep Learning</a></li>
+<li><a href="http://deeplearning.stanford.edu/wiki/index.php/Backpropagation_Algorithm">Machine Learning Cousera Course</a></li>
+</ol>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2018-04-14T13:16:41.000Z">2018-04-14</time>
                 
                 <div class="level-item">
@@ -569,6 +687,8 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2018-04-13T06:45:52.000Z">2018-04-13</time>
                 
                 <div class="level-item">
@@ -786,6 +906,8 @@ smooth_{L_1}(x)=\left\{
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2018-04-11T06:44:58.000Z">2018-04-11</time>
                 
                 <div class="level-item">
@@ -1025,6 +1147,8 @@ smooth_{L_1}(x)=\left\{
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2018-04-09T04:45:13.000Z">2018-04-09</time>
                 
                 <div class="level-item">
@@ -1270,59 +1394,6 @@ smooth_{L_1}(x)=\left\{
 
 
 
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-04-01T07:35:01.000Z">2018-04-01</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/深度学习/基础知识/">基础知识</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    17 分钟 读完 (大约 2514 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/04/01/深度学习基础之优化算法/">深度学习基础之优化算法</a>
-            
-        </h1>
-        <div class="content">
-            <p>合适优化算法的选择有助于提升训练效率和收敛的速度，本文对常用的优化算法进行总结。在这章中将归纳SGD、RMSprop、Adam等的基础原理。优化算法的优劣来自于对相关算法的熟悉程度。</p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/04/01/深度学习基础之优化算法/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1397,7 +1468,7 @@ smooth_{L_1}(x)=\left\{
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            63
+                            64
                         </p>
                     </a>
                 </div>
@@ -1482,7 +1553,7 @@ smooth_{L_1}(x)=\left\{
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 11px;">总结</a> <a href="/tags/感悟/" style="font-size: 10px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据/" style="font-size: 10px;">数据</a> <a href="/tags/数据标注/" style="font-size: 10px;">数据标注</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+        <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 12px;">总结</a> <a href="/tags/感悟/" style="font-size: 11px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据/" style="font-size: 10px;">数据</a> <a href="/tags/数据标注/" style="font-size: 10px;">数据标注</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
 </div>
     
@@ -1630,7 +1701,7 @@ smooth_{L_1}(x)=\left\{
                 <div class="control">
                     <a class="tags has-addons" href="/tags/人工智能/">
                         <span class="tag">人工智能</span>
-                        <span class="tag is-grey">47</span>
+                        <span class="tag is-grey">48</span>
                     </a>
                 </div>
                 
@@ -1728,14 +1799,14 @@ smooth_{L_1}(x)=\left\{
                 <div class="control">
                     <a class="tags has-addons" href="/tags/总结/">
                         <span class="tag">总结</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
                 <div class="control">
                     <a class="tags has-addons" href="/tags/感悟/">
                         <span class="tag">感悟</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1974,6 +2045,25 @@ smooth_{L_1}(x)=\left\{
         
         <article class="media">
             
+            <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-22T07:31:47.000Z">2020-03-22</time></div>
+                    <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2019年总结：来自19年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
@@ -2033,7 +2123,7 @@ smooth_{L_1}(x)=\left\{
             
             <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
                 </p>
             </a>
             
@@ -2043,25 +2133,6 @@ smooth_{L_1}(x)=\left\{
                     <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
-                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
                 </div>
             </div>
@@ -2084,7 +2155,7 @@ smooth_{L_1}(x)=\left\{
                     <span class="level-item">三月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
@@ -2280,6 +2351,25 @@ smooth_{L_1}(x)=\left\{
         
         <article class="media">
             
+            <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-22T07:31:47.000Z">2020-03-22</time></div>
+                    <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2019年总结：来自19年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
@@ -2339,7 +2429,7 @@ smooth_{L_1}(x)=\left\{
             
             <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="2018年总结：来自18年的工作感悟">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
                 </p>
             </a>
             
@@ -2349,25 +2439,6 @@ smooth_{L_1}(x)=\left\{
                     <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/05.jpg" alt="Batch-Normalization(批量归一化)">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-12T14:45:29.000Z">2019-01-12</time></div>
-                    <a href="/2019/01/12/Batch-Normalization-批量归一化/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Batch-Normalization(批量归一化)</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
                 </div>
             </div>
@@ -2390,7 +2461,7 @@ smooth_{L_1}(x)=\left\{
                     <span class="level-item">三月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">2</span>
                 </span>
             </a>
         </li>
