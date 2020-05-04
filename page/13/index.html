@@ -148,6 +148,200 @@ var _hmt = _hmt || [];
             <div class="level-left">
                 
 
+                <time class="level-item has-text-grey" datetime="2018-03-01T06:35:01.000Z">2018-03-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/深度学习/基础知识/">基础知识</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    17 分钟 读完 (大约 2595 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2018/03/01/深度学习基础之数据预处理/">深度学习基础之数据准备与预处理</a>
+            
+        </h1>
+        <div class="content">
+            <p>由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。</p>
+<!-- excerpt -->
+<blockquote>
+<p>深度学习基础篇将从几个不同的层面来总结在过去一段时间对于深度学习关键技术的理解，通过知识体系的归纳了解知识体系的不足，提升对核心技术点的认识。所有系列文章将在未来一段时间内容随着掌握了解的深入迭代更新。目前主要希望对如下几个领域进行归纳汇总：</p>
+<ol>
+<li>问题定义</li>
+<li>目标及评估</li>
+<li><strong>数据准备与预处理</strong></li>
+<li>激活函数的归纳及总结</li>
+<li>优化算法的归纳及总结</li>
+<li>正则化与泛化性能</li>
+<li>模型压缩</li>
+<li>数据扩充</li>
+</ol>
+</blockquote>
+<p>由于人工智能面向的应用和场景的多样性，导致需要分析的数据无论是从维度还是格式上都存在巨大差异，数据准备阶段需要解决数据的数值化、归一化、特征工程等共性的问题。</p>
+<p>深度学习的端到端学习能力并不意味着在实际的业务处理中把原始数据直接丢进网络模型，与传统的机器学习技术类似必要的数据预处理工作无论是对于提升模型的收敛效率还是提升模型的训练质量都具备十分重要的意义。</p>
+<h2 id="数值化"><a href="#数值化" class="headerlink" title="数值化"></a>数值化</h2><p>由于神经网络的输入限定为数值数据，所以对于字符串数据、文本数据、类别数据，在导入网络模型之前需要进行数值化处理，转换为数值数据。其中类别数据可以采用one-hot编码等方式进行编码。</p>
+<h2 id="数据归一化"><a href="#数据归一化" class="headerlink" title="数据归一化"></a>数据归一化</h2><p>数据归一化是属于预处理阶段经常采用的一种手段。虽然这里有一系列可行的方法，但是这一步通常是根据数据的具体情况而明确选择的。特征归一化常用的方法包含如下几种：</p>
+<ul>
+<li>简单缩放</li>
+<li>逐样本均值消减(也称为移除直流分量)</li>
+<li>特征标准化(使数据集中所有特征都具有零均值和单位方差)</li>
+</ul>
+<h3 id="简单缩放"><a href="#简单缩放" class="headerlink" title="简单缩放"></a>简单缩放</h3><p>在简单缩放中，我们的目的是通过对数据的每一个维度的值进行重新调节（这些维度可能是相互独立的），使得最终的数据向量落在 [0,1]或[ − 1,1] 的区间内（根据数据情况而定）。这对后续的处理十分重要，因为很多<em>默认</em>参数（如 PCA-白化中的 epsilon）都假定数据已被缩放到合理区间。</p>
+<p><strong>例子:</strong>在处理自然图像时，我们获得的像素值在 [0,255] 区间中，常用的处理是将这些像素值除以 255，使它们缩放到 [0,1] 中.</p>
+<h3 id="逐样本均值消减"><a href="#逐样本均值消减" class="headerlink" title="逐样本均值消减"></a>逐样本均值消减</h3><p>如果你的数据是<em>平稳</em>的（即数据每一个维度的统计都服从相同分布），那么你可以考虑在每个样本上减去数据的统计平均值(逐样本计算)。</p>
+<p><strong>例子：</strong>对于图像，这种归一化可以移除图像的平均亮度值 (intensity)。很多情况下我们对图像的照度并不感兴趣，而更多地关注其内容，这时对每个数据点移除像素的均值是有意义的。<strong>注意：</strong>虽然该方法广泛地应用于图像，但在处理彩色图像时需要格外小心，具体来说，是因为不同色彩通道中的像素并不都存在平稳特性。</p>
+<h3 id="特征标准化"><a href="#特征标准化" class="headerlink" title="特征标准化"></a>特征标准化</h3><p>特征标准化指的是（独立地）使得数据的每一个维度具有零均值和单位方差。这是归一化中最常见的方法并被广泛地使用（例如，在使用支持向量机（SVM）时，特征标准化常被建议用作预处理的一部分）。在实际应用中，特征标准化的具体做法是：首先计算每一个维度上数据的均值（使用全体数据计算），之后在每一个维度上都减去该均值。下一步便是在数据的每一维度上除以该维度上数据的标准差。</p>
+<p><strong>例子</strong>:处理音频数据时，常用 Mel 倒频系数 <a href="http://en.wikipedia.org/wiki/Mel-frequency_cepstrum">MFCCs</a> 来表征数据。然而MFCC特征的第一个分量（表示直流分量）数值太大，常常会掩盖其他分量。这种情况下，为了平衡各个分量的影响，通常对特征的每个分量独立地使用标准化处理。</p>
+<p><strong>原理：</strong> 在每个样本中减去数据的统计平均值，可以移除数据的共同部分，凸显个体差异。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>数据归一化中采取的统计平均值和均方差值都来源于训练数据，由于理论上不应该从验证集和测试集中获取信息，所以对于验证集和测试集的处理也使用训练集的结果。</p>
+</blockquote>
+<h2 id="标准流程"><a href="#标准流程" class="headerlink" title="标准流程"></a>标准流程</h2><p>在这一部分中，我们将介绍几种在一些数据集上有良好表现的预处理标准流程.</p>
+<h3 id="自然灰度图像"><a href="#自然灰度图像" class="headerlink" title="自然灰度图像"></a>自然灰度图像</h3><p>灰度图像具有平稳特性，我们通常在第一步对每个数据样本分别做均值消减（即减去直流分量），然后采用 PCA/ZCA 白化处理，其中的 <code>epsilon</code> 要足够大以达到低通滤波的效果。</p>
+<h3 id="彩色图像"><a href="#彩色图像" class="headerlink" title="彩色图像"></a>彩色图像</h3><p>对于彩色图像，色彩通道间并不存在平稳特性。因此我们通常首先对数据进行特征缩放（使像素值位于 [0,1] 区间），然后使用足够大的 <code>epsilon</code> 来做 PCA/ZCA。注意在进行 PCA 变换前需要对特征进行分量均值归零化。</p>
+<h3 id="音频-MFCC-频谱图"><a href="#音频-MFCC-频谱图" class="headerlink" title="音频 (MFCC/频谱图)"></a>音频 (MFCC/频谱图)</h3><p>对于音频数据 (MFCC 和频谱图)，每一维度的取值范围（方差）不同。例如 MFCC 的第一分量是直流分量，通常其幅度远大于其他分量，尤其当特征中包含时域导数 (temporal derivatives) 时（这是音频处理中的常用方法）更是如此。因此，对这类数据的预处理通常从简单的数据标准化开始（即使得数据的每一维度均值为零、方差为 1），然后进行 PCA/ZCA 白化（使用合适的 <code>epsilon</code>）。</p>
+<h3 id="MNIST-手写数字"><a href="#MNIST-手写数字" class="headerlink" title="MNIST 手写数字"></a>MNIST 手写数字</h3><p>MNIST 数据集的像素值在 [0,255] 区间中。我们首先将其缩放到 [0,1] 区间。实际上，进行逐样本均值消去也有助于特征学习。<em>注：也可选择以对 MNIST 进行 PCA/ZCA 白化，但这在实践中不常用。</em></p>
+<h2 id="图像预处理"><a href="#图像预处理" class="headerlink" title="图像预处理"></a>图像预处理</h2><h3 id="Mean-Subtraction"><a href="#Mean-Subtraction" class="headerlink" title="Mean Subtraction"></a>Mean Subtraction</h3><blockquote>
+<p>data normalization</p>
+<p>目的：减少不同图片受光照变化的影响。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+R = R - \mu _R</script><script type="math/tex; mode=display">
+G = G - \mu _G</script><script type="math/tex; mode=display">
+B = B - \mu _B</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MeanPreprocessor</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, rMean, gMean, bMean)</span>:</span></span><br><span class="line">		<span class="comment"># store the Red, Green, and Blue channel averages across a</span></span><br><span class="line">		<span class="comment"># training set</span></span><br><span class="line">		self.rMean = rMean</span><br><span class="line">		self.gMean = gMean</span><br><span class="line">		self.bMean = bMean</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, image)</span>:</span></span><br><span class="line">		<span class="comment"># split the image into its respective Red, Green, and Blue</span></span><br><span class="line">		<span class="comment"># channels</span></span><br><span class="line">		(B, G, R) = cv2.split(image.astype(<span class="string">"float32"</span>))</span><br><span class="line"></span><br><span class="line">		<span class="comment"># subtract the means for each channel</span></span><br><span class="line">		R -= self.rMean</span><br><span class="line">		G -= self.gMean</span><br><span class="line">		B -= self.bMean</span><br><span class="line"></span><br><span class="line">		<span class="comment"># merge the channels back together and return the image</span></span><br><span class="line">		<span class="keyword">return</span> cv2.merge([B, G, R])</span><br></pre></td></tr></table></figure>
+<h3 id="Patch-Extraction"><a href="#Patch-Extraction" class="headerlink" title="Patch Extraction"></a>Patch Extraction</h3><blockquote>
+<p>从原始图像中随机采样MxN的区域，当原始图像的稀疏度较高时可以采用该方法。</p>
+<p>降低过拟合的概率</p>
+<p>256x256 ===&gt; 227x227</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.image <span class="keyword">import</span> extract_patches_2d</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PatchPreprocessor</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height)</span>:</span></span><br><span class="line">		<span class="comment"># store the target width and height of the image</span></span><br><span class="line">		self.width = width</span><br><span class="line">		self.height = height</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, image)</span>:</span></span><br><span class="line">		<span class="comment"># extract a random crop from the image with the target width</span></span><br><span class="line">		<span class="comment"># and height</span></span><br><span class="line">		<span class="keyword">return</span> extract_patches_2d(image, (self.height, self.width),</span><br><span class="line">			max_patches=<span class="number">1</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="Cropping-Over-Sampling"><a href="#Cropping-Over-Sampling" class="headerlink" title="Cropping(Over-Sampling)"></a>Cropping(Over-Sampling)</h3><blockquote>
+<p>使用扣取方法可以从原始图像的四个角+中心位置进行扣取，实验证明该方法可以提升1-2个百分比的分类精度；</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CropPreprocessor</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height, horiz=True, inter=cv2.INTER_AREA)</span>:</span></span><br><span class="line">		<span class="comment"># store the target image width, height, whether or not</span></span><br><span class="line">		<span class="comment"># horizontal flips should be included, along with the</span></span><br><span class="line">		<span class="comment"># interpolation method used when resizing</span></span><br><span class="line">		self.width = width</span><br><span class="line">		self.height = height</span><br><span class="line">		self.horiz = horiz</span><br><span class="line">		self.inter = inter</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">preprocess</span><span class="params">(self, image)</span>:</span></span><br><span class="line">		<span class="comment"># initialize the list of crops</span></span><br><span class="line">		crops = []</span><br><span class="line"></span><br><span class="line">		<span class="comment"># grab the width and height of the image then use these</span></span><br><span class="line">		<span class="comment"># dimensions to define the corners of the image based</span></span><br><span class="line">		(h, w) = image.shape[:<span class="number">2</span>]</span><br><span class="line">		coords = [</span><br><span class="line">			[<span class="number">0</span>, <span class="number">0</span>, self.width, self.height],</span><br><span class="line">			[w - self.width, <span class="number">0</span>, w, self.height],</span><br><span class="line">			[w - self.width, h - self.height, w, h],</span><br><span class="line">			[<span class="number">0</span>, h - self.height, self.width, h]]</span><br><span class="line"></span><br><span class="line">		<span class="comment"># compute the center crop of the image as well</span></span><br><span class="line">		dW = int(<span class="number">0.5</span> * (w - self.width))</span><br><span class="line">		dH = int(<span class="number">0.5</span> * (h - self.height))</span><br><span class="line">		coords.append([dW, dH, w - dW, h - dH])</span><br><span class="line"></span><br><span class="line">		<span class="comment"># loop over the coordinates, extract each of the crops,</span></span><br><span class="line">		<span class="comment"># and resize each of them to a fixed size</span></span><br><span class="line">		<span class="keyword">for</span> (startX, startY, endX, endY) <span class="keyword">in</span> coords:</span><br><span class="line">			crop = image[startY:endY, startX:endX]</span><br><span class="line">			crop = cv2.resize(crop, (self.width, self.height),</span><br><span class="line">				interpolation=self.inter)</span><br><span class="line">			crops.append(crop)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># check to see if the horizontal flips should be taken</span></span><br><span class="line">		<span class="keyword">if</span> self.horiz:</span><br><span class="line">			<span class="comment"># compute the horizontal mirror flips for each crop</span></span><br><span class="line">			mirrors = [cv2.flip(c, <span class="number">1</span>) <span class="keyword">for</span> c <span class="keyword">in</span> crops]</span><br><span class="line">			crops.extend(mirrors)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># return the set of crops</span></span><br><span class="line">		<span class="keyword">return</span> np.array(crops)</span><br></pre></td></tr></table></figure>
+<h2 id="Keras中的数据预处理功能"><a href="#Keras中的数据预处理功能" class="headerlink" title="Keras中的数据预处理功能"></a>Keras中的数据预处理功能</h2><p><a href="http://keras-cn.readthedocs.io/en/latest/preprocessing/sequence/">http://keras-cn.readthedocs.io/en/latest/preprocessing/sequence/</a></p>
+<p>A. 设置随机种子 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="number">1337</span>)  <span class="comment"># for reproducibility</span></span><br></pre></td></tr></table></figure>
+<p>B. 输入数据维度规格化，这里每个样本只是size为784的一维数组。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_train = X_train.reshape(<span class="number">60000</span>, <span class="number">784</span>)</span><br></pre></td></tr></table></figure></p>
+<p>   将类别标签转换为one-hot encoding， 这一步对多分类是必须的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">one_hot_labels  = keras.utils.np_utils.to_categorical(labels, num_classes=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>C. 输入数据类型转换，数值归一化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X_train = X_train.astype(<span class="string">'float32'</span>)</span><br><span class="line">X_train /= <span class="number">255</span></span><br></pre></td></tr></table></figure>
+<h3 id="序列预处理"><a href="#序列预处理" class="headerlink" title="序列预处理"></a>序列预处理</h3><TODO>
+
+<h3 id="文本预处理"><a href="#文本预处理" class="headerlink" title="文本预处理"></a>文本预处理</h3><TODO>
+
+<h3 id="图片预处理"><a href="#图片预处理" class="headerlink" title="图片预处理"></a>图片预处理</h3><TODO>
+
+<h2 id="样本数据序列化为HDF5文件"><a href="#样本数据序列化为HDF5文件" class="headerlink" title="样本数据序列化为HDF5文件"></a>样本数据序列化为HDF5文件</h2><TODO> 
+
+<blockquote>
+<p>目的：减少多次IO读取的延时</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://lamda.nju.edu.cn/weixs/book/CNN_book.html">《解析卷积神经网络—深度学习实践手册》</a></li>
+<li><a href="https://keras.io/">Keras文档</a></li>
+<li><a href="http://deeplearning.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86">http://deeplearning.stanford.edu/wiki/index.php/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86</a></li>
+</ol>
+</TODO></TODO></TODO></TODO>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+
+                <time class="level-item has-text-grey" datetime="2018-02-22T05:20:28.000Z">2018-02-22</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/工具/">工具</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/工具/Keras/">Keras</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分钟 读完 (大约 1882 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2018/02/22/Tips-for-Keras/">Tips for Keras</a>
+            
+        </h1>
+        <div class="content">
+            <p>撰写一篇博文用于记录Keras使用过程中的一些关键用法，以方便速查。</p>
+        </div>
+        
+        
+        <hr style="height:1px;margin:1rem 0"/>
+         <div class="level is-mobile is-flex">
+         <div class="level-start">
+          
+          <div class="level-item is-size-7 is-uppercase">
+           <i class="fas fa-tags has-text-grey"></i>&nbsp;
+             <a class="has-link-grey -link" href="/tags/AI/">AI</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Keras/">Keras</a>,&nbsp;<a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/技巧/">技巧</a>
+         </div>
+         
+         </div>
+
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2018/02/22/Tips-for-Keras/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2018-02-19T16:00:00.000Z">2018-02-20</time>
                 
                 <div class="level-item">
@@ -355,71 +549,6 @@ var _hmt = _hmt || [];
 
 
 
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                
-
-                <time class="level-item has-text-grey" datetime="2017-02-02T04:45:13.000Z">2017-02-02</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/工具/">工具</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    41 分钟 读完 (大约 6129 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2017/02/02/读书笔记-Pro-Git/">Git使用总结</a>
-            
-        </h1>
-        <div class="content">
-            <p>一直在用Git作为代码版本控制工具，一般都是现查现用，难得把一本专门介绍git的书从头读到尾。做个笔记，记录以下新Get到的一些技能，以备以后快速查看。<br></p>
-        </div>
-        
-        
-        <hr style="height:1px;margin:1rem 0"/>
-         <div class="level is-mobile is-flex">
-         <div class="level-start">
-          
-          <div class="level-item is-size-7 is-uppercase">
-           <i class="fas fa-tags has-text-grey"></i>&nbsp;
-             <a class="has-link-grey -link" href="/tags/Git/">Git</a>,&nbsp;<a class="has-link-grey -link" href="/tags/技术/">技术</a>,&nbsp;<a class="has-link-grey -link" href="/tags/读书笔记/">读书笔记</a>
-         </div>
-         
-         </div>
-
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2017/02/02/读书笔记-Pro-Git/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -427,7 +556,7 @@ var _hmt = _hmt || [];
         <div class="pagination-previous">
             <a class="is-flex-grow has-text-black-ter" href="/page/12/">上一页</a>
         </div>
-        <div class="pagination-next is-invisible is-hidden-mobile">
+        <div class="pagination-next">
             <a class="is-flex-grow has-text-black-ter" href="/page/14/">下一页</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
@@ -439,6 +568,8 @@ var _hmt = _hmt || [];
             <li><a class="pagination-link has-text-black-ter" href="/page/12/">12</a></li>
             
             <li><a class="pagination-link is-current" href="/page/13/">13</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/page/14/">14</a></li>
             
         </ul>
     </nav>
@@ -488,7 +619,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            64
+                            66
                         </p>
                     </a>
                 </div>
@@ -512,7 +643,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            66
+                            68
                         </p>
                     </a>
                 </div>
@@ -573,7 +704,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 12px;">总结</a> <a href="/tags/感悟/" style="font-size: 11px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据/" style="font-size: 10px;">数据</a> <a href="/tags/数据标注/" style="font-size: 10px;">数据标注</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+        <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/总结/" style="font-size: 12px;">总结</a> <a href="/tags/感悟/" style="font-size: 11px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据/" style="font-size: 10px;">数据</a> <a href="/tags/数据标注/" style="font-size: 10px;">数据标注</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/目标检测/" style="font-size: 10px;">目标检测</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/计算机视觉/" style="font-size: 11px;">计算机视觉</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 13px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
 </div>
     
@@ -721,7 +852,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/人工智能/">
                         <span class="tag">人工智能</span>
-                        <span class="tag is-grey">48</span>
+                        <span class="tag is-grey">50</span>
                     </a>
                 </div>
                 
@@ -889,7 +1020,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/文献/">
                         <span class="tag">文献</span>
-                        <span class="tag is-grey">22</span>
+                        <span class="tag is-grey">23</span>
                     </a>
                 </div>
                 
@@ -943,6 +1074,13 @@ var _hmt = _hmt || [];
                 </div>
                 
                 <div class="control">
+                    <a class="tags has-addons" href="/tags/目标检测/">
+                        <span class="tag">目标检测</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
                     <a class="tags has-addons" href="/tags/神经网络/">
                         <span class="tag">神经网络</span>
                         <span class="tag is-grey">1</span>
@@ -966,7 +1104,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/算法/">
                         <span class="tag">算法</span>
-                        <span class="tag is-grey">31</span>
+                        <span class="tag is-grey">33</span>
                     </a>
                 </div>
                 
@@ -981,6 +1119,13 @@ var _hmt = _hmt || [];
                     <a class="tags has-addons" href="/tags/网络复现/">
                         <span class="tag">网络复现</span>
                         <span class="tag is-grey">5</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/计算机视觉/">
+                        <span class="tag">计算机视觉</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -1065,6 +1210,44 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="计算机视觉目标检测研究札记">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
+                    <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
+                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
@@ -1120,44 +1303,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
-                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
-                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1170,12 +1315,23 @@ var _hmt = _hmt || [];
         <ul class="menu-list">
         
         <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
             <a class="level is-marginless" href="/archives/2020/03/">
                 <span class="level-start">
                     <span class="level-item">三月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -1371,6 +1527,44 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="计算机视觉目标检测研究札记">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
+                    <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
+                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
@@ -1426,44 +1620,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
-                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
-                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1476,12 +1632,23 @@ var _hmt = _hmt || [];
         <ul class="menu-list">
         
         <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
             <a class="level is-marginless" href="/archives/2020/03/">
                 <span class="level-start">
                     <span class="level-item">三月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>

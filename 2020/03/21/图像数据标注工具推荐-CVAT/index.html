@@ -19,7 +19,7 @@
 <meta property="og:description" content="摘要： 从事深度学习研究开始，尝试过很多不同类型，不同功能的数据标注工具，尤其是图像标注工具，包括自己写的简单工具，都不能很好的满足任务的需求，近期突然使用了CVAT，感觉似乎可能成为未来工具包中的常备系列，写此一文，记录使用过程。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/cvat.jpg">
-<meta property="og:updated_time" content="2020-03-22T07:52:45.133Z">
+<meta property="og:updated_time" content="2020-03-23T15:34:41.318Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像数据标注工具推荐-CVAT">
 <meta name="twitter:description" content="摘要： 从事深度学习研究开始，尝试过很多不同类型，不同功能的数据标注工具，尤其是图像标注工具，包括自己写的简单工具，都不能很好的满足任务的需求，近期突然使用了CVAT，感觉似乎可能成为未来工具包中的常备系列，写此一文，记录使用过程。">
@@ -157,6 +157,8 @@ var _hmt = _hmt || [];
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
                 
+                    <div class="level-item tag is-danger" style="background-color: #3273dc;">置顶</div>
+                
 
                 <time class="level-item has-text-grey" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time>
                 
@@ -168,7 +170,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    7 分钟 读完 (大约 1017 个字)
+                    8 分钟 读完 (大约 1194 个字)
                 </span>
                 
                 
@@ -183,6 +185,9 @@ var _hmt = _hmt || [];
         <div class="content">
             <p><strong>摘要：</strong> 从事深度学习研究开始，尝试过很多不同类型，不同功能的数据标注工具，尤其是图像标注工具，包括自己写的简单工具，都不能很好的满足任务的需求，近期突然使用了CVAT，感觉似乎可能成为未来工具包中的常备系列，写此一文，记录使用过程。</p>
 <a id="more"></a>
+<blockquote>
+<p>Computer Vision Annotation Tool (CVAT) is a web-based tool which helps to annotate videos and images for Computer Vision algorithms. It was inspired by <a href="http://carlvondrick.com/vatic/">Vatic</a> free, online, interactive video annotation tool. CVAT has many powerful features: <em>interpolation of bounding boxes between key frames, automatic annotation using deep learning models, shortcuts for most of critical actions, dashboard with a list of annotation tasks, LDAP and basic authorization, etc…</em> It was created for and used by a professional data annotation team. UX and UI were optimized especially for computer vision tasks developed by our team.</p>
+</blockquote>
 <h2 id="安装部署与配置"><a href="#安装部署与配置" class="headerlink" title="安装部署与配置"></a>安装部署与配置</h2><p>部署过程参考官方文档：<a href="https://github.com/opencv/cvat/blob/develop/cvat/apps/documentation/installation.md">CVAT 部署文档</a>，写的极为详细，基本没有太多坑🕳。</p>
 <p>由于本身的需求，需要使用一些特定功能，具体如下：</p>
 <h3 id="1-配置外网访问"><a href="#1-配置外网访问" class="headerlink" title="1. 配置外网访问"></a>1. 配置外网访问</h3><p>构建YAML文件：<code>docker-compose.add-on.yml</code>:</p>
@@ -199,34 +204,41 @@ var _hmt = _hmt || [];
 <table>
 <thead>
 <tr>
-<th>功能</th>
-<th>地址</th>
+<th style="text-align:left">功能</th>
+<th style="text-align:center">地址</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>主页</td>
-<td><cvat_origin></cvat_origin></td>
+<td style="text-align:left">主页</td>
+<td style="text-align:center"><cvat_origin></cvat_origin></td>
 </tr>
 <tr>
-<td>用户管理</td>
-<td><cvat_origin>/admiin</cvat_origin></td>
+<td style="text-align:left">用户管理</td>
+<td style="text-align:center"><cvat_origin>/admiin</cvat_origin></td>
 </tr>
 <tr>
-<td>REST API</td>
-<td><cvat_origin>/api/swagger</cvat_origin></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
+<td style="text-align:left">REST API</td>
+<td style="text-align:center"><cvat_origin>/api/swagger</cvat_origin></td>
 </tr>
 </tbody>
 </table>
 </div>
-<h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><div class="table-container">
+<h3 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h3><p>每个数据集的标注工作都作为一项任务；</p>
+<p>支持两种工作模式：</p>
+<ul>
+<li>interpolation task (video sequence)</li>
+<li>annotation task (independent images)</li>
+</ul>
+<h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><p><strong>常用快捷键：</strong></p>
+<ul>
+<li>N：快速创建BOX标记工具；</li>
+<li>Crtl + S: 随时保存</li>
+<li>D： 上一张</li>
+<li>F： 下一张</li>
+<li>CRTL + #N（标签序号）</li>
+</ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -500,7 +512,7 @@ var _hmt = _hmt || [];
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/数据/">数据</a>,&nbsp;<a class="has-link-grey -link" href="/tags/数据标注/">数据标注</a>
+                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/数据/">数据</a>,&nbsp;<a class="has-link-grey -link" href="/tags/数据标注/">数据标注</a>,&nbsp;<a class="has-link-grey -link" href="/tags/计算机视觉/">计算机视觉</a>
                 </div>
             </div>
         </div>
@@ -637,8 +649,12 @@ var _hmt = _hmt || [];
         <span class="has-mr-6">2.1</span>
         <span>相关地址</span>
         </a></li><li>
-        <a class="is-flex" href="#快捷键">
+        <a class="is-flex" href="#任务">
         <span class="has-mr-6">2.2</span>
+        <span>任务</span>
+        </a></li><li>
+        <a class="is-flex" href="#快捷键">
+        <span class="has-mr-6">2.3</span>
         <span>快捷键</span>
         </a></li></ul></li><li>
         <a class="is-flex" href="#半监督标记与模型">
@@ -659,6 +675,44 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="计算机视觉目标检测研究札记">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
+                    <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
+                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -712,44 +766,6 @@ var _hmt = _hmt || [];
                     <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/工具/">工具</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
-                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
-                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
                     </p>
                 </div>
             </div>

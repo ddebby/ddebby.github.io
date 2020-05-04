@@ -19,7 +19,7 @@
 <meta property="og:description" content="摘要: 2015年提出的Faster R-CNN架构在基于机器视觉的物体识别领域占据重要的地位，从R-CNN到fast R-CNN再到faster R-CNN,乃至后续的Mask-R-CNN形成了一条完整的两步识别的物体识别技术生态。  概述物体识别技术一直是机器视觉中业务场景最丰富，关注度最高的一个类别。将花几期来分别对主流的物体识别技术如Faster RCNN，SSD，YOLO，Mask-RC">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
-<meta property="og:updated_time" content="2018-05-23T12:43:12.000Z">
+<meta property="og:updated_time" content="2020-04-19T10:04:47.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="物体识别技术之Faster R-CNN">
 <meta name="twitter:description" content="摘要: 2015年提出的Faster R-CNN架构在基于机器视觉的物体识别领域占据重要的地位，从R-CNN到fast R-CNN再到faster R-CNN,乃至后续的Mask-R-CNN形成了一条完整的两步识别的物体识别技术生态。  概述物体识别技术一直是机器视觉中业务场景最丰富，关注度最高的一个类别。将花几期来分别对主流的物体识别技术如Faster RCNN，SSD，YOLO，Mask-RC">
@@ -162,7 +162,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    23 分钟 读完 (大约 3386 个字)
+                    23 分钟 读完 (大约 3385 个字)
                 </span>
                 
                 
@@ -279,8 +279,9 @@ IoU = \frac{Area\ of\ Overlap}{Area\ of\ Union}</script><p><img src="/qnsource/i
 </blockquote>
 <p><img src="/qnsource/images/2018-04-13-Object-Detection-Faster-RCNN/anchors-progress.119e1e92.png" alt="anchors-progress.119e1e92"></p>
 <p>由于直接预测bouding box难以实现，作者将问题转变为预测预测值与真实值之间的偏移，将问题转变为四个偏移值的预测问题。</p>
-<h3 id="Region-Proposal-Network-RPN"><a href="#Region-Proposal-Network-RPN" class="headerlink" title="Region Proposal Network(RPN)"></a>Region Proposal Network(RPN)</h3><p>RPN的主要目的是对每个区域是否可能有物体进行打分，基于打分值决定是否进行下一步的分类任务。在基础网络抽取的特征图上使用一个3x3的滑动窗口（512个卷积核），每个滑动窗口的中心点位置为上述Achor Box的中心点区域，在每个滑动窗口区域，将得到两个1x1卷积网络输出，分别为2k的前景/背景预测（该区域是否存在可被预测物体，分类问题）以及4k的位置信息预测（回归问题），四个值分别是 $\Delta<em>{center</em>{x}}$, $\Delta<em>{center</em>{y}}$, $\Delta<em>{width}$, $\Delta</em>{height}$。</p>
-<blockquote>
+<h3 id="Region-Proposal-Network-RPN"><a href="#Region-Proposal-Network-RPN" class="headerlink" title="Region Proposal Network(RPN)"></a>Region Proposal Network(RPN)</h3><p>RPN的主要目的是对每个区域是否可能有物体进行打分，基于打分值决定是否进行下一步的分类任务。在基础网络抽取的特征图上使用一个3x3的滑动窗口（512个卷积核），每个滑动窗口的中心点位置为上述Achor Box的中心点区域，在每个滑动窗口区域，将得到两个1x1卷积网络输出，分别为2k的前景/背景预测（该区域是否存在可被预测物体，分类问题）以及4k的位置信息预测（回归问题），四个值分别是 </p>
+<script type="math/tex; mode=display">
+ \Delta_{center_{x}}, \Delta_{center_{y}}, \Delta_{width}, \Delta_{height}</script><blockquote>
 <p>k是Anchor Box的数目</p>
 <p>我们将从候选区域中选择打分较高的前N个进行下一轮分析，如果物体打分足够高，下一步将进行非极大抑制和区域选择，如果打分值很低将抛弃这些区域</p>
 </blockquote>
@@ -300,7 +301,7 @@ smooth_{L_1}(x)=\left\{
              0.5x^2  & if \  |x|<1 \\  
              |x|-0.5 & otherwise.     
              \end{array}  
-\right.</script><p>$t_i$与$t_i^<em>$分别对应四个偏差值。$t_i$是预测框与anchor之间的偏差，$t_i^</em>$是ground truth与anchor之间的偏差</p>
+\right.</script><p>$t_i$与 $ t_i^<em> $ 分别对应四个偏差值。$ t_i $ 是预测框与anchor之间的偏差，$ t_i^</em> $ 是ground truth与anchor之间的偏差</p>
 <h4 id="参数选择"><a href="#参数选择" class="headerlink" title="参数选择"></a>参数选择</h4><blockquote>
 <p>参数选择与其说是一个技术活倒不如认为是一个经验活，是通过大量实践验证出来的最佳实践，所以有必要分析整理每篇文章对参数选择和优化的技巧。</p>
 </blockquote>
@@ -553,6 +554,44 @@ smooth_{L_1}(x)=\left\{
         
         <article class="media">
             
+            <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="计算机视觉目标检测研究札记">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
+                    <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
+                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
@@ -603,44 +642,6 @@ smooth_{L_1}(x)=\left\{
                     <a href="/2019/05/07/Pathlib-Python的路径管理库/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Pathlib--Python的路径管理库</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/工具/">工具</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/01/从头训练一个图像分类器/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="从头训练一个图像分类器">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-01T02:16:46.000Z">2019-02-01</time></div>
-                    <a href="/2019/02/01/从头训练一个图像分类器/" class="title has-link-black-ter is-size-6 has-text-weight-normal">从头训练一个图像分类器</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2018年总结：来自18年的工作感悟">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-24T06:50:22.000Z">2019-01-24</time></div>
-                    <a href="/2019/01/24/2018年总结：来自18年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2018年总结：来自18年的工作感悟</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
                     </p>
                 </div>
             </div>
