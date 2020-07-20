@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>读书笔记-《神经网络与深度学习》 - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="摘要： 借着读邱锡鹏老师新书《神经网络与深度学习》，把深度学习的基础知识再详细梳理一遍。">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读书笔记-《神经网络与深度学习》">
+<meta property="og:url" content="http://blog.a-stack.com/2020/05/04/读书笔记-《神经网络与深度学习》/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要： 借着读邱锡鹏老师新书《神经网络与深度学习》，把深度学习的基础知识再详细梳理一遍。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/qxp.jpg">
+<meta property="og:updated_time" content="2020-05-10T14:29:19.844Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读书笔记-《神经网络与深度学习》">
+<meta name="twitter:description" content="摘要： 借着读邱锡鹏老师新书《神经网络与深度学习》，把深度学习的基础知识再详细梳理一遍。">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/blog/qxp.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo02.png" alt="读书笔记-《神经网络与深度学习》" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/../qnsource/blog/qxp.jpg" alt="读书笔记-《神经网络与深度学习》">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+
+                <time class="level-item has-text-grey" datetime="2020-05-04T13:50:21.000Z">2020-05-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    7 分钟 读完 (大约 1107 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>读书笔记-《神经网络与深度学习》
+            
+        </h1>
+        <div class="content">
+            <p><strong>摘要：</strong> 借着读邱锡鹏老师新书《神经网络与深度学习》，把深度学习的基础知识再详细梳理一遍。</p>
+<a id="more"></a>
+<h2 id="前馈神经网络"><a href="#前馈神经网络" class="headerlink" title="前馈神经网络"></a>前馈神经网络</h2><p>人工神经网络最初是作为连接主义的重要阵地。</p>
+<blockquote>
+<p>连接主义强调连接的重要性，比如记忆和知识是存储在连接之中，改变连接之间的强度来更新知识。</p>
+</blockquote>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/image-20200506222213551.png" alt="典型的神经元结构" style="zoom:80%;"></p>
+<p><strong>激活函数</strong>需要具备以下几点性质： </p>
+<ol>
+<li>连续并可导（允许少数点上不可导）的非线性函数．可导的激活函数 可以直接利用数值优化的方法来学习网络参数．</li>
+<li>激活函数及其导函数要尽可能的简单，有利于提高网络计算效率．</li>
+<li>激活函数的导函数的值域要在一个合适的区间内，不能太大也不能太小，否则会影响训练的效率和稳定性．</li>
+</ol>
+<blockquote>
+<p>特别地，认识一下 <code>Swish</code> 激活函数：</p>
+<p>$f(x) = x<em>sigmod(\beta</em>x)$ </p>
+</blockquote>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/image-20200507120117476.png" alt="多层前馈神经网络"></p>
+<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><p>权重共享 + 局部连接 + 汇聚</p>
+<p>在深度学习中，使用的卷积是不进行卷积核反转的操作，称作<code>互相关</code>。</p>
+<p><strong>局部连接</strong>：在卷积层（假设是第𝑙层）中的每一个神经元都只和下一层（第𝑙 − 1 层）中某个局部窗口内的神经元相连，构成一个局部连接网络．（由原来的$M<em>l X M</em>{l-1}$ 个变为$M_l X K$）</p>
+<p><strong>权重共享</strong>： 作为参数的卷积核𝒘(𝑙) 对于第𝑙层的所有的神经元都是相同的；</p>
+<p><strong>汇聚：</strong> 本质上是一种下采样操作。</p>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/image-20200509145807980.png" alt="全连接层 vs 卷积层"></p>
+<p>卷积层的作用是提取局部特征，不同卷积核相当于不同的特征提取器。</p>
+<p><a href="https://nndl.github.io/v/cnn-conv-more">https://nndl.github.io/v/cnn-conv-more</a></p>
+<h3 id="特殊的卷积"><a href="#特殊的卷积" class="headerlink" title="特殊的卷积"></a>特殊的卷积</h3><ol>
+<li><p>转置卷积/反卷积： 补零操作；</p>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/cnn-no_padding_no_strides_transposed.gif" alt="转置卷积"></p>
+</li>
+<li><p>微步卷积： 通过在输入特征之间插入零；</p>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/cnn-no_padding_strides_transposed.gif" alt="img"></p>
+</li>
+<li><p>空洞卷积/膨胀卷积：给卷积核增加“空洞”，提高感受野。</p>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/cnn-dilation-in_7_out_3.gif" alt="空洞卷积"></p>
+</li>
+</ol>
+<h2 id="Everything-About-RNN"><a href="#Everything-About-RNN" class="headerlink" title="Everything About RNN"></a>Everything About RNN</h2><blockquote>
+<p>前馈神经网络中，信息的传递是单向的，，这种限制虽然使得网络变得更容易学习，但在一定程度上也减弱了神经网络模型的能力．</p>
+<p>很多现实任务中，网络的输出不仅和当前时刻输入相关，也和过去一段时间的输出相关。比如 视频、语音、文本等时序数据，输入长度不确定。</p>
+</blockquote>
+<h3 id="如何让网络有记忆力"><a href="#如何让网络有记忆力" class="headerlink" title="如何让网络有记忆力"></a>如何让网络有记忆力</h3><ul>
+<li>延时神经网络<ul>
+<li>增加延时器，记录近期活性值</li>
+</ul>
+</li>
+<li>有外部输入的非线性自回归模型</li>
+<li>RNN</li>
+</ul>
+<p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/20170228155156825.png" alt="img"></p>
+<blockquote>
+<p> 理论上，循环神经网络可以近似任意的非线性动力系统.前馈神经网络可以模拟任何连续函数，而循环神经网络可以模拟任何程序．</p>
+</blockquote>
+<h3 id="Vanilla-RNN"><a href="#Vanilla-RNN" class="headerlink" title="Vanilla RNN"></a>Vanilla RNN</h3><p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/1_xn5kA92_J5KLaKcP7BMRLA.gif" alt="img"></p>
+<h3 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h3><p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/1_goJVQs-p9kgLODFNyhl9zA.gif" alt="img"></p>
+<blockquote>
+<p>引入了cell结构，来维护较长期状态；</p>
+<p>三个门控：遗忘门、输入门、输出门</p>
+</blockquote>
+<h3 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h3><p><img src="/2020/05/04/读书笔记-《神经网络与深度学习》/1_FpRS0C3EHQnELVaWRvb8bg.gif" alt="img"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://nndl.github.io/">书籍主页地址</a></li>
+<li>《神经网络与深度学习》3小时课程概要 <a href="https://nndl.github.io/ppt/神经网络与深度学习-3小时.pptx">ppt</a>(72M) <a href="https://nndl.github.io/ppt/神经网络与深度学习-3小时.pdf">pdf</a> (12M)</li>
+<li>RCNN<ol>
+<li><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTM Networks</a></li>
+<li><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">http://karpathy.github.io/2015/05/21/rnn-effectiveness/</a></li>
+<li><a href="https://distill.pub/2016/augmented-rnns/">Attention</a></li>
+<li></li>
+</ol>
+</li>
+</ol>
+
+        </div>
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/文献/">文献</a>,&nbsp;<a class="has-link-grey -link" href="/tags/读书笔记/">读书笔记</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/04/19/计算机视觉目标检测研究札记/">
+                <span class="level-item">计算机视觉目标检测研究札记</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: 'JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz',
+        app_key: 'm5FMVedFNxGutQCnMsVMAaXM',
+        placeholder: 'Say Something ...'
+    });
+</script>
+
+    </div>
+</div>
+</div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#前馈神经网络">
+        <span class="has-mr-6">1</span>
+        <span>前馈神经网络</span>
+        </a></li><li>
+        <a class="is-flex" href="#CNN">
+        <span class="has-mr-6">2</span>
+        <span>CNN</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#特殊的卷积">
+        <span class="has-mr-6">2.1</span>
+        <span>特殊的卷积</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Everything-About-RNN">
+        <span class="has-mr-6">3</span>
+        <span>Everything About RNN</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#如何让网络有记忆力">
+        <span class="has-mr-6">3.1</span>
+        <span>如何让网络有记忆力</span>
+        </a></li><li>
+        <a class="is-flex" href="#Vanilla-RNN">
+        <span class="has-mr-6">3.2</span>
+        <span>Vanilla RNN</span>
+        </a></li><li>
+        <a class="is-flex" href="#LSTM">
+        <span class="has-mr-6">3.3</span>
+        <span>LSTM</span>
+        </a></li><li>
+        <a class="is-flex" href="#GRU">
+        <span class="has-mr-6">3.4</span>
+        <span>GRU</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">4</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/05/04/读书笔记-《神经网络与深度学习》/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/qxp.jpg" alt="读书笔记-《神经网络与深度学习》">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-04T13:50:21.000Z">2020-05-04</time></div>
+                    <a href="/2020/05/04/读书笔记-《神经网络与深度学习》/" class="title has-link-black-ter is-size-6 has-text-weight-normal">读书笔记-《神经网络与深度学习》</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="计算机视觉目标检测研究札记">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
+                    <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
+                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/08.jpg" alt="2019年总结：来自19年的工作感悟">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-22T07:31:47.000Z">2020-03-22</time></div>
+                    <a href="/2020/03/22/2019年总结：来自19年的工作感悟/" class="title has-link-black-ter is-size-6 has-text-weight-normal">2019年总结：来自19年的工作感悟</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/工作总结/">工作总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="图像数据标注工具推荐-CVAT">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-21T13:23:49.000Z">2020-03-21</time></div>
+                    <a href="/2020/03/21/图像数据标注工具推荐-CVAT/" class="title has-link-black-ter is-size-6 has-text-weight-normal">图像数据标注工具推荐-CVAT</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="读书笔记-《神经网络与深度学习》" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
