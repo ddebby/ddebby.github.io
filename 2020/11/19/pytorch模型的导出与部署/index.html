@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 3.9.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>pytorch模型的导出与部署 - Ebby&#39;s Notes</title>
+
+
+    <meta name="description" content="摘要：">
+<meta name="keywords" content="人工智能,深度学习,技术,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch模型的导出与部署">
+<meta property="og:url" content="http://blog.a-stack.com/2020/11/19/pytorch模型的导出与部署/index.html">
+<meta property="og:site_name" content="Ebby&#39;s Notes">
+<meta property="og:description" content="摘要：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/cvat.jpg">
+<meta property="og:updated_time" content="2020-11-27T05:33:41.838Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pytorch模型的导出与部署">
+<meta name="twitter:description" content="摘要：">
+<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/blog/cvat.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?684368b6943d7a5b6689dba5e7bf30ad";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo02.png" alt="pytorch模型的导出与部署" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/reading">读书</a>
+                
+                <a class="navbar-item"
+                href="/resources">资源</a>
+                
+                <a class="navbar-item"
+                href="/notebooks">📝</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="pytorch模型的导出与部署">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+
+                <time class="level-item has-text-grey" datetime="2020-11-19T05:00:18.000Z">2020-11-19</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    21 分钟 读完 (大约 3222 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>pytorch模型的导出与部署
+            
+        </h1>
+        <div class="content">
+            <p><strong>摘要：</strong></p>
+<a id="more"></a>
+<h2 id="pytorch模型的导出"><a href="#pytorch模型的导出" class="headerlink" title="pytorch模型的导出"></a>pytorch模型的导出</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存网络结构和参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法1：保存网络结构和参数</span></span><br><span class="line">PATH = <span class="string">'./cifar_net.pth'</span></span><br><span class="line">torch.save(net, PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：保存网络参数</span></span><br><span class="line">PATH = <span class="string">'./cifar_net.pth'</span></span><br><span class="line">torch.save(net.state_dict(), PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法3：导出网络到ONNX</span></span><br><span class="line">dummy_input = torch.randn(<span class="number">1</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>).to(device)</span><br><span class="line">torch.onnx.export(net, dummy_input, <span class="string">"torch.onnx"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法4：保存网络位TORCHSCRIPT</span></span><br><span class="line">dummy_input = torch.randn(<span class="number">1</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>).to(device)</span><br><span class="line">traced_cell = torch.jit.trace(net, dummy_input)</span><br><span class="line">traced_cell.save(<span class="string">"tests.pth"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="导出模型的检测"><a href="#导出模型的检测" class="headerlink" title="导出模型的检测"></a>导出模型的检测</h3><blockquote>
+<p>But before verifying the model’s output with ONNX Runtime, we will check the ONNX model with ONNX’s API. First, <code>onnx.load(&quot;super_resolution.onnx&quot;)</code> will load the saved model and will output a onnx.ModelProto structure (a top-level file/container format for bundling a ML model. For more information <a href="https://github.com/onnx/onnx/blob/master/onnx/onnx.proto">onnx.proto documentation</a>.). Then, <code>onnx.checker.check_model(onnx_model)</code> will verify the model’s structure and confirm that the model has a valid schema. The validity of the ONNX graph is verified by checking the model’s version, the graph’s structure, as well as the nodes and their inputs and outputs.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> onnx</span><br><span class="line"></span><br><span class="line">onnx_model = onnx.load(<span class="string">"super_resolution.onnx"</span>)</span><br><span class="line">onnx.checker.check_model(onnx_model)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> onnxruntime</span><br><span class="line"></span><br><span class="line">ort_session = onnxruntime.InferenceSession(<span class="string">"super_resolution.onnx"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Input to the model</span></span><br><span class="line">batch_size = <span class="number">1</span></span><br><span class="line">x = torch.randn(batch_size, <span class="number">3</span>, <span class="number">512</span>, <span class="number">512</span>, requires_grad=<span class="keyword">True</span>)</span><br><span class="line">torch_out = learn.model(x)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">to_numpy</span><span class="params">(tensor)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tensor.detach().cpu().numpy() <span class="keyword">if</span> tensor.requires_grad <span class="keyword">else</span> tensor.cpu().numpy()</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute ONNX Runtime output prediction</span></span><br><span class="line">ort_inputs = &#123;ort_session.get_inputs()[<span class="number">0</span>].name: to_numpy(x)&#125;</span><br><span class="line">ort_outs = ort_session.run(<span class="keyword">None</span>, ort_inputs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compare ONNX Runtime and PyTorch results</span></span><br><span class="line">np.testing.assert_allclose(to_numpy(torch_out), ort_outs[<span class="number">0</span>], rtol=<span class="number">1e-03</span>, atol=<span class="number">1e-05</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Exported model has been tested with ONNXRuntime, and the result looks good!"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="模型加载"><a href="#模型加载" class="headerlink" title="模型加载"></a>模型加载</h2><h3 id="使用opencv加载ONNX模型"><a href="#使用opencv加载ONNX模型" class="headerlink" title="使用opencv加载ONNX模型"></a>使用opencv加载ONNX模型</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv::dnn;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    String modelFile = <span class="string">"D://fastai.onnx"</span>;</span><br><span class="line">    String imageFile = <span class="string">"D://1.jpg"</span>;</span><br><span class="line"></span><br><span class="line">    dnn::Net net = cv::dnn::readNetFromONNX(modelFile); <span class="comment">//读取网络和参数</span></span><br><span class="line">   </span><br><span class="line">    Mat image = imread(imageFile); <span class="comment">// 读取测试图片</span></span><br><span class="line">    cv::cvtColor(image, image, cv::COLOR_BGR2RGB);</span><br><span class="line">    image.convertTo(image, CV_32FC3, <span class="number">1.0f</span> / <span class="number">255.0f</span>);</span><br><span class="line"> </span><br><span class="line">    Mat inputBolb = blobFromImage(image, <span class="number">0.00390625f</span>, Size(<span class="number">512</span>, <span class="number">512</span>), Scalar(), <span class="literal">false</span>, <span class="literal">false</span>); <span class="comment">//将图像转化为正确输入格式</span></span><br><span class="line"></span><br><span class="line">    net.setInput(inputBolb); <span class="comment">//输入图像</span></span><br><span class="line"></span><br><span class="line">    Mat result = net.forward(); <span class="comment">//前向计算</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; result &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> j;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用libtorch"><a href="#使用libtorch" class="headerlink" title="使用libtorch"></a>使用libtorch</h3><ol>
+<li>libtorch下载</li>
+<li>opencv下载</li>
+<li>visual studio环境准备</li>
+<li>测试</li>
+</ol>
+<h3 id="DLL的生成与测试"><a href="#DLL的生成与测试" class="headerlink" title="DLL的生成与测试"></a>DLL的生成与测试</h3><h4 id="解决cuda不识别的问题"><a href="#解决cuda不识别的问题" class="headerlink" title="解决cuda不识别的问题"></a>解决cuda不识别的问题</h4><p>Windows10系统下使用LibTorch 1.5.0，使用Visual Studio进行C++开发时，</p>
+<p>Torch::cuda::is_available()返回值为False的解决办法：</p>
+<p>在<code>链接器中 -&gt; 命令行 -&gt; 其他选项</code>:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/INCLUDE:?<span class="symbol">warp_size@</span><span class="symbol">cuda@</span><span class="symbol">at@</span><span class="meta">@YAHXZ</span></span><br></pre></td></tr></table></figure>
+<h2 id="Visual-Studio配置"><a href="#Visual-Studio配置" class="headerlink" title="Visual Studio配置"></a>Visual Studio配置</h2><h4 id="1-附加包含目录的配置"><a href="#1-附加包含目录的配置" class="headerlink" title="1. 附加包含目录的配置"></a>1. 附加包含目录的配置</h4><p><code>项目属性</code>—<code>c/c++</code>—<code>附加包含目录</code>,添加如下信息：</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D:<span class="symbol">\6</span>6.code<span class="symbol">\9</span>09.torchScript<span class="symbol">\l</span>ibtorchCuda<span class="symbol">\l</span>ibtorch<span class="symbol">\i</span>nclude           D:<span class="symbol">\6</span>6.code<span class="symbol">\9</span>09.torchScript<span class="symbol">\l</span>ibtorchCuda<span class="symbol">\l</span>ibtorch<span class="symbol">\i</span>nclude<span class="symbol">\t</span>orch<span class="symbol">\c</span>src<span class="symbol">\a</span>pi<span class="symbol">\i</span>nclude</span><br><span class="line">D:<span class="symbol">\6</span>6.code<span class="symbol">\9</span>09.torchScript<span class="symbol">\o</span>pencv<span class="symbol">\b</span>uild<span class="symbol">\i</span>nclude</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/Tue, 24 Nov 2020 104414.png" alt="兰 0  的 的 00 到  D:\&quot;code\909.torchScript\ex•mpIe•app\Iibtorch\incIud• ： D:\66.code\909.torchScript\opencv\build\incIude  过 它 0 膣 式  支 仅 俄 启 代 码 涯 过  公 虐 叾 运 行 时 查  0 亍 扈 动 版 权 吓  等 3VW3 ）  鞯 吉 视 为 0  習 雪 所 事  列 億 息 知 i 四 n 。 “ （ 豳  是 VsdD  SDL 到  启 用 尥 址 蓀 景 铳 （ 逾 性 ）  0 入 的 IOL  ndo 元 數  加 包 含 目  指 定 一 个 多 个 要 添 加 到 0 路 径 半 的 目 录 ： 当 到 录 不 止 一 省 对 。 用 分 分 儀 ．  伊 憮 径 勇  XM L 立 生 器 "></p>
+<h4 id="2-链接器配置"><a href="#2-链接器配置" class="headerlink" title="2. 链接器配置"></a>2. 链接器配置</h4><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">D:</span>\<span class="number">66</span>.code\<span class="number">909</span>.torchScript\opencv\build\x64\vc15\<span class="class"><span class="keyword">lib</span>;</span></span><br><span class="line"><span class="symbol">D:</span>\<span class="number">66</span>.code\<span class="number">909</span>.torchScript\libtorchCuda\libtorch\<span class="class"><span class="keyword">lib</span>;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/config-link.png" alt="0 人 的 IOL  0d0 、 “ 元 如  》 工 且  》 讽 ML 立 档 生 藏  鮁 出 立  是 示 启 动 版 权 标 志  0 苤 导 入  河 目 景  使 甲 过 阪 项 的 入  上 011 孬  强 制 仁 出  创 津 可 那 修 峡 0  / OUT 笾 0 可 虫 写 逆 创 过 的 程 序 的 默 认 0 0 苤 ．  OutDir) 地 3 四 阝 四 e 还  占 VINCREMENTAL•NO)  0G0  D:Wcode\909.torchScript\opencv\build\x64\vc1S\Iib;D:Wcode\909.torchScript\example-•pp\libtord&#39;\lib; "></p>
+<p><code>链接器</code> —<code>输入</code>:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">opencv_world450.lib</span><br><span class="line">asmjit.lib</span><br><span class="line">c10.lib</span><br><span class="line">c10_cuda.lib</span><br><span class="line">caffe2_detectron_ops_gpu.lib</span><br><span class="line">caffe2_module_test_dynamic.lib</span><br><span class="line">caffe2_nvrtc.lib</span><br><span class="line">clog.lib</span><br><span class="line">cpuinfo.lib</span><br><span class="line">fbgemm.lib</span><br><span class="line">libprotobuf.lib</span><br><span class="line">libprotobuf-lite.lib</span><br><span class="line">libprotoc.lib</span><br><span class="line">mkldnn.lib</span><br><span class="line">torch_cpu.lib</span><br><span class="line">torch_cuda.lib</span><br><span class="line">torch.lib</span><br></pre></td></tr></table></figure>
+<p><strong>测试代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;torch/torch.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	torch::Tensor tensor = torch::eye(<span class="number">3</span>);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; tensor.cuda() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ol>
+<li><p>使用<code>dumpbin</code>进行依赖的查看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dumpbin /dependents xxx.dll 或者 xxx.exe</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>   <img src="/2020/11/19/pytorch模型的导出与部署/image-20201119144802243.png" alt="image-20201119144802243"></p>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/image-20201119145027954.png" alt="image-20201119145027954"></p>
+<ol>
+<li><p>通过配置环境变量，减少复制<code>dll</code>的空间成本</p>
+<p>属性页—配置属性—调试—环境</p>
+<p>设置dll文件的环境变量，</p>
+<p><code>PATH=D:\software\gnsoftware\pyTorch\libtorch-win-shared-with-deps-debug-1.5.0\libtorch\lib;%PATH%</code></p>
+<p>（之前我一般是把那一堆dll文件拷贝到生成的exe文件所在目录，导致这些dll文件会复制很多份，占据很大空间，这里通过设置依赖于项目的环境变量，少了大量拷贝，还不影响其他变量）</p>
+</li>
+</ol>
+<h2 id="C-调用C-DLL"><a href="#C-调用C-DLL" class="headerlink" title="C#调用C++ DLL"></a>C#调用C++ DLL</h2><blockquote>
+<p>项目需求利用C#调用C++封装好的DLL库，进行了一番调研与试错，此部分进行一些详实的记录，有些问题仍待进一步验证。</p>
+<p>以下经验来自网友的分享：<a href="https://www.cnblogs.com/neverstop/p/5901652.html">https://www.cnblogs.com/neverstop/p/5901652.html</a></p>
+</blockquote>
+<h3 id="c-与c-的类型对照问题"><a href="#c-与c-的类型对照问题" class="headerlink" title="c# 与c++的类型对照问题"></a>c# 与c++的类型对照问题</h3><p>c#调用c++方法时，首先要在类中定义一个与c++方法对应的外部方法，因为该方法是用C#语言定义的，那么肯定要弄清楚C#类型与c++类型如何对应，否则会导致调用失败。可以使用工具，自动根据c++方法签名生成对应的C# import方法签名，参考<a href="http://www.cnblogs.com/lbq1221119/archive/2008/01/16/1040958.html">P/Invoke Interop Assistant</a>。不过有一个问题还是要注意的，在x86模式下c#中的int对应c++中的int，而在x64模式下C#中的int是对应c++中的long，就这么一个小小的变量类型，在不经意间可能就会导致c++代码出错。</p>
+<p>还有一个问题是：<code>托管的 PInvoke 签名与非托管的目标签名不匹配</code>，可以在C#代码的方法特性上加上<code>CallingConvention.Cdecl</code>。如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[DllImport(&quot;dllname.dll&quot;, CharSet = CharSet.Ansi, EntryPoint = &quot;methodname&quot;, CallingConvention = CallingConvention.Cdecl)]</span><br></pre></td></tr></table></figure>
+<h3 id="内存释放"><a href="#内存释放" class="headerlink" title="内存释放"></a>内存释放</h3><p>哪里调用哪里释放，需要做大量测试检测。</p>
+<h3 id="版本问题"><a href="#版本问题" class="headerlink" title="版本问题"></a>版本问题</h3><p>版本不匹配的话，在调试时会提示<code>正在加载格式不正确的dll</code>，如果使用的是32位的c++版dll，需要把C#项目的编译平台设置为x86，如果使用的是64位的c++版dll，则设置为any cpu和x64都可以。</p>
+<h3 id="编译问题-静态编译与动态编译"><a href="#编译问题-静态编译与动态编译" class="headerlink" title="编译问题(静态编译与动态编译)"></a>编译问题(静态编译与动态编译)</h3><p>这个问题在运行时有时候会提示dll加载不成功，这个问题在不同的电脑上会有不同的体现，有的存在这个问题，有的就运行正常。而我本机就属于正常的，部署的服务器属于出问题的。出现这个问题后，在确认代码无误后，我用<code>depends.exe</code>这个工具查看了一下导致问题的那个c++版的dll都依赖什么程序集，在出问题的机器上会提示有一些依赖的dll不存在，而这些dll在运行正常的机器上是存在的。下图红色框中的为某些机器上可能会缺少的dll：</p>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/206282-20160923224910559-38712457.png" alt="img"></p>
+<p>如果缺少相关dll，该条目的左边会显示出一个黄色的问号。这个问题可以采用静态编译进行解决，关于什么是<a href="http://baike.baidu.com/link?url=ZveglEz7YJNWNoKN5pKfGJbu_pijrEoP2yIA7h99VNEAYAcPwl-8jwWEzVoFDwDhlVS5EoqALwxoJejI7Kpj9a">静态编译</a>可以自行百度，总之就是将程序所依赖的dll编译到程序集中，这样即使其他机器不存在这些dll也可以正常运行了，静态编译可以在vs的项目属性中进行设置</p>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/206282-20160923224957981-1888139544.png" alt="img"></p>
+<p>默认是<code>多线程 DLL(/MD)</code>，即：<strong>动态编译</strong>，这里更改为 <code>多线程（/MT）</code>，即：静态编译。</p>
+<p>刚才的配置只能解决缺少MSVCP120.DLL和MSVCR120.DLL这一类问题，对于缺少MFC相关的dll，还要经过下面的配置：</p>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/206282-20160923225012371-1331717166-1606185369311.png" alt="img"></p>
+<h3 id="异常捕获与问题定位"><a href="#异常捕获与问题定位" class="headerlink" title="异常捕获与问题定位"></a>异常捕获与问题定位</h3><p>很多时候在c#代码中是捕获不到c++的异常的，虽然在方法中添加了特性<code>HandleProcessCorruptedStateExceptions</code>与<code>SecurityCritical</code>但还是捕获不到c++中的异常，原因可能是c++在遇到某些异常时会造成程序直接退出，这样在C#中就自然捕获不到了，所以还是尽量保证c++代码的健壮性。 如果在c#中调用了多个c++版dll中的方法，因为有时捕获不到异常，很难通过常规方法找到问题的原因，c++方法中一旦出现异常可能会直接导致进程退出了，这时可以借助操作系统中的事件查看器来找出异常是来自哪个dll，同时在原有代码中注释掉那段调用该c++方法的代码，或者mock一个方法调用，保证该段代码无异常，然后再进行测试，如果无异常，那么只要解决了那个c++方法的问题即可，如果还有异常那么就是其他dll的问题，然后可以编写测试代码单独测试曾经出问题的dll中的方法。<code>异常捕获+事件查看器+日志</code>可以帮助开发者发现程序的大部分问题与原因。</p>
+<h3 id="c-与-c-互传文件代码"><a href="#c-与-c-互传文件代码" class="headerlink" title="c# 与 c++互传文件代码"></a>c# 与 c++互传文件代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public static BitmapInfo GetImagePixel(Bitmap Source)</span><br><span class="line">        &#123;</span><br><span class="line">            byte[] result;</span><br><span class="line">            int step;</span><br><span class="line">            int iWidth = Source.Width;</span><br><span class="line">            int iHeight = Source.Height;</span><br><span class="line">            //</span><br><span class="line">            if (iWidth %4!=0)</span><br><span class="line">            &#123;</span><br><span class="line">                iWidth = iWidth - (iWidth % 4);</span><br><span class="line">            &#125;</span><br><span class="line">            Rectangle rect = new Rectangle(0, 0, iWidth, iHeight);</span><br><span class="line">            System.Drawing.Imaging.BitmapData bmpData = Source.LockBits(rect,</span><br><span class="line">                System.Drawing.Imaging.ImageLockMode.ReadWrite, Source.PixelFormat);</span><br><span class="line">            IntPtr iPtr = bmpData.Scan0;</span><br><span class="line">            //int iBytes = iWidth * iHeight * 3;</span><br><span class="line">            step = bmpData.Stride/iWidth;</span><br><span class="line">            int iBytes = iWidth * iHeight * step;</span><br><span class="line">            byte[] PixelValues = new byte[iBytes];</span><br><span class="line">            System.Runtime.InteropServices.Marshal.Copy(iPtr, PixelValues, 0, iBytes);</span><br><span class="line">            Source.UnlockBits(bmpData);</span><br><span class="line">            result = PixelValues;</span><br><span class="line">            BitmapInfo bi = new BitmapInfo &#123; Result = result, Channels = step, width =iWidth, height = iHeight&#125;;</span><br><span class="line">            return bi;</span><br><span class="line">        &#125;</span><br><span class="line">     </span><br><span class="line">public class BitmapInfo</span><br><span class="line">    &#123;</span><br><span class="line">        public byte[] Result &#123; get; set; &#125;</span><br><span class="line">        public int Channels &#123; get; set; &#125;</span><br><span class="line">        public int width &#123; get; set; &#125;</span><br><span class="line">        public int height &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="关于libtorch与pytorch输出结果的不一致性"><a href="#关于libtorch与pytorch输出结果的不一致性" class="headerlink" title="关于libtorch与pytorch输出结果的不一致性"></a>关于libtorch与pytorch输出结果的不一致性</h3><ol>
+<li><p>pre-processing过程导致的结果差异</p>
+<ol>
+<li><p>pre-processing阶段关注两个问题：<code>resize</code>的方法是否一致；<code>normalization</code>的方法是否一致;</p>
+</li>
+<li><p>当统一的相关方法之后仍然发现存在不一致性，进一步分析发现：<code>图像库 PIL的计算浮点数，与opencv计算的不一致。</code></p>
+<blockquote>
+<p>参见：<a href="https://zhuanlan.zhihu.com/p/141401062?from_voters_page=true">https://zhuanlan.zhihu.com/p/141401062?from_voters_page=true</a></p>
+<ol>
+<li>torchvision transforms 默认使用 PIL 预处理图片。</li>
+<li>c++ libtorch 使用opencv预处理图片，所以建议python训练模型的数据增强，使用 opencv 处理数据增强，评估也使用opencv 处理数据增强。</li>
+</ol>
+</blockquote>
+<p>使用libtorch进行预处理代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"torch/script.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"torch/torch.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// opencv 头文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/imgproc/imgproc.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    torch::jit::script::Module <span class="keyword">module</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">module</span> = torch::jit::load(<span class="string">"mobilenetv2-trace.pt"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (<span class="keyword">const</span> c10::Error&amp; ) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"error loading the model\n"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 之前的版本 module-&gt;to , 1.4版本以上用 module.to();</span></span><br><span class="line">    <span class="keyword">module</span>.to(at::kCUDA);</span><br><span class="line"></span><br><span class="line">    cv::Mat input_image;</span><br><span class="line">    cv::Mat read_image = cv::imread(<span class="string">"cat.png"</span>);</span><br><span class="line">    <span class="keyword">if</span> (read_image.empty() || !read_image.data)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"read image fail"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    cv::cvtColor(read_image, input_image, cv::COLOR_BGR2RGB);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// resize(256)</span></span><br><span class="line">    cv::<span class="function">Size <span class="title">scale</span><span class="params">(<span class="number">256</span>, <span class="number">256</span>)</span></span>;</span><br><span class="line">    cv::resize(input_image, input_image, scale, <span class="number">0</span>, <span class="number">0</span>, cv::INTER_LINEAR);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// centerSizeCrop(224)</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> cropSize = <span class="number">224</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> offsetW = <span class="built_in">std</span>::round((input_image.cols - cropSize) / <span class="number">2.0</span>);</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> offsetH = <span class="built_in">std</span>::round((input_image.rows - cropSize) / <span class="number">2.0</span>);</span><br><span class="line">    <span class="keyword">const</span> cv::<span class="function">Rect <span class="title">roi</span><span class="params">(offsetW, offsetH, cropSize, cropSize)</span></span>;</span><br><span class="line">    input_image = input_image(roi).clone();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转换 [unsigned int] to [float]</span></span><br><span class="line">    input_image.convertTo(input_image, CV_32FC3, <span class="number">1.0</span> / <span class="number">255.0</span>);</span><br><span class="line">    torch::Tensor tensor_image = torch::from_blob(input_image.data, &#123;<span class="number">1</span>, input_image.rows, input_image.cols,<span class="number">3</span>&#125;);</span><br><span class="line">    tensor_image = tensor_image.permute(&#123;<span class="number">0</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>&#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// transforms.Normalize(mean=[0.485, 0.456, 0.406],</span></span><br><span class="line">    <span class="comment">//                    std=[0.229, 0.224, 0.225])</span></span><br><span class="line">    tensor_image[<span class="number">0</span>][<span class="number">0</span>] = tensor_image[<span class="number">0</span>][<span class="number">0</span>].sub_(<span class="number">0.485</span>).div_(<span class="number">0.229</span>);</span><br><span class="line">    tensor_image[<span class="number">0</span>][<span class="number">1</span>] = tensor_image[<span class="number">0</span>][<span class="number">1</span>].sub_(<span class="number">0.456</span>).div_(<span class="number">0.224</span>);</span><br><span class="line">    tensor_image[<span class="number">0</span>][<span class="number">2</span>] = tensor_image[<span class="number">0</span>][<span class="number">2</span>].sub_(<span class="number">0.406</span>).div_(<span class="number">0.225</span>);</span><br><span class="line">    tensor_image = tensor_image.to(torch::kCUDA);</span><br><span class="line">    torch::Tensor output = <span class="keyword">module</span>.forward(&#123;tensor_image&#125;).toTensor();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; output.slice(<span class="comment">/*dim=*/</span><span class="number">1</span>, <span class="comment">/*start=*/</span><span class="number">0</span>, <span class="comment">/*end=*/</span><span class="number">5</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了和libtorch中一致，pytorch中建议使用的策略：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision.models <span class="keyword">as</span> models</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms </span><br><span class="line"><span class="comment">#from PIL import Image</span></span><br><span class="line">val_transform = transforms.Compose([</span><br><span class="line">    <span class="comment">#transforms.Resize(512),</span></span><br><span class="line">    <span class="comment">#transforms.CenterCrop(512),</span></span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Normalize(mean=[<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>],</span><br><span class="line">                        std=[<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>])</span><br><span class="line">    ]</span><br><span class="line">)  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">centerSizeCrop</span><span class="params">(image, crop_size)</span>:</span></span><br><span class="line">    rows, cols = image.shape[:<span class="number">2</span>]</span><br><span class="line">    x = round((cols - crop_size) / <span class="number">2.0</span>)</span><br><span class="line">    y = round((rows - crop_size) / <span class="number">2.0</span>)</span><br><span class="line">    img = image[y:y+crop_size, x:x+crop_size]</span><br><span class="line">    <span class="keyword">return</span> img</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">"xxxxx.bmp"</span>)</span><br><span class="line">img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line">img = cv2.resize(img, (<span class="number">1024</span>,<span class="number">1024</span>))</span><br><span class="line">img = centerSizeCrop(img, <span class="number">512</span>)</span><br><span class="line">img = val_transform(img)</span><br><span class="line">img = img.unsqueeze(<span class="number">0</span>)</span><br><span class="line">img = img.cuda()</span><br><span class="line">output = model(img)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>计算精度损失导致的差异</p>
+</li>
+</ol>
+<h3 id="C-调用C-类的实现-如下内容待测试"><a href="#C-调用C-类的实现-如下内容待测试" class="headerlink" title="C# 调用C++类的实现(如下内容待测试)"></a>C# 调用C++类的实现(如下内容待测试)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">Marshal C++ Class <span class="keyword">and</span> use the PInvoke</span><br><span class="line">C++ Code ,ClassName.h</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> __<span class="title">declspec</span>(<span class="title">dllexport</span>) <span class="title">CClassName</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">    CClassName();</span><br><span class="line">    ~CClassName();</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">C++ Code, ClassName.cpp</span><br><span class="line"></span><br><span class="line">CClassName::CClassName()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CClassName::~CClassName()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CClassName::function()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Bla bla bla"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">C++ Code, ClassNameCaller.h file <span class="keyword">for</span> the caller function</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ClassName.h"</span>      </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> __declspec(dllexport) <span class="function">CClassName* <span class="title">CreateClassName</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> __declspec(dllexport) <span class="function"><span class="keyword">void</span> <span class="title">DisposeClassName</span><span class="params">(CClassName* a_pObject)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> __declspec(dllexport) <span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">(CClassName* a_pObject)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">C++ Code, ClassNameCaller.cpp file <span class="keyword">for</span> the caller function</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ClassNameCaller.h"</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">CClassName* <span class="title">CreateClassName</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CClassName();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DisposeClassName</span><span class="params">(CClassName* a_pObject)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a_pObject!= <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span> a_pObject;</span><br><span class="line">        a_pObject= <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">(CClassName* a_pObject)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a_pObject!= <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        a_pObject-&gt;function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------</span><br><span class="line">C<span class="meta"># code</span></span><br><span class="line"></span><br><span class="line">[DllImport(<span class="string">"ClassNameDll.dll"</span>)]</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">extern</span> IntPtr <span class="title">CreateClassName</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">[DllImport(<span class="string">"ClassNameDll.dll"</span>)]</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">DisposeClassName</span><span class="params">(IntPtr pClassNameObject)</span></span>;</span><br><span class="line"></span><br><span class="line">[DllImport(<span class="string">"ClassNameDll.dll"</span>)]</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">CallFunction</span><span class="params">(IntPtr pClassNameObject)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//use the functions</span></span><br><span class="line">IntPtr pClassName = CreateClassName();</span><br><span class="line"></span><br><span class="line">CallFunction(pClassName);</span><br><span class="line">DisposeClassName(pClassName);</span><br><span class="line">pClassName = IntPtr.Zero;</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://www.cnblogs.com/neverstop/p/5901652.html">https://www.cnblogs.com/neverstop/p/5901652.html</a></li>
+</ol>
+
+        </div>
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/文献/">文献</a>,&nbsp;<a class="has-link-grey -link" href="/tags/算法/">算法</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e762f775039a80012d346d9&amp;product=inline-share-buttons&amp;cms=sop' async='async'></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/site/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/site/weixin.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2021/01/28/Reinforcement-Learning-Tips-and-Tricks/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Reinforcement Learning:Tips and Tricks</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/04/读书笔记-《神经网络与深度学习》/">
+                <span class="level-item">读书笔记-《神经网络与深度学习》</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: 'JQMgg0zbFBNWwL0lLnq2s1G7-gzGzoHsz',
+        app_key: 'm5FMVedFNxGutQCnMsVMAaXM',
+        placeholder: 'Say Something ...'
+    });
+</script>
+
+    </div>
+</div>
+</div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#pytorch模型的导出">
+        <span class="has-mr-6">1</span>
+        <span>pytorch模型的导出</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#导出模型的检测">
+        <span class="has-mr-6">1.1</span>
+        <span>导出模型的检测</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#模型加载">
+        <span class="has-mr-6">2</span>
+        <span>模型加载</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#使用opencv加载ONNX模型">
+        <span class="has-mr-6">2.1</span>
+        <span>使用opencv加载ONNX模型</span>
+        </a></li><li>
+        <a class="is-flex" href="#使用libtorch">
+        <span class="has-mr-6">2.2</span>
+        <span>使用libtorch</span>
+        </a></li><li>
+        <a class="is-flex" href="#DLL的生成与测试">
+        <span class="has-mr-6">2.3</span>
+        <span>DLL的生成与测试</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#解决cuda不识别的问题">
+        <span class="has-mr-6">2.3.1</span>
+        <span>解决cuda不识别的问题</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#Visual-Studio配置">
+        <span class="has-mr-6">3</span>
+        <span>Visual Studio配置</span>
+        </a><ul class="menu-list"><ul class="menu-list"><li>
+        <a class="is-flex" href="#1-附加包含目录的配置">
+        <span class="has-mr-6">3.1.1</span>
+        <span>1. 附加包含目录的配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-链接器配置">
+        <span class="has-mr-6">3.1.2</span>
+        <span>2. 链接器配置</span>
+        </a></li></ul></ul></li><li>
+        <a class="is-flex" href="#技巧">
+        <span class="has-mr-6">4</span>
+        <span>技巧</span>
+        </a></li><li>
+        <a class="is-flex" href="#C-调用C-DLL">
+        <span class="has-mr-6">5</span>
+        <span>C#调用C++ DLL</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#c-与c-的类型对照问题">
+        <span class="has-mr-6">5.1</span>
+        <span>c# 与c++的类型对照问题</span>
+        </a></li><li>
+        <a class="is-flex" href="#内存释放">
+        <span class="has-mr-6">5.2</span>
+        <span>内存释放</span>
+        </a></li><li>
+        <a class="is-flex" href="#版本问题">
+        <span class="has-mr-6">5.3</span>
+        <span>版本问题</span>
+        </a></li><li>
+        <a class="is-flex" href="#编译问题-静态编译与动态编译">
+        <span class="has-mr-6">5.4</span>
+        <span>编译问题(静态编译与动态编译)</span>
+        </a></li><li>
+        <a class="is-flex" href="#异常捕获与问题定位">
+        <span class="has-mr-6">5.5</span>
+        <span>异常捕获与问题定位</span>
+        </a></li><li>
+        <a class="is-flex" href="#c-与-c-互传文件代码">
+        <span class="has-mr-6">5.6</span>
+        <span>c# 与 c++互传文件代码</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#其它">
+        <span class="has-mr-6">6</span>
+        <span>其它</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#关于libtorch与pytorch输出结果的不一致性">
+        <span class="has-mr-6">6.1</span>
+        <span>关于libtorch与pytorch输出结果的不一致性</span>
+        </a></li><li>
+        <a class="is-flex" href="#C-调用C-类的实现-如下内容待测试">
+        <span class="has-mr-6">6.2</span>
+        <span>C# 调用C++类的实现(如下内容待测试)</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#参考">
+        <span class="has-mr-6">7</span>
+        <span>参考</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2021/01/28/Reinforcement-Learning-Tips-and-Tricks/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/rl.jpg" alt="Reinforcement Learning:Tips and Tricks">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-01-28T02:56:30.000Z">2021-01-28</time></div>
+                    <a href="/2021/01/28/Reinforcement-Learning-Tips-and-Tricks/" class="title has-link-black-ter is-size-6 has-text-weight-normal">Reinforcement Learning:Tips and Tricks</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/强化学习/">强化学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/11/19/pytorch模型的导出与部署/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="pytorch模型的导出与部署">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-11-19T05:00:18.000Z">2020-11-19</time></div>
+                    <a href="/2020/11/19/pytorch模型的导出与部署/" class="title has-link-black-ter is-size-6 has-text-weight-normal">pytorch模型的导出与部署</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/04/读书笔记-《神经网络与深度学习》/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/qxp.jpg" alt="读书笔记-《神经网络与深度学习》">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-04T13:50:21.000Z">2020-05-04</time></div>
+                    <a href="/2020/05/04/读书笔记-《神经网络与深度学习》/" class="title has-link-black-ter is-size-6 has-text-weight-normal">读书笔记-《神经网络与深度学习》</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/banner/02.jpg" alt="计算机视觉目标检测研究札记">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
+                    <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
+                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo02.png" alt="pytorch模型的导出与部署" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Ebby DD&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>  沪ICP备20005404号
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://blog.a-stack.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
