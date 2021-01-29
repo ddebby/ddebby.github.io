@@ -10,20 +10,20 @@
 <title>pytorch模型的导出与部署 - Ebby&#39;s Notes</title>
 
 
-    <meta name="description" content="摘要：">
+    <meta name="description" content="摘要： 模型部署方式的整理">
 <meta name="keywords" content="人工智能,深度学习,技术,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch模型的导出与部署">
 <meta property="og:url" content="http://blog.a-stack.com/2020/11/19/pytorch模型的导出与部署/index.html">
 <meta property="og:site_name" content="Ebby&#39;s Notes">
-<meta property="og:description" content="摘要：">
+<meta property="og:description" content="摘要： 模型部署方式的整理">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://blog.a-stack.com/qnsource/blog/cvat.jpg">
-<meta property="og:updated_time" content="2020-11-27T05:33:41.838Z">
+<meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-01-29T14:34:12.999Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pytorch模型的导出与部署">
-<meta name="twitter:description" content="摘要：">
-<meta name="twitter:image" content="http://blog.a-stack.com/qnsource/blog/cvat.jpg">
+<meta name="twitter:description" content="摘要： 模型部署方式的整理">
+<meta name="twitter:image" content="http://blog.a-stack.com/images/og_image.png">
 
 
 
@@ -146,12 +146,6 @@ var _hmt = _hmt || [];
                 <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
 <div class="card">
     
-    <div class="card-image">
-        <span  class="image is-7by1">
-            <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="pytorch模型的导出与部署">
-        </span>
-    </div>
-    
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
@@ -168,7 +162,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    21 分钟 读完 (大约 3222 个字)
+                    20 分钟 读完 (大约 3031 个字)
                 </span>
                 
                 
@@ -181,7 +175,7 @@ var _hmt = _hmt || [];
             
         </h1>
         <div class="content">
-            <p><strong>摘要：</strong></p>
+            <p><strong>摘要：</strong> 模型部署方式的整理</p>
 <a id="more"></a>
 <h2 id="pytorch模型的导出"><a href="#pytorch模型的导出" class="headerlink" title="pytorch模型的导出"></a>pytorch模型的导出</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存网络结构和参数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法1：保存网络结构和参数</span></span><br><span class="line">PATH = <span class="string">'./cifar_net.pth'</span></span><br><span class="line">torch.save(net, PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：保存网络参数</span></span><br><span class="line">PATH = <span class="string">'./cifar_net.pth'</span></span><br><span class="line">torch.save(net.state_dict(), PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法3：导出网络到ONNX</span></span><br><span class="line">dummy_input = torch.randn(<span class="number">1</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>).to(device)</span><br><span class="line">torch.onnx.export(net, dummy_input, <span class="string">"torch.onnx"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法4：保存网络位TORCHSCRIPT</span></span><br><span class="line">dummy_input = torch.randn(<span class="number">1</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>).to(device)</span><br><span class="line">traced_cell = torch.jit.trace(net, dummy_input)</span><br><span class="line">traced_cell.save(<span class="string">"tests.pth"</span>)</span><br></pre></td></tr></table></figure>
 <h3 id="导出模型的检测"><a href="#导出模型的检测" class="headerlink" title="导出模型的检测"></a>导出模型的检测</h3><blockquote>
@@ -199,12 +193,11 @@ var _hmt = _hmt || [];
 <h3 id="DLL的生成与测试"><a href="#DLL的生成与测试" class="headerlink" title="DLL的生成与测试"></a>DLL的生成与测试</h3><h4 id="解决cuda不识别的问题"><a href="#解决cuda不识别的问题" class="headerlink" title="解决cuda不识别的问题"></a>解决cuda不识别的问题</h4><p>Windows10系统下使用LibTorch 1.5.0，使用Visual Studio进行C++开发时，</p>
 <p>Torch::cuda::is_available()返回值为False的解决办法：</p>
 <p>在<code>链接器中 -&gt; 命令行 -&gt; 其他选项</code>:</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/INCLUDE:?<span class="symbol">warp_size@</span><span class="symbol">cuda@</span><span class="symbol">at@</span><span class="meta">@YAHXZ</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/INCLUDE:?warp_size@cuda@at@@YAHXZ</span><br></pre></td></tr></table></figure>
 <h2 id="Visual-Studio配置"><a href="#Visual-Studio配置" class="headerlink" title="Visual Studio配置"></a>Visual Studio配置</h2><h4 id="1-附加包含目录的配置"><a href="#1-附加包含目录的配置" class="headerlink" title="1. 附加包含目录的配置"></a>1. 附加包含目录的配置</h4><p><code>项目属性</code>—<code>c/c++</code>—<code>附加包含目录</code>,添加如下信息：</p>
-<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D:<span class="symbol">\6</span>6.code<span class="symbol">\9</span>09.torchScript<span class="symbol">\l</span>ibtorchCuda<span class="symbol">\l</span>ibtorch<span class="symbol">\i</span>nclude           D:<span class="symbol">\6</span>6.code<span class="symbol">\9</span>09.torchScript<span class="symbol">\l</span>ibtorchCuda<span class="symbol">\l</span>ibtorch<span class="symbol">\i</span>nclude<span class="symbol">\t</span>orch<span class="symbol">\c</span>src<span class="symbol">\a</span>pi<span class="symbol">\i</span>nclude</span><br><span class="line">D:<span class="symbol">\6</span>6.code<span class="symbol">\9</span>09.torchScript<span class="symbol">\o</span>pencv<span class="symbol">\b</span>uild<span class="symbol">\i</span>nclude</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/11/19/pytorch模型的导出与部署/Tue, 24 Nov 2020 104414.png" alt="兰 0  的 的 00 到  D:\&quot;code\909.torchScript\ex•mpIe•app\Iibtorch\incIud• ： D:\66.code\909.torchScript\opencv\build\incIude  过 它 0 膣 式  支 仅 俄 启 代 码 涯 过  公 虐 叾 运 行 时 查  0 亍 扈 动 版 权 吓  等 3VW3 ）  鞯 吉 视 为 0  習 雪 所 事  列 億 息 知 i 四 n 。 “ （ 豳  是 VsdD  SDL 到  启 用 尥 址 蓀 景 铳 （ 逾 性 ）  0 入 的 IOL  ndo 元 數  加 包 含 目  指 定 一 个 多 个 要 添 加 到 0 路 径 半 的 目 录 ： 当 到 录 不 止 一 省 对 。 用 分 分 儀 ．  伊 憮 径 勇  XM L 立 生 器 "></p>
-<h4 id="2-链接器配置"><a href="#2-链接器配置" class="headerlink" title="2. 链接器配置"></a>2. 链接器配置</h4><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">D:</span>\<span class="number">66</span>.code\<span class="number">909</span>.torchScript\opencv\build\x64\vc15\<span class="class"><span class="keyword">lib</span>;</span></span><br><span class="line"><span class="symbol">D:</span>\<span class="number">66</span>.code\<span class="number">909</span>.torchScript\libtorchCuda\libtorch\<span class="class"><span class="keyword">lib</span>;</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2020/11/19/pytorch模型的导出与部署/config-link.png" alt="0 人 的 IOL  0d0 、 “ 元 如  》 工 且  》 讽 ML 立 档 生 藏  鮁 出 立  是 示 启 动 版 权 标 志  0 苤 导 入  河 目 景  使 甲 过 阪 项 的 入  上 011 孬  强 制 仁 出  创 津 可 那 修 峡 0  / OUT 笾 0 可 虫 写 逆 创 过 的 程 序 的 默 认 0 0 苤 ．  OutDir) 地 3 四 阝 四 e 还  占 VINCREMENTAL•NO)  0G0  D:Wcode\909.torchScript\opencv\build\x64\vc1S\Iib;D:Wcode\909.torchScript\example-•pp\libtord&#39;\lib; "></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">D:\66.code\909.torchScript\libtorchCuda\libtorch\include</span><br><span class="line">D:\66.code\909.torchScript\libtorchCuda\libtorch\include\torch\csrc\api\include</span><br><span class="line">D:\66.code\909.torchScript\opencv\build\include</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/Tue, 24 Nov 2020 104414.png" alt=""></p>
+<h4 id="2-链接器配置"><a href="#2-链接器配置" class="headerlink" title="2. 链接器配置"></a>2. 链接器配置</h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](<span class="number">2020</span><span class="number">-11</span><span class="number">-19</span>-pytorch模型的导出与部署/config-link.png)</span><br></pre></td></tr></table></figure>
 <p><code>链接器</code> —<code>输入</code>:</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">opencv_world450.lib</span><br><span class="line">asmjit.lib</span><br><span class="line">c10.lib</span><br><span class="line">c10_cuda.lib</span><br><span class="line">caffe2_detectron_ops_gpu.lib</span><br><span class="line">caffe2_module_test_dynamic.lib</span><br><span class="line">caffe2_nvrtc.lib</span><br><span class="line">clog.lib</span><br><span class="line">cpuinfo.lib</span><br><span class="line">fbgemm.lib</span><br><span class="line">libprotobuf.lib</span><br><span class="line">libprotobuf-lite.lib</span><br><span class="line">libprotoc.lib</span><br><span class="line">mkldnn.lib</span><br><span class="line">torch_cpu.lib</span><br><span class="line">torch_cuda.lib</span><br><span class="line">torch.lib</span><br></pre></td></tr></table></figure>
 <p><strong>测试代码</strong></p>
@@ -212,9 +205,9 @@ var _hmt = _hmt || [];
 <h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><ol>
 <li><p>使用<code>dumpbin</code>进行依赖的查看</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dumpbin /dependents xxx.dll 或者 xxx.exe</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/11/19/pytorch模型的导出与部署/image-20201119144802243.png" alt="image-20201119144802243"></p>
 </li>
 </ol>
-<p>   <img src="/2020/11/19/pytorch模型的导出与部署/image-20201119144802243.png" alt="image-20201119144802243"></p>
 <p><img src="/2020/11/19/pytorch模型的导出与部署/image-20201119145027954.png" alt="image-20201119145027954"></p>
 <ol>
 <li><p>通过配置环境变量，减少复制<code>dll</code>的空间成本</p>
@@ -508,7 +501,7 @@ var _hmt = _hmt || [];
             
             <a href="/2020/11/19/pytorch模型的导出与部署/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/blog/cvat.jpg" alt="pytorch模型的导出与部署">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="pytorch模型的导出与部署">
                 </p>
             </a>
             
