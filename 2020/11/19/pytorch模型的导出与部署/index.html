@@ -19,7 +19,7 @@
 <meta property="og:description" content="摘要： 模型部署方式的整理">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://blog.a-stack.com/images/og_image.png">
-<meta property="og:updated_time" content="2021-01-29T14:34:12.999Z">
+<meta property="og:updated_time" content="2021-03-01T07:01:28.517Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pytorch模型的导出与部署">
 <meta name="twitter:description" content="摘要： 模型部署方式的整理">
@@ -197,7 +197,7 @@ var _hmt = _hmt || [];
 <h2 id="Visual-Studio配置"><a href="#Visual-Studio配置" class="headerlink" title="Visual Studio配置"></a>Visual Studio配置</h2><h4 id="1-附加包含目录的配置"><a href="#1-附加包含目录的配置" class="headerlink" title="1. 附加包含目录的配置"></a>1. 附加包含目录的配置</h4><p><code>项目属性</code>—<code>c/c++</code>—<code>附加包含目录</code>,添加如下信息：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">D:\66.code\909.torchScript\libtorchCuda\libtorch\include</span><br><span class="line">D:\66.code\909.torchScript\libtorchCuda\libtorch\include\torch\csrc\api\include</span><br><span class="line">D:\66.code\909.torchScript\opencv\build\include</span><br></pre></td></tr></table></figure>
 <p><img src="/2020/11/19/pytorch模型的导出与部署/Tue, 24 Nov 2020 104414.png" alt=""></p>
-<h4 id="2-链接器配置"><a href="#2-链接器配置" class="headerlink" title="2. 链接器配置"></a>2. 链接器配置</h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](<span class="number">2020</span><span class="number">-11</span><span class="number">-19</span>-pytorch模型的导出与部署/config-link.png)</span><br></pre></td></tr></table></figure>
+<h4 id="2-链接器配置"><a href="#2-链接器配置" class="headerlink" title="2. 链接器配置"></a>2. 链接器配置</h4><p><img src="/2020/11/19/pytorch模型的导出与部署/config-link.png" alt=""></p>
 <p><code>链接器</code> —<code>输入</code>:</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">opencv_world450.lib</span><br><span class="line">asmjit.lib</span><br><span class="line">c10.lib</span><br><span class="line">c10_cuda.lib</span><br><span class="line">caffe2_detectron_ops_gpu.lib</span><br><span class="line">caffe2_module_test_dynamic.lib</span><br><span class="line">caffe2_nvrtc.lib</span><br><span class="line">clog.lib</span><br><span class="line">cpuinfo.lib</span><br><span class="line">fbgemm.lib</span><br><span class="line">libprotobuf.lib</span><br><span class="line">libprotobuf-lite.lib</span><br><span class="line">libprotoc.lib</span><br><span class="line">mkldnn.lib</span><br><span class="line">torch_cpu.lib</span><br><span class="line">torch_cuda.lib</span><br><span class="line">torch.lib</span><br></pre></td></tr></table></figure>
 <p><strong>测试代码</strong></p>
@@ -480,6 +480,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2021/02/05/那些效率提升的工具与方法/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="那些效率提升的工具与方法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-05T14:10:00.000Z">2021-02-05</time></div>
+                    <a href="/2021/02/05/那些效率提升的工具与方法/" class="title has-link-black-ter is-size-6 has-text-weight-normal">那些效率提升的工具与方法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/总结/">总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2021/01/28/Reinforcement-Learning-Tips-and-Tricks/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/blog/rl.jpg" alt="Reinforcement Learning:Tips and Tricks">
@@ -547,25 +566,6 @@ var _hmt = _hmt || [];
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-19T07:10:45.000Z">2020-04-19</time></div>
                     <a href="/2020/04/19/计算机视觉目标检测研究札记/" class="title has-link-black-ter is-size-6 has-text-weight-normal">计算机视觉目标检测研究札记</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
-                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>

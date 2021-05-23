@@ -148,6 +148,260 @@ var _hmt = _hmt || [];
             <div class="level-left">
                 
 
+                <time class="level-item has-text-grey" datetime="2018-04-09T04:45:13.000Z">2018-04-09</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/动手实践营/">动手实践营</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    37 分钟 读完 (大约 5528 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2018/04/09/Deep-Learning-Lab-Logo-Detection/">基于机器视觉技术的品牌LOGO检测</a>
+            
+        </h1>
+        <div class="content">
+            <p>利用Flickr LOGO数据集训练一个检测品牌LOGO的网络，对机器视觉的物体识别技术进行验证。</p>
+<!-- excerpt -->
+<p>@[toc]</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>最近在做一个利用机器视觉技术进行超市物品检点的项目调研分析，需要先寻找一个可行的技术方案验证可行性，Flickr提供的LOGO数据集是一个很好的品牌LOGO识别例子，本文记录利用Flickr LOGO数据集训练一个物体识别的深度神经网络过程。</p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/b.gif" alt="b"></p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>Flickr LOGO数据集提供了三种不同类型的LOGO数据集集合，分别为<a href="http://image.ntua.gr/iva/datasets/flickr_logos/">Flickr Logos 27 dataset</a>，<a href="http://www.multimedia-computing.de/flickrlogos/#flickrlogos47">Datasets: FlickrLogos-32</a>以及<a href="http://www.multimedia-computing.de/flickrlogos/#flickrlogos47">Datasets: FlickrLogos-47</a>。我们先来看一下每种数据集的组成及数据结构：</p>
+<ol>
+<li><p><a href="http://image.ntua.gr/iva/datasets/flickr_logos/">Flickr Logos 27 dataset</a></p>
+<ul>
+<li><p>训练集包含27个分类的810张标记照片，每个分类30张照片</p>
+</li>
+<li><p>分散集包含4207张logo图片</p>
+</li>
+<li><p>测试集有270张照片，每个分类5张照片，另外有135张分类外照片集</p>
+</li>
+<li><p>27个分类包括：Adidas, Apple, BMW, Citroen, Coca Cola, DHL, Fedex, Ferrari, Ford, Google, Heineken, HP, McDonalds, Mini, Nbc, Nike, Pepsi, Porsche, Puma, Red Bull, Sprite, Starbucks, Intel, Texaco, Unisef, Vodafone and Yahoo.</p>
+</li>
+<li><p>下载地址：<a href="http://image.ntua.gr/iva/datasets/flickr_logos/flickr_logos_27_dataset.tar.gz">下载</a></p>
+</li>
+<li><p>数据格式：下载文件夹中提供一个<code>txt</code>文件用于描述每个文件中LOGO的分类和位置信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  FileName ClassName subset   Coordinates（x1 y1 x2 y2）</span></span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">91</span> <span class="number">288</span> <span class="number">125</span> <span class="number">306</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">182</span> <span class="number">63</span> <span class="number">229</span> <span class="number">94</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">192</span> <span class="number">291</span> <span class="number">225</span> <span class="number">306</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">285</span> <span class="number">61</span> <span class="number">317</span> <span class="number">79</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">285</span> <span class="number">298</span> <span class="number">324</span> <span class="number">329</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">377</span> <span class="number">292</span> <span class="number">421</span> <span class="number">324</span> </span><br><span class="line"><span class="number">4763210295.j</span>pg Adidas 	<span class="number">1</span> 		<span class="number">383</span> <span class="number">55</span> <span class="number">416</span> <span class="number">76</span> </span><br><span class="line"><span class="number">1230939811.j</span>pg Adidas 	<span class="number">2</span> 		<span class="number">129</span> <span class="number">326</span> <span class="number">257</span> <span class="number">423</span> </span><br><span class="line"><span class="number">1230939811.j</span>pg Adidas 	<span class="number">2</span> 		<span class="number">137</span> <span class="number">336</span> <span class="number">243</span> <span class="number">395</span></span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/dataset1_bboxes.jpg" alt="dataset1_bboxes"></p>
+</li>
+</ul>
+</li>
+<li><p><a href="http://www.multimedia-computing.de/flickrlogos/#flickrlogos47">Flickr Logos 32/47 dataset</a></p>
+<blockquote>
+<p>FlickrLogos-32 was designed for logo retrieval and multi-class logo detection and object recognition. However, the annotations for object detection were often incomplete,since only the most prominent logo instances were labelled. </p>
+<p>FlickrLogos-47 uses the same image corpus as FlickrLogos-32 but has been re-annotated specifically for the task of object detection and recognition. </p>
+</blockquote>
+<p>2.1 Flickr Logos-32</p>
+<ul>
+<li><p>32个分类包括： <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/adidas.jpg">Adidas</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/aldi.jpg">Aldi</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/apple.jpg">Apple</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/becks.jpg">Becks</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/bmw.jpg">BMW</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/carlsberg.jpg">Carlsberg</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/chimay.jpg">Chimay</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/cocacola.jpg">Coca-Cola</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/corona.jpg">Corona</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/dhl.jpg">DHL</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/erdinger.jpg">Erdinger</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/esso.jpg">Esso</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/fedex.jpg">Fedex</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/ferrari.jpg">Ferrari</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/ford.jpg">Ford</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/fosters.jpg">Foster’s</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/google.jpg">Google</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/guinness.jpg">Guiness</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/heineken.jpg">Heineken</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/hp.jpg">HP</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/milka.jpg">Milka</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/nvidia.jpg">Nvidia</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/paulaner.jpg">Paulaner</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/pepsi.jpg">Pepsi</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/rittersport.jpg">Ritter Sport</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/shell.jpg">Shell</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/singha.jpg">Singha</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/starbucks.jpg">Starbucks</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/stellaartois.jpg">Stella Artois</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/texaco.jpg">Texaco</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/tsingtao.jpg">Tsingtao</a> and <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/ups.jpg">UPS</a></p>
+</li>
+<li><p>数据集被划分为P1,P2,P3三个子集：</p>
+</li>
+</ul>
+</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Partition</th>
+<th>Description</th>
+<th>Images</th>
+<th>#Images</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1 (training set)</td>
+<td>Hand-picked images</td>
+<td>10 per class</td>
+<td>320 images</td>
+</tr>
+<tr>
+<td>P2 (validation set)</td>
+<td>Images showing at least a single logo under various views</td>
+<td>30 per class + 3000 non-logo images</td>
+<td>3960 images</td>
+</tr>
+<tr>
+<td>P3 (test set = query set)</td>
+<td>Images showing at least a single logo under various views</td>
+<td>30 per class + 3000 non-logo images</td>
+<td>3960 images</td>
+</tr>
+<tr>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+<td>8240 images</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre><code>2.2 FlickrLogos-47
+</code></pre><ul>
+<li>47个分类包括：<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/adidas.jpg">Adidas (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/adidas.jpg">Adidas (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/aldi.jpg">Aldi</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/apple.jpg">Apple</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/becks.jpg">Becks (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/becks.jpg">Becks (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/bmw.jpg">BMW</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/carlsberg.jpg">Carlsberg (Symbol)</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/carlsberg.jpg">Carlsberg (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/chimay.jpg">Chimay (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/chimay.jpg">Chimay (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/cocacola.jpg">Coca-Cola</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/corona.jpg">Corona (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/corona.jpg">Corona (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/dhl.jpg">DHL</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/erdinger.jpg">Erdinger (Symbol)</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/erdinger.jpg">Erdinger (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/esso.jpg">Esso (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/esso.jpg">Esso (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/fedex.jpg">Fedex</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/ferrari.jpg">Ferrari</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/ford.jpg">Ford</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/fosters.jpg">Foster’s (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/fosters.jpg">Foster’s (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/google.jpg">Google</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/guinness.jpg">Guiness (Symbol)</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/guinness.jpg">Guiness (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/heineken.jpg">Heineken</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/hp.jpg">HP</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/milka.jpg">Milka (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/milka.jpg">Milka (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/nvidia.jpg">Nvidia (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/nvidia.jpg">Nvidia (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/paulaner.jpg">Paulaner (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/paulaner.jpg">Paulaner (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/pepsi.jpg">Pepsi (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/pepsi.jpg">Pepsi (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/rittersport.jpg">Ritter Sport</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/shell.jpg">Shell</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/singha.jpg">Singha (Symbol)</a>,<a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/singha.jpg">Singha (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/starbucks.jpg">Starbucks</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/stellaartois.jpg">Stella Artois (Symbol)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/stellaartois.jpg">Stella Artois (Text)</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/texaco.jpg">Texaco</a>, <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/tsingtao.jpg">Tsingtao (Symbol)</a> <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/tsingtao.jpg">Tsingtao (Text)</a> and <a href="http://www.multimedia-computing.de/flickrlogos/images/classes-small/ups.jpg">UPS</a>.</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>Flickr Logo数据集虽然类别数目众多，但具体到每个分类提供的样本数目有限，在数据预处理环节需要配合数据增强手段来扩充数据集的数目；</li>
+<li>另外也可以仿照车牌识别的方法，将扣取的LOGO图像添加到不同背景噪声的图像中，生成多种训练数据；</li>
+<li>由于LOGO图像包含图像特征有限，同时提供小样本数据，通过迁移学习的方案利用ImageNet训练好的模型进行迁移学习是一种很好的方式，本文将对这种方式进行讨论及实现；</li>
+<li>三种数据集面向不同的功能也设计需求，从图像质量上来看Flickr-47质量相对较好，同时在32分类和47分类中提供了对图像语义分割的标定数据；</li>
+</ul>
+<p>在概览过任务数据集之后，我们将按照深度学习业务处理流程，逐步进行数据的预处理、模型准备、训练和验证等工作。为简化问题处理难度，我们使用Flickr Logo -27来进行本次实验。</p>
+<h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><p>数据准备环节主要使用如下基本的工具和库文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.patches <span class="keyword">as</span> patches</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> imutils</span><br></pre></td></tr></table></figure>
+<p>其中，</p>
+<ul>
+<li><code>numpy</code>用来做基本的矩阵处理；</li>
+<li><code>pandas</code>用于读取和分析数据描述文件；</li>
+<li><code>matplotlib</code>用于辅助显示预处理结果；</li>
+<li><code>cv2</code>是opencv的python封装，进行图像读取、图像分析等操作；</li>
+<li><code>imutils</code>是一个很好用的图像处理库，可以满足基本的图像处理需求</li>
+</ul>
+<p>首先我们先查看从flickr-27上下载的文件<code>flickr_logos_27_dataset_training_set_annotation.txt</code>来了解基本的图像数据信息和分类信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df=pd.read_csv(<span class="string">"./flickr_logos_27_dataset/flickr_logos_27_dataset_training_set_annotation.txt"</span>,sep=<span class="string">" "</span>, header=<span class="keyword">None</span>)</span><br><span class="line">df.drop(df.columns[<span class="number">-1</span>],axis=<span class="number">1</span>, inplace=<span class="keyword">True</span>)</span><br><span class="line">df.columns=[<span class="string">"Name"</span>,<span class="string">"labels"</span>,<span class="string">"subset"</span>,<span class="string">"x1"</span>,<span class="string">"y1"</span>,<span class="string">"x2"</span>,<span class="string">"y2"</span>]</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">output:&gt;&gt;&gt;&gt;</span><br><span class="line">	     Name      labels subset      x1	y1	x2	y2</span><br><span class="line"><span class="number">0</span>	<span class="number">144503924.j</span>pg	Adidas	<span class="number">1</span>	<span class="number">38</span>	<span class="number">12</span>	<span class="number">234</span>	<span class="number">142</span></span><br><span class="line"><span class="number">1</span>	<span class="number">2451569770.j</span>pg	Adidas	<span class="number">1</span>	<span class="number">242</span>	<span class="number">208</span>	<span class="number">413</span>	<span class="number">331</span></span><br><span class="line"><span class="number">2</span>	<span class="number">390321909.j</span>pg	Adidas	<span class="number">1</span>	<span class="number">13</span>	<span class="number">5</span>	<span class="number">89</span>	<span class="number">60</span></span><br><span class="line"><span class="number">3</span>	<span class="number">4761260517.j</span>pg	Adidas	<span class="number">1</span>	<span class="number">43</span>	<span class="number">122</span>	<span class="number">358</span>	<span class="number">354</span></span><br><span class="line"><span class="number">4</span>	<span class="number">4763210295.j</span>pg	Adidas	<span class="number">1</span>	<span class="number">83</span>	<span class="number">63</span>	<span class="number">130</span>	<span class="number">93</span></span><br></pre></td></tr></table></figure>
+<p>在描述文件中总共提供了4536条记录，而实际提供的图像文件只有1000多张，这说明很多文件包括不止一个LOGO。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">len(df)</span><br><span class="line">&gt;&gt;&gt;: <span class="number">4536</span></span><br></pre></td></tr></table></figure>
+<p>我们可以利用<code>pandas</code>对文件进行一个简单的shuffle处理，便于快速切分成训练集和测试集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># shuffle the datasets</span></span><br><span class="line">df = df.sample(frac=<span class="number">1</span>).reset_index(drop=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>为了快速查看描述文件提供的标记信息在图像中的显示效果，我们写一个函数来查看一下LOGO标记信息的效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_image</span><span class="params">(id)</span>:</span></span><br><span class="line">    fig = plt.figure()</span><br><span class="line">    image = os.path.join(<span class="string">"./flickr_logos_27_dataset/flickr_logos_27_dataset_images/"</span>,df.loc[id][<span class="string">"Name"</span>])</span><br><span class="line">    image = cv2.imread(image)</span><br><span class="line">    plt.figure(<span class="number">8</span>)</span><br><span class="line">    plt.imshow(image)</span><br><span class="line">    currentAxis=plt.gca()</span><br><span class="line">    rect=patches.Rectangle((df[<span class="string">"x1"</span>].iloc[id], df[<span class="string">"y1"</span>].iloc[id]),</span><br><span class="line">                           df[<span class="string">"x2"</span>].iloc[id]-df[<span class="string">"x1"</span>].iloc[id],</span><br><span class="line">                           df[<span class="string">"y2"</span>].iloc[id]-df[<span class="string">"y1"</span>].iloc[id],</span><br><span class="line">                           linewidth=<span class="number">2</span>,edgecolor=<span class="string">'r'</span>,facecolor=<span class="string">'none'</span>)</span><br><span class="line">    currentAxis.add_patch(rect)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中用到了<code>plt.gca()</code>和matplotlib的<code>patches</code>函数用于图像的叠加显示，当然也可以直接调用<code>cv2.rectangle</code>函数</p>
+</blockquote>
+<p>随机查看一个标记在图像中的显示效果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">id = random.randint(<span class="number">0</span>,len(df))</span><br><span class="line">show_image(id)</span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/BMW_sample.png" alt="BMW_sample"></p>
+<p>下面需要写一个抠图程序，把所有LOGO从原始图像中扣取出来，形成训练用数据集，在保存图像之前进行图像简单的预处理和调整形状：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crop_img</span><span class="params">(id)</span>:</span></span><br><span class="line">    image = os.path.join(<span class="string">"./flickr_logos_27_dataset/flickr_logos_27_dataset_images/"</span>,df.loc[id][<span class="string">"Name"</span>])</span><br><span class="line">    image = cv2.imread(image)</span><br><span class="line">    crop_image = image[df[<span class="string">"y1"</span>].iloc[id]:df[<span class="string">"y2"</span>].iloc[id],df[<span class="string">"x1"</span>].iloc[id]:df[<span class="string">"x2"</span>].iloc[id]]</span><br><span class="line">    <span class="keyword">return</span> crop_image</span><br><span class="line">  </span><br><span class="line">WIDTH = <span class="number">64</span></span><br><span class="line">HEIGHT = <span class="number">64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> id, name <span class="keyword">in</span> enumerate(df[<span class="string">"Name"</span>]):</span><br><span class="line">    cropped_image = crop_img(id)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        resized_image = cv2.resize(cropped_image, 	     </span><br><span class="line">                                   (WIDTH,HEIGHT),interpolation=cv2.INTER_CUBIC)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        print(id)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    image_name = str(id)+<span class="string">"_"</span>+df.iloc[id][<span class="string">"labels"</span>]+<span class="string">".jpg"</span></span><br><span class="line">    cv2.imwrite(os.path.join(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>,image_name),resized_image)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在图像扣取过程中，有几点需要注意：</p>
+<ol>
+<li>由于描述问题提供的信息本身的问题，有一些异常数据需要剔除，比如有5条记录提供的x1=x2,或y1=y2，即在原始图像上没有进行标记；</li>
+<li>图像缩放其实不应该采用这种傻瓜的压缩方式，应该尽量控制长宽比，保证不产生明显的形变；</li>
+</ol>
+</blockquote>
+<p>处理完成之后，扣取图像将在<code>cropped</code>文件夹中以<code>{id}_{label}.jpg</code>的文件名存储。</p>
+<p>图像扣取之后，通过人工核对，我们发现仍然存在一些明显有问题的图像，比如多张puma的图像，其实存在明显的标记问题，需要从数据集中剔除：</p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/puma_error_img.png" alt="puma_error_img"></p>
+<h3 id="数据集切分"><a href="#数据集切分" class="headerlink" title="数据集切分"></a>数据集切分</h3><p>我们将扣取数据读入进行简单预处理和数据切分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data = []</span><br><span class="line">labels = []</span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> os.listdir(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>):</span><br><span class="line">    img_file = cv2.imread(os.path.join(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>,img))</span><br><span class="line">    data.append(img_file)</span><br><span class="line">    labels.append(img.split(<span class="string">"_"</span>)[<span class="number">1</span>].split(<span class="string">"."</span>)[<span class="number">0</span>])</span><br><span class="line">data = np.stack(data)</span><br><span class="line">labels = np.stack(labels)</span><br><span class="line"></span><br><span class="line">data = data/<span class="number">255</span></span><br></pre></td></tr></table></figure>
+<p>将标签数据转变成OneHot矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelBinarizer</span><br><span class="line">le = LabelBinarizer()</span><br><span class="line">labels = le.fit_transform(labels)</span><br></pre></td></tr></table></figure>
+<p>切分数据集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X,testX,y,testy = train_test_split(data, labels,test_size=<span class="number">0.1</span>,stratify=labels,random_state=<span class="number">42</span> )</span><br></pre></td></tr></table></figure>
+<h3 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h3><p>数据增强是图像处理中经常采用的一种数据处理方式，由于涉及内容较多，在本篇实战中不单独展开，仅把利用Keras数据增强工具<code>ImageDataGenerator</code>的方法提供一下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.preprocessing.image import ImageDataGenerator </span><br><span class="line"><span class="comment"># construct the training image generator for data augmentation</span></span><br><span class="line">aug = ImageDataGenerator(<span class="attribute">rotation_range</span>=18, <span class="attribute">zoom_range</span>=0.15,</span><br><span class="line">	<span class="attribute">width_shift_range</span>=0.2, <span class="attribute">height_shift_range</span>=0.2, <span class="attribute">shear_range</span>=0.15,</span><br><span class="line">	<span class="attribute">horizontal_flip</span>=<span class="literal">True</span>, <span class="attribute">fill_mode</span>=<span class="string">"nearest"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attribute">gen_flow</span>=aug.flow(X, y,<span class="attribute">batch_size</span>=64,seed=0)</span><br><span class="line"><span class="attribute">validation</span>=aug.flow(testX,testy,batch_size=32,seed=0)</span><br></pre></td></tr></table></figure>
+<h2 id="模型定义"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义</h2><p>根据前文对数据的分析，我们分别采取两种方式设计网络模型：从头训练一个深度卷积神经网络和利用迁移学习Fine-Tune一个满足需求的网络模型。</p>
+<h3 id="从头训练一个网络模型"><a href="#从头训练一个网络模型" class="headerlink" title="从头训练一个网络模型"></a>从头训练一个网络模型</h3><p>由于问题本质是一个物体识别任务，所以在实现上应该包括图像分类和定位的回归两个子任务，我们可以简化问题通过一个滑动窗口来对输入图像进行扫描，然后针对每个扫描窗口进行图像分类。</p>
+<blockquote>
+<p>当然实际过程中，问题要远比这复杂，很难选择合适的滑动窗口大小适用现实图像的需求，所以在主流的物体识别模型中一般都采用多种不同大小的Anchor box来回归图像的位置。</p>
+</blockquote>
+<p>由于LOGO每张图像包含特征有限，我们在本次实验中利用<strong>LeNet</strong>的架构，设计了一个简单的卷积网络模型如下图所示：</p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/model.png" alt="model"></p>
+<p>模型主体利用三个<code>CONV =&gt; RELU =&gt; POOL</code>结构来抽取图像特征，最后利用全联通网络+Softmax分类器来获得最终27类分类结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers.convolutional <span class="keyword">import</span> Conv2D</span><br><span class="line"><span class="keyword">from</span> keras.layers.convolutional <span class="keyword">import</span> MaxPooling2D</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Activation</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Flatten</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Dense</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">inputShape = (HEIGHT, WIDTH, <span class="number">3</span>)</span><br><span class="line">        <span class="comment"># first set of CONV =&gt; RELU =&gt; POOL layers</span></span><br><span class="line">model.add(Conv2D(<span class="number">16</span>, (<span class="number">3</span>, <span class="number">3</span>), padding=<span class="string">"same"</span>,input_shape=inputShape))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># second set of CONV =&gt; RELU =&gt; POOL layers</span></span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>, <span class="number">3</span>), padding=<span class="string">"same"</span>))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># third set of CONV =&gt; RELU =&gt; POOL layers</span></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), padding=<span class="string">"same"</span>))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># first (and only) set of FC =&gt; RELU layers</span></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">500</span>))</span><br><span class="line">model.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"><span class="comment"># softmax classifier</span></span><br><span class="line">model.add(Dense(len(CLASSNAME)))</span><br><span class="line">model.add(Activation(<span class="string">"softmax"</span>))</span><br></pre></td></tr></table></figure>
+<p>定义目标优化函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> Adam,SGD,RMSprop</span><br><span class="line">opt = RMSprop(lr=<span class="number">0.001</span>, rho=<span class="number">0.9</span>)</span><br><span class="line">model.compile(loss=<span class="string">"categorical_crossentropy"</span>, optimizer=opt,metrics=[<span class="string">"accuracy"</span>])</span><br></pre></td></tr></table></figure>
+<p>迭代训练100个epoch:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history=model.fit_generator(</span><br><span class="line">	gen_flow,</span><br><span class="line">	steps_per_epoch=len(X) // <span class="number">32</span>,</span><br><span class="line">	validation_data=aug.flow(testX,testy,batch_size=<span class="number">32</span>,seed=<span class="number">0</span>),</span><br><span class="line">	validation_steps=len(testX) // <span class="number">32</span>,</span><br><span class="line">	epochs=<span class="number">100</span>,</span><br><span class="line">	verbose=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>100轮之后，验证集达到了99.89%的准确率，基本满足了要求，训练过程中训练数据和验证数据的准确率及Loss变化详见下图：</p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/accuracy_curve.png" alt="accuracy_curve"></p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/loss_curve.png" alt="loss_curve"></p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize = (<span class="number">15</span>,<span class="number">40</span>))</span><br><span class="line"><span class="keyword">for</span> i,test_img <span class="keyword">in</span> enumerate(os.listdir(<span class="string">"./test"</span>)):</span><br><span class="line">    img = cv2.imread(os.path.join(<span class="string">"./test"</span>,test_img))</span><br><span class="line">    img = cv2.resize(img, (WIDTH,HEIGHT),interpolation=cv2.INTER_CUBIC)</span><br><span class="line">    img = np.expand_dims(img,axis=<span class="number">0</span>)</span><br><span class="line">    result = model.predict(img)</span><br><span class="line">    result = le.inverse_transform(result)</span><br><span class="line">    plt.subplot(<span class="number">8</span>,<span class="number">4</span>, i+<span class="number">1</span>)</span><br><span class="line">    img = cv2.cvtColor(img[<span class="number">0</span>],  cv2.COLOR_BGR2RGB)</span><br><span class="line">    plt.imshow(img)</span><br><span class="line">    plt.title(<span class="string">'pred:'</span> + str(result[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/test_result.png" alt="test_result"></p>
+<h3 id="设计滑动窗口和特征金字塔"><a href="#设计滑动窗口和特征金字塔" class="headerlink" title="设计滑动窗口和特征金字塔"></a>设计滑动窗口和特征金字塔</h3><p>其中滑动窗口用来遍历图像，特征金字塔用于实现图像的多尺度变换，保证多种不同大小的LOGO都可以被准确识别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sliding_window</span><span class="params">(image, step, ws)</span>:</span></span><br><span class="line">	<span class="comment"># slide a window across the image</span></span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">0</span>, image.shape[<span class="number">0</span>] - ws[<span class="number">1</span>], step):</span><br><span class="line">		<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, image.shape[<span class="number">1</span>] - ws[<span class="number">0</span>], step):</span><br><span class="line">			<span class="comment"># yield the current window</span></span><br><span class="line">			<span class="keyword">yield</span> (x, y, image[y:y + ws[<span class="number">1</span>], x:x + ws[<span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">image_pyramid</span><span class="params">(image, scale=<span class="number">1.5</span>, minSize=<span class="params">(<span class="number">64</span>, <span class="number">64</span>)</span>)</span>:</span></span><br><span class="line">	<span class="comment"># yield the original image</span></span><br><span class="line">	<span class="keyword">yield</span> image</span><br><span class="line"></span><br><span class="line">	<span class="comment"># keep looping over the image pyramid</span></span><br><span class="line">	<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">		<span class="comment"># compute the dimensions of the next image in the pyramid</span></span><br><span class="line">		w = int(image.shape[<span class="number">1</span>] / scale)</span><br><span class="line">		image = imutils.resize(image, width=w)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># if the resized image does not meet the supplied minimum</span></span><br><span class="line">		<span class="comment"># size, then stop constructing the pyramid</span></span><br><span class="line">		<span class="keyword">if</span> image.shape[<span class="number">0</span>] &lt; minSize[<span class="number">1</span>] <span class="keyword">or</span> image.shape[<span class="number">1</span>] &lt; minSize[<span class="number">0</span>]:</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">		<span class="comment"># yield the next image in the pyramid</span></span><br><span class="line">		<span class="keyword">yield</span> image</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>特征金字塔</strong>：</p>
+<p>为了检测不同尺度的目标，依次将原图按比例缩放并送入网络。缺点是需要多次resize图像，繁琐耗时。</p>
+</blockquote>
+<p>我们定义了输入图像的尺寸为(150,150)，滑动窗口大小与我们前面训练的分类网络的输入一致为(64,64),特征金字塔的缩小比例为1.5倍，这样将在原始图像基础上进行两次缩放；另外定义了滑动窗口的步长为16。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># initialize variables used for the object detection procedure</span></span><br><span class="line">INPUT_SIZE = (<span class="number">150</span>, <span class="number">150</span>)</span><br><span class="line">PYR_SCALE = <span class="number">1.5</span></span><br><span class="line">WIN_STEP = <span class="number">16</span></span><br><span class="line">ROI_SIZE = (<span class="number">64</span>, <span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">labels = &#123;&#125;</span><br><span class="line">CLASS_NAMES = list(lb.classes_)</span><br></pre></td></tr></table></figure>
+<p>为简化后续分析，定义一个预测函数，用于返回图像中预测准确率超过minProb窗口及对象分类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logo_prediction</span><span class="params">(model, batchROIs, batchLocs, labels, minProb=<span class="number">0.5</span>,dims=<span class="params">(<span class="number">64</span>, <span class="number">64</span>)</span>)</span>:</span></span><br><span class="line">    preds = model.predict(batchROIs)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(preds)):</span><br><span class="line">        prob = np.max(preds[i])</span><br><span class="line">        <span class="keyword">if</span> prob &gt; <span class="number">0.5</span>:</span><br><span class="line">            index = np.argmax(preds[i])</span><br><span class="line">            label = CLASS_NAMES[int(index)]</span><br><span class="line">            <span class="comment"># grab the coordinates of the sliding window for</span></span><br><span class="line">            <span class="comment"># the prediction and construct the bounding box</span></span><br><span class="line">            (pX, pY) = batchLocs[i]</span><br><span class="line">            box = (pX, pY, pX + dims[<span class="number">0</span>], pY + dims[<span class="number">1</span>])</span><br><span class="line">            L = labels.get(label, [])</span><br><span class="line">            L.append((box,prob))</span><br><span class="line">            labels[label] = L</span><br><span class="line">    <span class="keyword">return</span> labels</span><br></pre></td></tr></table></figure>
+<p>我们将遍历每个特征金字塔和每个滑动窗口，对识别结果进行预测：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">img_file = <span class="string">"./test/2.jpg"</span></span><br><span class="line">orig = cv2.imread(img_file)</span><br><span class="line"><span class="comment"># resize the input image to be a square</span></span><br><span class="line">resized = cv2.resize(orig, INPUT_SIZE, interpolation=cv2.INTER_CUBIC)</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialize the batch ROIs and (x, y)-coordinates</span></span><br><span class="line">batchROIs = <span class="keyword">None</span></span><br><span class="line">batchLocs = []</span><br><span class="line"><span class="comment"># loop over the image pyramid</span></span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> image_pyramid(resized, scale=PYR_SCALE,minSize=ROI_SIZE):</span><br><span class="line">    <span class="comment"># loop over the sliding window locations</span></span><br><span class="line">    <span class="keyword">for</span> (x, y, roi) <span class="keyword">in</span> sliding_window(resized, WIN_STEP, ROI_SIZE):</span><br><span class="line">        <span class="comment"># take the ROI and pre-process it so we can later classify the</span></span><br><span class="line">        <span class="comment"># region with Keras</span></span><br><span class="line">        <span class="comment">#roi = img_to_array(roi)</span></span><br><span class="line">        roi = roi/<span class="number">255</span></span><br><span class="line">        roi = np.expand_dims(roi, axis=<span class="number">0</span>)</span><br><span class="line">        <span class="comment"># roi = imagenet_utils.preprocess_input(roi)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># if the batch is None, initialize it</span></span><br><span class="line">        <span class="keyword">if</span> batchROIs <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            batchROIs = roi</span><br><span class="line"></span><br><span class="line">        <span class="comment"># otherwise, add the ROI to the bottom of the batch</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            batchROIs = np.vstack([batchROIs, roi])</span><br><span class="line"></span><br><span class="line">        <span class="comment"># add the (x, y)-coordinates of the sliding window to the batch</span></span><br><span class="line">        batchLocs.append((x, y))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># classify the batch, then reset the batch ROIs and</span></span><br><span class="line">    <span class="comment"># (x, y)-coordinates</span></span><br><span class="line">    model.predict(batchROIs)</span><br><span class="line">    labels = logo_prediction(model, batchROIs, batchLocs,labels, minProb=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当进行到这步骤才突然发现训练分类中缺了一个很重要的背景分类，将导致在背景上很多信息的预测会出问题，后续等整些背景图片再重新训练网络，😭</p>
+</blockquote>
+<p>最后一步是预测结果的<strong>极大值抑制</strong>和显示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> imutils.object_detection <span class="keyword">import</span> non_max_suppression</span><br><span class="line"><span class="comment"># loop over the labels for each of detected objects in the image</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> labels.keys():</span><br><span class="line">	<span class="comment"># clone the input image so we can draw on it</span></span><br><span class="line">	clone = resized.copy()</span><br><span class="line"></span><br><span class="line">	<span class="comment"># loop over all bounding boxes for the label and draw them on the image</span></span><br><span class="line">	<span class="keyword">for</span> (box, prob) <span class="keyword">in</span> labels[k]:</span><br><span class="line">		(xA, yA, xB, yB) = box</span><br><span class="line">		cv2.rectangle(clone, (xA, yA), (xB, yB), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># grab the bounding boxes and associated probabilities for each</span></span><br><span class="line">	<span class="comment"># detection, then apply non-maxima suppression to suppress</span></span><br><span class="line">	<span class="comment"># weaker, overlapping detections</span></span><br><span class="line">	boxes = np.array([p[<span class="number">0</span>] <span class="keyword">for</span> p <span class="keyword">in</span> labels[k]])</span><br><span class="line">	proba = np.array([p[<span class="number">1</span>] <span class="keyword">for</span> p <span class="keyword">in</span> labels[k]])</span><br><span class="line">	boxes = non_max_suppression(boxes, proba)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># loop over the bounding boxes again, this time only drawing the</span></span><br><span class="line">	<span class="comment"># ones that were *not* suppressed</span></span><br><span class="line">	<span class="keyword">for</span> (xA, yA, xB, yB) <span class="keyword">in</span> boxes:</span><br><span class="line">		cv2.rectangle(clone, (xA, yA), (xB, yB), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># show the output image</span></span><br><span class="line">	print(<span class="string">"[INFO] &#123;&#125;: &#123;&#125;"</span>.format(k, len(boxes)))</span><br><span class="line">	plt.imshow(clone)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>极大值抑制是物体识别中很重要的一个环节，相关概念以后在慢慢整理</p>
+</blockquote>
+<h3 id="利用迁移学习优化一个物体识别网络模型"><a href="#利用迁移学习优化一个物体识别网络模型" class="headerlink" title="利用迁移学习优化一个物体识别网络模型"></a>利用迁移学习优化一个物体识别网络模型</h3><p>上述方法虽然简单容易理解，但存在很大的计算效率问题，每张图片需要进行多次特征提取和多次运算，对计算效率造成很大影响。目前主流的物体识别算法往往都可以应用于实时视频流的分析，显然使用上述方法是不合适的。我们将在后面探讨利用现有的物体识别网络通过迁移学习解决我们的目标识别问题。</p>
+<p>由于本篇内容太多，利用迁移学习实现的方法，将单独作为一篇，此处留待插入<strong>链接</strong>。</p>
+<p>本文涉及代码详见<a href="https://github.com/ddebby/AI-Lab">Github</a></p>
+<h2 id="训练一个二分类网络检查货架上是否有百事可乐"><a href="#训练一个二分类网络检查货架上是否有百事可乐" class="headerlink" title="训练一个二分类网络检查货架上是否有百事可乐"></a>训练一个二分类网络检查货架上是否有百事可乐</h2><blockquote>
+<p>参考<a href="https://github.com/Anubhav-Bhargava/Logo-Classifier/blob/master/logo_clf_sliding_window.ipynb">Github实现</a>一个物品检测原型：训练一个二分类分类器</p>
+</blockquote>
+<ol>
+<li>在数据准备阶段与上述过程唯一不同是label的设置，如下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data = []</span><br><span class="line">labels = []</span><br><span class="line">HEIGHT = <span class="number">64</span></span><br><span class="line">WIDTH = <span class="number">64</span></span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> os.listdir(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>):</span><br><span class="line">    img_file = cv2.imread(os.path.join(<span class="string">"./flickr_logos_27_dataset/cropped/"</span>,img))</span><br><span class="line">    data.append(img_file)</span><br><span class="line">    label = img.split(<span class="string">"_"</span>)[<span class="number">1</span>].split(<span class="string">"."</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> label != <span class="string">"Pepsi"</span>:</span><br><span class="line">        label = <span class="string">"Nop"</span></span><br><span class="line">    labels.append(label)</span><br><span class="line">data = np.stack(data)</span><br><span class="line">labels = np.stack(labels)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>由于是二分类问题，所以只需要最后一层使用sigmoid函数构建分类器即可，label的序列话方面使用LabelEncoder转换为0或者1即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder</span><br><span class="line">lb = LabelEncoder()</span><br><span class="line">y = lb.fit_transform(labels)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数据增强与前文类似，不再赘言。在网络结构上，只需要修改最后为sigmoid函数输出，优化目标使用<code>binary_crossentropy</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">model.add(Activation(<span class="string">"sigmoid"</span>))</span><br><span class="line">...</span><br><span class="line">model.compile(loss=<span class="string">"binary_crossentropy"</span>, optimizer=opt,</span><br><span class="line">	metrics=[<span class="string">"accuracy"</span>])</span><br></pre></td></tr></table></figure>
+<p>由于只有两个分类，所以模型很容易收敛，最后准确率也接近100%。</p>
+</li>
+<li><p>最后利用一个滑动窗口不停的扫描图像并利用cv2展示结果即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (x, y, window) <span class="keyword">in</span> sliding_window(img, stepSize=<span class="number">32</span>, windowSize=(winW, winH)):</span><br><span class="line">    <span class="comment"># if the window does not meet our desired window size, ignore it</span></span><br><span class="line">    <span class="keyword">if</span> window.shape[<span class="number">0</span>] != winH <span class="keyword">or</span> window.shape[<span class="number">1</span>] != winW:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">   </span><br><span class="line">    crop_img=crop_image(sample_path,x, y, x + winW, y + winH)</span><br><span class="line">    crop_img=imresize(crop_img,(<span class="number">64</span>,<span class="number">64</span>))</span><br><span class="line">    crop_img = crop_img/<span class="number">255</span></span><br><span class="line">    prediction=model.predict(crop_img.reshape(<span class="number">1</span>,<span class="number">64</span>,<span class="number">64</span>,<span class="number">3</span>))</span><br><span class="line">    <span class="keyword">if</span> prediction == <span class="number">1</span>:</span><br><span class="line">        pred = <span class="string">'Pepsi'</span>    </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">    	pred=<span class="string">' '</span></span><br><span class="line">   	</span><br><span class="line">    clone = img.copy()</span><br><span class="line">    cv2.putText(clone, pred, (<span class="number">10</span>, <span class="number">30</span>),cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.7</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">    cv2.rectangle(clone, (x, y), (x + winW, y + winH), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">    clone = cv2.cvtColor(clone,cv2.COLOR_BGR2RGB)</span><br><span class="line">    cv2.imshow(<span class="string">"Window"</span>, clone)</span><br><span class="line">    </span><br><span class="line">    cv2.waitKey(<span class="number">1</span>)</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ol>
+<h2 id="Logo检测的应用及分析"><a href="#Logo检测的应用及分析" class="headerlink" title="Logo检测的应用及分析"></a>Logo检测的应用及分析</h2><p><a href="https://blog.deepsense.ai/logo-detection-and-brand-visibility-analytics/">DeepSense.ai</a>给出了一种Logo检测的分析方法，通过分析视频中不同品牌的logo呈现，统计了不同品牌在同一个视频中Logo出现的时间、出现的方式、呈现的效果等，最终提供给客户一个<strong>Logo Visubility Report</strong>。</p>
+<p>方案的主要流程如下图所示：</p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/logo_detection_overview.jpg" alt="logo_detection_overview"></p>
+<p>生成的分析报告参见下图：</p>
+<p><img src="/qnsource/images/2018-04-09-Deep-Learning-Lab-Logo-Detection/logo_detection_report.png" alt="logo_detection_report"></p>
+<p>针对的分析视频如下：</p>
+<div class="video-container"><iframe src="//www.youtube.com/embed/ekaHlWga5yA" frameborder="0" allowfullscreen></iframe></div>
+<hr>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://image.ntua.gr/iva/datasets/flickr_logos/">Flickr Logos 27 dataset</a></li>
+<li><a href="http://www.multimedia-computing.de/flickrlogos/#flickrlogos47">Datasets: FlickrLogos-32 / FlickrLogos-47</a></li>
+<li>​</li>
+</ol>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+
                 <time class="level-item has-text-grey" datetime="2018-04-01T07:35:01.000Z">2018-04-01</time>
                 
                 <div class="level-item">
@@ -563,71 +817,6 @@ var _hmt = _hmt || [];
 
 
 
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                
-
-                <time class="level-item has-text-grey" datetime="2018-03-04T07:35:01.000Z">2018-03-04</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/深度学习/基础知识/">基础知识</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    11 分钟 读完 (大约 1609 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/03/04/深度学习基础之正则化/">深度学习基础之正则化</a>
-            
-        </h1>
-        <div class="content">
-            <p>明确任务目标和评价准则对于模型的设计及优化至关重要，本文将总结常用的相关方法和模型性能评价准则。为了简化，本文将主要针对回归问题和分类问题分别予以归纳，其它问题可采取类似的方法及手段。</p>
-        </div>
-        
-        
-        <hr style="height:1px;margin:1rem 0"/>
-         <div class="level is-mobile is-flex">
-         <div class="level-start">
-          
-          <div class="level-item is-size-7 is-uppercase">
-           <i class="fas fa-tags has-text-grey"></i>&nbsp;
-             <a class="has-link-grey -link" href="/tags/AI/">AI</a>,&nbsp;<a class="has-link-grey -link" href="/tags/人工智能/">人工智能</a>,&nbsp;<a class="has-link-grey -link" href="/tags/正则化/">正则化</a>
-         </div>
-         
-         </div>
-
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/03/04/深度学习基础之正则化/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -700,7 +889,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/archives">
                         <p class="title has-text-weight-normal">
-                            69
+                            70
                         </p>
                     </a>
                 </div>
@@ -712,7 +901,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/categories">
                         <p class="title has-text-weight-normal">
-                            19
+                            20
                         </p>
                     </a>
                 </div>
@@ -724,7 +913,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/tags">
                         <p class="title has-text-weight-normal">
-                            70
+                            71
                         </p>
                     </a>
                 </div>
@@ -785,7 +974,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/强化学习/" style="font-size: 10px;">强化学习</a> <a href="/tags/心得体会/" style="font-size: 10px;">心得体会</a> <a href="/tags/总结/" style="font-size: 12px;">总结</a> <a href="/tags/感悟/" style="font-size: 11px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据/" style="font-size: 10px;">数据</a> <a href="/tags/数据标注/" style="font-size: 10px;">数据标注</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/目标检测/" style="font-size: 10px;">目标检测</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/计算机视觉/" style="font-size: 11px;">计算机视觉</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
+        <a href="/tags/AI/" style="font-size: 17px;">AI</a> <a href="/tags/Ceph/" style="font-size: 11px;">Ceph</a> <a href="/tags/Fast-ai/" style="font-size: 10px;">Fast.ai</a> <a href="/tags/FastText/" style="font-size: 10px;">FastText</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ipython/" style="font-size: 10px;">Ipython</a> <a href="/tags/JupyterNotebook/" style="font-size: 10px;">JupyterNotebook</a> <a href="/tags/Keras/" style="font-size: 10px;">Keras</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Numpy/" style="font-size: 10px;">Numpy</a> <a href="/tags/OpenCV/" style="font-size: 10px;">OpenCV</a> <a href="/tags/Pandas/" style="font-size: 10px;">Pandas</a> <a href="/tags/Prophet/" style="font-size: 10px;">Prophet</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SARIMA/" style="font-size: 10px;">SARIMA</a> <a href="/tags/Time-Series/" style="font-size: 10px;">Time Series</a> <a href="/tags/word2vec/" style="font-size: 11px;">word2vec</a> <a href="/tags/书籍/" style="font-size: 10px;">书籍</a> <a href="/tags/云存储/" style="font-size: 11px;">云存储</a> <a href="/tags/人工智能/" style="font-size: 20px;">人工智能</a> <a href="/tags/优化/" style="font-size: 10px;">优化</a> <a href="/tags/公开课/" style="font-size: 10px;">公开课</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/原理解析/" style="font-size: 10px;">原理解析</a> <a href="/tags/可视化/" style="font-size: 10px;">可视化</a> <a href="/tags/图像分类/" style="font-size: 11px;">图像分类</a> <a href="/tags/实践/" style="font-size: 12px;">实践</a> <a href="/tags/实验/" style="font-size: 10px;">实验</a> <a href="/tags/工具/" style="font-size: 11px;">工具</a> <a href="/tags/工具使用/" style="font-size: 11px;">工具使用</a> <a href="/tags/工程实践/" style="font-size: 10px;">工程实践</a> <a href="/tags/开放数据集/" style="font-size: 11px;">开放数据集</a> <a href="/tags/开源平台/" style="font-size: 10px;">开源平台</a> <a href="/tags/强化学习/" style="font-size: 10px;">强化学习</a> <a href="/tags/心得体会/" style="font-size: 10px;">心得体会</a> <a href="/tags/总结/" style="font-size: 13px;">总结</a> <a href="/tags/感悟/" style="font-size: 11px;">感悟</a> <a href="/tags/感知机/" style="font-size: 10px;">感知机</a> <a href="/tags/技巧/" style="font-size: 12px;">技巧</a> <a href="/tags/技术/" style="font-size: 11px;">技术</a> <a href="/tags/支持向量机/" style="font-size: 10px;">支持向量机</a> <a href="/tags/教学/" style="font-size: 12px;">教学</a> <a href="/tags/数据/" style="font-size: 10px;">数据</a> <a href="/tags/数据标注/" style="font-size: 10px;">数据标注</a> <a href="/tags/数据集/" style="font-size: 10px;">数据集</a> <a href="/tags/文献/" style="font-size: 18px;">文献</a> <a href="/tags/时序数据/" style="font-size: 11px;">时序数据</a> <a href="/tags/机器学习/" style="font-size: 13px;">机器学习</a> <a href="/tags/机器视觉/" style="font-size: 16px;">机器视觉</a> <a href="/tags/模型/" style="font-size: 11px;">模型</a> <a href="/tags/正则化/" style="font-size: 10px;">正则化</a> <a href="/tags/物体识别/" style="font-size: 12px;">物体识别</a> <a href="/tags/特征抽取/" style="font-size: 10px;">特征抽取</a> <a href="/tags/目标检测/" style="font-size: 10px;">目标检测</a> <a href="/tags/知识管理/" style="font-size: 10px;">知识管理</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/策略/" style="font-size: 10px;">策略</a> <a href="/tags/算法/" style="font-size: 19px;">算法</a> <a href="/tags/线性回归/" style="font-size: 11px;">线性回归</a> <a href="/tags/网络复现/" style="font-size: 14px;">网络复现</a> <a href="/tags/计算机视觉/" style="font-size: 11px;">计算机视觉</a> <a href="/tags/词向量/" style="font-size: 10px;">词向量</a> <a href="/tags/词嵌入/" style="font-size: 11px;">词嵌入</a> <a href="/tags/读书笔记/" style="font-size: 14px;">读书笔记</a> <a href="/tags/资源调度/" style="font-size: 10px;">资源调度</a> <a href="/tags/迁移学习/" style="font-size: 10px;">迁移学习</a> <a href="/tags/逻辑回归/" style="font-size: 11px;">逻辑回归</a> <a href="/tags/部署/" style="font-size: 11px;">部署</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/预处理/" style="font-size: 11px;">预处理</a>
     </div>
 </div>
     
@@ -933,7 +1122,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/人工智能/">
                         <span class="tag">人工智能</span>
-                        <span class="tag is-grey">53</span>
+                        <span class="tag is-grey">54</span>
                     </a>
                 </div>
                 
@@ -1045,7 +1234,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/总结/">
                         <span class="tag">总结</span>
-                        <span class="tag is-grey">3</span>
+                        <span class="tag is-grey">4</span>
                     </a>
                 </div>
                 
@@ -1171,6 +1360,13 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/目标检测/">
                         <span class="tag">目标检测</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/知识管理/">
+                        <span class="tag">知识管理</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -1305,6 +1501,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2021/02/05/那些效率提升的工具与方法/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="那些效率提升的工具与方法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-05T14:10:00.000Z">2021-02-05</time></div>
+                    <a href="/2021/02/05/那些效率提升的工具与方法/" class="title has-link-black-ter is-size-6 has-text-weight-normal">那些效率提升的工具与方法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/总结/">总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2021/01/28/Reinforcement-Learning-Tips-and-Tricks/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/blog/rl.jpg" alt="Reinforcement Learning:Tips and Tricks">
@@ -1379,25 +1594,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
-                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -1408,6 +1604,17 @@ var _hmt = _hmt || [];
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2021/01/">
@@ -1655,6 +1862,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2021/02/05/那些效率提升的工具与方法/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="那些效率提升的工具与方法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-05T14:10:00.000Z">2021-02-05</time></div>
+                    <a href="/2021/02/05/那些效率提升的工具与方法/" class="title has-link-black-ter is-size-6 has-text-weight-normal">那些效率提升的工具与方法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/总结/">总结</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2021/01/28/Reinforcement-Learning-Tips-and-Tricks/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/../qnsource/blog/rl.jpg" alt="Reinforcement Learning:Tips and Tricks">
@@ -1729,25 +1955,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/../qnsource/blog/anchor.jpg" alt="目标检测中的Anchor与感受野">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-30T13:14:50.000Z">2020-03-30</time></div>
-                    <a href="/2020/03/30/目标检测中的Anchor与感受野/" class="title has-link-black-ter is-size-6 has-text-weight-normal">目标检测中的Anchor与感受野</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -1758,6 +1965,17 @@ var _hmt = _hmt || [];
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2021/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2021/01/">
